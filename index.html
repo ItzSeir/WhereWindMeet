@@ -206,7 +206,26 @@
       font-weight:800;
       line-height:1.1;
     }
-
+    .time-line{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    
+    .recommend-star{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      color:#ffd76a;
+      background:rgba(255,215,106,.12);
+      border:1px solid rgba(255,215,106,.28);
+      line-height:1;
+    }
     .slot-instance{
       margin-top:4px;
       color:var(--muted);
@@ -770,6 +789,7 @@
             const allowedRoles = getAllowedRoles(members);
             const forceHeal = allowedRoles.length === 1 && allowedRoles[0] === "治療";
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
+            const isRecommended = !isWeekend(date) && slot.time === "19:45";
 
             const slotCardClass = members.length >= CONFIG.maxPeople
               ? "slot-card full-team"
@@ -781,7 +801,10 @@
               <div class="${slotCardClass}">
                 <div class="slot-top">
                   <div>
-                    <div class="slot-time">${slot.time}</div>
+                    <div class="time-line">
+                      <div class="slot-time">${slot.time}</div>
+                      ${isRecommended ? `<span class="recommend-star">★ 推薦</span>` : ``}
+                    </div>
                     <div class="slot-instance">
                       第 ${slot.instance || 1} 隊
                       ${slot.isCustom ? "｜自訂" : "｜固定"}
