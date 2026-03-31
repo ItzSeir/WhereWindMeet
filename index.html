@@ -1,3 +1,116 @@
+筱風
+itzseir
++1
+•
+遊戲
+
+這就是 #夢回花深處 頻道的起點。 
+筱風 [夢回人a],  — 上午 07:35
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>燕雲十六聲 報名清單</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --bg2:#131c35;
+      --panel:rgba(255,255,255,.08);
+      --panel2:rgba(255,255,255,.05);
+      --line:rgba(255,255,255,.12);
+      --text:#eef2ff;
+      --muted:#a8b3cf;
+      --accent:#6ea8ff;
+      --accent2:#8b5cf6;
+      --danger:#ff6b81;
+      --success:#34d399;
+      --warn:#fbbf24;
+      --heal:#22c55e;
+      --tank:#f59e0b;
+      --dps:#60a5fa;
+      --shadow:0 18px 40px rgba(0,0,0,.28);
+      --radius:22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+    }
+
+    body{ padding:24px 14px 40px; }
+
+    .container{
+      max-width:1600px;
+      margin:0 auto;
+    }
+
+    .hero{
+      background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      border-radius:28px;
+      padding:24px;
+      backdrop-filter:blur(14px);
+      margin-bottom:20px;
+    }
+
+    .title{
+      margin:0;
+      font-size:clamp(28px,4vw,42px);
+      line-height:1.1;
+    }
+
+    .subtitle{
+      margin:10px 0 0;
+      font-size:15px;
+      color:var(--muted);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+    }
+
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .toolbar-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+... (還剩 815 行)
+
+message.txt
+26 KB
+﻿
 <!doctype html>
 <html lang="zh-Hant">
 <head>
@@ -206,26 +319,7 @@
       font-weight:800;
       line-height:1.1;
     }
-    .time-line{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    
-    .recommend-star{
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      padding:4px 8px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-      color:#ffd76a;
-      background:rgba(255,215,106,.12);
-      border:1px solid rgba(255,215,106,.28);
-      line-height:1;
-    }
+
     .slot-instance{
       margin-top:4px;
       color:var(--muted);
@@ -407,24 +501,6 @@
   </style>
 </head>
 <body>
-  <div id="signupModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;">
-  <div style="background:#1f2937;padding:20px;border-radius:16px;width:300px;">
-    
-    <h3>報名</h3>
-
-    <input id="playerName" placeholder="輸入名字" style="width:100%;margin-bottom:10px;padding:8px;border-radius:8px;border:none;">
-
-    <select id="roleSelect" style="width:100%;margin-bottom:10px;padding:8px;border-radius:8px;">
-      <option value="輸出">輸出</option>
-      <option value="承傷">承傷</option>
-      <option value="治療">治療</option>
-    </select>
-
-    <button onclick="submitSignup()" style="width:100%;margin-bottom:6px;">確認</button>
-    <button onclick="closeModal()" style="width:100%;">取消</button>
-
-  </div>
-</div>
   <div class="container">
     <section class="hero">
       <h1 class="title">燕雲十六聲 夢回花深處俠境報名清單</h1>
@@ -568,47 +644,27 @@
         .replaceAll("'","&#039;");
     }
 
-    let currentSignup = {};
+    function promptForSignup(allowedRoles){
+      const name = prompt("請輸入角色名稱 / 玩家名稱");
+      if(name === null) return null;
 
-window.openModal = (dateKey, slotIndex, allowedRoles) => {
-  currentSignup = { dateKey, slotIndex, allowedRoles };
+      const trimmedName = name.trim();
+      if(!trimmedName){
+        alert("名字不可留空。");
+        return null;
+      }
 
-  document.getElementById("signupModal").style.display = "flex";
+      const role = prompt(`請輸入職業：${allowedRoles.join(" / ")}`, allowedRoles[0]);
+      if(role === null) return null;
 
-  const select = document.getElementById("roleSelect");
-  select.innerHTML = "";
+      const trimmedRole = role.trim();
+      if(!allowedRoles.includes(trimmedRole)){
+        alert(`目前只能選：${allowedRoles.join("、")}`);
+        return null;
+      }
 
-  allowedRoles.forEach(role => {
-    const opt = document.createElement("option");
-    opt.value = role;
-    opt.textContent = role;
-    select.appendChild(opt);
-  });
-};
-
-window.closeModal = () => {
-  document.getElementById("signupModal").style.display = "none";
-};
-
-window.submitSignup = async () => {
-  const name = document.getElementById("playerName").value.trim();
-  const role = document.getElementById("roleSelect").value;
-
-  if(!name){
-    alert("請輸入名字");
-    return;
-  }
-
-  const { dateKey, slotIndex } = currentSignup;
-  const dayData = structuredClone(globalData[dateKey]);
-  const slot = dayData.slots[slotIndex];
-
-  slot.members.push({ name, role });
-
-  await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
-
-  closeModal();
-};
+      return { name: trimmedName, role: trimmedRole };
+    }
 
     function buildDefaultDayData(dateObj){
       const slots = [];
@@ -702,8 +758,10 @@ window.submitSignup = async () => {
       }
 
       const allowedRoles = getAllowedRoles(slot.members);
-      openModal(dateKey, slotIndex, allowedRoles);
-return;
+      const entry = promptForSignup(allowedRoles);
+      if(!entry) return;
+
+      slot.members.push(entry);
 
       if(slot.members.length >= CONFIG.maxPeople){
         autoCreateNextSameTimeSlot(dayData, slot.time);
@@ -825,7 +883,6 @@ return;
             const allowedRoles = getAllowedRoles(members);
             const forceHeal = allowedRoles.length === 1 && allowedRoles[0] === "治療";
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
-            const isRecommended = !isWeekend(date) && slot.time === "19:45";
 
             const slotCardClass = members.length >= CONFIG.maxPeople
               ? "slot-card full-team"
@@ -837,10 +894,7 @@ return;
               <div class="${slotCardClass}">
                 <div class="slot-top">
                   <div>
-                    <div class="time-line">
-                      <div class="slot-time">${slot.time}</div>
-                      ${isRecommended ? `<span class="recommend-star">★ 推薦</span>` : ``}
-                    </div>
+                    <div class="slot-time">${slot.time}</div>
                     <div class="slot-instance">
                       第 ${slot.instance || 1} 隊
                       ${slot.isCustom ? "｜自訂" : "｜固定"}
@@ -972,3 +1026,5 @@ return;
   </script>
 </body>
 </html>
+message.txt
+26 KB
