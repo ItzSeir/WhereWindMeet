@@ -310,17 +310,16 @@
       flex-wrap:wrap;
     }
 
-    .add-btn, .clone-btn, .delete-slot-btn{
-      flex:1 1 100px;
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      border:1px dashed rgba(255,255,255,.18);
-      padding:9px 10px;
-      border-radius:14px;
-      font-size:13px;
-      font-weight:700;
+    .add-btn, .delete-slot-btn{
+  	flex:1 1 100px;
+  	background:rgba(255,255,255,.06);
+  	color:var(--text);
+  	border:1px dashed rgba(255,255,255,.18);
+  	padding:9px 10px;
+  	border-radius:14px;
+  	font-size:13px;
+  	font-weight:700;
     }
-
     .delete-slot-btn{
       color:#ffb4c1;
       border-color:rgba(255,107,129,.28);
@@ -694,24 +693,6 @@
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
 
-    async function cloneSameTimeSlot(dateKey, time){
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-
-      const sameTimeSlots = dayData.slots.filter(s => s.time === time);
-      const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
-
-      dayData.slots.push({
-        time,
-        instance: maxInstance + 1,
-        members: [],
-        isCustom: true
-      });
-
-      sortSlots(dayData.slots);
-      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
-    }
-
     async function deleteCustomSlot(dateKey, slotIndex){
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
@@ -820,6 +801,10 @@
                   <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
                     ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療" : "＋ 新增報名"}
                   </button>
+                  ${slot.isCustom ? `
+                    <button class="delete-slot-btn" data-action="delete-slot" data-date="${dateKey}" data-slot="${slotIndex}" ${canDeleteCustomSlot ? "" : "disabled"}>
+                      刪除時間
+                    </button>
                   ` : ``}
                 </div>
               </div>
