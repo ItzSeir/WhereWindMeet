@@ -407,6 +407,24 @@
   </style>
 </head>
 <body>
+  <div id="signupModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;">
+  <div style="background:#1f2937;padding:20px;border-radius:16px;width:300px;">
+    
+    <h3>報名</h3>
+
+    <input id="playerName" placeholder="輸入名字" style="width:100%;margin-bottom:10px;padding:8px;border-radius:8px;border:none;">
+
+    <select id="roleSelect" style="width:100%;margin-bottom:10px;padding:8px;border-radius:8px;">
+      <option value="輸出">輸出</option>
+      <option value="承傷">承傷</option>
+      <option value="治療">治療</option>
+    </select>
+
+    <button onclick="submitSignup()" style="width:100%;margin-bottom:6px;">確認</button>
+    <button onclick="closeModal()" style="width:100%;">取消</button>
+
+  </div>
+</div>
   <div class="container">
     <section class="hero">
       <h1 class="title">燕雲十六聲 夢回花深處俠境報名清單</h1>
@@ -550,27 +568,47 @@
         .replaceAll("'","&#039;");
     }
 
-    function promptForSignup(allowedRoles){
-      const name = prompt("請輸入角色名稱 / 玩家名稱");
-      if(name === null) return null;
+    let currentSignup = {};
 
-      const trimmedName = name.trim();
-      if(!trimmedName){
-        alert("名字不可留空。");
-        return null;
-      }
+window.openModal = (dateKey, slotIndex, allowedRoles) => {
+  currentSignup = { dateKey, slotIndex, allowedRoles };
 
-      const role = prompt(`請輸入職業：${allowedRoles.join(" / ")}`, allowedRoles[0]);
-      if(role === null) return null;
+  document.getElementById("signupModal").style.display = "flex";
 
-      const trimmedRole = role.trim();
-      if(!allowedRoles.includes(trimmedRole)){
-        alert(`目前只能選：${allowedRoles.join("、")}`);
-        return null;
-      }
+  const select = document.getElementById("roleSelect");
+  select.innerHTML = "";
 
-      return { name: trimmedName, role: trimmedRole };
-    }
+  allowedRoles.forEach(role => {
+    const opt = document.createElement("option");
+    opt.value = role;
+    opt.textContent = role;
+    select.appendChild(opt);
+  });
+};
+
+window.closeModal = () => {
+  document.getElementById("signupModal").style.display = "none";
+};
+
+window.submitSignup = async () => {
+  const name = document.getElementById("playerName").value.trim();
+  const role = document.getElementById("roleSelect").value;
+
+  if(!name){
+    alert("請輸入名字");
+    return;
+  }
+
+  const { dateKey, slotIndex } = currentSignup;
+  const dayData = structuredClone(globalData[dateKey]);
+  const slot = dayData.slots[slotIndex];
+
+  slot.members.push({ name, role });
+
+  await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+
+  closeModal();
+};
 
     function buildDefaultDayData(dateObj){
       const slots = [];
@@ -664,10 +702,8 @@
       }
 
       const allowedRoles = getAllowedRoles(slot.members);
-      const entry = promptForSignup(allowedRoles);
-      if(!entry) return;
-
-      slot.members.push(entry);
+      openModal(dateKey, slotIndex, allowedRoles);
+return;
 
       if(slot.members.length >= CONFIG.maxPeople){
         autoCreateNextSameTimeSlot(dayData, slot.time);
