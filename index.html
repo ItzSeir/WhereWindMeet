@@ -1,153 +1,706 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>報名清單</title>
-
-<style>
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,"Noto Sans TC";
-  background:#f5f7fb;
-}
-
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
-
-h1{
-  margin-bottom:10px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:100px repeat(7,1fr);
-  border:1px solid #ddd;
-}
-
-.cell{
-  border:1px solid #eee;
-  padding:8px;
-  text-align:center;
-  cursor:pointer;
-  min-height:40px;
-}
-
-.header{
-  background:#111;
-  color:white;
-  font-weight:bold;
-}
-
-.time{
-  background:#f0f0f0;
-}
-
-.filled{
-  background:#d1fae5;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-  <h1>報名清單（本週 + 下週）</h1>
-  <div id="app"></div>
-</div>
-
-<script>
-const startHour = 10;
-const endHour = 22;
-
-function pad(n){ return n.toString().padStart(2,'0'); }
-
-function getTimes(){
-  let arr=[];
-  for(let h=startHour;h<endHour;h++){
-    arr.push(pad(h)+":00");
-    arr.push(pad(h)+":30");
-  }
-  return arr;
-}
-
-function getMonday(d){
-  d = new Date(d);
-  let day = d.getDay();
-  let diff = (day===0?-6:1-day);
-  d.setDate(d.getDate()+diff);
-  return d;
-}
-
-function addDays(d,n){
-  let x=new Date(d);
-  x.setDate(x.getDate()+n);
-  return x;
-}
-
-function format(d){
-  return d.toISOString().split("T")[0];
-}
-
-let data = JSON.parse(localStorage.getItem("schedule")||"{}");
-
-function save(){
-  localStorage.setItem("schedule",JSON.stringify(data));
-}
-
-function renderWeek(title, monday){
-  let times = getTimes();
-  let html = `<h2>${title}</h2><div class="grid">`;
-
-  html += `<div class="cell header">時間</div>`;
-  for(let i=0;i<7;i++){
-    let d=addDays(monday,i);
-    html += `<div class="cell header">${d.getMonth()+1}/${d.getDate()}</div>`;
-  }
-
-  times.forEach(t=>{
-    html += `<div class="cell time">${t}</div>`;
-
-    for(let i=0;i<7;i++){
-      let d=addDays(monday,i);
-      let key=format(d)+"_"+t;
-      let value=data[key]||"";
-
-      html += `<div class="cell ${value?"filled":""}" onclick="edit('${key}')">${value||"+"}</div>`;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>燕雲十六聲 夢回花深處俠境報名清單</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #121a31;
+      --panel: rgba(255,255,255,.08);
+      --line: rgba(255,255,255,.12);
+      --text: #eef2ff;
+      --muted: #a8b3cf;
+      --accent: #6ea8ff;
+      --accent2: #8b5cf6;
+      --danger: #ff6b81;
+      --success: #34d399;
+      --warn: #fbbf24;
+      --heal: #22c55e;
+      --tank: #f59e0b;
+      --dps: #60a5fa;
+      --shadow: 0 18px 40px rgba(0,0,0,.28);
+      --radius: 22px;
     }
-  });
 
-  html += `</div>`;
-  return html;
-}
+    *{ box-sizing:border-box; }
+    html,body{
+      margin:0;
+      padding:0;
+      background:
+        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif;
+    }
 
-function edit(key){
-  let name = prompt("輸入名字（留空清除）", data[key]||"");
-  if(name===null) return;
+    body{ padding:28px 16px 48px; }
 
-  if(name.trim()==="") delete data[key];
-  else data[key]=name.trim();
+    .container{
+      max-width: 1600px;
+      margin: 0 auto;
+    }
 
-  save();
-  render();
-}
+    .hero{
+      background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 24px;
+      backdrop-filter: blur(14px);
+      margin-bottom: 22px;
+    }
 
-function render(){
-  let app=document.getElementById("app");
+    .title{
+      margin:0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height:1.1;
+    }
 
-  let monday=getMonday(new Date());
-  let next=addDays(monday,7);
+    .subtitle{
+      margin:10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
 
-  app.innerHTML =
-    renderWeek("本週",monday) +
-    renderWeek("下週",next);
-}
+    .rulebar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
 
-render();
-</script>
+    .chip{
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      color: var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+    }
 
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .toolbar-left{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .toolbar-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:10px 14px;
+      font-weight:700;
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    button:hover{ transform: translateY(-1px); }
+
+    .btn-primary{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+      box-shadow: 0 10px 24px rgba(110,168,255,.22);
+    }
+
+    .btn-ghost{
+      background: rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .board{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow:hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .board-head{
+      padding:18px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .board-title{
+      margin:0;
+      font-size:24px;
+    }
+
+    .board-sub{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .table-wrap{
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      min-width:2200px;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:3;
+      background: rgba(8,12,26,.96);
+      color:var(--text);
+      border-bottom:1px solid var(--line);
+      padding:14px 10px;
+      font-size:14px;
+      text-align:center;
+    }
+
+    tbody th.time-col{
+      position:sticky;
+      left:0;
+      z-index:2;
+      background: rgba(8,12,26,.98);
+      color:var(--muted);
+      min-width:94px;
+      width:94px;
+      padding:12px 8px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      font-size:13px;
+      text-align:center;
+    }
+
+    tbody td{
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+      background: rgba(255,255,255,.03);
+      padding:10px;
+      min-width:170px;
+    }
+
+    tbody tr:last-child td,
+    tbody tr:last-child th{
+      border-bottom:none;
+    }
+
+    tbody td:last-child,
+    thead th:last-child{
+      border-right:none;
+    }
+
+    .slot-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .count{
+      font-size:12px;
+      color:var(--muted);
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      padding:4px 8px;
+      border-radius:999px;
+    }
+
+    .status{
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .status.ok{ color:var(--success); }
+    .status.warn{ color:var(--danger); }
+    .status.full{ color:var(--warn); }
+
+    .member-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-height:74px;
+    }
+
+    .member{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:14px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .member-left{
+      min-width:0;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .role-badge{
+      font-size:12px;
+      font-weight:800;
+      border-radius:999px;
+      padding:5px 8px;
+      white-space:nowrap;
+    }
+
+    .role-dps{
+      background: rgba(96,165,250,.16);
+      color: var(--dps);
+      border:1px solid rgba(96,165,250,.28);
+    }
+
+    .role-tank{
+      background: rgba(245,158,11,.14);
+      color: var(--tank);
+      border:1px solid rgba(245,158,11,.28);
+    }
+
+    .role-heal{
+      background: rgba(34,197,94,.14);
+      color: var(--heal);
+      border:1px solid rgba(34,197,94,.28);
+    }
+
+    .member-name{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      font-size:14px;
+    }
+
+    .remove-btn{
+      border:none;
+      background: transparent;
+      color: var(--danger);
+      font-size:13px;
+      padding:4px 6px;
+      cursor:pointer;
+      border-radius:10px;
+    }
+
+    .remove-btn:hover{
+      background: rgba(255,107,129,.12);
+    }
+
+    .slot-actions{ margin-top:10px; }
+
+    .add-btn{
+      width:100%;
+      background: rgba(255,255,255,.06);
+      border:1px dashed rgba(255,255,255,.18);
+      color: var(--text);
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .add-btn:hover{ background: rgba(255,255,255,.1); }
+
+    .add-btn:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+
+    .empty-note{
+      color:var(--muted);
+      font-size:13px;
+      padding:8px 4px 4px;
+    }
+
+    .summary{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .summary-pill{
+      font-size:12px;
+      border-radius:999px;
+      padding:5px 8px;
+      background: rgba(255,255,255,.06);
+      color:var(--muted);
+      border:1px solid var(--line);
+    }
+
+    .summary-pill strong{ color:var(--text); }
+
+    @media (max-width: 768px){
+      body{ padding:16px 10px 36px; }
+      .hero{ padding:18px; }
+      tbody td{ min-width:150px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1 class="title">燕雲十六聲 夢回花深處俠境報名清單</h1>
+      <p class="subtitle">未來 14 天滾動表｜每 30 分鐘一個時段｜每時段最多 10 人｜最後 2 個位置若治療不足 2 人，則只能報名治療</p>
+      <div class="rulebar">
+        <span class="chip">職業：輸出 / 承傷 / 治療</span>
+        <span class="chip">每格最多 10 人</span>
+        <span class="chip">最後 2 格會保留治療需求</span>
+        <span class="chip">每天結束後自動移除過期日期</span>
+        <span class="chip">自動補新的一天到第 14 天</span>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="toolbar-left">目前是前端版，資料存在瀏覽器。本頁重新開啟或自動檢查時，會整理過期日期並補齊未來 14 天。</div>
+      <div class="toolbar-right">
+        <button class="btn-ghost" id="clearExpired">整理日期</button>
+        <button class="btn-primary" id="clearAll">清空全部</button>
+      </div>
+    </div>
+
+    <div class="board">
+      <div class="board-head">
+        <div>
+          <h2 class="board-title">未來 14 天報名表</h2>
+          <div class="board-sub" id="boardRange"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      startHour: 10,
+      endHour: 22,
+      maxPeople: 10,
+      minHealer: 2,
+      daysToShow: 14,
+      storageKey: "wwm_signup_schedule_v3",
+      dayLabels: ["日","一","二","三","四","五","六"],
+      roles: ["輸出", "承傷", "治療"]
+    };
+
+    function pad(n){
+      return String(n).padStart(2, "0");
+    }
+
+    function formatDate(date){
+      return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    }
+
+    function displayDate(date){
+      return `${date.getMonth()+1}/${date.getDate()}`;
+    }
+
+    function addDays(date, days){
+      const d = new Date(date);
+      d.setHours(0,0,0,0);
+      d.setDate(d.getDate() + days);
+      return d;
+    }
+
+    function getTodayStart(){
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function getDisplayDates(){
+      const today = getTodayStart();
+      return Array.from({ length: CONFIG.daysToShow }, (_, i) => addDays(today, i));
+    }
+
+    function getTimeSlots(){
+      const slots = [];
+      for(let h = CONFIG.startHour; h < CONFIG.endHour; h++){
+        slots.push(`${pad(h)}:00`);
+        slots.push(`${pad(h)}:30`);
+      }
+      return slots;
+    }
+
+    function loadData(){
+      try{
+        return JSON.parse(localStorage.getItem(CONFIG.storageKey)) || {};
+      }catch(e){
+        return {};
+      }
+    }
+
+    function saveData(data){
+      localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
+    }
+
+    function cleanupExpiredDates(data){
+      const validDates = new Set(getDisplayDates().map(d => formatDate(d)));
+      const cleaned = {};
+      for(const dateKey in data){
+        if(validDates.has(dateKey)){
+          cleaned[dateKey] = data[dateKey];
+        }
+      }
+      return cleaned;
+    }
+
+    function ensureSlot(data, dateKey, timeKey){
+      if(!data[dateKey]) data[dateKey] = {};
+      if(!Array.isArray(data[dateKey][timeKey])) data[dateKey][timeKey] = [];
+      return data[dateKey][timeKey];
+    }
+
+    function getSlotMembers(data, dateKey, timeKey){
+      return ensureSlot(data, dateKey, timeKey);
+    }
+
+    function countRole(members, role){
+      return members.filter(m => m.role === role).length;
+    }
+
+    function getStatusText(members){
+      const total = members.length;
+      const healer = countRole(members, "治療");
+
+      if(total >= CONFIG.maxPeople){
+        return { text: "已滿", className: "full" };
+      }
+
+      if(healer < CONFIG.minHealer){
+        return { text: `治療不足 ${CONFIG.minHealer} 人`, className: "warn" };
+      }
+
+      return { text: "配置達標", className: "ok" };
+    }
+
+    function roleClass(role){
+      if(role === "輸出") return "role-dps";
+      if(role === "承傷") return "role-tank";
+      return "role-heal";
+    }
+
+    function getAllowedRoles(members){
+      const healerCount = countRole(members, "治療");
+      const remaining = CONFIG.maxPeople - members.length;
+
+      if(remaining <= 2 && healerCount < CONFIG.minHealer){
+        return ["治療"];
+      }
+
+      return [...CONFIG.roles];
+    }
+
+    function promptForSignup(allowedRoles){
+      const name = prompt("請輸入角色名稱 / 玩家名稱");
+      if(name === null) return null;
+      const trimmedName = name.trim();
+      if(!trimmedName){
+        alert("名字不可留空。");
+        return null;
+      }
+
+      const role = prompt(
+        `請輸入職業：${allowedRoles.join(" / ")}`,
+        allowedRoles[0]
+      );
+      if(role === null) return null;
+
+      const trimmedRole = role.trim();
+      if(!allowedRoles.includes(trimmedRole)){
+        alert(`目前這個時段只能選：${allowedRoles.join("、")}`);
+        return null;
+      }
+
+      return { name: trimmedName, role: trimmedRole };
+    }
+
+    function addMember(dateKey, timeKey){
+      const data = loadData();
+      const members = getSlotMembers(data, dateKey, timeKey);
+
+      if(members.length >= CONFIG.maxPeople){
+        alert(`此時段已滿 ${CONFIG.maxPeople} 人。`);
+        return;
+      }
+
+      const allowedRoles = getAllowedRoles(members);
+      const entry = promptForSignup(allowedRoles);
+      if(!entry) return;
+
+      members.push(entry);
+      saveData(data);
+      render();
+    }
+
+    function removeMember(dateKey, timeKey, index){
+      const data = loadData();
+      const members = getSlotMembers(data, dateKey, timeKey);
+      members.splice(index, 1);
+      saveData(data);
+      render();
+    }
+
+    function clearAll(){
+      localStorage.removeItem(CONFIG.storageKey);
+      render();
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function render(){
+      let data = loadData();
+      data = cleanupExpiredDates(data);
+      saveData(data);
+
+      const dates = getDisplayDates();
+      const times = getTimeSlots();
+
+      document.getElementById("boardRange").textContent =
+        `${formatDate(dates[0])} ～ ${formatDate(dates[dates.length - 1])}`;
+
+      const thead = document.getElementById("thead");
+      const tbody = document.getElementById("tbody");
+
+      let headHtml = `<tr><th>時間</th>`;
+      dates.forEach(date => {
+        headHtml += `
+          <th>
+            ${displayDate(date)}<br>
+            <span style="font-size:12px;color:#a8b3cf;font-weight:500;">
+              星期${CONFIG.dayLabels[date.getDay()]}
+            </span>
+          </th>
+        `;
+      });
+      headHtml += `</tr>`;
+      thead.innerHTML = headHtml;
+
+      let bodyHtml = "";
+      times.forEach(timeKey => {
+        bodyHtml += `<tr><th class="time-col">${timeKey}</th>`;
+
+        dates.forEach(date => {
+          const dateKey = formatDate(date);
+          const members = getSlotMembers(data, dateKey, timeKey);
+          const healCount = countRole(members, "治療");
+          const dpsCount = countRole(members, "輸出");
+          const tankCount = countRole(members, "承傷");
+          const status = getStatusText(members);
+          const allowedRoles = getAllowedRoles(members);
+          const forceHeal = allowedRoles.length === 1 && allowedRoles[0] === "治療";
+
+          bodyHtml += `<td>`;
+          bodyHtml += `
+            <div class="slot-top">
+              <span class="count">${members.length}/${CONFIG.maxPeople}</span>
+              <span class="status ${status.className}">
+                ${forceHeal && members.length < CONFIG.maxPeople ? "最後位置保留治療" : status.text}
+              </span>
+            </div>
+          `;
+
+          bodyHtml += `<div class="member-list">`;
+          if(members.length === 0){
+            bodyHtml += `<div class="empty-note">尚未有人報名</div>`;
+          } else {
+            members.forEach((member, index) => {
+              bodyHtml += `
+                <div class="member">
+                  <div class="member-left">
+                    <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+                    <span class="member-name">${escapeHtml(member.name)}</span>
+                  </div>
+                  <button class="remove-btn" onclick="removeMember('${dateKey}','${timeKey}',${index})">刪除</button>
+                </div>
+              `;
+            });
+          }
+          bodyHtml += `</div>`;
+
+          bodyHtml += `
+            <div class="summary">
+              <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
+              <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
+              <span class="summary-pill">治療 <strong>${healCount}</strong></span>
+            </div>
+          `;
+
+          bodyHtml += `
+            <div class="slot-actions">
+              <button class="add-btn" onclick="addMember('${dateKey}','${timeKey}')" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
+                ${members.length >= CONFIG.maxPeople
+                  ? "此時段已滿"
+                  : forceHeal
+                    ? "＋ 僅限新增治療"
+                    : "＋ 新增報名"}
+              </button>
+            </div>
+          `;
+
+          bodyHtml += `</td>`;
+        });
+
+        bodyHtml += `</tr>`;
+      });
+
+      tbody.innerHTML = bodyHtml;
+    }
+
+    window.addMember = addMember;
+    window.removeMember = removeMember;
+
+    document.getElementById("clearExpired").onclick = () => {
+      render();
+      alert("日期已整理完成。");
+    };
+
+    document.getElementById("clearAll").onclick = () => {
+      if(confirm("確定清空全部資料？")){
+        clearAll();
+      }
+    };
+
+    render();
+
+    setInterval(() => {
+      render();
+    }, 60000);
+  </script>
 </body>
 </html>
