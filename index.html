@@ -114,12 +114,6 @@
 
     button:hover{ transform:translateY(-1px); }
 
-    .btn-primary{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:#fff;
-      box-shadow:0 10px 24px rgba(110,168,255,.22);
-    }
-
     .btn-ghost{
       background:rgba(255,255,255,.08);
       color:var(--text);
@@ -357,11 +351,12 @@
         <span class="chip">最後 2 個位置若治療不足 2 人，只能選治療</span>
         <span class="chip">平日 19:45 預設開兩卡</span>
         <span class="chip">平日 / 週末時間自動切換</span>
+        <span class="chip">Firebase 即時同步版</span>
       </div>
     </section>
 
     <div class="toolbar">
-      <div class="toolbar-note">目前是前端版，資料存在本機瀏覽器。版型確認後可再接 Firebase 做多人同步。</div>
+      <div class="toolbar-note">現在是多人共用版。其他人開同一個網址，也會看到同一份資料。</div>
       <div class="toolbar-actions">
         <button class="btn-ghost" id="refreshBtn">整理日期</button>
       </div>
@@ -370,16 +365,45 @@
     <div class="days" id="days"></div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      getDocs,
+      setDoc,
+      updateDoc,
+      deleteField,
+      collection,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3NalXMRjiag_26-g82UtxeDvuSjydg30",
+      authDomain: "pve-ab4a8.firebaseapp.com",
+      projectId: "pve-ab4a8",
+      storageBucket: "pve-ab4a8.firebasestorage.app",
+      messagingSenderId: "292971877558",
+      appId: "1:292971877558:web:69b8ed8f70987847a44217",
+      measurementId: "G-ESW46GLEV2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     const CONFIG = {
-      storageKey: "wwm_signup_5days_v1",
       daysToShow: 5,
       maxPeople: 10,
       minHealer: 2,
       weekdayTimes: ["19:45","20:30","21:30","23:00","00:30","05:00"],
       weekendTimes: ["12:00","14:00","16:00","18:00","21:30","23:30","05:00"],
-      roles: ["輸出","承傷","治療"]
+      roles: ["輸出","承傷","治療"],
+      collectionName: "schedule"
     };
+
+    let globalData = {};
+    let isRendering = false;
 
     function getTodayStart(){
       const d = new Date();
@@ -417,70 +441,14 @@
       return isWeekend(date) ? [...CONFIG.weekendTimes] : [...CONFIG.weekdayTimes];
     }
 
-    function loadData(){
-      try{
-        return JSON.parse(localStorage.getItem(CONFIG.storageKey)) || {};
-      }catch(e){
-        return {};
-      }
-    }
-
-    function saveData(data){
-      localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
-    }
-
-    function cleanupData(data){
-      const validDates = new Set(getDatesToShow().map(d => formatDate(d)));
-      const cleaned = {};
-      for(const dateKey in data){
-        if(validDates.has(dateKey)){
-          cleaned[dateKey] = data[dateKey];
-        }
-      }
-      return cleaned;
-    }
-
     function getDatesToShow(){
       const today = getTodayStart();
       return Array.from({length: CONFIG.daysToShow}, (_, i) => addDays(today, i));
     }
 
-    function ensureDate(data, dateKey, dateObj){
-      if(!data[dateKey]){
-        const defaultTimes = getDefaultTimesForDate(dateObj);
-        data[dateKey] = {
-          slots: []
-        };
-
-        defaultTimes.forEach(time => {
-          data[dateKey].slots.push({
-            time,
-            instance: 1,
-            members: []
-          });
-        });
-
-        if(!isWeekend(dateObj)){
-          data[dateKey].slots.push({
-            time: "19:45",
-            instance: 2,
-            members: []
-          });
-        }
-
-        sortSlots(data[dateKey].slots);
-      }
-
-      if(!Array.isArray(data[dateKey].slots)){
-        data[dateKey].slots = [];
-      }
-
-      return data[dateKey];
-    }
-
     function sortSlots(slots){
       slots.sort((a,b) => {
-        if(a.time === b.time) return a.instance - b.instance;
+        if(a.time === b.time) return (a.instance || 1) - (b.instance || 1);
         return a.time.localeCompare(b.time);
       });
     }
@@ -503,11 +471,9 @@
       if(members.length >= CONFIG.maxPeople){
         return { text: "已滿", cls: "status-full" };
       }
-
       if(countRole(members, "治療") < CONFIG.minHealer){
         return { text: "治療不足", cls: "status-warn" };
       }
-
       return { text: "配置達標", cls: "status-ok" };
     }
 
@@ -548,39 +514,70 @@
       return { name: trimmedName, role: trimmedRole };
     }
 
-    function addMember(dateKey, slotIndex){
-      const data = loadData();
-      const dateObj = new Date(dateKey + "T00:00:00");
-      const dayData = ensureDate(data, dateKey, dateObj);
-      const slot = dayData.slots[slotIndex];
+    function buildDefaultDayData(dateObj){
+      const slots = [];
+      const defaultTimes = getDefaultTimesForDate(dateObj);
 
-      if(slot.members.length >= CONFIG.maxPeople){
-        alert("此時段已滿。");
-        autoCreateNextSameTimeSlot(data, dateKey, slot.time);
-        saveData(data);
-        render();
-        return;
+      defaultTimes.forEach(time => {
+        slots.push({
+          time,
+          instance: 1,
+          members: []
+        });
+      });
+
+      if(!isWeekend(dateObj)){
+        slots.push({
+          time: "19:45",
+          instance: 2,
+          members: []
+        });
       }
 
-      const allowedRoles = getAllowedRoles(slot.members);
-      const entry = promptForSignup(allowedRoles);
-      if(!entry) return;
-
-      slot.members.push(entry);
-
-      if(slot.members.length >= CONFIG.maxPeople){
-        autoCreateNextSameTimeSlot(data, dateKey, slot.time);
-      }
-
-      saveData(data);
-      render();
+      sortSlots(slots);
+      return { slots };
     }
 
-    function autoCreateNextSameTimeSlot(data, dateKey, time){
-      const dateObj = new Date(dateKey + "T00:00:00");
-      const dayData = ensureDate(data, dateKey, dateObj);
+    async function ensureDateDoc(dateKey, dateObj){
+      const ref = doc(db, CONFIG.collectionName, dateKey);
+      const snap = await getDoc(ref);
+
+      if(!snap.exists()){
+        const newData = buildDefaultDayData(dateObj);
+        await setDoc(ref, newData);
+      } else {
+        const data = snap.data();
+        if(!data.slots || !Array.isArray(data.slots)){
+          await setDoc(ref, buildDefaultDayData(dateObj));
+        }
+      }
+    }
+
+    async function initializeVisibleDates(){
+      const dates = getDatesToShow();
+      for(const dateObj of dates){
+        await ensureDateDoc(formatDate(dateObj), dateObj);
+      }
+    }
+
+    async function cleanupOldDatesInFirestore(){
+      const validDates = new Set(getDatesToShow().map(d => formatDate(d)));
+      const snap = await getDocs(collection(db, CONFIG.collectionName));
+
+      for(const item of snap.docs){
+        if(!validDates.has(item.id)){
+          await updateDoc(doc(db, CONFIG.collectionName, item.id), {
+            slots: deleteField()
+          }).catch(async () => {
+            await setDoc(doc(db, CONFIG.collectionName, item.id), {});
+          });
+        }
+      }
+    }
+
+    function autoCreateNextSameTimeSlot(dayData, time){
       const sameTimeSlots = dayData.slots.filter(s => s.time === time);
-      const hasOpenSlot = sameTimeSlots.some(s => s.members.length < CONFIG.maxPeople);
+      const hasOpenSlot = sameTimeSlots.some(s => (s.members || []).length < CONFIG.maxPeople);
 
       if(!hasOpenSlot){
         const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
@@ -593,10 +590,38 @@
       }
     }
 
-    function addCustomTime(dateKey){
-      const data = loadData();
-      const dateObj = new Date(dateKey + "T00:00:00");
-      const dayData = ensureDate(data, dateKey, dateObj);
+    async function addMember(dateKey, slotIndex){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        alert("此時段已滿。");
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+        await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+        return;
+      }
+
+      const allowedRoles = getAllowedRoles(slot.members);
+      const entry = promptForSignup(allowedRoles);
+      if(!entry) return;
+
+      slot.members.push(entry);
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+      }
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    }
+
+    async function addCustomTime(dateKey){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
 
       const time = prompt("請輸入新時間（格式例如 19:45）");
       if(time === null) return;
@@ -625,48 +650,52 @@
       });
 
       sortSlots(dayData.slots);
-      saveData(data);
-      render();
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
 
-    function removeMember(dateKey, slotIndex, memberIndex){
-      const data = loadData();
-      const dateObj = new Date(dateKey + "T00:00:00");
-      const dayData = ensureDate(data, dateKey, dateObj);
-      dayData.slots[slotIndex].members.splice(memberIndex, 1);
-      saveData(data);
-      render();
+    async function removeMember(dateKey, slotIndex, memberIndex){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      if(!dayData.slots[slotIndex]) return;
+
+      const members = Array.isArray(dayData.slots[slotIndex].members)
+        ? dayData.slots[slotIndex].members
+        : [];
+
+      members.splice(memberIndex, 1);
+      dayData.slots[slotIndex].members = members;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
 
-    function cloneSameTimeSlot(dateKey, time){
-      const data = loadData();
-      autoCreateNextSameTimeSlot(data, dateKey, time);
-      saveData(data);
-      render();
-    }
+    async function cloneSameTimeSlot(dateKey, time){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
 
-    function clearAll(){
-      localStorage.removeItem(CONFIG.storageKey);
-      render();
+      const sameTimeSlots = dayData.slots.filter(s => s.time === time);
+      const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
+
+      dayData.slots.push({
+        time,
+        instance: maxInstance + 1,
+        members: []
+      });
+
+      sortSlots(dayData.slots);
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
 
     function render(){
-      let data = loadData();
-      data = cleanupData(data);
+      if(isRendering) return;
+      isRendering = true;
 
       const dates = getDatesToShow();
-      dates.forEach(date => {
-        ensureDate(data, formatDate(date), date);
-      });
-
-      saveData(data);
-
       const daysEl = document.getElementById("days");
       let html = "";
 
       dates.forEach(date => {
         const dateKey = formatDate(date);
-        const dayData = data[dateKey];
+        const dayData = globalData[dateKey];
         const modeText = isWeekend(date) ? "週末時間表" : "平日時間表";
 
         html += `
@@ -675,73 +704,75 @@
               <h2 class="day-title">${displayDate(date)}</h2>
               <div class="day-sub">${weekdayText(date)}｜${modeText}</div>
               <div class="day-actions">
-                <button class="btn-ghost" onclick="addCustomTime('${dateKey}')">＋ 新增時間</button>
+                <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
               </div>
             </div>
             <div class="slot-list">
         `;
 
-        dayData.slots.forEach((slot, slotIndex) => {
-          const members = slot.members || [];
-          const dpsCount = countRole(members, "輸出");
-          const tankCount = countRole(members, "承傷");
-          const healCount = countRole(members, "治療");
-          const status = getStatus(members);
-          const allowedRoles = getAllowedRoles(members);
-          const forceHeal = allowedRoles.length === 1 && allowedRoles[0] === "治療";
+        if(dayData && Array.isArray(dayData.slots)){
+          dayData.slots.forEach((slot, slotIndex) => {
+            const members = Array.isArray(slot.members) ? slot.members : [];
+            const dpsCount = countRole(members, "輸出");
+            const tankCount = countRole(members, "承傷");
+            const healCount = countRole(members, "治療");
+            const status = getStatus(members);
+            const allowedRoles = getAllowedRoles(members);
+            const forceHeal = allowedRoles.length === 1 && allowedRoles[0] === "治療";
 
-          html += `
-            <div class="slot-card">
-              <div class="slot-top">
-                <div>
-                  <div class="slot-time">${slot.time}</div>
-                  <div class="slot-instance">第 ${slot.instance || 1} 隊</div>
-                </div>
-                <div class="slot-badges">
-                  <span class="badge">${members.length}/${CONFIG.maxPeople}</span>
-                  <span class="badge ${status.cls}">
-                    ${forceHeal && members.length < CONFIG.maxPeople ? "最後位置保留治療" : status.text}
-                  </span>
-                </div>
-              </div>
-
-              <div class="summary">
-                <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
-                <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
-                <span class="summary-pill">治療 <strong>${healCount}</strong></span>
-              </div>
-
-              <div class="member-list">
-          `;
-
-          if(members.length === 0){
-            html += `<div class="empty-note">尚未有人報名</div>`;
-          } else {
-            members.forEach((member, memberIndex) => {
-              html += `
-                <div class="member">
-                  <div class="member-left">
-                    <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
-                    <span class="member-name">${escapeHtml(member.name)}</span>
+            html += `
+              <div class="slot-card">
+                <div class="slot-top">
+                  <div>
+                    <div class="slot-time">${slot.time}</div>
+                    <div class="slot-instance">第 ${slot.instance || 1} 隊</div>
                   </div>
-                  <button class="remove-btn" onclick="removeMember('${dateKey}', ${slotIndex}, ${memberIndex})">刪除</button>
+                  <div class="slot-badges">
+                    <span class="badge">${members.length}/${CONFIG.maxPeople}</span>
+                    <span class="badge ${status.cls}">
+                      ${forceHeal && members.length < CONFIG.maxPeople ? "最後位置保留治療" : status.text}
+                    </span>
+                  </div>
                 </div>
-              `;
-            });
-          }
 
-          html += `
-              </div>
+                <div class="summary">
+                  <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
+                  <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
+                  <span class="summary-pill">治療 <strong>${healCount}</strong></span>
+                </div>
 
-              <div class="slot-actions">
-                <button class="add-btn" onclick="addMember('${dateKey}', ${slotIndex})" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
-                  ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療" : "＋ 新增報名"}
-                </button>
-                <button class="clone-btn" onclick="cloneSameTimeSlot('${dateKey}', '${slot.time}')">＋ 開同時間新隊</button>
+                <div class="member-list">
+            `;
+
+            if(members.length === 0){
+              html += `<div class="empty-note">尚未有人報名</div>`;
+            } else {
+              members.forEach((member, memberIndex) => {
+                html += `
+                  <div class="member">
+                    <div class="member-left">
+                      <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+                      <span class="member-name">${escapeHtml(member.name)}</span>
+                    </div>
+                    <button class="remove-btn" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${memberIndex}">刪除</button>
+                  </div>
+                `;
+              });
+            }
+
+            html += `
+                </div>
+
+                <div class="slot-actions">
+                  <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
+                    ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療" : "＋ 新增報名"}
+                  </button>
+                  <button class="clone-btn" data-action="clone-slot" data-date="${dateKey}" data-time="${slot.time}">＋ 開同時間新隊</button>
+                </div>
               </div>
-            </div>
-          `;
-        });
+            `;
+          });
+        }
 
         html += `
             </div>
@@ -750,26 +781,68 @@
       });
 
       daysEl.innerHTML = html;
+      bindActions();
+      isRendering = false;
     }
 
-    window.addMember = addMember;
-    window.removeMember = removeMember;
-    window.addCustomTime = addCustomTime;
-    window.cloneSameTimeSlot = cloneSameTimeSlot;
+    function bindActions(){
+      document.querySelectorAll('[data-action="add-time"]').forEach(btn => {
+        btn.onclick = () => addCustomTime(btn.dataset.date);
+      });
 
-    document.getElementById("refreshBtn").onclick = () => {
-      render();
+      document.querySelectorAll('[data-action="add-member"]').forEach(btn => {
+        btn.onclick = () => addMember(btn.dataset.date, Number(btn.dataset.slot));
+      });
+
+      document.querySelectorAll('[data-action="remove-member"]').forEach(btn => {
+        btn.onclick = () => removeMember(
+          btn.dataset.date,
+          Number(btn.dataset.slot),
+          Number(btn.dataset.member)
+        );
+      });
+
+      document.querySelectorAll('[data-action="clone-slot"]').forEach(btn => {
+        btn.onclick = () => cloneSameTimeSlot(btn.dataset.date, btn.dataset.time);
+      });
+    }
+
+    document.getElementById("refreshBtn").onclick = async () => {
+      await initializeVisibleDates();
       alert("日期已整理完成。");
     };
 
-    document.getElementById("clearAllBtn").onclick = () => {
-      if(confirm("確定清空全部資料？")){
-        clearAll();
-      }
-    };
+    onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
+      const nextData = {};
+      snapshot.forEach(item => {
+        const data = item.data();
+        if(data && Array.isArray(data.slots)){
+          sortSlots(data.slots);
+          nextData[item.id] = data;
+        }
+      });
+      globalData = nextData;
 
+      const dates = getDatesToShow();
+      let missing = false;
+      for(const dateObj of dates){
+        const key = formatDate(dateObj);
+        if(!globalData[key]){
+          missing = true;
+          break;
+        }
+      }
+
+      if(missing){
+        await initializeVisibleDates();
+        return;
+      }
+
+      render();
+    });
+
+    await initializeVisibleDates();
     render();
-    setInterval(render, 60000);
   </script>
 </body>
 </html>
