@@ -173,6 +173,24 @@
       border-radius:18px;
       padding:12px;
       min-width:0;
+      transition:.18s ease;
+    }
+
+    .slot-card.has-members{
+      background:rgba(110,168,255,.12);
+      border-color:rgba(110,168,255,.28);
+      box-shadow:0 8px 18px rgba(110,168,255,.10);
+    }
+
+    .slot-card.full-team{
+      background:rgba(255,107,129,.18);
+      border-color:rgba(255,107,129,.34);
+      box-shadow:0 8px 18px rgba(255,107,129,.12);
+    }
+
+    .slot-card.full-team .slot-time,
+    .slot-card.full-team .slot-instance{
+      color:#ffdbe4;
     }
 
     .slot-top{
@@ -271,11 +289,13 @@
       color:var(--dps);
       border:1px solid rgba(96,165,250,.28);
     }
+
     .role-tank{
       background:rgba(245,158,11,.14);
       color:var(--tank);
       border:1px solid rgba(245,158,11,.28);
     }
+
     .role-heal{
       background:rgba(34,197,94,.14);
       color:var(--heal);
@@ -311,15 +331,16 @@
     }
 
     .add-btn, .delete-slot-btn{
-  	flex:1 1 100px;
-  	background:rgba(255,255,255,.06);
-  	color:var(--text);
-  	border:1px dashed rgba(255,255,255,.18);
-  	padding:9px 10px;
-  	border-radius:14px;
-  	font-size:13px;
-  	font-weight:700;
+      flex:1 1 100px;
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border:1px dashed rgba(255,255,255,.18);
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight:700;
     }
+
     .delete-slot-btn{
       color:#ffb4c1;
       border-color:rgba(255,107,129,.28);
@@ -336,12 +357,6 @@
       color:var(--muted);
       font-size:13px;
       padding:6px 2px 2px;
-    }
-
-    .small-note{
-      color:var(--muted);
-      font-size:12px;
-      margin-top:10px;
     }
 
     @media (max-width: 1100px){
@@ -380,6 +395,8 @@
       <div class="chips">
         <span class="chip">一隊最多10人</span>
         <span class="chip">每隊至少2個治療</span>
+        <span class="chip">有隊友顯示藍色</span>
+        <span class="chip">滿隊顯示紅色</span>
       </div>
     </section>
 
@@ -686,6 +703,12 @@
         ? dayData.slots[slotIndex].members
         : [];
 
+      const member = members[memberIndex];
+      if(!member) return;
+
+      const ok = confirm(`確定要刪除報名玩家「${member.name}」嗎？`);
+      if(!ok) return;
+
       members.splice(memberIndex, 1);
       dayData.slots[slotIndex].members = members;
 
@@ -750,8 +773,14 @@
             const forceHeal = allowedRoles.length === 1 && allowedRoles[0] === "治療";
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
 
+            const slotCardClass = members.length >= CONFIG.maxPeople
+              ? "slot-card full-team"
+              : members.length > 0
+                ? "slot-card has-members"
+                : "slot-card";
+
             html += `
-              <div class="slot-card">
+              <div class="${slotCardClass}">
                 <div class="slot-top">
                   <div>
                     <div class="slot-time">${slot.time}</div>
@@ -837,10 +866,6 @@
           Number(btn.dataset.slot),
           Number(btn.dataset.member)
         );
-      });
-
-      document.querySelectorAll('[data-action="clone-slot"]').forEach(btn => {
-        btn.onclick = () => cloneSameTimeSlot(btn.dataset.date, btn.dataset.time);
       });
 
       document.querySelectorAll('[data-action="delete-slot"]').forEach(btn => {
