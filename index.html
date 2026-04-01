@@ -359,6 +359,91 @@
       padding:6px 2px 2px;
     }
 
+    /* modal：只新增，不影響原本設計 */
+    .signup-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(3,8,20,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:99999;
+      padding:20px;
+    }
+
+    .signup-modal.show{
+      display:flex;
+    }
+
+    .signup-modal-box{
+      width:min(420px, 100%);
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      backdrop-filter:blur(14px);
+    }
+
+    .signup-modal-title{
+      font-size:24px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+
+    .signup-label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin:10px 0 6px;
+    }
+
+    .signup-input,
+    .signup-select{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      outline:none;
+    }
+
+    .signup-input:focus,
+    .signup-select:focus{
+      border-color:rgba(110,168,255,.55);
+      box-shadow:0 0 0 3px rgba(110,168,255,.14);
+    }
+
+    .signup-modal-actions{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .signup-confirm-btn,
+    .signup-cancel-btn{
+      flex:1;
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .signup-confirm-btn{
+      color:white;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+
+    .signup-cancel-btn{
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
     @media (max-width: 1100px){
       .day-card{
         grid-template-columns:1fr;
@@ -407,6 +492,23 @@
     <div class="days" id="days"></div>
   </div>
 
+  <div id="signupModal" class="signup-modal">
+    <div class="signup-modal-box">
+      <div class="signup-modal-title">新增報名</div>
+
+      <label class="signup-label" for="playerName">名稱</label>
+      <input id="playerName" class="signup-input" type="text" placeholder="請輸入名字" />
+
+      <label class="signup-label" for="roleSelect">職業</label>
+      <select id="roleSelect" class="signup-select"></select>
+
+      <div class="signup-modal-actions">
+        <button type="button" class="signup-confirm-btn" onclick="submitSignup()">確認</button>
+        <button type="button" class="signup-cancel-btn" onclick="closeModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
@@ -443,6 +545,11 @@
 
     let globalData = {};
     let isRendering = false;
+    let currentSignup = {
+      dateKey: "",
+      slotIndex: -1,
+      allowedRoles: []
+    };
 
     function getTodayStart(){
       const d = new Date();
@@ -531,28 +638,6 @@
         .replaceAll("'","&#039;");
     }
 
-    function promptForSignup(allowedRoles){
-      const name = prompt("請輸入角色名稱 / 玩家名稱");
-      if(name === null) return null;
-
-      const trimmedName = name.trim();
-      if(!trimmedName){
-        alert("名字不可留空。");
-        return null;
-      }
-
-      const role = prompt(`請輸入職業：${allowedRoles.join(" / ")}`, allowedRoles[0]);
-      if(role === null) return null;
-
-      const trimmedRole = role.trim();
-      if(!allowedRoles.includes(trimmedRole)){
-        alert(`目前只能選：${allowedRoles.join("、")}`);
-        return null;
-      }
-
-      return { name: trimmedName, role: trimmedRole };
-    }
-
     function buildDefaultDayData(dateObj){
       const slots = [];
       const defaultTimes = getDefaultTimesForDate(dateObj);
@@ -628,6 +713,87 @@
       }
     }
 
+    window.openModal = (dateKey, slotIndex, allowedRoles) => {
+      currentSignup = { dateKey, slotIndex, allowedRoles };
+
+      const modal = document.getElementById("signupModal");
+      const nameInput = document.getElementById("playerName");
+      const roleSelect = document.getElementById("roleSelect");
+
+      nameInput.value = localStorage.getItem("signup_player_name") || "";
+      roleSelect.innerHTML = "";
+
+      allowedRoles.forEach(role => {
+        const option = document.createElement("option");
+        option.value = role;
+        option.textContent = role;
+        roleSelect.appendChild(option);
+      });
+
+      modal.classList.add("show");
+
+      setTimeout(() => {
+        nameInput.focus();
+        nameInput.select();
+      }, 30);
+    };
+
+    window.closeModal = () => {
+      document.getElementById("signupModal").classList.remove("show");
+    };
+
+    window.submitSignup = async () => {
+      const nameInput = document.getElementById("playerName");
+      const roleSelect = document.getElementById("roleSelect");
+
+      const name = nameInput.value.trim();
+      const role = roleSelect.value;
+
+      if(!name){
+        alert("名字不可留空。");
+        nameInput.focus();
+        return;
+      }
+
+      localStorage.setItem("signup_player_name", name);
+
+      const { dateKey, slotIndex } = currentSignup;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+      slot.members.push({ name, role });
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+      }
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeModal();
+    };
+
+    document.addEventListener("keydown", (e) => {
+      const modal = document.getElementById("signupModal");
+      if(!modal.classList.contains("show")) return;
+
+      if(e.key === "Escape"){
+        closeModal();
+      }
+
+      if(e.key === "Enter"){
+        submitSignup();
+      }
+    });
+
+    document.getElementById("signupModal").addEventListener("click", (e) => {
+      if(e.target.id === "signupModal"){
+        closeModal();
+      }
+    });
+
     async function addMember(dateKey, slotIndex){
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
@@ -645,16 +811,7 @@
       }
 
       const allowedRoles = getAllowedRoles(slot.members);
-      const entry = promptForSignup(allowedRoles);
-      if(!entry) return;
-
-      slot.members.push(entry);
-
-      if(slot.members.length >= CONFIG.maxPeople){
-        autoCreateNextSameTimeSlot(dayData, slot.time);
-      }
-
-      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      openModal(dateKey, slotIndex, allowedRoles);
     }
 
     async function addCustomTime(dateKey){
