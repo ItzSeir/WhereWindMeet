@@ -2,20 +2,23 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>燕雲十六聲｜首頁</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>夢回花深處</title>
+
   <style>
     :root{
       --bg:#0b1020;
       --bg2:#131c35;
       --panel:rgba(255,255,255,.08);
+      --panel-strong:rgba(255,255,255,.10);
       --line:rgba(255,255,255,.12);
       --text:#eef2ff;
       --muted:#a8b3cf;
       --accent:#6ea8ff;
       --accent2:#8b5cf6;
+      --gold:#ffd76a;
       --success:#34d399;
-      --warn:#fbbf24;
+      --danger:#ff6b81;
       --shadow:0 18px 40px rgba(0,0,0,.28);
     }
 
@@ -24,22 +27,118 @@
     html,body{
       margin:0;
       padding:0;
+      min-height:100%;
       font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
+        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 26%),
         radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
         linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
     }
 
-    body{
-      min-height:100vh;
-      padding:24px 14px 40px;
+    body{ position:relative; }
+
+    .bg-orb{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(70px);
+      opacity:.28;
+      pointer-events:none;
+      z-index:0;
+      animation: floatOrb 10s ease-in-out infinite;
+    }
+
+    .orb1{
+      width:260px;
+      height:260px;
+      background:rgba(110,168,255,.28);
+      top:4%;
+      left:4%;
+    }
+
+    .orb2{
+      width:320px;
+      height:320px;
+      background:rgba(139,92,246,.24);
+      top:18%;
+      right:2%;
+      animation-delay:-2s;
+    }
+
+    .orb3{
+      width:240px;
+      height:240px;
+      background:rgba(255,215,106,.16);
+      bottom:8%;
+      left:12%;
+      animation-delay:-4s;
+    }
+
+    @keyframes floatOrb{
+      0%,100%{ transform:translateY(0px) translateX(0px); }
+      50%{ transform:translateY(-16px) translateX(10px); }
     }
 
     .container{
+      position:relative;
+      z-index:1;
       max-width:1280px;
       margin:0 auto;
+      padding:24px 14px 40px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .brand-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:13px;
+      font-weight:700;
+      backdrop-filter:blur(12px);
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .nav a{
+      text-decoration:none;
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      font-size:14px;
+      font-weight:700;
+      transition:.18s ease;
+    }
+
+    .nav a:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.10);
     }
 
     .hero{
@@ -47,52 +146,74 @@
       overflow:hidden;
       background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
       border:1px solid var(--line);
-      border-radius:28px;
+      border-radius:32px;
+      padding:34px 28px;
       box-shadow:var(--shadow);
       backdrop-filter:blur(14px);
-      padding:34px 28px;
-      margin-bottom:22px;
+      margin-bottom:20px;
     }
 
     .hero::before{
       content:"";
       position:absolute;
-      inset:auto -80px -80px auto;
-      width:240px;
-      height:240px;
+      right:-80px;
+      bottom:-90px;
+      width:260px;
+      height:260px;
       border-radius:50%;
-      background:radial-gradient(circle, rgba(110,168,255,.28), transparent 70%);
+      background:radial-gradient(circle, rgba(110,168,255,.26), transparent 70%);
       pointer-events:none;
     }
 
-    .badge-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:16px;
+    .hero::after{
+      content:"";
+      position:absolute;
+      left:-60px;
+      top:-70px;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(139,92,246,.20), transparent 70%);
+      pointer-events:none;
     }
 
-    .badge{
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .hero-badge{
       padding:8px 12px;
       border-radius:999px;
       border:1px solid var(--line);
       background:rgba(255,255,255,.06);
       color:var(--text);
       font-size:13px;
+      font-weight:700;
     }
 
-    h1{
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:center;
+    }
+
+    .hero h1{
       margin:0;
-      font-size:clamp(34px, 6vw, 58px);
-      line-height:1.05;
+      font-size:clamp(34px, 5vw, 62px);
+      line-height:1.04;
+      letter-spacing:.2px;
     }
 
-    .subtitle{
-      margin:14px 0 0;
+    .hero p{
+      margin:16px 0 0;
       color:var(--muted);
       font-size:16px;
-      max-width:760px;
-      line-height:1.8;
+      line-height:1.85;
+      max-width:720px;
     }
 
     .hero-actions{
@@ -107,7 +228,7 @@
       align-items:center;
       justify-content:center;
       text-decoration:none;
-      border-radius:16px;
+      border-radius:18px;
       padding:12px 18px;
       font-size:14px;
       font-weight:800;
@@ -115,36 +236,73 @@
       border:1px solid transparent;
     }
 
-    .btn:hover{
-      transform:translateY(-1px);
-    }
+    .btn:hover{ transform:translateY(-1px); }
 
     .btn-primary{
+      color:#fff;
       background:linear-gradient(135deg, var(--accent), var(--accent2));
-      color:white;
       box-shadow:0 12px 28px rgba(110,168,255,.22);
     }
 
     .btn-secondary{
-      background:rgba(255,255,255,.08);
       color:var(--text);
+      background:rgba(255,255,255,.08);
       border-color:var(--line);
     }
 
-    .grid{
+    .hero-side{
+      display:grid;
+      gap:12px;
+    }
+
+    .mini-panel{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+    }
+
+    .mini-title{
+      margin:0 0 8px;
+      font-size:15px;
+      font-weight:800;
+    }
+
+    .mini-text{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:14px;
+    }
+
+    .section{ margin-top:18px; }
+
+    .section-title{
+      margin:0 0 14px;
+      font-size:24px;
+      font-weight:800;
+    }
+
+    .cards-2{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .cards-3{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
       gap:16px;
-      margin-bottom:22px;
     }
 
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:24px;
       padding:18px;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(14px);
+      backdrop-filter:blur(12px);
+      min-height:100%;
     }
 
     .card h3{
@@ -155,20 +313,63 @@
     .card p{
       margin:0;
       color:var(--muted);
-      line-height:1.75;
+      line-height:1.8;
       font-size:14px;
     }
 
-    .two-col{
+    .portal-grid{
       display:grid;
-      grid-template-columns:1.2fr .8fr;
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:16px;
+    }
+
+    .portal-card{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      min-height:220px;
+    }
+
+    .portal-card::after{
+      content:"";
+      position:absolute;
+      right:-40px;
+      bottom:-40px;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(110,168,255,.18), transparent 70%);
+      pointer-events:none;
+    }
+
+    .portal-card h3{
+      margin:0 0 8px;
+      font-size:22px;
+    }
+
+    .portal-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+      max-width:95%;
+    }
+
+    .portal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
     }
 
     .list{
       display:grid;
       gap:10px;
-      margin-top:14px;
+      margin-top:12px;
     }
 
     .list-item{
@@ -190,115 +391,298 @@
       background:var(--accent);
     }
 
-    .footer-note{
+    .dot.gold{ background:var(--gold); }
+    .dot.green{ background:var(--success); }
+    .dot.red{ background:var(--danger); }
+
+    .rule-box{
+      display:grid;
+      gap:12px;
+    }
+
+    .rule-item{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .rule-item h4{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .rule-item p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.85;
+      font-size:14px;
+    }
+
+    .guild-quote{
+      position:relative;
+      background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:24px;
+      box-shadow:var(--shadow);
       margin-top:18px;
+      overflow:hidden;
+    }
+
+    .guild-quote::before{
+      content:"“";
+      position:absolute;
+      top:6px;
+      left:16px;
+      font-size:86px;
+      line-height:1;
+      color:rgba(255,255,255,.08);
+      pointer-events:none;
+    }
+
+    .guild-quote p{
+      position:relative;
+      margin:0;
+      color:var(--text);
+      font-size:18px;
+      line-height:1.9;
+      padding-left:18px;
+    }
+
+    .footer-note{
+      margin-top:20px;
       text-align:center;
       color:var(--muted);
       font-size:13px;
     }
 
     @media (max-width: 980px){
-      .grid,
-      .two-col{
+      .hero-grid,
+      .cards-2,
+      .cards-3,
+      .portal-grid{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width: 768px){
-      body{
-        padding:16px 10px 30px;
-      }
-
-      .hero{
-        padding:22px 18px;
-      }
+      .container{ padding:16px 10px 30px; }
+      .hero{ padding:22px 18px; }
+      .hero h1{ font-size:36px; }
     }
   </style>
 </head>
 <body>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+
   <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <span class="brand-badge">夢回</span>
+        <span class="brand-badge">江湖同遊</span>
+        <span class="brand-badge">筱風製作</span>
+      </div>
+
+      <div class="nav">
+        <a href="#about">公會介紹</a>
+        <a href="#portal">副本傳送門</a>
+        <a href="#rules">公會規則</a>
+      </div>
+    </div>
+
     <section class="hero">
-      <div class="badge-row">
-        <span class="badge">燕雲十六聲</span>
-        <span class="badge">夢回花深處俠境</span>
-        <span class="badge">筱風製作</span>
+      <div class="hero-badges">
+        <span class="hero-badge">燕雲十六聲</span>
+        <span class="hero-badge">公會首頁</span>
+        <span class="hero-badge">江湖未遠 · 俠義同行</span>
       </div>
 
-      <h1>俠境報名首頁</h1>
-      <p class="subtitle">
-        這裡是隊伍報名與時段安排的入口頁面。你可以從這裡快速進入報名清單、查看組隊規則，
-        也能先了解目前系統的使用方式與隊伍配置說明。
+      <div class="hero-grid">
+        <div>
+          <h1>這裡是我們在江湖中的據點。</h1>
+          <p>
+            不論你是想找人打本、清日常、參加百業活動，還是單純想看看大家今天準備去哪裡，
+            都可以從這裡開始。首頁作為公會門面，整理我們的規則、活動入口與行事方式，
+            讓大家更容易集合，也更容易同行。
+          </p>
+
+          <div class="hero-actions">
+            <a href="#portal" class="btn btn-primary">前往副本傳送門</a>
+            <a href="#rules" class="btn btn-secondary">查看公會規則</a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="mini-panel">
+            <div class="mini-title">公會定位</div>
+            <p class="mini-text">休閒但不鬆散，認真但不壓迫。希望每次上線，都能找到願意一起走的人。</p>
+          </div>
+
+          <div class="mini-panel">
+            <div class="mini-title">首頁用途</div>
+            <p class="mini-text">集中放置公會守則、活動入口與副本傳送門，讓所有人一進來就知道從哪裡開始。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <h2 class="section-title">公會特色</h2>
+      <div class="cards-3">
+        <div class="card">
+          <h3>同門互濟</h3>
+          <p>不只是一起打本，更是彼此扶持、一起成長。對新加入的朋友，也希望能多一分耐心與善意。</p>
+        </div>
+        <div class="card">
+          <h3>安排清楚</h3>
+          <p>把活動與報名入口整理清楚，減少來回翻訊息的麻煩，也讓出席與配隊更順利。</p>
+        </div>
+        <div class="card">
+          <h3>重視氛圍</h3>
+          <p>能不能長久一起玩，很多時候不只看效率，更看大家相處時是不是舒服、是不是願意互相體諒。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="portal">
+      <h2 class="section-title">副本傳送門</h2>
+      <div class="portal-grid">
+        <div class="portal-card">
+          <h3>活動報名</h3>
+          <p>
+            進入報名頁後，可以查看每日隊伍、報名時段與目前職業配置。
+            適合用來安排副本、行俠、百業活動等固定或臨時組隊。
+          </p>
+          <div class="portal-actions">
+            <a href="signup.html" class="btn btn-primary">前往報名頁</a>
+          </div>
+        </div>
+
+        <div class="portal-card">
+          <h3>副本規則說明</h3>
+          <p>
+            報名前請先確認時間與職業配置。若已答應參與，臨時無法到場也請提前告知，
+            方便同門安排補位與調整。
+          </p>
+          <div class="portal-actions">
+            <a href="#rules" class="btn btn-secondary">查看完整規則</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="rules">
+      <h2 class="section-title">公會規則</h2>
+      <div class="cards-2">
+        <div class="card">
+          <h3>行事原則</h3>
+          <div class="rule-box">
+            <div class="rule-item">
+              <h4>𝟭.【和氣為上】</h4>
+              <p>諸位社眾切莫與其他百業之人起紛爭，若有衝突，先說明事由，由 @社主𓇼 @ꗯ̤̮ 副社主 @執法長老 ˙ᵕ˙ 秉公調解。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟮.【敬重同道】</h4>
+              <p>避免任何形式的騷擾與不當行為，只要對方覺得不舒服，皆屬騷擾。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟯.【社眾之責】</h4>
+              <p>每位社眾每週當積累 2000 活耀度，週日夜九為結算日，以示勤勉不怠。倘遇私務或不便，得預告向 @社主𓇼 @ꗯ̤̮ 副社主 請假，免為怠慢之誤。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟰.【廣納賢士】</h4>
+              <p>若有江湖好友欲入我夢回門牆，可先稟告 @社主𓇼 @ꗯ̤̮ 副社主 @執法長老 ˙ᵕ˙，由他們協助加入。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟱.【同門互濟】</h4>
+              <p>同門應當彼此扶持、共襄義舉，對初入門者更宜和善指點。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>廳堂清規</h3>
+          <div class="rule-box">
+            <div class="rule-item">
+              <h4>𝟲.【廳堂清規】</h4>
+              <p>嚴禁胡亂喧嘩、私下兜售、惡語相向、污言穢語及淫詞笑語，以免壞百業門風。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟳.【承諾守信】</h4>
+              <p>報名參與百業活動、行俠任務、副本等等，若臨時無法參加，請提前告知以利安排或調整。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟴.【慎用傳音】</h4>
+              <p>請勿在他派或公開之地洩露百業內機密、謀略或同門隱私，以免禍起蕭牆。</p>
+            </div>
+
+            <div class="rule-item">
+              <h4>𝟵.【禮尚往來】</h4>
+              <p>交易、贈與或委託，務必誠信為先，不得欺瞞同門。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">副本與活動說明</h2>
+      <div class="cards-2">
+        <div class="card">
+          <h3>報名前請注意</h3>
+          <div class="list">
+            <div class="list-item">
+              <span class="dot green"></span>
+              <div>先確認自己能否準時到場，再進行報名。</div>
+            </div>
+            <div class="list-item">
+              <span class="dot"></span>
+              <div>請依照隊伍需求選擇合適職業，方便大家更快完成配隊。</div>
+            </div>
+            <div class="list-item">
+              <span class="dot gold"></span>
+              <div>若真的無法出席，請提早告知，不要臨時消失。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>組隊默契</h3>
+          <div class="list">
+            <div class="list-item">
+              <span class="dot"></span>
+              <div>同門之間以互相補位、互相照應為先。</div>
+            </div>
+            <div class="list-item">
+              <span class="dot green"></span>
+              <div>對初入門者多一點引導，整體氣氛才會更好。</div>
+            </div>
+            <div class="list-item">
+              <span class="dot red"></span>
+              <div>既然報名了，就把承諾當回事，這是對整隊最基本的尊重。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guild-quote">
+      <p>
+        江湖不一定要人很多，能一直並肩同行的人，才最難得。
       </p>
-
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="PVERegistration">進入報名清單</a>
-        <a class="btn btn-secondary" href="#rules">查看規則</a>
-      </div>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <h3>快速報名</h3>
-        <p>直接進入每日時段卡片，查看目前人數、職業配置與剩餘位置，快速完成報名。</p>
-      </div>
-      <div class="card">
-        <h3>隊伍配置</h3>
-        <p>系統會依照隊伍狀況提示是否缺少治療位，幫助大家更快完成合理配置。</p>
-      </div>
-      <div class="card">
-        <h3>自訂時間</h3>
-        <p>除了固定時間段，也可以依需求新增自訂時段，讓排團更有彈性。</p>
-      </div>
-    </section>
-
-    <section class="two-col" id="rules">
-      <div class="card">
-        <h3>使用方式</h3>
-        <div class="list">
-          <div class="list-item">
-            <span class="dot"></span>
-            <div>先進入報名清單頁面，選擇你要參加的日期與時段。</div>
-          </div>
-          <div class="list-item">
-            <span class="dot"></span>
-            <div>點擊新增報名，填入名字並選擇職業。</div>
-          </div>
-          <div class="list-item">
-            <span class="dot"></span>
-            <div>若隊伍已滿，系統會自動顯示已滿狀態。</div>
-          </div>
-          <div class="list-item">
-            <span class="dot"></span>
-            <div>若你已報名，系統也可以高亮顯示你所在的隊伍。</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>隊伍規則</h3>
-        <div class="list">
-          <div class="list-item">
-            <span class="dot" style="background: var(--success);"></span>
-            <div>每隊最多 10 人</div>
-          </div>
-          <div class="list-item">
-            <span class="dot" style="background: var(--warn);"></span>
-            <div>每隊至少 2 個治療位</div>
-          </div>
-          <div class="list-item">
-            <span class="dot"></span>
-            <div>同一隊伍禁止相同名字重複報名</div>
-          </div>
-          <div class="list-item">
-            <span class="dot"></span>
-            <div>輸出/承傷 + 假奶 視為 1 個治療位</div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <div class="footer-note">
-      進入報名前，請先確認時段與職業選擇是否正確。
+      這裡是夢回公會首頁。活動安排與副本報名請由「副本傳送門」進入。
     </div>
   </div>
 </body>
