@@ -1,81 +1,54 @@
-# 燕雲十六聲 夢回花深處俠境報名清單
+<div align="center">
 
-> A Firebase-powered team signup board for party scheduling.
+# 燕雲十六聲｜夢回花深處俠境報名清單
+---
 
-![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue?style=for-the-badge)
-![Firebase](https://img.shields.io/badge/Firebase-Firestore-orange?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Testing-success?style=for-the-badge)
+## ✨ 專案簡介
+
+這是一個為 **燕雲十六聲俠境組隊** 設計的報名清單頁面，  
+讓玩家可以更直觀地查看開團時間、報名隊伍、確認配置，以及安排未來幾天的組隊時段。
+
+整體介面以深色風格為主，搭配卡片式設計，讓報名資訊更清楚、瀏覽更舒服。
 
 ---
 
-## Preview
+## 🎯 主要功能
 
-這是一個用於 **燕雲十六聲** 組隊報名的網頁系統，支援多人同步更新，讓隊伍可以更方便安排時間與職業配置。
-
-### 主要用途
-- 顯示未來幾天的開團時間
-- 玩家可直接報名
-- 自動記錄隊伍人數
-- 顯示輸出 / 承傷 / 治療配置
-- Firebase 即時同步
-
----
-
-## Features
-
-- 多日報名面板
-- Firebase Firestore 即時同步
-- 自訂新增時間段
-- 固定時間段不可刪除
-- 自訂時間段可刪除
-- 每隊最多 10 人
-- 每隊至少 2 位治療
-- 刪除報名玩家前需確認
-- 隊伍狀態顏色提示
-  - 有隊友：藍色
-  - 滿隊：紅色
-- 報名彈窗
-- 記住名字功能
+- 顯示未來幾天的報名時段
+- 卡片式查看每日隊伍
+- 支援新增報名
+- 支援新增自訂時間段
+- 可刪除自訂時間段
+- 每隊顯示目前報名人數
+- 顯示輸出 / 承傷 / 治療數量
+- 隊伍顏色狀態提示
+  - 有成員的隊伍：藍色
+  - 已滿的隊伍：紅色
+- 刪除玩家前會有確認提示
+- 記住常用名字，減少重複輸入
 - 自訂職業下拉選單
 
 ---
 
-## Tech Stack
+## 🧩 隊伍規則
 
-- **HTML**
-- **CSS**
-- **JavaScript**
-- **Firebase Firestore**
-- **GitHub Pages**
-
----
-
-## Live Demo
-
-🔗 [Open Website](https://itzseir.github.io/WWW/)
-
----
-
-## Current Rules
-
-### Team Rules
 - 一隊最多 **10 人**
-- 每隊至少 **2 個治療**
-- 若最後 2 個位置時治療仍不足，則限制只能選治療
-
-### Time Rules
-- 支援固定時間段
-- 支援手動新增時間段
-- 滿隊時可自動開新隊
-- 固定時間段不可刪除
-- 自訂時間段可以刪除（空白時）
+- 每隊至少需要 **2 位治療**
+- 當剩餘位置不足且治療數不足時，會限制可選職業
 
 ---
 
-## Project Structure
+## 🖼️ 介面特色
 
-```bash
-.
-├── index.html
-├── README.md
-└── data / Firebase Firestore
+- 深色玻璃感設計
+- 一日一大卡，適合電腦瀏覽
+- 隊伍資訊集中顯示
+- 版面簡潔，重點清楚
+- 適合遊戲社群或固定團隊使用
+
+---
+
+## 🚀 線上預覽
+
+### 立即開啟網站
+**[點這裡進入報名清單](https://itzseir.github.io/WWW/)**
