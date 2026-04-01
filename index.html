@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>夢回花深處</title>
+  <title>夢回花深處｜首頁</title>
 
   <style>
     :root{
@@ -37,7 +37,9 @@
       overflow-x:hidden;
     }
 
-    body{ position:relative; }
+    body{
+      position:relative;
+    }
 
     .bg-orb{
       position:fixed;
@@ -46,7 +48,7 @@
       opacity:.28;
       pointer-events:none;
       z-index:0;
-      animation: floatOrb 10s ease-in-out infinite;
+      animation:floatOrb 10s ease-in-out infinite;
     }
 
     .orb1{
@@ -76,7 +78,7 @@
     }
 
     @keyframes floatOrb{
-      0%,100%{ transform:translateY(0px) translateX(0px); }
+      0%,100%{ transform:translateY(0) translateX(0); }
       50%{ transform:translateY(-16px) translateX(10px); }
     }
 
@@ -236,7 +238,9 @@
       border:1px solid transparent;
     }
 
-    .btn:hover{ transform:translateY(-1px); }
+    .btn:hover{
+      transform:translateY(-1px);
+    }
 
     .btn-primary{
       color:#fff;
@@ -275,7 +279,9 @@
       font-size:14px;
     }
 
-    .section{ margin-top:18px; }
+    .section{
+      margin-top:18px;
+    }
 
     .section-title{
       margin:0 0 14px;
@@ -283,15 +289,15 @@
       font-weight:800;
     }
 
-    .cards-2{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:16px;
-    }
-
     .cards-3{
       display:grid;
       grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .cards-2{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:16px;
     }
 
@@ -319,7 +325,7 @@
 
     .portal-grid{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
       gap:16px;
     }
 
@@ -365,35 +371,6 @@
       flex-wrap:wrap;
       margin-top:18px;
     }
-
-    .list{
-      display:grid;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .list-item{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      margin-top:6px;
-      flex:0 0 auto;
-      background:var(--accent);
-    }
-
-    .dot.gold{ background:var(--gold); }
-    .dot.green{ background:var(--success); }
-    .dot.red{ background:var(--danger); }
 
     .rule-box{
       display:grid;
@@ -459,17 +436,24 @@
 
     @media (max-width: 980px){
       .hero-grid,
-      .cards-2,
       .cards-3,
-      .portal-grid{
+      .cards-2{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width: 768px){
-      .container{ padding:16px 10px 30px; }
-      .hero{ padding:22px 18px; }
-      .hero h1{ font-size:36px; }
+      .container{
+        padding:16px 10px 30px;
+      }
+
+      .hero{
+        padding:22px 18px;
+      }
+
+      .hero h1{
+        font-size:36px;
+      }
     }
   </style>
 </head>
@@ -482,13 +466,13 @@
     <div class="topbar">
       <div class="brand">
         <span class="brand-badge">夢回</span>
-        <span class="brand-badge">江湖同遊</span>
+        <span class="brand-badge">公會首頁</span>
         <span class="brand-badge">筱風製作</span>
       </div>
 
       <div class="nav">
         <a href="#about">公會介紹</a>
-        <a href="#portal">副本傳送門</a>
+        <a href="#portal">俠境傳送門</a>
         <a href="#rules">公會規則</a>
       </div>
     </div>
@@ -496,21 +480,21 @@
     <section class="hero">
       <div class="hero-badges">
         <span class="hero-badge">燕雲十六聲</span>
-        <span class="hero-badge">公會首頁</span>
+        <span class="hero-badge">公會據點</span>
         <span class="hero-badge">江湖未遠 · 俠義同行</span>
       </div>
 
       <div class="hero-grid">
         <div>
-          <h1>這裡是我們在江湖中的據點。</h1>
+          <h1>這裡是我們在江湖中的落腳處。</h1>
           <p>
-            不論你是想找人打本、清日常、參加百業活動，還是單純想看看大家今天準備去哪裡，
-            都可以從這裡開始。首頁作為公會門面，整理我們的規則、活動入口與行事方式，
-            讓大家更容易集合，也更容易同行。
+            不論你是想找人一起俠境、百業、日常，還是只是想知道大家最近的活動方向，
+            都可以從這裡開始。首頁作為公會門面，整理我們的規則、活動入口與基本介紹，
+            讓每位同門都能更容易找到方向，也更容易一起同行。
           </p>
 
           <div class="hero-actions">
-            <a href="#portal" class="btn btn-primary">前往副本傳送門</a>
+            <a href="#portal" class="btn btn-primary">前往俠境傳送門</a>
             <a href="#rules" class="btn btn-secondary">查看公會規則</a>
           </div>
         </div>
@@ -518,57 +502,77 @@
         <div class="hero-side">
           <div class="mini-panel">
             <div class="mini-title">公會定位</div>
-            <p class="mini-text">休閒但不鬆散，認真但不壓迫。希望每次上線，都能找到願意一起走的人。</p>
+            <p class="mini-text">休閒但不散漫，認真但不壓迫，希望大家在這裡都能找到願意一起玩的夥伴。</p>
           </div>
 
           <div class="mini-panel">
             <div class="mini-title">首頁用途</div>
-            <p class="mini-text">集中放置公會守則、活動入口與副本傳送門，讓所有人一進來就知道從哪裡開始。</p>
+            <p class="mini-text">集中展示公會規則、俠境入口與預留活動區塊，讓整體資訊更清楚、也更方便使用。</p>
           </div>
         </div>
       </div>
     </section>
 
     <section class="section" id="about">
-      <h2 class="section-title">公會特色</h2>
+      <h2 class="section-title">公會介紹</h2>
       <div class="cards-3">
         <div class="card">
           <h3>同門互濟</h3>
-          <p>不只是一起打本，更是彼此扶持、一起成長。對新加入的朋友，也希望能多一分耐心與善意。</p>
+          <p>彼此扶持、共襄義舉，對初入門者更應和善指點，讓大家都能慢慢融入這個地方。</p>
         </div>
         <div class="card">
           <h3>安排清楚</h3>
-          <p>把活動與報名入口整理清楚，減少來回翻訊息的麻煩，也讓出席與配隊更順利。</p>
+          <p>將活動入口與規則整理清楚，減少訊息混亂，也讓同門更容易快速找到需要的內容。</p>
         </div>
         <div class="card">
-          <h3>重視氛圍</h3>
-          <p>能不能長久一起玩，很多時候不只看效率，更看大家相處時是不是舒服、是不是願意互相體諒。</p>
+          <h3>重視氣氛</h3>
+          <p>比起單純追求效率，我們更希望大家能舒服相處、願意久留，讓公會真正成為可以依靠的地方。</p>
         </div>
       </div>
     </section>
 
     <section class="section" id="portal">
-      <h2 class="section-title">副本傳送門</h2>
+      <h2 class="section-title">俠境傳送門</h2>
       <div class="portal-grid">
         <div class="portal-card">
-          <h3>活動報名</h3>
+          <h3>俠境報名</h3>
           <p>
-            進入報名頁後，可以查看每日隊伍、報名時段與目前職業配置。
-            適合用來安排副本、行俠、百業活動等固定或臨時組隊。
+            這裡可進入俠境活動報名頁，查看每日開團時段、目前隊伍配置與報名情況。
+            若要參與俠境，請由此進入。
           </p>
           <div class="portal-actions">
-            <a href="signup.html" class="btn btn-primary">前往報名頁</a>
+            <a href="signup.html" class="btn btn-primary">前往俠境報名</a>
           </div>
         </div>
 
         <div class="portal-card">
-          <h3>副本規則說明</h3>
+          <h3>俠境說明</h3>
           <p>
-            報名前請先確認時間與職業配置。若已答應參與，臨時無法到場也請提前告知，
-            方便同門安排補位與調整。
+            俠境為公會常用活動之一。報名前請先確認可出席時間、欲使用職業與隊伍需求，
+            若臨時有事不能參加，也請提前告知，方便安排補位與調整。
           </p>
           <div class="portal-actions">
-            <a href="#rules" class="btn btn-secondary">查看完整規則</a>
+            <a href="signup.html" class="btn btn-secondary">查看報名頁</a>
+          </div>
+        </div>
+
+        <div class="portal-card">
+          <h3>預留區塊</h3>
+          <p>
+            此卡片預留給未來活動入口使用，例如百業活動、行俠任務、日常隊伍或特別公告。
+          </p>
+          <div class="portal-actions">
+            <a href="#" class="btn btn-secondary">尚未開放</a>
+          </div>
+        </div>
+
+        <div class="portal-card">
+          <h3>預留區塊</h3>
+          <p>
+            此卡片可放攻略入口、活動紀錄、成員名單、Discord 入口，或其他之後要補充的內容。
+          </p>
+          <div class="portal-actions">
+            <a href="#" class="btn btn-secondary">尚未開放</a>
           </div>
         </div>
       </div>
@@ -578,7 +582,6 @@
       <h2 class="section-title">公會規則</h2>
       <div class="cards-2">
         <div class="card">
-          <h3>行事原則</h3>
           <div class="rule-box">
             <div class="rule-item">
               <h4>𝟭.【和氣為上】</h4>
@@ -608,7 +611,6 @@
         </div>
 
         <div class="card">
-          <h3>廳堂清規</h3>
           <div class="rule-box">
             <div class="rule-item">
               <h4>𝟲.【廳堂清規】</h4>
@@ -634,47 +636,6 @@
       </div>
     </section>
 
-    <section class="section">
-      <h2 class="section-title">副本與活動說明</h2>
-      <div class="cards-2">
-        <div class="card">
-          <h3>報名前請注意</h3>
-          <div class="list">
-            <div class="list-item">
-              <span class="dot green"></span>
-              <div>先確認自己能否準時到場，再進行報名。</div>
-            </div>
-            <div class="list-item">
-              <span class="dot"></span>
-              <div>請依照隊伍需求選擇合適職業，方便大家更快完成配隊。</div>
-            </div>
-            <div class="list-item">
-              <span class="dot gold"></span>
-              <div>若真的無法出席，請提早告知，不要臨時消失。</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>組隊默契</h3>
-          <div class="list">
-            <div class="list-item">
-              <span class="dot"></span>
-              <div>同門之間以互相補位、互相照應為先。</div>
-            </div>
-            <div class="list-item">
-              <span class="dot green"></span>
-              <div>對初入門者多一點引導，整體氣氛才會更好。</div>
-            </div>
-            <div class="list-item">
-              <span class="dot red"></span>
-              <div>既然報名了，就把承諾當回事，這是對整隊最基本的尊重。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="guild-quote">
       <p>
         江湖不一定要人很多，能一直並肩同行的人，才最難得。
@@ -682,7 +643,7 @@
     </section>
 
     <div class="footer-note">
-      這裡是夢回公會首頁。活動安排與副本報名請由「副本傳送門」進入。
+      這裡是夢回公會首頁。活動安排與俠境報名請由「俠境傳送門」進入。
     </div>
   </div>
 </body>
