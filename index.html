@@ -188,6 +188,13 @@
       box-shadow:0 8px 18px rgba(255,107,129,.12);
     }
 
+    .slot-card.my-team{
+      outline:2px solid rgba(255,215,106,.72);
+      box-shadow:
+        0 0 0 3px rgba(255,215,106,.14),
+        0 12px 26px rgba(255,215,106,.10);
+    }
+
     .slot-card.full-team .slot-time,
     .slot-card.full-team .slot-instance{
       color:#ffdbe4;
@@ -201,10 +208,31 @@
       margin-bottom:10px;
     }
 
+    .slot-time-wrap{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
     .slot-time{
       font-size:18px;
       font-weight:800;
       line-height:1.1;
+    }
+
+    .recommend-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      color:#ffd76a;
+      background:rgba(255,215,106,.12);
+      border:1px solid rgba(255,215,106,.28);
+      line-height:1;
     }
 
     .slot-instance{
@@ -269,6 +297,12 @@
       border:1px solid rgba(255,255,255,.08);
     }
 
+    .member.member-self{
+      background:rgba(255,215,106,.12);
+      border-color:rgba(255,215,106,.30);
+      box-shadow:0 0 0 2px rgba(255,215,106,.10) inset;
+    }
+
     .member-left{
       display:flex;
       align-items:center;
@@ -313,6 +347,11 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
+    }
+
+    .member-self .member-name{
+      color:#ffe8a6;
+      font-weight:800;
     }
 
     .remove-btn{
@@ -365,7 +404,8 @@
       padding:6px 2px 2px;
     }
 
-    .signup-modal{
+    .signup-modal,
+    .confirm-modal{
       position:fixed;
       inset:0;
       background:rgba(3,8,20,.72);
@@ -376,11 +416,13 @@
       padding:20px;
     }
 
-    .signup-modal.show{
+    .signup-modal.show,
+    .confirm-modal.show{
       display:flex;
     }
 
-    .signup-modal-box{
+    .signup-modal-box,
+    .confirm-modal-box{
       width:min(420px, 100%);
       background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
       border:1px solid rgba(255,255,255,.10);
@@ -390,10 +432,18 @@
       backdrop-filter:blur(14px);
     }
 
-    .signup-modal-title{
+    .signup-modal-title,
+    .confirm-modal-title{
       font-size:24px;
       font-weight:800;
       margin-bottom:14px;
+    }
+
+    .confirm-modal-text{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:16px;
     }
 
     .signup-label{
@@ -501,14 +551,17 @@
       background:rgba(110,168,255,.18);
     }
 
-    .signup-modal-actions{
+    .signup-modal-actions,
+    .confirm-modal-actions{
       display:flex;
       gap:10px;
       margin-top:16px;
     }
 
     .signup-confirm-btn,
-    .signup-cancel-btn{
+    .signup-cancel-btn,
+    .confirm-danger-btn,
+    .confirm-cancel-btn{
       flex:1;
       border:none;
       border-radius:12px;
@@ -523,10 +576,16 @@
       background:linear-gradient(135deg, var(--accent), var(--accent2));
     }
 
-    .signup-cancel-btn{
+    .signup-cancel-btn,
+    .confirm-cancel-btn{
       color:var(--text);
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.10);
+    }
+
+    .confirm-danger-btn{
+      color:white;
+      background:linear-gradient(135deg, #ff6b81, #ef4444);
     }
 
     @media (max-width: 1100px){
@@ -601,6 +660,17 @@
     </div>
   </div>
 
+  <div id="confirmModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">確認刪除</div>
+      <div id="confirmModalText" class="confirm-modal-text">你確定要刪除這筆報名嗎？</div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeConfirmModal()">取消</button>
+        <button type="button" class="confirm-danger-btn" onclick="confirmRemoveMember()">刪除</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
@@ -644,6 +714,11 @@
     };
     let selectedRoleValue = "";
     let customSelectBound = false;
+    let pendingDelete = null;
+
+    function getSavedPlayerName(){
+      return (localStorage.getItem("signup_player_name") || "").trim();
+    }
 
     function getTodayStart(){
       const d = new Date();
@@ -884,7 +959,8 @@
       customSelectBound = true;
 
       const trigger = document.getElementById("roleSelectTrigger");
-      const modal = document.getElementById("signupModal");
+      const signupModal = document.getElementById("signupModal");
+      const confirmModal = document.getElementById("confirmModal");
 
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -903,9 +979,15 @@
         }
       });
 
-      modal.addEventListener("click", (e) => {
+      signupModal.addEventListener("click", (e) => {
         if(e.target.id === "signupModal"){
           closeModal();
+        }
+      });
+
+      confirmModal.addEventListener("click", (e) => {
+        if(e.target.id === "confirmModal"){
+          closeConfirmModal();
         }
       });
     }
@@ -916,7 +998,7 @@
       const modal = document.getElementById("signupModal");
       const nameInput = document.getElementById("playerName");
 
-      nameInput.value = localStorage.getItem("signup_player_name") || "";
+      nameInput.value = getSavedPlayerName();
       renderCustomRoleOptions(allowedRoles);
       closeCustomSelect();
       bindCustomSelect();
@@ -976,21 +1058,68 @@
       closeModal();
     };
 
-    document.addEventListener("keydown", (e) => {
-      const modal = document.getElementById("signupModal");
-      if(!modal.classList.contains("show")) return;
+    function openConfirmModal(dateKey, slotIndex, memberIndex){
+      const dayData = globalData[dateKey];
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
 
-      if(e.key === "Escape"){
-        closeModal();
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      const member = members[memberIndex];
+      if(!member) return;
+
+      pendingDelete = { dateKey, slotIndex, memberIndex };
+      document.getElementById("confirmModalText").textContent = `確定要刪除報名玩家「${member.name}」嗎？`;
+      document.getElementById("confirmModal").classList.add("show");
+    }
+
+    window.closeConfirmModal = () => {
+      pendingDelete = null;
+      document.getElementById("confirmModal").classList.remove("show");
+    };
+
+    window.confirmRemoveMember = async () => {
+      if(!pendingDelete) return;
+
+      const { dateKey, slotIndex, memberIndex } = pendingDelete;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      if(!dayData.slots[slotIndex]) return;
+
+      const members = Array.isArray(dayData.slots[slotIndex].members)
+        ? dayData.slots[slotIndex].members
+        : [];
+
+      if(!members[memberIndex]) return;
+
+      members.splice(memberIndex, 1);
+      dayData.slots[slotIndex].members = members;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeConfirmModal();
+    };
+
+    document.addEventListener("keydown", (e) => {
+      const signupModal = document.getElementById("signupModal");
+      const confirmModal = document.getElementById("confirmModal");
+
+      if(signupModal.classList.contains("show")){
+        if(e.key === "Escape"){
+          closeModal();
+        }
+
+        if(e.key === "Enter"){
+          const active = document.activeElement;
+          const isCustomOpen = document.getElementById("roleSelect").classList.contains("open");
+          if(active && active.closest("#roleSelect") && isCustomOpen){
+            return;
+          }
+          submitSignup();
+        }
       }
 
-      if(e.key === "Enter"){
-        const active = document.activeElement;
-        const isCustomOpen = document.getElementById("roleSelect").classList.contains("open");
-        if(active && active.closest("#roleSelect") && isCustomOpen){
-          return;
-        }
-        submitSignup();
+      if(confirmModal.classList.contains("show") && e.key === "Escape"){
+        closeConfirmModal();
       }
     });
 
@@ -1049,27 +1178,6 @@
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
 
-    async function removeMember(dateKey, slotIndex, memberIndex){
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-      if(!dayData.slots[slotIndex]) return;
-
-      const members = Array.isArray(dayData.slots[slotIndex].members)
-        ? dayData.slots[slotIndex].members
-        : [];
-
-      const member = members[memberIndex];
-      if(!member) return;
-
-      const ok = confirm(`確定要刪除報名玩家「${member.name}」嗎？`);
-      if(!ok) return;
-
-      members.splice(memberIndex, 1);
-      dayData.slots[slotIndex].members = members;
-
-      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
-    }
-
     async function deleteCustomSlot(dateKey, slotIndex){
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
@@ -1098,6 +1206,7 @@
 
       const dates = getDatesToShow();
       const daysEl = document.getElementById("days");
+      const savedName = getSavedPlayerName();
       let html = "";
 
       dates.forEach(date => {
@@ -1128,21 +1237,27 @@
             const allowedRoles = getAllowedRoles(members);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "輸出/承傷 + 假奶");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
+            const isRecommended = !isWeekend(date) && slot.time === "19:45";
+            const isMyTeam = !!savedName && members.some(m => String(m.name).trim() === savedName);
 
             const slotCardClass = members.length >= CONFIG.maxPeople
-              ? "slot-card full-team"
+              ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
               : members.length > 0
-                ? "slot-card has-members"
-                : "slot-card";
+                ? `slot-card has-members${isMyTeam ? " my-team" : ""}`
+                : `slot-card${isMyTeam ? " my-team" : ""}`;
 
             html += `
               <div class="${slotCardClass}">
                 <div class="slot-top">
                   <div>
-                    <div class="slot-time">${slot.time}</div>
+                    <div class="slot-time-wrap">
+                      <div class="slot-time">${slot.time}</div>
+                      ${isRecommended ? `<span class="recommend-badge">★ 推薦</span>` : ``}
+                    </div>
                     <div class="slot-instance">
                       第 ${slot.instance || 1} 隊
                       ${slot.isCustom ? "｜自訂" : "｜固定"}
+                      ${isMyTeam ? "｜你的隊伍" : ""}
                     </div>
                   </div>
                   <div class="slot-badges">
@@ -1167,11 +1282,12 @@
               html += `<div class="empty-note">尚未有人報名</div>`;
             } else {
               members.forEach((member, memberIndex) => {
+                const isSelf = !!savedName && String(member.name).trim() === savedName;
                 html += `
-                  <div class="member">
+                  <div class="member${isSelf ? " member-self" : ""}">
                     <div class="member-left">
                       <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
-                      <span class="member-name">${escapeHtml(member.name)}</span>
+                      <span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>
                     </div>
                     <button class="remove-btn" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${memberIndex}">刪除</button>
                   </div>
@@ -1218,7 +1334,7 @@
       });
 
       document.querySelectorAll('[data-action="remove-member"]').forEach(btn => {
-        btn.onclick = () => removeMember(
+        btn.onclick = () => openConfirmModal(
           btn.dataset.date,
           Number(btn.dataset.slot),
           Number(btn.dataset.member)
