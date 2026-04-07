@@ -198,17 +198,19 @@
 
     .slot-list{
       display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
-      gap:14px;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:16px;
       min-width:0;
+      align-items:start;
     }
 
     .slot-card{
       background:rgba(255,255,255,.06);
       border:1px solid var(--line);
       border-radius:18px;
-      padding:12px;
+      padding:14px;
       min-width:0;
+      min-height:100%;
       transition:.18s ease;
     }
 
@@ -353,44 +355,51 @@
     .summary-pill strong{ color:var(--text); }
 
     .slot-description{
-      margin:0 0 10px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(12,18,32,.72);
-      color:#dbe7ff;
-      font-size:12px;
-      line-height:1.65;
-      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      position:relative;
+      margin:2px 0 12px;
+      padding:12px 14px 12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045));
+      color:#edf3ff;
+      font-size:13px;
+      line-height:1.7;
+      font-weight:500;
       white-space:pre-wrap;
       word-break:break-word;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03),
+        0 8px 18px rgba(0,0,0,.10);
+    }
+
+    .slot-description::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:10px;
+      bottom:10px;
+      width:4px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,215,106,.95), rgba(110,168,255,.95));
+    }
+
+    .slot-description-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin:2px 0 8px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.04em;
+      color:#cdd9f5;
+      text-transform:uppercase;
     }
 
     .member-list{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:10px;
       min-height:46px;
-    }
-
-    .member-group{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      margin-top:6px;
-    }
-
-    .member-group-title{
-      font-size:12px;
-      font-weight:800;
-      color:#d9e7ff;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:999px;
-      padding:5px 10px;
-      align-self:flex-start;
-      margin-top:4px;
     }
 
     .member{
@@ -664,7 +673,7 @@
     .empty-note{
       color:var(--muted);
       font-size:13px;
-      padding:6px 2px 2px;
+      padding:4px 2px 0;
     }
 
     .signup-modal,
@@ -877,7 +886,7 @@
       }
 
       .slot-list{
-        grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns:repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -966,8 +975,8 @@
           <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單會自動帶入，且 (你) 只會跟著這份資料，不會因為幫別人報名而跑掉。</div>
           <div><strong style="color:var(--text);">團類型</strong><br>每個隊伍都可以設定成普通團或天賦團。</div>
-          <div><strong style="color:var(--text);">隊伍 Description</strong><br>可在隊伍內填寫備注，例如缺主T、補位、熟機制優先等。沒有內容時不會顯示。</div>
-          <div><strong style="color:var(--text);">機制標籤</strong><br>可以幫隊員加上標籤與備註，例如主T、踩點、補位、引球等，系統會依標籤自動分類顯示。</div>
+          <div><strong style="color:var(--text);">隊伍說明</strong><br>可在隊伍內填寫備注，例如缺主T、補位、熟機制優先等。沒有內容時不會顯示。</div>
+          <div><strong style="color:var(--text);">標記排序</strong><br>有標記的隊員會自動排在前面，沒有標記的排在後面。</div>
           <div><strong style="color:var(--text);">移動隊友</strong><br>可把隊員移到同一天的其他隊伍，或直接建立新隊伍並移入。</div>
         </div>
       </div>
@@ -982,7 +991,7 @@
       <div class="confirm-modal-title">編輯隊員標籤</div>
 
       <label class="signup-label" for="tagInput">標籤</label>
-      <input id="tagInput" class="signup-input" type="text" placeholder="例如：主T / 踩點 / 補位" />
+      <input id="tagInput" class="signup-input" type="text" placeholder="例如：拿旗 / 麻刀兵 / 補位" />
 
       <label class="signup-label" for="noteInput">備註</label>
       <textarea id="noteInput" class="signup-textarea" placeholder="例如：1號位、引球、先手開怪"></textarea>
@@ -1049,7 +1058,7 @@
       <textarea
         id="teamDescriptionInput"
         class="signup-textarea"
-        placeholder="例如：&#10;缺主T&#10;7=補位&#10;熟機制優先"
+        placeholder="例如：&#10;優先給需要打天賦的人&#10;熟機制優先&#10;只開一次"
       ></textarea>
 
       <div class="confirm-modal-actions">
@@ -1510,6 +1519,21 @@
       });
     }
 
+    function getSortedMembersForDisplay(members){
+      return members
+        .map((member, index) => ({ ...member, _index:index }))
+        .sort((a, b) => {
+          const aHasTag = !!String(a.tag || "").trim();
+          const bHasTag = !!String(b.tag || "").trim();
+
+          if(aHasTag !== bHasTag){
+            return aHasTag ? -1 : 1;
+          }
+
+          return a._index - b._index;
+        });
+    }
+
     window.openModal = (dateKey, slotIndex, allowedRoles) => {
       currentSignup = { dateKey, slotIndex, allowedRoles };
 
@@ -1855,16 +1879,6 @@
       render();
     };
 
-    function groupMembersByTag(members){
-      const groups = {};
-      members.forEach((member, index) => {
-        const key = (member.tag || "").trim() || "未分類";
-        if(!groups[key]) groups[key] = [];
-        groups[key].push({ ...member, _index:index });
-      });
-      return groups;
-    }
-
     document.addEventListener("keydown", (e) => {
       const signupModal = document.getElementById("signupModal");
       const confirmModal = document.getElementById("confirmModal");
@@ -1917,7 +1931,7 @@
       if(input === null) return;
 
       const trimmed = input.trim();
-      if(!/^([01]\\d|2[0-3]):([0-5]\\d)$/.test(trimmed)){
+      if(!/^([01]\d|2[0-3]):([0-5]\d)$/.test(trimmed)){
         alert("時間格式錯誤，請使用 HH:MM，例如 19:45");
         return;
       }
@@ -1995,6 +2009,7 @@
         if(dayData && Array.isArray(dayData.slots)){
           dayData.slots.forEach((slot, slotIndex) => {
             const members = Array.isArray(slot.members) ? slot.members : [];
+            const sortedMembers = getSortedMembersForDisplay(members);
             const dpsCount = countRole(members, "輸出");
             const tankCount = countRole(members, "承傷");
             const healCount = countRole(members, "治療");
@@ -2004,8 +2019,6 @@
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
             const isRecommended = !isWeekend(date) && slot.time === "19:45";
             const isMyTeam = !!savedName && members.some(m => String(m.name).trim() === savedName);
-            const groupedMembers = groupMembersByTag(members);
-            const groupNames = Object.keys(groupedMembers);
 
             const slotCardClass = members.length >= CONFIG.maxPeople
               ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
@@ -2044,7 +2057,7 @@
                       <button class="slot-menu-trigger" data-action="toggle-slot-menu">⋯</button>
                       <div class="slot-menu-dropdown">
                         <button class="slot-menu-item team" data-action="edit-team-type" data-date="${dateKey}" data-slot="${slotIndex}">
-                          團類型 / Description
+                          團類型 / 說明
                         </button>
 
                         ${slot.isCustom ? `
@@ -2064,59 +2077,57 @@
                 </div>
 
                 ${slot.description && slot.description.trim()
-                  ? `<div class="slot-description">${escapeHtml(slot.description)}</div>`
+                  ? `
+                    <div class="slot-description">
+                      <div class="slot-description-title">隊伍說明</div>
+                      ${escapeHtml(slot.description)}
+                    </div>
+                  `
                   : ``
                 }
 
                 <div class="member-list">
             `;
 
-            if(members.length === 0){
+            if(sortedMembers.length === 0){
               html += `<div class="empty-note">尚未有人報名</div>`;
             } else {
-              groupNames.forEach(groupName => {
-                html += `<div class="member-group">`;
-                html += `<div class="member-group-title">${escapeHtml(groupName)}</div>`;
+              sortedMembers.forEach(member => {
+                const isSelf = !!savedName && String(member.name).trim() === savedName;
 
-                groupedMembers[groupName].forEach(member => {
-                  const isSelf = !!savedName && String(member.name).trim() === savedName;
+                html += `
+                  <div class="member${isSelf ? " member-self" : ""}">
+                    <div class="member-left">
+                      <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
 
-                  html += `
-                    <div class="member${isSelf ? " member-self" : ""}">
-                      <div class="member-left">
-                        <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
-
-                        <div class="member-text">
-                          <div class="member-main-row">
-                            <span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>
-                            ${member.tag ? `<span class="tag-pill">${escapeHtml(member.tag)}</span>` : ``}
-                          </div>
-                          ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
+                      <div class="member-text">
+                        <div class="member-main-row">
+                          <span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>
+                          ${member.tag ? `<span class="tag-pill">${escapeHtml(member.tag)}</span>` : ``}
                         </div>
-                      </div>
-
-                      <div class="member-menu">
-                        <button class="menu-trigger" data-action="toggle-member-menu">⋯</button>
-                        <div class="member-menu-dropdown">
-                          <button class="member-menu-item" data-action="edit-member-role" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
-                            編輯職業
-                          </button>
-                          <button class="member-menu-item tag" data-action="edit-member-tag" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
-                            標籤 / 備註
-                          </button>
-                          <button class="member-menu-item move" data-action="move-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
-                            移動
-                          </button>
-                          <button class="member-menu-item delete" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
-                            刪除
-                          </button>
-                        </div>
+                        ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
                       </div>
                     </div>
-                  `;
-                });
 
-                html += `</div>`;
+                    <div class="member-menu">
+                      <button class="menu-trigger" data-action="toggle-member-menu">⋯</button>
+                      <div class="member-menu-dropdown">
+                        <button class="member-menu-item" data-action="edit-member-role" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          編輯職業
+                        </button>
+                        <button class="member-menu-item tag" data-action="edit-member-tag" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          標籤 / 備註
+                        </button>
+                        <button class="member-menu-item move" data-action="move-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          移動
+                        </button>
+                        <button class="member-menu-item delete" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          刪除
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
               });
             }
 
