@@ -195,7 +195,20 @@
       gap:8px;
       flex-wrap:wrap;
     }
-
+    .slot-description{
+      margin:0 0 10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(12,18,32,.72);
+      color:#dbe7ff;
+      font-size:12px;
+      line-height:1.65;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      white-space:pre-wrap;
+      word-break:break-word;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+    }
     .slot-list{
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
@@ -1020,21 +1033,28 @@
   </div>
 
   <div id="teamTypeModal" class="confirm-modal">
-    <div class="confirm-modal-box">
-      <div class="confirm-modal-title">設定團類型</div>
+  <div class="confirm-modal-box">
+    <div class="confirm-modal-title">設定團類型</div>
 
-      <label class="signup-label" for="teamTypeSelect">團類型</label>
-      <select id="teamTypeSelect" class="signup-select">
-        <option value="普通團">普通團</option>
-        <option value="天賦團">天賦團</option>
-      </select>
+    <label class="signup-label" for="teamTypeSelect">團類型</label>
+    <select id="teamTypeSelect" class="signup-select">
+      <option value="普通團">普通團</option>
+      <option value="天賦團">天賦團</option>
+    </select>
 
-      <div class="confirm-modal-actions">
-        <button type="button" class="confirm-cancel-btn" onclick="closeTeamTypeModal()">取消</button>
-        <button type="button" class="signup-confirm-btn" onclick="saveTeamType()">儲存</button>
-      </div>
+    <label class="signup-label" for="teamDescriptionInput">備注 / Description</label>
+    <textarea
+      id="teamDescriptionInput"
+      class="signup-textarea"
+      placeholder="備注此團隊任何要求"
+    ></textarea>
+
+    <div class="confirm-modal-actions">
+      <button type="button" class="confirm-cancel-btn" onclick="closeTeamTypeModal()">取消</button>
+      <button type="button" class="signup-confirm-btn" onclick="saveTeamType()">儲存</button>
     </div>
   </div>
+</div>
 
   <div id="myProfileModal" class="confirm-modal">
     <div class="confirm-modal-box">
@@ -1250,7 +1270,8 @@
           instance:1,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
     
         // 19:45 第二隊
@@ -1259,7 +1280,8 @@
           instance:2,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
     
         // 20:30
@@ -1268,7 +1290,8 @@
           instance:1,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
       }
     
@@ -1279,7 +1302,8 @@
           instance:1,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
       }
     
@@ -1293,7 +1317,8 @@
             instance:1,
             members:[],
             isCustom:false,
-            teamType:"普通團"
+            teamType:"普通團",
+            description:""
           });
         });
       }
@@ -1320,6 +1345,7 @@
               ...slot,
               isCustom: typeof slot.isCustom === "undefined" ? false : slot.isCustom,
               teamType: slot.teamType || "普通團",
+              description: slot.description || "",
               members: Array.isArray(slot.members)
                 ? slot.members.map(member => ({
                     ...member,
@@ -1328,10 +1354,10 @@
                   }))
                 : []
             };
-
             if(
               typeof slot.isCustom === "undefined" ||
               !slot.teamType ||
+              typeof slot.description === "undefined" ||
               (Array.isArray(slot.members) && slot.members.some(member => typeof member.tag === "undefined" || typeof member.note === "undefined"))
             ){
               changed = true;
@@ -1365,7 +1391,9 @@
           instance:maxInstance + 1,
           members:[],
           isCustom:true,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
+
         });
         sortSlots(dayData.slots);
       }
@@ -1717,7 +1745,9 @@
           instance: maxInstance + 1,
           members: [member],
           isCustom: true,
-          teamType: sourceSlot.teamType || "普通團"
+          teamType: sourceSlot.teamType || "普通團",
+          description: sourceSlot.description || ""
+
         };
 
         sourceSlot.members.splice(memberIndex, 1);
@@ -1786,14 +1816,15 @@
       closeEditRoleModal();
     };
 
-    function openTeamTypeModal(dateKey, slotIndex){
-      const slot = globalData?.[dateKey]?.slots?.[slotIndex];
-      if(!slot) return;
-
-      currentTeamTypeEdit = { dateKey, slotIndex };
-      document.getElementById("teamTypeSelect").value = slot.teamType || "普通團";
-      document.getElementById("teamTypeModal").classList.add("show");
-    }
+      function openTeamTypeModal(dateKey, slotIndex){
+        const slot = globalData?.[dateKey]?.slots?.[slotIndex];
+        if(!slot) return;
+      
+        currentTeamTypeEdit = { dateKey, slotIndex };
+        document.getElementById("teamTypeSelect").value = slot.teamType || "普通團";
+        document.getElementById("teamDescriptionInput").value = slot.description || "";
+        document.getElementById("teamTypeModal").classList.add("show");
+      }
 
     window.closeTeamTypeModal = () => {
       currentTeamTypeEdit = null;
@@ -1802,15 +1833,18 @@
 
     window.saveTeamType = async () => {
       if(!currentTeamTypeEdit) return;
-
+    
       const { dateKey, slotIndex } = currentTeamTypeEdit;
       const value = document.getElementById("teamTypeSelect").value;
-
+      const description = document.getElementById("teamDescriptionInput").value.trim();
+    
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
       if(!dayData.slots[slotIndex]) return;
-
+    
       dayData.slots[slotIndex].teamType = value;
+      dayData.slots[slotIndex].description = description;
+    
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       closeTeamTypeModal();
     };
@@ -1914,6 +1948,8 @@
         members: [],
         isCustom: true,
         teamType: "普通團"
+        description: ""
+
       });
 
       sortSlots(dayData.slots);
@@ -2034,13 +2070,18 @@
                   </div>
                 </div>
 
-                <div class="summary">
-                  <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
-                  <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
-                  <span class="summary-pill">治療 <strong>${healCount}</strong></span>
-                </div>
-
-                <div class="member-list">
+            <div class="summary">
+              <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
+              <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
+              <span class="summary-pill">治療 <strong>${healCount}</strong></span>
+            </div>
+            
+            ${slot.description && slot.description.trim()
+              ? `<div class="slot-description">${escapeHtml(slot.description)}</div>`
+              : ``
+            }
+            
+            <div class="member-list">
             `;
 
             if(members.length === 0){
