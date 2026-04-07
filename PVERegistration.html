@@ -8,7 +8,6 @@
     :root{
       --bg:#0b1020;
       --bg2:#131c35;
-      --panel:rgba(255,255,255,.08);
       --line:rgba(255,255,255,.12);
       --text:#eef2ff;
       --muted:#a8b3cf;
@@ -237,12 +236,7 @@
     .slot-card.full-team .slot-instance{
       color:#ffdbe4;
     }
-    
-    .slot-description-body{
-      margin-top:2px;
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
+
     .slot-top{
       display:flex;
       justify-content:space-between;
@@ -397,10 +391,30 @@
       color:#cdd9f5;
       text-transform:uppercase;
     }
-  
+
+    .slot-description-body{
+      margin-top:2px;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .slot-description-body strong{
+      font-weight:800;
+      color:#fff;
+    }
+
+    .slot-description-body em{
+      font-style:italic;
+      opacity:.9;
+    }
+
+    .slot-description-body span{
+      font-weight:700;
+    }
+
     .member-list{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
+      grid-template-columns:repeat(3, minmax(0, 1fr));
       gap:10px;
       min-height:46px;
     }
@@ -414,13 +428,18 @@
       border-radius:12px;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.08);
-      min-height:44px;
+      min-height:52px;
     }
 
     .member.member-self{
       background:rgba(255,215,106,.12);
       border-color:rgba(255,215,106,.30);
       box-shadow:0 0 0 2px rgba(255,215,106,.10) inset;
+    }
+
+    .member.member-tagged{
+      background:rgba(255,255,255,.10);
+      border-color:rgba(255,255,255,.14);
     }
 
     .member-left{
@@ -698,7 +717,7 @@
 
     .signup-modal-box,
     .confirm-modal-box{
-      width:min(420px, 100%);
+      width:min(520px, 100%);
       background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
       border:1px solid rgba(255,255,255,.10);
       border-radius:20px;
@@ -746,7 +765,7 @@
     }
 
     .signup-textarea{
-      min-height:96px;
+      min-height:120px;
       resize:vertical;
       font-family:inherit;
     }
@@ -841,6 +860,64 @@
       background:rgba(110,168,255,.18);
     }
 
+    .editor-toolbar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+
+    .editor-toolbar button{
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      cursor:pointer;
+    }
+
+    .editor-toolbar button:hover{
+      background:rgba(255,255,255,.12);
+    }
+
+    .color-picker{
+      position:relative;
+    }
+
+    .color-menu{
+      position:absolute;
+      top:38px;
+      left:0;
+      display:none;
+      gap:6px;
+      padding:8px;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 14px 30px rgba(0,0,0,.28);
+      z-index:30;
+    }
+
+    .color-picker:hover .color-menu{
+      display:flex;
+    }
+
+    .color-menu span{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.18);
+    }
+
+    .format-help{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
     .signup-modal-actions,
     .confirm-modal-actions{
       display:flex;
@@ -877,16 +954,7 @@
       color:white;
       background:linear-gradient(135deg, #ff6b81, #ef4444);
     }
-    @media (max-width:1100px){
-      .member-list{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-      }
-    
-    @media (max-width:768px){
-      .member-list{
-        grid-template-columns:1fr;
-      }
-    
+
     @media (max-width:1100px){
       .day-card{
         grid-template-columns:1fr;
@@ -900,6 +968,10 @@
       .slot-list{
         grid-template-columns:repeat(2, minmax(0, 1fr));
       }
+
+      .member-list{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width:768px){
@@ -907,9 +979,12 @@
       .hero{ padding:18px; }
       .day-card{ padding:14px; }
       .slot-list{ grid-template-columns:1fr; }
+      .member-list{ grid-template-columns:1fr; }
       .day-title{ font-size:24px; }
       .member-main-row{ gap:8px; }
       .tag-pill{ font-size:10px; padding:4px 7px; }
+      .signup-modal-box,
+      .confirm-modal-box{ width:min(100%, 100%); }
     }
   </style>
 </head>
@@ -986,10 +1061,9 @@
           <div><strong style="color:var(--text);">職業說明</strong><br>「假奶」會算作 1 個治療位。</div>
           <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單會自動帶入，且 (你) 只會跟著這份資料，不會因為幫別人報名而跑掉。</div>
-          <div><strong style="color:var(--text);">團類型</strong><br>每個隊伍都可以設定成普通團或天賦團。</div>
-          <div><strong style="color:var(--text);">隊伍說明</strong><br>可在隊伍內填寫備注，例如缺主T、補位、熟機制優先等。沒有內容時不會顯示。</div>
+          <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
           <div><strong style="color:var(--text);">標記排序</strong><br>有標記的隊員會自動排在前面，沒有標記的排在後面。</div>
-          <div><strong style="color:var(--text);">移動隊友</strong><br>可把隊員移到同一天的其他隊伍，或直接建立新隊伍並移入。</div>
+          <div><strong style="color:var(--text);">版面</strong><br>桌機一排 2 個隊伍；隊友名單一排 3 個。手機自動改為單欄。</div>
         </div>
       </div>
       <div class="confirm-modal-actions">
@@ -1066,15 +1140,36 @@
         <option value="天賦團">天賦團</option>
       </select>
 
-      <label class="signup-label" for="teamDescriptionInput">備注 / Description</label>
+      <label class="signup-label" for="teamDescriptionInput">隊伍說明</label>
+
+      <div class="editor-toolbar">
+        <button type="button" onclick="applyFormat('bold')"><b>B</b></button>
+        <button type="button" onclick="applyFormat('italic')"><i>I</i></button>
+
+        <div class="color-picker">
+          <button type="button">🎨</button>
+          <div class="color-menu">
+            <span style="background:#ff6b81" onclick="applyColor('red')"></span>
+            <span style="background:#6ea8ff" onclick="applyColor('blue')"></span>
+            <span style="background:#34d399" onclick="applyColor('green')"></span>
+            <span style="background:#fbbf24" onclick="applyColor('yellow')"></span>
+            <span style="background:#a78bfa" onclick="applyColor('purple')"></span>
+          </div>
+        </div>
+      </div>
+
       <textarea
         id="teamDescriptionInput"
         class="signup-textarea"
-        placeholder="例如：&#10;優先給需要打天賦的人&#10;熟機制優先&#10;只開一次"
+        placeholder="例如：&#10;**優先給需要打天賦的人**&#10;[color=yellow]奶媽最多三位[/color]&#10;*只開一次*"
       ></textarea>
 
-      <div class="confirm-modal-actions">
-        <button type="button" class="confirm-cancel-btn" onclick="closeTeamTypeModal()">取消</button>
+      <div class="format-help">
+        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=red]文字[/color]</code>
+      </div>
+
+      <div class="signup-modal-actions">
+        <button type="button" class="signup-cancel-btn" onclick="closeTeamTypeModal()">取消</button>
         <button type="button" class="signup-confirm-btn" onclick="saveTeamType()">儲存</button>
       </div>
     </div>
@@ -1277,6 +1372,66 @@
         .replaceAll("'","&#039;");
     }
 
+    function formatDescription(text){
+      if(!text) return "";
+
+      let t = text
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+
+      t = t.replace(/\*\*(.*?)\*\*/gs, "<strong>$1</strong>");
+      t = t.replace(/\*(.*?)\*/gs, "<em>$1</em>");
+
+      const colors = {
+        red:"#ff6b81",
+        blue:"#6ea8ff",
+        green:"#34d399",
+        yellow:"#fbbf24",
+        purple:"#a78bfa"
+      };
+
+      t = t.replace(/\[color=(.*?)\](.*?)\[\/color\]/gs, (m, c, content) => {
+        const color = colors[c] || "#ffffff";
+        return `<span style="color:${color}">${content}</span>`;
+      });
+
+      t = t.replace(/\n/g, "<br>");
+      return t.trim();
+    }
+
+    function wrapText(textarea, before, after){
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      const selected = text.substring(start, end);
+
+      textarea.value =
+        text.substring(0, start) +
+        before + selected + after +
+        text.substring(end);
+
+      textarea.focus();
+      textarea.setSelectionRange(start + before.length, end + before.length);
+    }
+
+    window.applyFormat = (type) => {
+      const textarea = document.getElementById("teamDescriptionInput");
+      if(!textarea) return;
+
+      if(type === "bold"){
+        wrapText(textarea, "**", "**");
+      } else if(type === "italic"){
+        wrapText(textarea, "*", "*");
+      }
+    };
+
+    window.applyColor = (color) => {
+      const textarea = document.getElementById("teamDescriptionInput");
+      if(!textarea) return;
+      wrapText(textarea, `[color=${color}]`, `[/color]`);
+    };
+
     function buildDefaultDayData(dateObj){
       const slots = [];
       const day = dateObj.getDay();
@@ -1308,8 +1463,7 @@
           teamType:"普通團",
           description:""
         });
-      }
-      else if(day >= 2 && day <= 5){
+      } else if(day >= 2 && day <= 5){
         slots.push({
           time:"19:45",
           instance:1,
@@ -1318,8 +1472,7 @@
           teamType:"普通團",
           description:""
         });
-      }
-      else{
+      } else {
         CONFIG.weekendTimes.forEach(time => {
           slots.push({
             time,
@@ -1481,7 +1634,7 @@
 
       document.addEventListener("click", (e) => {
         const select = document.getElementById("roleSelect");
-        if(!select.contains(e.target)){
+        if(select && !select.contains(e.target)){
           closeCustomSelect();
         }
 
@@ -2088,10 +2241,10 @@
                   <span class="summary-pill">治療 <strong>${healCount}</strong></span>
                 </div>
 
-            ${slot.description && slot.description.trim()
-              ? `<div class="slot-description"><div class="slot-description-title">隊伍說明</div><div class="slot-description-body">${escapeHtml(slot.description).trim()}</div></div>`
-              : ``
-            }
+                ${slot.description && slot.description.trim()
+                  ? `<div class="slot-description"><div class="slot-description-title">隊伍說明</div><div class="slot-description-body">${formatDescription(slot.description)}</div></div>`
+                  : ``
+                }
 
                 <div class="member-list">
             `;
@@ -2101,9 +2254,10 @@
             } else {
               sortedMembers.forEach(member => {
                 const isSelf = !!savedName && String(member.name).trim() === savedName;
+                const hasTag = !!String(member.tag || "").trim();
 
                 html += `
-                  <div class="member${isSelf ? " member-self" : ""}">
+                  <div class="member${isSelf ? " member-self" : ""}${hasTag ? " member-tagged" : ""}">
                     <div class="member-left">
                       <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
 
