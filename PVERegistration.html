@@ -352,6 +352,21 @@
 
     .summary-pill strong{ color:var(--text); }
 
+    .slot-description{
+      margin:0 0 10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(12,18,32,.72);
+      color:#dbe7ff;
+      font-size:12px;
+      line-height:1.65;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      white-space:pre-wrap;
+      word-break:break-word;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
     .member-list{
       display:flex;
       flex-direction:column;
@@ -378,17 +393,17 @@
       margin-top:4px;
     }
 
-     .member{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-    padding:8px 10px;
-    border-radius:12px;
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.08);
-    min-height:44px;
-  }
+    .member{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      min-height:44px;
+    }
 
     .member.member-self{
       background:rgba(255,215,106,.12);
@@ -424,8 +439,8 @@
 
     .member-name{
       display:block;
-      font-size:14px;
-      line-height:1.3;
+      font-size:13px;
+      line-height:1.2;
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
@@ -434,9 +449,9 @@
     }
 
     .member-note{
-      font-size:12px;
+      font-size:11px;
       color:var(--muted);
-      line-height:1.5;
+      line-height:1.4;
       word-break:break-word;
     }
 
@@ -445,10 +460,10 @@
       align-items:center;
       gap:4px;
       flex:0 0 auto;
-      font-size:11px;
+      font-size:10px;
       font-weight:800;
       border-radius:999px;
-      padding:4px 8px;
+      padding:3px 7px;
       background:rgba(110,168,255,.12);
       border:1px solid rgba(110,168,255,.24);
       color:#d8e7ff;
@@ -461,10 +476,10 @@
     }
 
     .role-badge{
-      font-size:12px;
+      font-size:11px;
       font-weight:800;
       border-radius:999px;
-      padding:5px 8px;
+      padding:4px 7px;
       white-space:nowrap;
       line-height:1.2;
       flex:0 0 auto;
@@ -503,11 +518,11 @@
     .menu-trigger{
       background:transparent;
       color:#dbe7ff;
-      padding:4px 8px;
-      font-size:18px;
+      padding:2px 6px;
+      font-size:16px;
       line-height:1;
       border:none;
-      border-radius:10px;
+      border-radius:8px;
     }
 
     .menu-trigger:hover{
@@ -951,6 +966,7 @@
           <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單會自動帶入，且 (你) 只會跟著這份資料，不會因為幫別人報名而跑掉。</div>
           <div><strong style="color:var(--text);">團類型</strong><br>每個隊伍都可以設定成普通團或天賦團。</div>
+          <div><strong style="color:var(--text);">隊伍 Description</strong><br>可在隊伍內填寫備注，例如缺主T、補位、熟機制優先等。沒有內容時不會顯示。</div>
           <div><strong style="color:var(--text);">機制標籤</strong><br>可以幫隊員加上標籤與備註，例如主T、踩點、補位、引球等，系統會依標籤自動分類顯示。</div>
           <div><strong style="color:var(--text);">移動隊友</strong><br>可把隊員移到同一天的其他隊伍，或直接建立新隊伍並移入。</div>
         </div>
@@ -1029,6 +1045,13 @@
         <option value="天賦團">天賦團</option>
       </select>
 
+      <label class="signup-label" for="teamDescriptionInput">備注 / Description</label>
+      <textarea
+        id="teamDescriptionInput"
+        class="signup-textarea"
+        placeholder="例如：&#10;缺主T&#10;7=補位&#10;熟機制優先"
+      ></textarea>
+
       <div class="confirm-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeTeamTypeModal()">取消</button>
         <button type="button" class="signup-confirm-btn" onclick="saveTeamType()">儲存</button>
@@ -1086,7 +1109,6 @@
       daysToShow: 5,
       maxPeople: 10,
       minHealer: 2,
-      weekdayTimes: ["19:45","20:30"],
       weekendTimes: ["16:00","21:30"],
       roles: ["輸出","承傷","治療","假奶"],
       collectionName: "schedule"
@@ -1157,10 +1179,6 @@
 
     function isWeekend(date){
       return date.getDay() === 0 || date.getDay() === 6;
-    }
-
-    function getDefaultTimesForDate(date){
-      return isWeekend(date) ? [...CONFIG.weekendTimes] : [...CONFIG.weekdayTimes];
     }
 
     function getNextMonday(){
@@ -1240,64 +1258,59 @@
 
     function buildDefaultDayData(dateObj){
       const slots = [];
-      const day = dateObj.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-    
-      // 👉 星期一
+      const day = dateObj.getDay();
+
       if(day === 1){
-        // 19:45 第一隊
         slots.push({
           time:"19:45",
           instance:1,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
-    
-        // 19:45 第二隊
+
         slots.push({
           time:"19:45",
           instance:2,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
-    
-        // 20:30
+
         slots.push({
           time:"20:30",
           instance:1,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
       }
-    
-      // 👉 星期二～星期五
       else if(day >= 2 && day <= 5){
         slots.push({
           time:"19:45",
           instance:1,
           members:[],
           isCustom:false,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
       }
-    
-      // 👉 週末（保留你原本）
       else{
-        const defaultTimes = getDefaultTimesForDate(dateObj);
-    
-        defaultTimes.forEach(time => {
+        CONFIG.weekendTimes.forEach(time => {
           slots.push({
             time,
             instance:1,
             members:[],
             isCustom:false,
-            teamType:"普通團"
+            teamType:"普通團",
+            description:""
           });
         });
       }
-    
+
       sortSlots(slots);
       return { slots };
     }
@@ -1320,6 +1333,7 @@
               ...slot,
               isCustom: typeof slot.isCustom === "undefined" ? false : slot.isCustom,
               teamType: slot.teamType || "普通團",
+              description: slot.description || "",
               members: Array.isArray(slot.members)
                 ? slot.members.map(member => ({
                     ...member,
@@ -1332,6 +1346,7 @@
             if(
               typeof slot.isCustom === "undefined" ||
               !slot.teamType ||
+              typeof slot.description === "undefined" ||
               (Array.isArray(slot.members) && slot.members.some(member => typeof member.tag === "undefined" || typeof member.note === "undefined"))
             ){
               changed = true;
@@ -1365,7 +1380,8 @@
           instance:maxInstance + 1,
           members:[],
           isCustom:true,
-          teamType:"普通團"
+          teamType:"普通團",
+          description:""
         });
         sortSlots(dayData.slots);
       }
@@ -1717,7 +1733,8 @@
           instance: maxInstance + 1,
           members: [member],
           isCustom: true,
-          teamType: sourceSlot.teamType || "普通團"
+          teamType: sourceSlot.teamType || "普通團",
+          description: sourceSlot.description || ""
         };
 
         sourceSlot.members.splice(memberIndex, 1);
@@ -1792,6 +1809,7 @@
 
       currentTeamTypeEdit = { dateKey, slotIndex };
       document.getElementById("teamTypeSelect").value = slot.teamType || "普通團";
+      document.getElementById("teamDescriptionInput").value = slot.description || "";
       document.getElementById("teamTypeModal").classList.add("show");
     }
 
@@ -1805,12 +1823,15 @@
 
       const { dateKey, slotIndex } = currentTeamTypeEdit;
       const value = document.getElementById("teamTypeSelect").value;
+      const description = document.getElementById("teamDescriptionInput").value.trim();
 
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
       if(!dayData.slots[slotIndex]) return;
 
       dayData.slots[slotIndex].teamType = value;
+      dayData.slots[slotIndex].description = description;
+
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       closeTeamTypeModal();
     };
@@ -1876,6 +1897,7 @@
     async function addMember(dateKey, slotIndex){
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
+
       const slot = dayData.slots[slotIndex];
       if(!slot) return;
 
@@ -1895,7 +1917,7 @@
       if(input === null) return;
 
       const trimmed = input.trim();
-      if(!/^([01]\d|2[0-3]):([0-5]\d)$/.test(trimmed)){
+      if(!/^([01]\\d|2[0-3]):([0-5]\\d)$/.test(trimmed)){
         alert("時間格式錯誤，請使用 HH:MM，例如 19:45");
         return;
       }
@@ -1913,7 +1935,8 @@
         instance: nextInstance,
         members: [],
         isCustom: true,
-        teamType: "普通團"
+        teamType: "普通團",
+        description: ""
       });
 
       sortSlots(dayData.slots);
@@ -2021,7 +2044,7 @@
                       <button class="slot-menu-trigger" data-action="toggle-slot-menu">⋯</button>
                       <div class="slot-menu-dropdown">
                         <button class="slot-menu-item team" data-action="edit-team-type" data-date="${dateKey}" data-slot="${slotIndex}">
-                          團類型
+                          團類型 / Description
                         </button>
 
                         ${slot.isCustom ? `
@@ -2039,6 +2062,11 @@
                   <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
                   <span class="summary-pill">治療 <strong>${healCount}</strong></span>
                 </div>
+
+                ${slot.description && slot.description.trim()
+                  ? `<div class="slot-description">${escapeHtml(slot.description)}</div>`
+                  : ``
+                }
 
                 <div class="member-list">
             `;
