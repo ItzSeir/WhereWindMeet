@@ -403,39 +403,70 @@
       font-weight:800;
     }
 
-    .member-actions{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
+    .member-menu{
+      position:relative;
       flex:0 0 auto;
     }
 
-    .remove-btn,
-    .tag-btn,
-    .move-btn{
+    .menu-trigger{
       background:transparent;
-      padding:4px 6px;
-      font-size:13px;
+      color:#dbe7ff;
+      padding:4px 8px;
+      font-size:18px;
+      line-height:1;
       border:none;
       border-radius:10px;
-      flex:0 0 auto;
     }
 
-    .remove-btn{ color:var(--danger); }
-    .tag-btn{ color:#cfe0ff; }
-    .move-btn{ color:#b8f0ff; }
-
-    .remove-btn:hover{
-      background:rgba(255,107,129,.12);
+    .menu-trigger:hover{
+      background:rgba(255,255,255,.08);
     }
 
-    .tag-btn:hover{
-      background:rgba(110,168,255,.12);
+    .member-menu-dropdown{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      min-width:120px;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      display:none;
+      z-index:40;
     }
 
-    .move-btn:hover{
-      background:rgba(56,189,248,.12);
+    .member-menu.open .member-menu-dropdown{
+      display:block;
+    }
+
+    .member-menu-item{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      color:var(--text);
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .member-menu-item:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .member-menu-item.delete{
+      color:var(--danger);
+    }
+
+    .member-menu-item.move{
+      color:#b8f0ff;
+    }
+
+    .member-menu-item.tag{
+      color:#cfe0ff;
     }
 
     .slot-actions{
@@ -788,7 +819,7 @@
 
           <div>
             <strong style="color:var(--text);">移動隊友</strong><br>
-            可把隊員移到同一天的其他隊伍，系統會自動檢查目標隊是否已滿或有重名。
+            可把隊員移到同一天的其他隊伍，或直接建立新隊伍並移入。
           </div>
 
           <div>
@@ -1171,6 +1202,12 @@
         if(!select.contains(e.target)){
           closeCustomSelect();
         }
+
+        document.querySelectorAll('.member-menu.open').forEach(menu => {
+          if(!menu.contains(e.target)){
+            menu.classList.remove('open');
+          }
+        });
       });
 
       signupModal.addEventListener("click", (e) => {
@@ -1367,6 +1404,11 @@
       info.innerHTML = `要移動的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
       select.innerHTML = "";
 
+      const newTeamOption = document.createElement("option");
+      newTeamOption.value = "__new__";
+      newTeamOption.textContent = "建立新隊伍並移入";
+      select.appendChild(newTeamOption);
+
       dayData.slots.forEach((slot, index) => {
         if(index === slotIndex) return;
 
@@ -1375,13 +1417,6 @@
         option.textContent = `${slot.time}｜第 ${slot.instance || 1} 隊｜${(slot.members || []).length}/${CONFIG.maxPeople}`;
         select.appendChild(option);
       });
-
-      if(select.options.length === 0){
-        const option = document.createElement("option");
-        option.value = "";
-        option.textContent = "沒有可移動的其他隊伍";
-        select.appendChild(option);
-      }
 
       document.getElementById("moveModal").classList.add("show");
     }
@@ -1397,24 +1432,42 @@
       const { dateKey, slotIndex, memberIndex } = currentMoveEdit;
       const targetValue = document.getElementById("moveTargetSelect").value;
 
-      if(targetValue === ""){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const sourceSlot = dayData.slots[slotIndex];
+      if(!sourceSlot) return;
+
+      sourceSlot.members = Array.isArray(sourceSlot.members) ? sourceSlot.members : [];
+
+      const member = sourceSlot.members[memberIndex];
+      if(!member) return;
+
+      if(targetValue === "__new__"){
+        const sameTimeSlots = dayData.slots.filter(s => s.time === sourceSlot.time);
+        const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
+
+        const newSlot = {
+          time: sourceSlot.time,
+          instance: maxInstance + 1,
+          members: [member],
+          isCustom: true
+        };
+
+        sourceSlot.members.splice(memberIndex, 1);
+        dayData.slots.push(newSlot);
+        sortSlots(dayData.slots);
+
+        await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
         closeMoveModal();
         return;
       }
 
       const targetSlotIndex = Number(targetValue);
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-
-      const sourceSlot = dayData.slots[slotIndex];
       const targetSlot = dayData.slots[targetSlotIndex];
-      if(!sourceSlot || !targetSlot) return;
+      if(!targetSlot) return;
 
-      sourceSlot.members = Array.isArray(sourceSlot.members) ? sourceSlot.members : [];
       targetSlot.members = Array.isArray(targetSlot.members) ? targetSlot.members : [];
-
-      const member = sourceSlot.members[memberIndex];
-      if(!member) return;
 
       if(targetSlot.members.length >= CONFIG.maxPeople){
         alert("目標隊伍已滿。");
@@ -1658,10 +1711,13 @@
                           ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
                         </div>
                       </div>
-                      <div class="member-actions">
-                        <button class="move-btn" data-action="move-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">移動</button>
-                        <button class="tag-btn" data-action="edit-member-tag" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">標籤</button>
-                        <button class="remove-btn" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">刪除</button>
+                      <div class="member-menu">
+                        <button class="menu-trigger" data-action="toggle-member-menu">⋯</button>
+                        <div class="member-menu-dropdown">
+                          <button class="member-menu-item move" data-action="move-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">移動</button>
+                          <button class="member-menu-item tag" data-action="edit-member-tag" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">標籤</button>
+                          <button class="member-menu-item delete" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">刪除</button>
+                        </div>
                       </div>
                     </div>
                   `;
@@ -1701,6 +1757,20 @@
     }
 
     function bindActions(){
+      document.querySelectorAll('[data-action="toggle-member-menu"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+
+          document.querySelectorAll('.member-menu.open').forEach(menu => {
+            if(menu !== btn.closest('.member-menu')){
+              menu.classList.remove('open');
+            }
+          });
+
+          btn.closest('.member-menu').classList.toggle('open');
+        };
+      });
+
       document.querySelectorAll('[data-action="add-time"]').forEach(btn => {
         btn.onclick = () => addCustomTime(btn.dataset.date);
       });
@@ -1710,27 +1780,36 @@
       });
 
       document.querySelectorAll('[data-action="edit-member-tag"]').forEach(btn => {
-        btn.onclick = () => openTagModal(
-          btn.dataset.date,
-          Number(btn.dataset.slot),
-          Number(btn.dataset.member)
-        );
+        btn.onclick = () => {
+          document.querySelectorAll('.member-menu.open').forEach(menu => menu.classList.remove('open'));
+          openTagModal(
+            btn.dataset.date,
+            Number(btn.dataset.slot),
+            Number(btn.dataset.member)
+          );
+        };
       });
 
       document.querySelectorAll('[data-action="move-member"]').forEach(btn => {
-        btn.onclick = () => openMoveModal(
-          btn.dataset.date,
-          Number(btn.dataset.slot),
-          Number(btn.dataset.member)
-        );
+        btn.onclick = () => {
+          document.querySelectorAll('.member-menu.open').forEach(menu => menu.classList.remove('open'));
+          openMoveModal(
+            btn.dataset.date,
+            Number(btn.dataset.slot),
+            Number(btn.dataset.member)
+          );
+        };
       });
 
       document.querySelectorAll('[data-action="remove-member"]').forEach(btn => {
-        btn.onclick = () => openConfirmModal(
-          btn.dataset.date,
-          Number(btn.dataset.slot),
-          Number(btn.dataset.member)
-        );
+        btn.onclick = () => {
+          document.querySelectorAll('.member-menu.open').forEach(menu => menu.classList.remove('open'));
+          openConfirmModal(
+            btn.dataset.date,
+            Number(btn.dataset.slot),
+            Number(btn.dataset.member)
+          );
+        };
       });
 
       document.querySelectorAll('[data-action="delete-slot"]').forEach(btn => {
