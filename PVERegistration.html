@@ -26,7 +26,6 @@
     }
 
     *{ box-sizing:border-box; }
-
     html,body{
       margin:0;
       padding:0;
@@ -38,9 +37,7 @@
         linear-gradient(180deg, var(--bg), var(--bg2));
     }
 
-    body{
-      padding:24px 14px 40px;
-    }
+    body{ padding:24px 14px 40px; }
 
     .container{
       max-width:1600px;
@@ -55,31 +52,6 @@
       padding:24px;
       backdrop-filter:blur(14px);
       margin-bottom:20px;
-    }
-
-    .hero-top{
-      display:flex;
-      justify-content:flex-end;
-      margin-bottom:12px;
-    }
-
-    .top-link{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      border-radius:14px;
-      padding:10px 14px;
-      font-size:14px;
-      font-weight:700;
-      transition:.18s ease;
-      background:rgba(255,255,255,.08);
-      color:var(--text);
-      border:1px solid var(--line);
-    }
-
-    .top-link:hover{
-      transform:translateY(-1px);
     }
 
     .title{
@@ -135,9 +107,7 @@
       transition:.18s ease;
     }
 
-    button:hover{
-      transform:translateY(-1px);
-    }
+    button:hover{ transform:translateY(-1px); }
 
     .btn-ghost{
       background:rgba(255,255,255,.08);
@@ -146,6 +116,1772 @@
     }
 
     .days{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .day-card{
+      display:grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      border-radius:24px;
+      padding:18px;
+      backdrop-filter:blur(14px);
+      align-items:start;
+    }
+
+    .day-head{
+      position:sticky;
+      top:14px;
+      align-self:start;
+      padding-right:8px;
+    }
+
+    .day-title{
+      margin:0;
+      font-size:28px;
+      line-height:1.1;
+    }
+
+    .day-sub{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .day-actions{
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .slot-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+      gap:14px;
+      min-width:0;
+    }
+
+    .slot-card{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      min-width:0;
+      transition:.18s ease;
+    }
+
+    .slot-card.has-members{
+      background:rgba(110,168,255,.12);
+      border-color:rgba(110,168,255,.28);
+      box-shadow:0 8px 18px rgba(110,168,255,.10);
+    }
+
+    .slot-card.full-team{
+      background:rgba(255,107,129,.18);
+      border-color:rgba(255,107,129,.34);
+      box-shadow:0 8px 18px rgba(255,107,129,.12);
+    }
+
+    .slot-card.my-team{
+      outline:2px solid rgba(255,215,106,.72);
+      box-shadow:
+        0 0 0 3px rgba(255,215,106,.14),
+        0 12px 26px rgba(255,215,106,.10);
+    }
+
+    .slot-card.full-team .slot-time,
+    .slot-card.full-team .slot-instance{
+      color:#ffdbe4;
+    }
+
+    .slot-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .slot-time-wrap{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .slot-time{
+      font-size:18px;
+      font-weight:800;
+      line-height:1.1;
+    }
+
+    .recommend-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      color:#ffd76a;
+      background:rgba(255,215,106,.12);
+      border:1px solid rgba(255,215,106,.28);
+      line-height:1;
+    }
+
+    .slot-instance{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .slot-badges{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .badge{
+      border-radius:999px;
+      padding:5px 8px;
+      font-size:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--muted);
+    }
+
+    .status-ok{ color:var(--success); }
+    .status-warn{ color:var(--danger); }
+    .status-full{ color:var(--warn); }
+
+    .summary{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .summary-pill{
+      font-size:12px;
+      border-radius:999px;
+      padding:5px 8px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
+
+    .summary-pill strong{ color:var(--text); }
+
+    .member-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-height:46px;
+    }
+
+    .member-group{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:6px;
+    }
+
+    .member-group-title{
+      font-size:12px;
+      font-weight:800;
+      color:#d9e7ff;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      padding:5px 10px;
+      align-self:flex-start;
+      margin-top:4px;
+    }
+
+    .member{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+  min-height:54px;
+}
+
+.member-left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  flex:1;
+}
+
+.member-text{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:4px;
+}
+
+.member-name{
+  display:block;
+  font-size:14px;
+  line-height:1.3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+    
+.member-menu{
+  position:relative;
+  flex:0 0 auto;
+  align-self:center;
+}
+
+.role-badge{
+  font-size:12px;
+  font-weight:800;
+  border-radius:999px;
+  padding:5px 8px;
+  white-space:nowrap;
+  line-height:1.2;
+}
+    .role-badge{
+      font-size:12px;
+      font-weight:800;
+      border-radius:999px;
+      padding:5px 8px;
+      white-space:nowrap;
+    }
+
+    .role-dps{
+      background:rgba(96,165,250,.16);
+      color:var(--dps);
+      border:1px solid rgba(96,165,250,.28);
+    }
+
+    .role-tank{
+      background:rgba(245,158,11,.14);
+      color:var(--tank);
+      border:1px solid rgba(245,158,11,.28);
+    }
+
+    .role-heal{
+      background:rgba(34,197,94,.14);
+      color:var(--heal);
+      border:1px solid rgba(34,197,94,.28);
+    }
+
+    .role-fakeheal{
+      background:rgba(168,85,247,.16);
+      color:#c084fc;
+      border:1px solid rgba(168,85,247,.28);
+    }
+
+    .member-name{
+      font-size:14px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .member-note{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+      word-break:break-word;
+    }
+
+    .tag-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      width:max-content;
+      max-width:100%;
+      font-size:11px;
+      font-weight:800;
+      border-radius:999px;
+      padding:4px 8px;
+      background:rgba(110,168,255,.12);
+      border:1px solid rgba(110,168,255,.24);
+      color:#d8e7ff;
+    }
+
+    .member-self .member-name{
+      color:#ffe8a6;
+      font-weight:800;
+    }
+
+    .member-menu{
+      position:relative;
+      flex:0 0 auto;
+    }
+
+    .menu-trigger{
+      background:transparent;
+      color:#dbe7ff;
+      padding:4px 8px;
+      font-size:18px;
+      line-height:1;
+      border:none;
+      border-radius:10px;
+    }
+
+    .menu-trigger:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .member-menu-dropdown{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      min-width:120px;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      display:none;
+      z-index:40;
+    }
+
+    .member-menu.open .member-menu-dropdown{
+      display:block;
+    }
+
+    .member-menu-item{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      color:var(--text);
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .member-menu-item:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .member-menu-item.delete{
+      color:var(--danger);
+    }
+
+    .member-menu-item.move{
+      color:#b8f0ff;
+    }
+
+    .member-menu-item.tag{
+      color:#cfe0ff;
+    }
+
+    .slot-actions{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .add-btn, .delete-slot-btn{
+      flex:1 1 100px;
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border:1px dashed rgba(255,255,255,.18);
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .delete-slot-btn{
+      color:#ffb4c1;
+      border-color:rgba(255,107,129,.28);
+      background:rgba(255,107,129,.08);
+    }
+
+    .add-btn:disabled,
+    .delete-slot-btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .empty-note{
+      color:var(--muted);
+      font-size:13px;
+      padding:6px 2px 2px;
+    }
+
+    .signup-modal,
+    .confirm-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(3,8,20,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:99999;
+      padding:20px;
+    }
+
+    .signup-modal.show,
+    .confirm-modal.show{
+      display:flex;
+    }
+
+    .signup-modal-box,
+    .confirm-modal-box{
+      width:min(420px, 100%);
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      backdrop-filter:blur(14px);
+    }
+
+    .signup-modal-title,
+    .confirm-modal-title{
+      font-size:24px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+
+    .confirm-modal-text{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:16px;
+    }
+
+    .signup-label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin:10px 0 6px;
+    }
+
+    .signup-input,
+    .signup-textarea,
+    .signup-select{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      outline:none;
+    }
+
+    .signup-select option{
+      color:#111827;
+    }
+
+    .signup-textarea{
+      min-height:96px;
+      resize:vertical;
+      font-family:inherit;
+    }
+
+    .signup-input:focus,
+    .signup-textarea:focus,
+    .signup-select:focus{
+      border-color:rgba(110,168,255,.55);
+      box-shadow:0 0 0 3px rgba(110,168,255,.14);
+    }
+
+    .custom-select{
+      position:relative;
+      user-select:none;
+    }
+
+    .custom-select-trigger{
+      width:100%;
+      padding:12px 42px 12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      cursor:pointer;
+      min-height:46px;
+    }
+
+    .custom-select-trigger:focus,
+    .custom-select.open .custom-select-trigger{
+      border-color:rgba(110,168,255,.55);
+      box-shadow:0 0 0 3px rgba(110,168,255,.14);
+      outline:none;
+    }
+
+    .custom-select-trigger::after{
+      content:"";
+      position:absolute;
+      right:14px;
+      top:50%;
+      width:8px;
+      height:8px;
+      border-right:2px solid #cbd5e1;
+      border-bottom:2px solid #cbd5e1;
+      transform:translateY(-60%) rotate(45deg);
+      transition:.18s ease;
+      pointer-events:none;
+    }
+
+    .custom-select.open .custom-select-trigger::after{
+      transform:translateY(-35%) rotate(-135deg);
+    }
+
+    .custom-select-menu{
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      right:0;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      display:none;
+      z-index:20;
+    }
+
+    .custom-select.open .custom-select-menu{
+      display:block;
+    }
+
+    .custom-select-option{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      color:var(--text);
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .custom-select-option:hover,
+    .custom-select-option.active{
+      background:rgba(110,168,255,.18);
+    }
+
+    .signup-modal-actions,
+    .confirm-modal-actions{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .signup-confirm-btn,
+    .signup-cancel-btn,
+    .confirm-danger-btn,
+    .confirm-cancel-btn{
+      flex:1;
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .signup-confirm-btn{
+      color:white;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+
+    .signup-cancel-btn,
+    .confirm-cancel-btn{
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .confirm-danger-btn{
+      color:white;
+      background:linear-gradient(135deg, #ff6b81, #ef4444);
+    }
+
+    @media (max-width: 1100px){
+      .day-card{
+        grid-template-columns:1fr;
+      }
+
+      .day-head{
+        position:static;
+        padding-right:0;
+      }
+
+      .slot-list{
+        grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+
+    @media (max-width:768px){
+      body{ padding:16px 10px 30px; }
+      .hero{ padding:18px; }
+      .day-card{ padding:14px; }
+      .slot-list{
+        grid-template-columns:1fr;
+      }
+      .day-title{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1 class="title">俠境報名清單</h1>
+      <p class="subtitle">目前進行測試中</p>
+      <div class="chips">
+        <span class="chip">筱風製作</span>
+        <span class="chip">一隊最多10人</span>
+        <span class="chip">每隊至少2個治療</span>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button class="btn-ghost" id="infoBtn">介紹</button>
+        <button class="btn-ghost" id="refreshBtn">整理日期</button>
+      </div>
+    </div>
+
+    <div class="days" id="days"></div>
+  </div>
+
+  <div id="signupModal" class="signup-modal">
+    <div class="signup-modal-box">
+      <div class="signup-modal-title">新增報名</div>
+
+      <label class="signup-label" for="playerName">名稱</label>
+      <input id="playerName" class="signup-input" type="text" placeholder="請輸入名字" />
+
+      <label class="signup-label">職業</label>
+      <div id="roleSelect" class="custom-select">
+        <button type="button" id="roleSelectTrigger" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span id="roleSelectLabel">請選擇職業</span>
+        </button>
+        <div id="roleSelectMenu" class="custom-select-menu" role="listbox" aria-label="職業選單"></div>
+      </div>
+
+      <div class="signup-modal-actions">
+        <button type="button" class="signup-confirm-btn" onclick="submitSignup()">確認</button>
+        <button type="button" class="signup-cancel-btn" onclick="closeModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">確認刪除</div>
+      <div id="confirmModalText" class="confirm-modal-text">你確定要刪除這筆報名嗎？</div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeConfirmModal()">取消</button>
+        <button type="button" class="confirm-danger-btn" onclick="confirmRemoveMember()">刪除</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="infoModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">俠境報名說明</div>
+
+      <div class="confirm-modal-text" style="margin-bottom:0;">
+        <div style="display:grid; gap:12px;">
+          <div>
+            <strong style="color:var(--text);">報名前請注意</strong><br>
+            請先確認自己可出席的時間，再進行報名。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">隊伍規則</strong><br>
+            每隊最多 10 人，且至少需要 2 個治療位。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">職業說明</strong><br>
+            「輸出/承傷 + 假奶」會算作 1 個治療位。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">重複報名</strong><br>
+            同一隊伍內不能使用相同名字重複報名。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">機制標籤</strong><br>
+            可以幫隊員加上標籤與備註，例如主T、踩點、補位、引球等，系統會依標籤自動分類顯示。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">移動隊友</strong><br>
+            可把隊員移到同一天的其他隊伍，或直接建立新隊伍並移入。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">臨時缺席</strong><br>
+            若臨時無法參加，請提早告知，方便安排補位與調整。
+          </div>
+
+          <div>
+            <strong style="color:var(--text);">推薦時段</strong><br>
+            平日 19:45 會標示為推薦時段。
+          </div>
+        </div>
+      </div>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeInfoModal()">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tagModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">編輯隊員標籤</div>
+
+      <label class="signup-label" for="tagInput">標籤</label>
+      <input id="tagInput" class="signup-input" type="text" placeholder="例如：主T / 踩點 / 補位" />
+
+      <label class="signup-label" for="noteInput">備註</label>
+      <textarea id="noteInput" class="signup-textarea" placeholder="例如：1號位、引球、先手開怪"></textarea>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeTagModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveMemberTag()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="moveModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">移動隊友</div>
+
+      <div id="moveMemberInfo" class="confirm-modal-text" style="margin-bottom:10px;">
+        請選擇要移動到哪個隊伍。
+      </div>
+
+      <label class="signup-label" for="moveTargetSelect">目標隊伍</label>
+      <select id="moveTargetSelect" class="signup-select"></select>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeMoveModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="confirmMoveMember()">確認移動</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      collection,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3NalXMRjiag_26-g82UtxeDvuSjydg30",
+      authDomain: "pve-ab4a8.firebaseapp.com",
+      projectId: "pve-ab4a8",
+      storageBucket: "pve-ab4a8.firebasestorage.app",
+      messagingSenderId: "292971877558",
+      appId: "1:292971877558:web:69b8ed8f70987847a44217",
+      measurementId: "G-ESW46GLEV2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const CONFIG = {
+      daysToShow: 5,
+      maxPeople: 10,
+      minHealer: 2,
+      weekdayTimes: ["19:45","20:30"],
+      weekendTimes: ["16:00","21:30"],
+      roles: ["輸出","承傷","治療","輸出/承傷 + 假奶"],
+      collectionName: "schedule"
+    };
+
+    let globalData = {};
+    let isRendering = false;
+    let currentSignup = {
+      dateKey: "",
+      slotIndex: -1,
+      allowedRoles: []
+    };
+    let selectedRoleValue = "";
+    let customSelectBound = false;
+    let pendingDelete = null;
+    let currentTagEdit = null;
+    let currentMoveEdit = null;
+
+    function getSavedPlayerName(){
+      return (localStorage.getItem("signup_player_name") || "").trim();
+    }
+
+    function getTodayStart(){
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function addDays(date, n){
+      const d = new Date(date);
+      d.setDate(d.getDate() + n);
+      return d;
+    }
+
+    function pad(n){
+      return String(n).padStart(2, "0");
+    }
+
+    function formatDate(date){
+      return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    }
+
+    function displayDate(date){
+      return `${date.getMonth()+1}/${date.getDate()}`;
+    }
+
+    function weekdayText(date){
+      return ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"][date.getDay()];
+    }
+
+    function isWeekend(date){
+      return date.getDay() === 0 || date.getDay() === 6;
+    }
+
+    function getDefaultTimesForDate(date){
+      return isWeekend(date) ? [...CONFIG.weekendTimes] : [...CONFIG.weekdayTimes];
+    }
+
+    function getNextMonday(){
+      const now = new Date();
+      now.setHours(0,0,0,0);
+
+      const day = now.getDay();
+      const diff = (8 - day) % 7 || 7;
+
+      const nextMonday = new Date(now);
+      nextMonday.setDate(now.getDate() + diff);
+      nextMonday.setHours(0,0,0,0);
+
+      return nextMonday;
+    }
+
+    function getDatesToShow(){
+      const today = getTodayStart();
+      const dates = Array.from({length: CONFIG.daysToShow}, (_, i) => addDays(today, i));
+
+      const nextMonday = getNextMonday();
+      const nextMondayKey = formatDate(nextMonday);
+
+      const alreadyIncluded = dates.some(d => formatDate(d) === nextMondayKey);
+
+      if(!alreadyIncluded){
+        dates.push(nextMonday);
+      }
+
+      dates.sort((a, b) => a - b);
+      return dates;
+    }
+
+    function sortSlots(slots){
+      slots.sort((a,b) => {
+        if(a.time === b.time) return (a.instance || 1) - (b.instance || 1);
+        return a.time.localeCompare(b.time);
+      });
+    }
+
+    function countRole(members, role){
+      if(role === "治療"){
+        return members.filter(m =>
+          m.role === "治療" || m.role === "輸出/承傷 + 假奶"
+        ).length;
+      }
+      return members.filter(m => m.role === role).length;
+    }
+
+    function getAllowedRoles(members){
+      const healerCount = countRole(members, "治療");
+      const remaining = CONFIG.maxPeople - members.length;
+
+      if(remaining <= 2 && healerCount < CONFIG.minHealer){
+        return ["治療","輸出/承傷 + 假奶"];
+      }
+      return [...CONFIG.roles];
+    }
+
+    function getStatus(members){
+      if(members.length >= CONFIG.maxPeople){
+        return { text: "已滿", cls: "status-full" };
+      }
+      if(countRole(members, "治療") < CONFIG.minHealer){
+        return { text: "治療不足", cls: "status-warn" };
+      }
+      return { text: "配置達標", cls: "status-ok" };
+    }
+
+    function roleClass(role){
+      if(role === "輸出") return "role-dps";
+      if(role === "承傷") return "role-tank";
+      if(role === "輸出/承傷 + 假奶") return "role-fakeheal";
+      return "role-heal";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function buildDefaultDayData(dateObj){
+      const slots = [];
+      const defaultTimes = getDefaultTimesForDate(dateObj);
+
+      defaultTimes.forEach(time => {
+        slots.push({
+          time,
+          instance: 1,
+          members: [],
+          isCustom: false
+        });
+      });
+
+      if(!isWeekend(dateObj)){
+        slots.push({
+          time: "19:45",
+          instance: 2,
+          members: [],
+          isCustom: false
+        });
+      }
+
+      sortSlots(slots);
+      return { slots };
+    }
+
+    async function ensureDateDoc(dateKey, dateObj){
+      const ref = doc(db, CONFIG.collectionName, dateKey);
+      const snap = await getDoc(ref);
+
+      if(!snap.exists()){
+        await setDoc(ref, buildDefaultDayData(dateObj));
+      } else {
+        const data = snap.data();
+        if(!data.slots || !Array.isArray(data.slots)){
+          await setDoc(ref, buildDefaultDayData(dateObj));
+        } else {
+          let changed = false;
+          data.slots = data.slots.map(slot => {
+            const updatedSlot = {
+              ...slot,
+              isCustom: typeof slot.isCustom === "undefined" ? false : slot.isCustom,
+              members: Array.isArray(slot.members)
+                ? slot.members.map(member => ({
+                    ...member,
+                    tag: member.tag || "",
+                    note: member.note || ""
+                  }))
+                : []
+            };
+
+            if(
+              typeof slot.isCustom === "undefined" ||
+              (Array.isArray(slot.members) && slot.members.some(member => typeof member.tag === "undefined" || typeof member.note === "undefined"))
+            ){
+              changed = true;
+            }
+
+            return updatedSlot;
+          });
+
+          if(changed){
+            await setDoc(ref, data);
+          }
+        }
+      }
+    }
+
+    async function initializeVisibleDates(){
+      const dates = getDatesToShow();
+      for(const dateObj of dates){
+        await ensureDateDoc(formatDate(dateObj), dateObj);
+      }
+    }
+
+    function autoCreateNextSameTimeSlot(dayData, time){
+      const sameTimeSlots = dayData.slots.filter(s => s.time === time);
+      const hasOpenSlot = sameTimeSlots.some(s => (s.members || []).length < CONFIG.maxPeople);
+
+      if(!hasOpenSlot){
+        const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
+        dayData.slots.push({
+          time,
+          instance: maxInstance + 1,
+          members: [],
+          isCustom: true
+        });
+        sortSlots(dayData.slots);
+      }
+    }
+
+    function renderCustomRoleOptions(allowedRoles){
+      const menu = document.getElementById("roleSelectMenu");
+      const label = document.getElementById("roleSelectLabel");
+
+      menu.innerHTML = "";
+      selectedRoleValue = allowedRoles[0] || "";
+      label.textContent = selectedRoleValue || "請選擇職業";
+
+      allowedRoles.forEach(role => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "custom-select-option" + (role === selectedRoleValue ? " active" : "");
+        button.textContent = role;
+        button.dataset.value = role;
+        button.onclick = () => {
+          selectedRoleValue = role;
+          label.textContent = role;
+          menu.querySelectorAll(".custom-select-option").forEach(opt => {
+            opt.classList.toggle("active", opt.dataset.value === role);
+          });
+          closeCustomSelect();
+        };
+        menu.appendChild(button);
+      });
+    }
+
+    function openCustomSelect(){
+      const select = document.getElementById("roleSelect");
+      const trigger = document.getElementById("roleSelectTrigger");
+      select.classList.add("open");
+      trigger.setAttribute("aria-expanded", "true");
+    }
+
+    function closeCustomSelect(){
+      const select = document.getElementById("roleSelect");
+      const trigger = document.getElementById("roleSelectTrigger");
+      select.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+
+    function bindCustomSelect(){
+      if(customSelectBound) return;
+      customSelectBound = true;
+
+      const trigger = document.getElementById("roleSelectTrigger");
+      const signupModal = document.getElementById("signupModal");
+      const confirmModal = document.getElementById("confirmModal");
+      const infoModal = document.getElementById("infoModal");
+      const tagModal = document.getElementById("tagModal");
+      const moveModal = document.getElementById("moveModal");
+
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const select = document.getElementById("roleSelect");
+        if(select.classList.contains("open")){
+          closeCustomSelect();
+        } else {
+          openCustomSelect();
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const select = document.getElementById("roleSelect");
+        if(!select.contains(e.target)){
+          closeCustomSelect();
+        }
+
+        document.querySelectorAll('.member-menu.open').forEach(menu => {
+          if(!menu.contains(e.target)){
+            menu.classList.remove('open');
+          }
+        });
+      });
+
+      signupModal.addEventListener("click", (e) => {
+        if(e.target.id === "signupModal"){
+          closeModal();
+        }
+      });
+
+      confirmModal.addEventListener("click", (e) => {
+        if(e.target.id === "confirmModal"){
+          closeConfirmModal();
+        }
+      });
+
+      infoModal.addEventListener("click", (e) => {
+        if(e.target.id === "infoModal"){
+          closeInfoModal();
+        }
+      });
+
+      tagModal.addEventListener("click", (e) => {
+        if(e.target.id === "tagModal"){
+          closeTagModal();
+        }
+      });
+
+      moveModal.addEventListener("click", (e) => {
+        if(e.target.id === "moveModal"){
+          closeMoveModal();
+        }
+      });
+    }
+
+    window.openModal = (dateKey, slotIndex, allowedRoles) => {
+      currentSignup = { dateKey, slotIndex, allowedRoles };
+
+      const modal = document.getElementById("signupModal");
+      const nameInput = document.getElementById("playerName");
+
+      nameInput.value = getSavedPlayerName();
+      renderCustomRoleOptions(allowedRoles);
+      closeCustomSelect();
+      bindCustomSelect();
+
+      modal.classList.add("show");
+
+      setTimeout(() => {
+        nameInput.focus();
+        nameInput.select();
+      }, 30);
+    };
+
+    window.closeModal = () => {
+      document.getElementById("signupModal").classList.remove("show");
+      closeCustomSelect();
+    };
+
+    window.submitSignup = async () => {
+      const nameInput = document.getElementById("playerName");
+      const name = nameInput.value.trim();
+      const role = selectedRoleValue;
+
+      if(!name){
+        alert("名字不可留空。");
+        nameInput.focus();
+        return;
+      }
+
+      if(!role){
+        alert("請選擇職業。");
+        return;
+      }
+
+      localStorage.setItem("signup_player_name", name);
+
+      const { dateKey, slotIndex } = currentSignup;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      if(slot.members.some(m => String(m.name).trim() === name)){
+        alert("此隊伍已存在相同名字。");
+        return;
+      }
+
+      slot.members.push({ name, role, tag: "", note: "" });
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+      }
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeModal();
+    };
+
+    function openConfirmModal(dateKey, slotIndex, memberIndex){
+      const dayData = globalData[dateKey];
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      const member = members[memberIndex];
+      if(!member) return;
+
+      pendingDelete = { dateKey, slotIndex, memberIndex };
+      document.getElementById("confirmModalText").textContent = `確定要刪除報名玩家「${member.name}」嗎？`;
+      document.getElementById("confirmModal").classList.add("show");
+    }
+
+    window.closeConfirmModal = () => {
+      pendingDelete = null;
+      document.getElementById("confirmModal").classList.remove("show");
+    };
+
+    window.confirmRemoveMember = async () => {
+      if(!pendingDelete) return;
+
+      const { dateKey, slotIndex, memberIndex } = pendingDelete;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      if(!dayData.slots[slotIndex]) return;
+
+      const members = Array.isArray(dayData.slots[slotIndex].members)
+        ? dayData.slots[slotIndex].members
+        : [];
+
+      if(!members[memberIndex]) return;
+
+      members.splice(memberIndex, 1);
+      dayData.slots[slotIndex].members = members;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeConfirmModal();
+    };
+
+    window.openInfoModal = () => {
+      document.getElementById("infoModal").classList.add("show");
+    };
+
+    window.closeInfoModal = () => {
+      document.getElementById("infoModal").classList.remove("show");
+    };
+
+    function openTagModal(dateKey, slotIndex, memberIndex){
+      const member = globalData?.[dateKey]?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!member) return;
+
+      currentTagEdit = { dateKey, slotIndex, memberIndex };
+      document.getElementById("tagInput").value = member.tag || "";
+      document.getElementById("noteInput").value = member.note || "";
+      document.getElementById("tagModal").classList.add("show");
+    }
+
+    window.closeTagModal = () => {
+      currentTagEdit = null;
+      document.getElementById("tagModal").classList.remove("show");
+    };
+
+    window.saveMemberTag = async () => {
+      if(!currentTagEdit) return;
+
+      const { dateKey, slotIndex, memberIndex } = currentTagEdit;
+      const tag = document.getElementById("tagInput").value.trim();
+      const note = document.getElementById("noteInput").value.trim();
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!member) return;
+
+      member.tag = tag;
+      member.note = note;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeTagModal();
+    };
+
+    function openMoveModal(dateKey, slotIndex, memberIndex){
+      const dayData = globalData?.[dateKey];
+      const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!dayData || !member) return;
+
+      currentMoveEdit = { dateKey, slotIndex, memberIndex };
+
+      const select = document.getElementById("moveTargetSelect");
+      const info = document.getElementById("moveMemberInfo");
+
+      info.innerHTML = `要移動的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
+      select.innerHTML = "";
+
+      const newTeamOption = document.createElement("option");
+      newTeamOption.value = "__new__";
+      newTeamOption.textContent = "建立新隊伍並移入";
+      select.appendChild(newTeamOption);
+
+      dayData.slots.forEach((slot, index) => {
+        if(index === slotIndex) return;
+
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = `${slot.time}｜第 ${slot.instance || 1} 隊｜${(slot.members || []).length}/${CONFIG.maxPeople}`;
+        select.appendChild(option);
+      });
+
+      document.getElementById("moveModal").classList.add("show");
+    }
+
+    window.closeMoveModal = () => {
+      currentMoveEdit = null;
+      document.getElementById("moveModal").classList.remove("show");
+    };
+
+    window.confirmMoveMember = async () => {
+      if(!currentMoveEdit) return;
+
+      const { dateKey, slotIndex, memberIndex } = currentMoveEdit;
+      const targetValue = document.getElementById("moveTargetSelect").value;
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const sourceSlot = dayData.slots[slotIndex];
+      if(!sourceSlot) return;
+
+      sourceSlot.members = Array.isArray(sourceSlot.members) ? sourceSlot.members : [];
+
+      const member = sourceSlot.members[memberIndex];
+      if(!member) return;
+
+      if(targetValue === "__new__"){
+        const sameTimeSlots = dayData.slots.filter(s => s.time === sourceSlot.time);
+        const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
+
+        const newSlot = {
+          time: sourceSlot.time,
+          instance: maxInstance + 1,
+          members: [member],
+          isCustom: true
+        };
+
+        sourceSlot.members.splice(memberIndex, 1);
+        dayData.slots.push(newSlot);
+        sortSlots(dayData.slots);
+
+        await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+        closeMoveModal();
+        return;
+      }
+
+      const targetSlotIndex = Number(targetValue);
+      const targetSlot = dayData.slots[targetSlotIndex];
+      if(!targetSlot) return;
+
+      targetSlot.members = Array.isArray(targetSlot.members) ? targetSlot.members : [];
+
+      if(targetSlot.members.length >= CONFIG.maxPeople){
+        alert("目標隊伍已滿。");
+        return;
+      }
+
+      if(targetSlot.members.some(m => String(m.name).trim() === String(member.name).trim())){
+        alert("目標隊伍已有相同名字。");
+        return;
+      }
+
+      sourceSlot.members.splice(memberIndex, 1);
+      targetSlot.members.push(member);
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeMoveModal();
+    };
+
+    function groupMembersByTag(members){
+      const groups = {};
+
+      members.forEach((member, index) => {
+        const key = (member.tag || "").trim() || "未分類";
+        if(!groups[key]) groups[key] = [];
+        groups[key].push({ ...member, _index: index });
+      });
+
+      return groups;
+    }
+
+    document.addEventListener("keydown", (e) => {
+      const signupModal = document.getElementById("signupModal");
+      const confirmModal = document.getElementById("confirmModal");
+      const infoModal = document.getElementById("infoModal");
+      const tagModal = document.getElementById("tagModal");
+      const moveModal = document.getElementById("moveModal");
+
+      if(signupModal.classList.contains("show")){
+        if(e.key === "Escape"){
+          closeModal();
+        }
+
+        if(e.key === "Enter"){
+          const active = document.activeElement;
+          const isCustomOpen = document.getElementById("roleSelect").classList.contains("open");
+          if(active && active.closest("#roleSelect") && isCustomOpen){
+            return;
+          }
+          submitSignup();
+        }
+      }
+
+      if(confirmModal.classList.contains("show") && e.key === "Escape"){
+        closeConfirmModal();
+      }
+
+      if(infoModal.classList.contains("show") && e.key === "Escape"){
+        closeInfoModal();
+      }
+
+      if(tagModal.classList.contains("show") && e.key === "Escape"){
+        closeTagModal();
+      }
+
+      if(moveModal.classList.contains("show") && e.key === "Escape"){
+        closeMoveModal();
+      }
+    });
+
+    async function addMember(dateKey, slotIndex){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        alert("此時段已滿。");
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+        await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+        return;
+      }
+
+      const allowedRoles = getAllowedRoles(slot.members);
+      openModal(dateKey, slotIndex, allowedRoles);
+    }
+
+    async function addCustomTime(dateKey){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const time = prompt("請輸入新時間（格式例如 19:45）");
+      if(time === null) return;
+
+      const trimmed = time.trim();
+      if(!/^\d{1,2}:\d{2}$/.test(trimmed)){
+        alert("時間格式不正確，請用 HH:MM，例如 19:45");
+        return;
+      }
+
+      const [h, m] = trimmed.split(":").map(Number);
+      if(h < 0 || h > 23 || m < 0 || m > 59){
+        alert("時間格式不正確。");
+        return;
+      }
+
+      const sameTimeSlots = dayData.slots.filter(s => s.time === trimmed);
+      const nextInstance = sameTimeSlots.length
+        ? Math.max(...sameTimeSlots.map(s => s.instance || 1)) + 1
+        : 1;
+
+      dayData.slots.push({
+        time: trimmed,
+        instance: nextInstance,
+        members: [],
+        isCustom: true
+      });
+
+      sortSlots(dayData.slots);
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    }
+
+    async function deleteCustomSlot(dateKey, slotIndex){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      if(!slot.isCustom){
+        alert("固定時間段不能刪除。");
+        return;
+      }
+
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      if(members.length > 0){
+        alert("這個時間段已有報名，不能刪除。");
+        return;
+      }
+
+      dayData.slots.splice(slotIndex, 1);
+      sortSlots(dayData.slots);
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    }
+
+    function render(){
+      if(isRendering) return;
+      isRendering = true;
+
+      const dates = getDatesToShow();
+      const daysEl = document.getElementById("days");
+      const savedName = getSavedPlayerName();
+      let html = "";
+
+      dates.forEach(date => {
+        const dateKey = formatDate(date);
+        const dayData = globalData[dateKey];
+        const modeText = isWeekend(date) ? "週末時間表" : "平日時間表";
+
+        html += `
+          <section class="day-card">
+            <div class="day-head">
+              <h2 class="day-title">${displayDate(date)}</h2>
+              <div class="day-sub">${weekdayText(date)}｜${modeText}</div>
+              <div class="day-actions">
+                <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
+              </div>
+            </div>
+            <div class="slot-list">
+        `;
+
+        if(dayData && Array.isArray(dayData.slots)){
+          dayData.slots.forEach((slot, slotIndex) => {
+            const members = Array.isArray(slot.members) ? slot.members : [];
+            const dpsCount = countRole(members, "輸出");
+            const tankCount = countRole(members, "承傷");
+            const healCount = countRole(members, "治療");
+            const status = getStatus(members);
+            const allowedRoles = getAllowedRoles(members);
+            const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "輸出/承傷 + 假奶");
+            const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
+            const isRecommended = !isWeekend(date) && slot.time === "19:45";
+            const isMyTeam = !!savedName && members.some(m => String(m.name).trim() === savedName);
+            const groupedMembers = groupMembersByTag(members);
+            const groupNames = Object.keys(groupedMembers);
+
+            const slotCardClass = members.length >= CONFIG.maxPeople
+              ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
+              : members.length > 0
+                ? `slot-card has-members${isMyTeam ? " my-team" : ""}`
+                : `slot-card${isMyTeam ? " my-team" : ""}`;
+
+            html += `
+              <div class="${slotCardClass}">
+                <div class="slot-top">
+                  <div>
+                    <div class="slot-time-wrap">
+                      <div class="slot-time">${slot.time}</div>
+                      ${isRecommended ? `<span class="recommend-badge">★ 推薦</span>` : ``}
+                    </div>
+                    <div class="slot-instance">
+                      第 ${slot.instance || 1} 隊
+                      ${slot.isCustom ? "｜自訂" : "｜固定"}
+                      ${isMyTeam ? "｜你的隊伍" : ""}
+                    </div>
+                  </div>
+                  <div class="slot-badges">
+                    <span class="badge">${members.length}/${CONFIG.maxPeople}</span>
+                    <span class="badge ${status.cls}">
+                      ${forceHeal && members.length < CONFIG.maxPeople ? "最後位置保留治療位" : status.text}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="summary">
+                  <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
+                  <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
+                  <span class="summary-pill">治療 <strong>${healCount}</strong></span>
+                </div>
+
+                <div class="member-list">
+            `;
+
+            if(members.length === 0){
+              html += `<div class="empty-note">尚未有人報名</div>`;
+            } else {
+              groupNames.forEach(groupName => {
+                html += `<div class="member-group">`;
+                html += `<div class="member-group-title">${escapeHtml(groupName)}</div>`;
+
+                groupedMembers[groupName].forEach(member => {
+                  const isSelf = !!savedName && String(member.name).trim() === savedName;
+                  html += `
+                    <div class="member${isSelf ? " member-self" : ""}">
+                      <div class="member-left">
+                        <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+                        <div class="member-text">
+                          <span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>
+                          ${member.tag ? `<span class="tag-pill">${escapeHtml(member.tag)}</span>` : ``}
+                          ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
+                        </div>
+                      </div>
+                      <div class="member-menu">
+                        <button class="menu-trigger" data-action="toggle-member-menu">⋯</button>
+                        <div class="member-menu-dropdown">
+                          <button class="member-menu-item move" data-action="move-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">移動</button>
+                          <button class="member-menu-item tag" data-action="edit-member-tag" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">標籤</button>
+                          <button class="member-menu-item delete" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">刪除</button>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                });
+
+                html += `</div>`;
+              });
+            }
+
+            html += `
+                </div>
+
+                <div class="slot-actions">
+                  <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
+                    ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療位" : "＋ 新增報名"}
+                  </button>
+                  ${slot.isCustom ? `
+                    <button class="delete-slot-btn" data-action="delete-slot" data-date="${dateKey}" data-slot="${slotIndex}" ${canDeleteCustomSlot ? "" : "disabled"}>
+                      刪除時間
+                    </button>
+                  ` : ``}
+                </div>
+              </div>
+            `;
+          });
+        }
+
+        html += `
+            </div>
+          </section>
+        `;
+      });
+
+      daysEl.innerHTML = html;
+      bindActions();
+      isRendering = false;
+    }
+
+    function bindActions(){
+      document.querySelectorAll('[data-action="toggle-member-menu"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+
+          document.querySelectorAll('.member-menu.open').forEach(menu => {
+            if(menu !== btn.closest('.member-menu')){
+              menu.classList.remove('open');
+            }
+          });
+
+          btn.closest('.member-menu').classList.toggle('open');
+        };
+      });
+
+      document.querySelectorAll('[data-action="add-time"]').forEach(btn => {
+        btn.onclick = () => addCustomTime(btn.dataset.date);
+      });
+
+      document.querySelectorAll('[data-action="add-member"]').forEach(btn => {
+        btn.onclick = () => addMember(btn.dataset.date, Number(btn.dataset.slot));
+      });
+
+      document.querySelectorAll('[data-action="edit-member-tag"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.member-menu.open').forEach(menu => menu.classList.remove('open'));
+          openTagModal(
+            btn.dataset.date,
+            Number(btn.dataset.slot),
+            Number(btn.dataset.member)
+          );
+        };
+      });
+
+      document.querySelectorAll('[data-action="move-member"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.member-menu.open').forEach(menu => menu.classList.remove('open'));
+          openMoveModal(
+            btn.dataset.date,
+            Number(btn.dataset.slot),
+            Number(btn.dataset.member)
+          );
+        };
+      });
+
+      document.querySelectorAll('[data-action="remove-member"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.member-menu.open').forEach(menu => menu.classList.remove('open'));
+          openConfirmModal(
+            btn.dataset.date,
+            Number(btn.dataset.slot),
+            Number(btn.dataset.member)
+          );
+        };
+      });
+
+      document.querySelectorAll('[data-action="delete-slot"]').forEach(btn => {
+        btn.onclick = () => deleteCustomSlot(
+          btn.dataset.date,
+          Number(btn.dataset.slot)
+        );
+      });
+    }
+
+    document.getElementById("infoBtn").onclick = () => {
+      openInfoModal();
+    };
+
+    document.getElementById("refreshBtn").onclick = async () => {
+      await initializeVisibleDates();
+      alert("日期已整理完成。");
+    };
+
+    onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
+      const nextData = {};
+      snapshot.forEach(item => {
+        const data = item.data();
+        if(data && Array.isArray(data.slots)){
+          sortSlots(data.slots);
+          nextData[item.id] = data;
+        }
+      });
+      globalData = nextData;
+
+      const dates = getDatesToShow();
+      let missing = false;
+      for(const dateObj of dates){
+        const key = formatDate(dateObj);
+        if(!globalData[key]){
+          missing = true;
+          break;
+        }
+      }
+
+      if(missing){
+        await initializeVisibleDates();
+        return;
+      }
+
+      render();
+    });
+
+    await initializeVisibleDates();
+    render();
+  </script>
+</body>
+</html>    .days{
       display:flex;
       flex-direction:column;
       gap:18px;
