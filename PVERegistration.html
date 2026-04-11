@@ -203,9 +203,7 @@
       align-items:start;
     }
 
-    /* 關鍵修正：確保卡片容器不會裁剪選單 */
     .slot-card{
-      position: relative;
       background:rgba(255,255,255,.06);
       border:1px solid var(--line);
       border-radius:18px;
@@ -213,7 +211,7 @@
       min-width:0;
       min-height:100%;
       transition:.18s ease;
-      z-index: 1; /* 給予基本層級 */
+      z-index: 1;
     }
 
     .slot-card.has-members{
@@ -563,7 +561,6 @@
       background:rgba(255,255,255,.08);
     }
 
-    /* 關鍵修正：將選單層級調高，並確保不會被 clip */
     .member-menu-dropdown{
       position:absolute;
       right:0;
@@ -575,7 +572,7 @@
       padding:6px;
       box-shadow:0 18px 40px rgba(0,0,0,.38);
       display:none;
-      z-index: 99999; /* 極高層級 */
+      z-index: 99999;
     }
 
     .member-menu.open .member-menu-dropdown{
@@ -633,7 +630,7 @@
       padding:6px;
       box-shadow:0 18px 40px rgba(0,0,0,.38);
       display:none;
-      z-index: 9999; /* 稍微低於隊員選單 */
+      z-index:9999;
     }
 
     .slot-menu.open .slot-menu-dropdown{
@@ -710,7 +707,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index:999999; /* 彈窗永遠在最上層 */
+      z-index:9999;
       padding:20px;
     }
 
@@ -839,7 +836,7 @@
       padding:6px;
       box-shadow:0 18px 40px rgba(0,0,0,.38);
       display:none;
-      z-index:20;
+      z-index:9999;
     }
 
     .custom-select.open .custom-select-menu{
