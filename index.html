@@ -444,12 +444,13 @@
     }
 
     .schedule-container {
-      background: rgba(255, 255, 255, 0.01); 
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      padding: 24px;
-      overflow-x: auto;
-      backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 28px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
     }
 
     .schedule-grid {
@@ -462,56 +463,91 @@
     }
 
     .grid-header {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 12px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 800;
-      color: var(--text);
-      font-size: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.2s ease;
+    }
+    
+    .grid-header:hover {
+      background: rgba(255,255,255,0.12);
     }
 
     .time-col {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 800;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      position: relative;
+    }
+    
+    /* 加時間線 */
+    .time-col::after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      width: 1px;
+      height: 60%;
+      background: rgba(255,255,255,0.08);
     }
 
     .party-bar {
       grid-column: 2 / 9;
-      background: var(--color-party) !important;
-      border-radius: 50px;
-      padding: 10px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 14px;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      align-self: center;
-    }
-
-    .event-card {
-      border-radius: 16px;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 200, 150, 0.25),
+        rgba(255, 150, 200, 0.25)
+      );
+      border-radius: 999px;
       padding: 12px;
-      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+    }
+    .event-card {
+      border-radius: 18px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(2px);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    
+    /* Hover 動效 */
+    .event-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
     }
 
-    .boss { background: var(--color-boss) !important; }
-    .duel { background: var(--color-duel) !important; }
-    .war  { background: var(--color-war) !important; }
+    :root {
+      --color-party: rgba(255, 180, 120, 0.25);
+      --color-boss: rgba(255, 120, 120, 0.25);
+      --color-duel: rgba(120, 160, 255, 0.25);
+      --color-war: rgba(180, 120, 255, 0.25);
+    }
+    .boss:hover { box-shadow: 0 0 20px rgba(255,120,120,0.4); }
+    .duel:hover { box-shadow: 0 0 20px rgba(120,160,255,0.4); }
+    .war:hover  { box-shadow: 0 0 20px rgba(180,120,255,0.4); }
 
-    .event-name { font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-    .event-time { font-size: 12px; color: rgba(255,255,255,0.7); }
-
+    .event-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    
+    .event-time {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
     /* 跨兩小時高度設定 */
     .span-2-hrs { grid-row: span 2; }
     /* 活動卡片通用樣式 */
