@@ -436,37 +436,49 @@
       font-size:14px;
     }
 /* 課表專用變數 */
+/* 課表專用變數 - 調整為柔和粉色與大地色 */
     :root {
-      --color-party: rgba(200, 182, 175, 0.7); /* 百業派對 - 大地色 */
-      --color-boss: rgba(219, 175, 175, 0.6);  /* 破軍殺將 - 霧粉色 */
-      --color-duel: rgba(140, 158, 190, 0.6);  /* 一決高下 - 灰藍色 */
-      --color-war: rgba(168, 140, 190, 0.6);   /* 百業戰 - 淺紫色 */
+      /* 原有的全局變數保持不變 */
+      --bg:#0b1020;
+      --bg2:#131c35;
+      --line:rgba(255,255,255,.12);
+      --text:#eef2ff;
+      --muted:#a8b3cf;
+      --accent:#ff9999; /* 調整為柔和紅粉色 */
+      --accent2:#f8f2e6; /* 調整為淺大地色 */
+      
+      /* 活動配色方案 */
+      --color-party: rgba(200, 182, 175, 0.7); /* 百業派對 - 淺大地色 (保持柔和) */
+      --color-boss: rgba(219, 175, 175, 0.7);  /* 破軍殺將 - 霧粉色 */
+      --color-duel: rgba(168, 140, 190, 0.6);  /* 一決高下 - 紫粉色 (降低飽和度) */
+      --color-war: rgba(190, 160, 140, 0.7);   /* 百業戰 - 暖粉褐 */
     }
 
     .schedule-container {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04); /* 更透明的背景 */
       border: 1px solid var(--line);
       border-radius: 24px;
       padding: 24px;
       overflow-x: auto;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
     }
 
     .schedule-grid {
       display: grid;
-      /* 第一欄寬度 100px，後面 7 欄均分 */
-      grid-template-columns: 100px repeat(7, minmax(130px, 1fr));
-      gap: 10px;
+      /* 時間欄 + 7天欄位 */
+      grid-template-columns: 80px repeat(7, minmax(130px, 1fr));
+      gap: 12px; /* 增加間距 */
       min-width: 950px;
     }
 
     .grid-header {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       padding: 12px;
       border-radius: 12px;
       text-align: center;
       font-weight: 800;
-      color: var(--accent);
+      color: var(--accent2); /* 霧粉色表頭文字 */
+      font-size: 15px;
     }
 
     .time-col {
@@ -476,8 +488,44 @@
       color: var(--muted);
       font-size: 14px;
       font-weight: bold;
-      border-right: 1px solid var(--line);
+      border-right: 1px solid rgba(255,255,255,0.08); /* 調整線條顏色 */
     }
+
+    /* 活動卡片通用樣式 */
+    .event-card {
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 更柔和的陰影 */
+      min-height: 60px;
+    }
+
+    .event-name { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+    .event-time { font-size: 12px; opacity: 0.8; }
+
+    /* 特殊佈局 */
+    .party-bar {
+      grid-column: 2 / 9; /* 橫跨一到日 */
+      background: var(--color-party);
+      border-radius: 50px;
+      padding: 8px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 14px;
+      margin: 4px 0;
+      color: #fff; /* 白色派對文字 */
+    }
+
+    /* 跨行佈局 */
+    .span-2-hrs { grid-row: span 2; } /* 跨2行(20:00 - 22:00) */
+
+    /* 活動配色應用 */
+    .boss { background: var(--color-boss); color: #fff; }
+    .duel { background: var(--color-duel); color: #fff; }
+    .war  { background: var(--color-war); color: #fff; }
 
     /* 活動標籤 */
     .event-card {
@@ -692,7 +740,7 @@
     </section>
 
 <section class="section" id="schedule">
-      <h2 class="section-title">百業週程表</h2>
+      <h2 class="section-title" style="color:var(--accent2);">百業週程表</h2>
       <div class="schedule-container">
         <div class="schedule-grid">
           
@@ -705,7 +753,7 @@
           <div class="grid-header">週六</div>
           <div class="grid-header">週日</div>
 
-          <div class="time-col">19:30</div>
+          <div class="time-col">19:00</div>
           <div class="party-bar">✨ 百業派對 (19:30 - 19:43)</div>
 
           <div class="time-col">20:00</div>
@@ -715,8 +763,7 @@
           </div> <div></div> <div class="event-card boss span-2-hrs">
             <span class="event-name">破軍殺將</span>
             <span class="event-time">20:00 - 22:00</span>
-          </div> <div></div> <div></div> <div></div> <div class="time-col">20:30</div>
-          <div></div> <div></div> <div></div> <div class="event-card war">
+          </div> <div></div> <div class="event-card war">
             <span class="event-name">百業戰</span>
             <span class="event-time">20:30 - 21:05</span>
           </div> <div class="event-card war">
