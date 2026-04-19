@@ -452,33 +452,44 @@
       backdrop-filter: blur(5px);
     }
 
-    .schedule-grid {
+   .schedule-grid {
       display: grid;
       grid-template-columns: 80px repeat(7, 1fr);
-      /* 定義每一列的高度：表頭, 19點, 20點, 21點 */
-      grid-template-rows: auto 60px 100px 100px; 
+      /* 定義高度：表頭 auto, 19點(60px), 20點(120px), 21點(120px) */
+      grid-template-rows: auto 60px 120px 120px; 
       gap: 12px;
-      align-items: stretch;
+      position: relative;
+      /* 繪製時間分割線 */
+      background-image: 
+        /* 20:00 的實線 */
+        linear-gradient(to bottom, transparent 180px, var(--line) 180px, var(--line) 181px, transparent 181px),
+        /* 21:00 的實線 */
+        linear-gradient(to bottom, transparent 312px, var(--line) 312px, var(--line) 313px, transparent 313px),
+        /* 20:30 的虛線 */
+        linear-gradient(to right, var(--line) 33%, transparent 33%),
+        /* 21:30 的虛線 */
+        linear-gradient(to right, var(--line) 33%, transparent 33%);
+      
+      /* 設定虛線的尺寸與重複方式 */
+      background-size: 100% 100%, 100% 100%, 12px 1px, 12px 1px;
+      background-position: 0 0, 0 0, 0 246px, 0 378px; /* 這裡手動微調虛線高度 */
+      background-repeat: no-repeat, no-repeat, repeat-x, repeat-x;
     }
 
-    .grid-header {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 12px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 800;
-      color: var(--text);
-      font-size: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+    /* 確保活動卡片在線條上方 */
+    .event-card, .party-bar, .grid-header {
+      z-index: 2;
     }
 
+    /* 調整時間欄位的對齊，讓文字剛好在實線上 */
     .time-col {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start; /* 讓文字對齊頂部 */
+      padding-top: 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
+      z-index: 3;
     }
 
     .party-bar {
