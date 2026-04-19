@@ -2,23 +2,23 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>夢回花深處｜首頁</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>夢回花深處｜俠境報名</title>
   <style>
     :root{
       --bg:#0b1020;
       --bg2:#131c35;
-      --panel:rgba(255,255,255,.08);
-      --panel-strong:rgba(255,255,255,.10);
       --line:rgba(255,255,255,.12);
       --text:#eef2ff;
       --muted:#a8b3cf;
       --accent:#6ea8ff;
       --accent2:#8b5cf6;
-      --gold:#ffd76a;
-      --success:#34d399;
       --danger:#ff6b81;
+      --success:#34d399;
+      --warn:#fbbf24;
+      --heal:#22c55e;
+      --tank:#f59e0b;
+      --dps:#60a5fa;
       --shadow:0 18px 40px rgba(0,0,0,.28);
     }
 
@@ -27,786 +27,2423 @@
     html,body{
       margin:0;
       padding:0;
-      min-height:100%;
       font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 26%),
+        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
         radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
         linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
     }
 
-    body{
-      position:relative;
-    }
-
-    .bg-orb{
-      position:fixed;
-      border-radius:50%;
-      filter:blur(70px);
-      opacity:.28;
-      pointer-events:none;
-      z-index:0;
-      animation:floatOrb 10s ease-in-out infinite;
-    }
-
-    .orb1{
-      width:260px;
-      height:260px;
-      background:rgba(110,168,255,.28);
-      top:4%;
-      left:4%;
-    }
-
-    .orb2{
-      width:320px;
-      height:320px;
-      background:rgba(139,92,246,.24);
-      top:18%;
-      right:2%;
-      animation-delay:-2s;
-    }
-
-    .orb3{
-      width:240px;
-      height:240px;
-      background:rgba(255,215,106,.16);
-      bottom:8%;
-      left:12%;
-      animation-delay:-4s;
-    }
-
-    @keyframes floatOrb{
-      0%,100%{ transform:translateY(0) translateX(0); }
-      50%{ transform:translateY(-16px) translateX(10px); }
-    }
+    body{ padding:24px 14px 40px; }
 
     .container{
-      position:relative;
-      z-index:1;
-      max-width:1280px;
+      max-width:1600px;
       margin:0 auto;
-      padding:24px 14px 40px;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:18px;
-      flex-wrap:wrap;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .brand-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      font-size:13px;
-      font-weight:700;
-      backdrop-filter:blur(12px);
-    }
-
-    .nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .nav a{
-      text-decoration:none;
-      color:var(--text);
-      padding:10px 14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      font-size:14px;
-      font-weight:700;
-      transition:.18s ease;
-    }
-
-    .nav a:hover{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,.10);
     }
 
     .hero{
-      position:relative;
-      overflow:hidden;
       background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
       border:1px solid var(--line);
-      border-radius:32px;
-      padding:34px 28px;
       box-shadow:var(--shadow);
+      border-radius:28px;
+      padding:24px;
       backdrop-filter:blur(14px);
       margin-bottom:20px;
     }
 
-    .hero::before{
-      content:"";
-      position:absolute;
-      right:-80px;
-      bottom:-90px;
-      width:260px;
-      height:260px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(110,168,255,.26), transparent 70%);
-      pointer-events:none;
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      left:-60px;
-      top:-70px;
-      width:220px;
-      height:220px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(139,92,246,.20), transparent 70%);
-      pointer-events:none;
-    }
-
-    .hero-badges{
+    .hero-top{
       display:flex;
-      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
       gap:10px;
-      margin-bottom:18px;
-    }
-
-    .hero-badge{
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:18px;
-      align-items:start;
-    }
-
-    .hero h1{
-      margin:0;
-      font-size:clamp(34px, 5vw, 62px);
-      line-height:1.04;
-      letter-spacing:.2px;
-    }
-
-    .hero p{
-      margin:16px 0 0;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.85;
-      max-width:720px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
     }
 
     .hero-actions{
       display:flex;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
-      margin-top:24px;
     }
 
-    .btn{
+    .top-link,
+    .top-btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       text-decoration:none;
-      border-radius:18px;
-      padding:12px 18px;
+      border-radius:14px;
+      padding:10px 14px;
       font-size:14px;
-      font-weight:800;
+      font-weight:700;
       transition:.18s ease;
-      border:1px solid transparent;
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid var(--line);
+      cursor:pointer;
     }
 
-    .btn:hover{
+    .top-link:hover,
+    .top-btn:hover{
       transform:translateY(-1px);
     }
 
-    .btn-primary{
-      color:#fff;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow:0 12px 28px rgba(110,168,255,.22);
+    .title{
+      margin:0;
+      font-size:clamp(28px,4vw,42px);
+      line-height:1.1;
     }
 
-    .btn-secondary{
-      color:var(--text);
-      background:rgba(255,255,255,.08);
-      border-color:var(--line);
-    }
-
-    .hero-side{
-      display:grid;
-      gap:12px;
-    }
-
-    .mini-panel{
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:16px;
-    }
-
-    .mini-title{
-      margin:0 0 10px;
+    .subtitle{
+      margin:10px 0 0;
       font-size:15px;
-      font-weight:800;
-    }
-
-    .mini-text{
-      margin:0;
       color:var(--muted);
-      line-height:1.75;
-      font-size:14px;
     }
 
-    .leader-list{
-      display:grid;
-      gap:10px;
-    }
-
-    .leader-item{
+    .chips{
       display:flex;
-      flex-direction:column;
-      gap:4px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .leader-role{
-      font-size:12px;
-      color:var(--gold);
-      font-weight:800;
-      letter-spacing:.3px;
-    }
-
-    .leader-name{
-      font-size:15px;
-      font-weight:700;
-      color:var(--text);
-    }
-
-    .section{
-      margin-top:18px;
-    }
-
-    .section-title{
-      margin:0 0 14px;
-      font-size:24px;
-      font-weight:800;
-    }
-
-    .cards-3{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:16px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:18px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
-      min-height:100%;
-    }
-
-    .card h3{
-      margin:0 0 10px;
-      font-size:18px;
-    }
-
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:14px;
-    }
-
-    .portal-grid{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:16px;
-    }
-
-    .portal-card{
-      position:relative;
-      overflow:hidden;
-      background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:20px;
-      box-shadow:var(--shadow);
-      min-height:220px;
-    }
-
-    .portal-card::after{
-      content:"";
-      position:absolute;
-      right:-40px;
-      bottom:-40px;
-      width:120px;
-      height:120px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(110,168,255,.18), transparent 70%);
-      pointer-events:none;
-    }
-
-    .portal-card h3{
-      margin:0 0 8px;
-      font-size:22px;
-    }
-
-    .portal-card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:14px;
-      max-width:95%;
-    }
-
-    .portal-actions{
-      display:flex;
-      gap:10px;
       flex-wrap:wrap;
-      margin-top:18px;
+      gap:10px;
+      margin-top:16px;
     }
 
-    .rules-grid{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:16px;
-    }
-
-    .rule-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    .chip{
       border:1px solid var(--line);
-      border-radius:24px;
-      padding:18px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
-    }
-
-    .rule-number{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:34px;
-      height:34px;
-      border-radius:999px;
       background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      color:var(--gold);
-      font-weight:800;
-      font-size:14px;
-      margin-bottom:12px;
-    }
-
-    .rule-card h4{
-      margin:0 0 10px;
-      font-size:17px;
-    }
-
-    .rule-card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.85;
-      font-size:14px;
-    }
-/* Weekly Schedule Section */
-    .schedule-container {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 20px;
-      overflow-x: auto; /* Allows scrolling on mobile */
-      backdrop-filter: blur(12px);
-    }
-
-    .schedule-grid {
-      display: grid;
-      grid-template-columns: 80px repeat(7, minmax(120px, 1fr));
-      gap: 10px;
-      min-width: 800px; /* Ensures grid doesn't squash too small */
-    }
-
-    .grid-header {
-      background: rgba(219, 175, 175, 0.3);
-      padding: 10px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    .time-col {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    /* Event Tags */
-    .event-bar {
-      grid-column: 2 / 9; /* Spans across all days */
-      background: rgba(200, 182, 175, 0.6);
-      color: #fff;
-      padding: 6px;
-      border-radius: 99px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 700;
-      margin: 5px 0;
-    }
-
-    .event-card {
-      background: rgba(219, 175, 175, 0.5);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .event-card.alt {
-      background: rgba(168, 148, 140, 0.6);
-    }
-
-    .event-name {
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .event-time {
-      font-size: 11px;
-      opacity: 0.9;
-    }
-    .guild-quote{
-      position:relative;
-      background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      border:1px solid var(--line);
-      border-radius:28px;
-      padding:24px;
-      box-shadow:var(--shadow);
-      margin-top:18px;
-      overflow:hidden;
-    }
-
-    .guild-quote::before{
-      content:"“";
-      position:absolute;
-      top:6px;
-      left:16px;
-      font-size:86px;
-      line-height:1;
-      color:rgba(255,255,255,.08);
-      pointer-events:none;
-    }
-
-    .guild-quote p{
-      position:relative;
-      margin:0;
       color:var(--text);
-      font-size:18px;
-      line-height:1.9;
-      padding-left:18px;
-    }
-
-    .footer-note{
-      margin-top:20px;
-      text-align:center;
-      color:var(--muted);
+      border-radius:999px;
+      padding:8px 12px;
       font-size:13px;
     }
 
-    @media (max-width: 1080px){
-      .hero-grid,
-      .cards-3,
-      .rules-grid,
-      .portal-grid{
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .toolbar-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:10px 14px;
+      font-size:14px;
+      font-weight:700;
+      transition:.18s ease;
+    }
+
+    button:hover{ transform:translateY(-1px); }
+
+    .btn-ghost{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .days{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .day-card{
+      display:grid;
+      grid-template-columns:260px minmax(0, 1fr);
+      gap:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      border-radius:24px;
+      padding:18px;
+      backdrop-filter:blur(14px);
+      align-items:start;
+    }
+    .day-card:has(.member-menu.open) {
+      z-index: 999;
+}
+    .day-head{
+      position:sticky;
+      top:14px;
+      align-self:start;
+      padding-right:8px;
+    }
+
+    .day-title{
+      margin:0;
+      font-size:28px;
+      line-height:1.1;
+    }
+
+    .day-sub{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .day-actions{
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .slot-list{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:16px;
+      min-width:0;
+      align-items:start;
+    }
+
+    .slot-card{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      min-width:0;
+      min-height:100%;
+      transition:.18s ease;
+    }
+
+    .slot-card.has-members{
+      background:rgba(110,168,255,.12);
+      border-color:rgba(110,168,255,.28);
+      box-shadow:0 8px 18px rgba(110,168,255,.10);
+    }
+
+    .slot-card.full-team{
+      background:rgba(255,107,129,.18);
+      border-color:rgba(255,107,129,.34);
+      box-shadow:0 8px 18px rgba(255,107,129,.12);
+    }
+
+    .slot-card.my-team{
+      outline:2px solid rgba(255,215,106,.72);
+      box-shadow:
+        0 0 0 3px rgba(255,215,106,.14),
+        0 12px 26px rgba(255,215,106,.10);
+    }
+
+    .slot-card.full-team .slot-time,
+    .slot-card.full-team .slot-instance{
+      color:#ffdbe4;
+    }
+
+    .slot-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .slot-top-right{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+    }
+
+    .slot-time-wrap{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .slot-time{
+      font-size:18px;
+      font-weight:800;
+      line-height:1.1;
+    }
+
+    .recommend-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      color:#ffd76a;
+      background:rgba(255,215,106,.12);
+      border:1px solid rgba(255,215,106,.28);
+      line-height:1;
+    }
+
+    .slot-instance{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .slot-meta-pills{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .team-type-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      line-height:1;
+      border:1px solid transparent;
+    }
+
+    .team-type-normal{
+      color:#d8e7ff;
+      background:rgba(96,165,250,.18);
+      border-color:rgba(96,165,250,.32);
+    }
+
+    .team-type-talent{
+      color:#ffe3b3;
+      background:rgba(245,158,11,.18);
+      border-color:rgba(245,158,11,.34);
+    }
+
+    .slot-badges{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .badge{
+      border-radius:999px;
+      padding:5px 8px;
+      font-size:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--muted);
+    }
+
+    .status-ok{ color:var(--success); }
+    .status-warn{ color:var(--danger); }
+    .status-full{ color:var(--warn); }
+
+    .summary{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .summary-pill{
+      font-size:12px;
+      border-radius:999px;
+      padding:5px 8px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
+
+    .summary-pill strong{ color:var(--text); }
+
+    .slot-description{
+      position:relative;
+      margin:2px 0 12px;
+      padding:12px 14px 12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045));
+      color:#edf3ff;
+      font-size:13px;
+      line-height:1.7;
+      font-weight:500;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03),
+        0 8px 18px rgba(0,0,0,.10);
+    }
+
+    .slot-description::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:10px;
+      bottom:10px;
+      width:4px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,215,106,.95), rgba(110,168,255,.95));
+    }
+
+    .slot-description-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin:2px 0 8px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.04em;
+      color:#cdd9f5;
+      text-transform:uppercase;
+    }
+
+    .slot-description-body{
+      margin-top:2px;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .slot-description-body strong{
+      font-weight:800;
+      color:#fff;
+    }
+
+    .slot-description-body em{
+      font-style:italic;
+      opacity:.9;
+    }
+
+    .slot-description-body span{
+      font-weight:700;
+    }
+
+    .member-list{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+      min-height:46px;
+    }
+
+    .member{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      min-height:52px;
+    }
+
+    .member.member-self{
+      background:rgba(255,215,106,.12);
+      border-color:rgba(255,215,106,.30);
+      box-shadow:0 0 0 2px rgba(255,215,106,.10) inset;
+    }
+
+    .member.member-tagged{
+      background:rgba(255,255,255,.10);
+      border-color:rgba(255,255,255,.14);
+    }
+
+    .member-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      flex:1;
+    }
+
+    .member-text{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:4px;
+      flex:1;
+    }
+
+    .member-main-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      min-width:0;
+      width:100%;
+    }
+
+    .member-name{
+      display:block;
+      font-size:13px;
+      line-height:1.2;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      min-width:0;
+      flex:1;
+    }
+
+    .member-note{
+      font-size:11px;
+      color:var(--muted);
+      line-height:1.4;
+      word-break:break-word;
+    }
+
+    .tag-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      flex:0 0 auto;
+      font-size:10px;
+      font-weight:800;
+      border-radius:999px;
+      padding:3px 7px;
+      background:rgba(110,168,255,.12);
+      border:1px solid rgba(110,168,255,.24);
+      color:#d8e7ff;
+      white-space:nowrap;
+    }
+
+    .member-self .member-name{
+      color:#ffe8a6;
+      font-weight:800;
+    }
+
+    .role-badge{
+      font-size:11px;
+      font-weight:800;
+      border-radius:999px;
+      padding:4px 7px;
+      white-space:nowrap;
+      line-height:1.2;
+      flex:0 0 auto;
+    }
+
+    .role-dps{
+      background:rgba(96,165,250,.16);
+      color:var(--dps);
+      border:1px solid rgba(96,165,250,.28);
+    }
+
+    .role-tank{
+      background:rgba(245,158,11,.14);
+      color:var(--tank);
+      border:1px solid rgba(245,158,11,.28);
+    }
+
+    .role-heal{
+      background:rgba(34,197,94,.14);
+      color:var(--heal);
+      border:1px solid rgba(34,197,94,.28);
+    }
+
+    .role-fakeheal{
+      background:rgba(168,85,247,.16);
+      color:#c084fc;
+      border:1px solid rgba(168,85,247,.28);
+    }
+
+    .member-menu{
+      position:relative;
+      flex:0 0 auto;
+      align-self:center;
+    }
+
+    .menu-trigger{
+      background:transparent;
+      color:#dbe7ff;
+      padding:2px 6px;
+      font-size:16px;
+      line-height:1;
+      border:none;
+      border-radius:8px;
+    }
+
+    .menu-trigger:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .member-menu-dropdown{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      min-width:132px;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      display:none;
+      z-index:40;
+    }
+
+    .member-menu.open .member-menu-dropdown{
+      display:block;
+    }
+
+    .member-menu-item{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      color:var(--text);
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .member-menu-item:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .member-menu-item.delete{ color:var(--danger); }
+    .member-menu-item.move{ color:#b8f0ff; }
+    .member-menu-item.tag{ color:#cfe0ff; }
+
+    .slot-menu{
+      position:relative;
+      flex:0 0 auto;
+    }
+
+    .slot-menu-trigger{
+      background:transparent;
+      color:#dbe7ff;
+      padding:4px 8px;
+      font-size:18px;
+      line-height:1;
+      border:none;
+      border-radius:10px;
+    }
+
+    .slot-menu-trigger:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .slot-menu-dropdown{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      min-width:148px;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      display:none;
+      z-index:50;
+    }
+
+    .slot-menu.open .slot-menu-dropdown{
+      display:block;
+    }
+
+    .slot-menu-item{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      color:var(--text);
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .slot-menu-item:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .slot-menu-item.team{
+      color:#dbe7ff;
+    }
+
+    .slot-menu-item.delete{
+      color:#ffb4c1;
+    }
+
+    .slot-actions{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .add-btn,
+    .delete-slot-btn{
+      flex:1 1 100px;
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border:1px dashed rgba(255,255,255,.18);
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .delete-slot-btn{
+      color:#ffb4c1;
+      border-color:rgba(255,107,129,.28);
+      background:rgba(255,107,129,.08);
+    }
+
+    .add-btn:disabled,
+    .delete-slot-btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .empty-note{
+      color:var(--muted);
+      font-size:13px;
+      padding:4px 2px 0;
+    }
+
+    .signup-modal,
+    .confirm-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(3,8,20,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:99999;
+      padding:20px;
+    }
+
+    .signup-modal.show,
+    .confirm-modal.show{
+      display:flex;
+    }
+
+    .signup-modal-box,
+    .confirm-modal-box{
+      width:min(520px, 100%);
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      backdrop-filter:blur(14px);
+    }
+
+    .signup-modal-title,
+    .confirm-modal-title{
+      font-size:24px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+
+    .confirm-modal-text{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:16px;
+    }
+
+    .signup-label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin:10px 0 6px;
+    }
+
+    .signup-input,
+    .signup-textarea,
+    .signup-select{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      outline:none;
+    }
+
+    .signup-select option{
+      color:#111827;
+    }
+
+    .signup-textarea{
+      min-height:120px;
+      resize:vertical;
+      font-family:inherit;
+    }
+
+    .signup-input:focus,
+    .signup-textarea:focus,
+    .signup-select:focus{
+      border-color:rgba(110,168,255,.55);
+      box-shadow:0 0 0 3px rgba(110,168,255,.14);
+    }
+
+    .custom-select{
+      position:relative;
+      user-select:none;
+    }
+
+    .custom-select-trigger{
+      width:100%;
+      padding:12px 42px 12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      cursor:pointer;
+      min-height:46px;
+      position:relative;
+    }
+
+    .custom-select-trigger:focus,
+    .custom-select.open .custom-select-trigger{
+      border-color:rgba(110,168,255,.55);
+      box-shadow:0 0 0 3px rgba(110,168,255,.14);
+      outline:none;
+    }
+
+    .custom-select-trigger::after{
+      content:"";
+      position:absolute;
+      right:14px;
+      top:50%;
+      width:8px;
+      height:8px;
+      border-right:2px solid #cbd5e1;
+      border-bottom:2px solid #cbd5e1;
+      transform:translateY(-60%) rotate(45deg);
+      transition:.18s ease;
+      pointer-events:none;
+    }
+
+    .custom-select.open .custom-select-trigger::after{
+      transform:translateY(-35%) rotate(-135deg);
+    }
+
+    .custom-select-menu{
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      right:0;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      display:none;
+      z-index:20;
+    }
+
+    .custom-select.open .custom-select-menu{
+      display:block;
+    }
+
+    .custom-select-option{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      color:var(--text);
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .custom-select-option:hover,
+    .custom-select-option.active{
+      background:rgba(110,168,255,.18);
+    }
+
+    .editor-toolbar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+
+    .editor-toolbar button{
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      cursor:pointer;
+    }
+
+    .editor-toolbar button:hover{
+      background:rgba(255,255,255,.12);
+    }
+
+    .color-picker{
+      position:relative;
+    }
+
+    .color-menu{
+      position:absolute;
+      top:38px;
+      left:0;
+      display:none;
+      gap:6px;
+      padding:8px;
+      background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 14px 30px rgba(0,0,0,.28);
+      z-index:30;
+    }
+
+    .color-picker:hover .color-menu{
+      display:flex;
+    }
+
+    .color-menu span{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.18);
+    }
+
+    .format-help{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .signup-modal-actions,
+    .confirm-modal-actions{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .signup-confirm-btn,
+    .signup-cancel-btn,
+    .confirm-danger-btn,
+    .confirm-cancel-btn{
+      flex:1;
+      border:none;
+      border-radius:12px;
+      padding:11px 14px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .signup-confirm-btn{
+      color:white;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+
+    .signup-cancel-btn,
+    .confirm-cancel-btn{
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .confirm-danger-btn{
+      color:white;
+      background:linear-gradient(135deg, #ff6b81, #ef4444);
+    }
+
+    @media (max-width:1100px){
+      .day-card{
         grid-template-columns:1fr;
+      }
+
+      .day-head{
+        position:static;
+        padding-right:0;
+      }
+
+      .slot-list{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+      .member-list{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 768px){
-      .container{
-        padding:16px 10px 30px;
-      }
-
-      .hero{
-        padding:22px 18px;
-      }
-
-      .hero h1{
-        font-size:36px;
-      }
+    @media (max-width:768px){
+      body{ padding:16px 10px 30px; }
+      .hero{ padding:18px; }
+      .day-card{ padding:14px; }
+      .slot-list{ grid-template-columns:1fr; }
+      .member-list{ grid-template-columns:1fr; }
+      .day-title{ font-size:24px; }
+      .member-main-row{ gap:8px; }
+      .tag-pill{ font-size:10px; padding:4px 7px; }
+      .signup-modal-box,
+      .confirm-modal-box{ width:min(100%, 100%); }
     }
   </style>
 </head>
 <body>
-  <div class="bg-orb orb1"></div>
-  <div class="bg-orb orb2"></div>
-  <div class="bg-orb orb3"></div>
-
   <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <span class="brand-badge">夢回花深處</span>
-        <span class="brand-badge">筱風製作</span>
+    <section class="hero">
+      <div class="hero-top">
+        <a href="index.html" class="top-link">← 回到主頁</a>
+        <div class="hero-actions">
+          <button class="top-btn" id="myProfileBtn">我的資料</button>
+        </div>
       </div>
 
-      <div class="nav">
-        <a href="#about">公會介紹</a>
-        <a href="#portal">活動入口</a>
-        <a href="#rules">公會規則</a>
+      <h1 class="title">夢回花深處｜俠境報名清單</h1>
+      <p class="subtitle">目前進行測試中</p>
+
+      <div class="chips">
+        <span class="chip">筱風製作</span>
+        <span class="chip">一隊最多10人</span>
+        <span class="chip">每隊至少2個治療</span>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button class="btn-ghost" id="infoBtn">介紹</button>
+        <button class="btn-ghost" id="refreshBtn">整理日期</button>
       </div>
     </div>
 
-    <section class="hero">
-      <div class="hero-badges">
-        <span class="hero-badge">燕雲十六聲</span>
-        <span class="hero-badge">休閑百業</span>
-        <span class="hero-badge">江湖未遠 · 俠義同行</span>
+    <div class="days" id="days"></div>
+  </div>
+
+  <div id="signupModal" class="signup-modal">
+    <div class="signup-modal-box">
+      <div class="signup-modal-title">新增報名</div>
+
+      <label class="signup-label" for="playerName">名稱</label>
+      <input id="playerName" class="signup-input" type="text" placeholder="請輸入名字" />
+
+      <label class="signup-label">職業</label>
+      <div id="roleSelect" class="custom-select">
+        <button type="button" id="roleSelectTrigger" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span id="roleSelectLabel">請選擇職業</span>
+        </button>
+        <div id="roleSelectMenu" class="custom-select-menu" role="listbox" aria-label="職業選單"></div>
       </div>
 
-      <div class="hero-grid">
-        <div>
-          <h1>這裡是我們在江湖中的落腳處。</h1>
-          <p>
-            不論你是想找人一起活動、清日常、參與公會安排，還是只是想看看最近有哪些事情可以一起做，
-            都可以從這裡開始。百業首頁作為門面，集中放置規則、活動入口與公會資訊，
-            讓每位同門都能更容易找到方向。
-          </p>
-
-          <div class="hero-actions">
-            <a href="#portal" class="btn btn-primary">查看活動入口</a>
-            <a href="#rules" class="btn btn-secondary">查看公會規則</a>
-          </div>
-        </div>
-
-        <div class="hero-side">
-          <div class="mini-panel">
-            <div class="mini-title">管理層</div>
-            <div class="leader-list">
-              <div class="leader-item">
-                <div class="leader-role">社長</div>
-                <div class="leader-name">姜澈</div>
-              </div>
-              <div class="leader-item">
-                <div class="leader-role">副社長</div>
-                <div class="leader-name">花臻茵</div>
-              </div>
-              <div class="leader-item">
-                <div class="leader-role">執法長老</div>
-                <div class="leader-name">白凡 紫凜冬 雙鱼 似水 曲絡寧</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="signup-modal-actions">
+        <button type="button" class="signup-confirm-btn" onclick="submitSignup()">確認</button>
+        <button type="button" class="signup-cancel-btn" onclick="closeModal()">取消</button>
       </div>
-    </section>
-
-    <section class="section" id="about">
-      <h2 class="section-title">公會介紹</h2>
-      <div class="cards-3">
-        <div class="card">
-          <h3>同門互濟</h3>
-          <p>彼此扶持、共襄義舉，對初入門者更應和善指點，讓大家都能慢慢融入這個地方。</p>
-        </div>
-        <div class="card">
-          <h3>安排清楚</h3>
-          <p>將活動入口與規則整理清楚，減少訊息混亂，也讓同門更容易快速找到需要的內容。</p>
-        </div>
-        <div class="card">
-          <h3>重視氣氛</h3>
-          <p>比起單純追求效率，我們更希望大家能舒服相處、願意久留，讓公會真正成為可以依靠的地方。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">百業週程表</h2>
-      <div class="schedule-container">
-        <div class="schedule-grid">
-          <div class="time-col">Time</div>
-          <div class="grid-header">週一</div>
-          <div class="grid-header">週二</div>
-          <div class="grid-header">週三</div>
-          <div class="grid-header">週四</div>
-          <div class="grid-header">週五</div>
-          <div class="grid-header">週六</div>
-          <div class="grid-header">週日</div>
-
-          <div class="time-col">19:00</div>
-          <div class="event-bar">百業派對 19:30 - 19:40</div>
-
-          <div class="time-col">20:00</div>
-          <div></div> <div class="event-card">
-            <span class="event-name">破軍殺將</span>
-            <span class="event-time">20:00</span>
-          </div>
-          <div></div> <div class="event-card">
-            <span class="event-name">破軍殺將</span>
-            <span class="event-time">20:00</span>
-          </div>
-          <div></div> <div></div> <div></div> <div class="time-col">21:00</div>
-          <div></div> <div></div> <div class="event-card alt">
-            <span class="event-name">一決高下</span>
-            <span class="event-time">21:00</span>
-          </div>
-          <div></div> <div class="event-card alt">
-            <span class="event-name">一決高下</span>
-            <span class="event-time">21:00</span>
-          </div>
-          <div></div> <div></div> <div></div> </div>
-      </div>
-    </section>
-    <section class="section" id="portal">
-      <h2 class="section-title">傳送門入口</h2>
-
-      <div class="portal-grid">
-        <div class="portal-card">
-          <h3>俠境活動</h3>
-          <p>
-            目前常用活動入口之一。可在此查看開團時段、隊伍配置與報名情況。
-            若要參與近期安排，可由此進入。
-          </p>
-
-          <div class="portal-actions">
-            <a href="PVERegistration.html" class="btn btn-primary">前往活動報名</a>
-          </div>
-        </div>
-
-        <div class="portal-card">
-          <h3>圖片展示</h3>
-          <p>
-            展示百業小夥伴分享的各種照片。
-          </p>
-
-          <div class="portal-actions">
-            <a href="#" class="btn btn-secondary">尚未開放</a>
-          </div>
-        </div>
-
-        <div class="portal-card">
-          <h3>預留區塊</h3>
-          <p>
-            此卡片可放攻略入口、活動紀錄、成員名單、Discord 入口等。
-          </p>
-
-          <div class="portal-actions">
-            <a href="#" class="btn btn-secondary">尚未開放</a>
-          </div>
-        </div>
-
-        <div class="portal-card">
-          <h3>預留區塊</h3>
-          <p>
-            未來擴展用，例如排行榜、歷史隊伍、滿隊紀錄等功能。
-          </p>
-
-          <div class="portal-actions">
-            <a href="#" class="btn btn-secondary">尚未開放</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="rules">
-      <h2 class="section-title">公會規則</h2>
-
-      <div class="rules-grid">
-        <div class="rule-card">
-          <div class="rule-number">1</div>
-          <h4>和氣為上</h4>
-          <p>諸位社眾切莫與其他百業之人起紛爭，若有衝突，先說明事由，由 @社主𓇼 @ꗯ̤̮ 副社主 @執法長老 ˙ᵕ˙ 秉公調解。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">2</div>
-          <h4>敬重同道</h4>
-          <p>避免任何形式的騷擾與不當行為，只要對方覺得不舒服，皆屬騷擾。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">3</div>
-          <h4>社眾之責</h4>
-          <p>每位社眾每週當積累 2000 活耀度，週日夜九為結算日，以示勤勉不怠。倘遇私務或不便，得預告向 @社主𓇼 @ꗯ̤̮ 副社主 請假，免為怠慢之誤。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">4</div>
-          <h4>廣納賢士</h4>
-          <p>若有江湖好友欲入我夢回門牆，可先稟告 @社主𓇼 @ꗯ̤̮ 副社主 @執法長老 ˙ᵕ˙，由他們協助加入。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">5</div>
-          <h4>同門互濟</h4>
-          <p>同門應當彼此扶持、共襄義舉，對初入門者更宜和善指點。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">6</div>
-          <h4>廳堂清規</h4>
-          <p>嚴禁胡亂喧嘩、私下兜售、惡語相向、污言穢語及淫詞笑語，以免壞百業門風。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">7</div>
-          <h4>承諾守信</h4>
-          <p>報名參與百業活動、行俠任務、副本等等，若臨時無法參加，請提前告知以利安排或調整。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">8</div>
-          <h4>慎用傳音</h4>
-          <p>請勿在他派或公開之地洩露百業內機密、謀略或同門隱私，以免禍起蕭牆。</p>
-        </div>
-
-        <div class="rule-card">
-          <div class="rule-number">9</div>
-          <h4>禮尚往來</h4>
-          <p>交易、贈與或委託，務必誠信為先，不得欺瞞同門。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="guild-quote">
-      <p>
-        江湖不一定要人很多，能一直並肩同行的人，才最難得。
-      </p>
-    </section>
-
-    <div class="footer-note">
-      這裡是夢回花深處的首頁。其他功能可從「傳送門入口」進入。
     </div>
   </div>
+
+  <div id="confirmModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">確認刪除</div>
+      <div id="confirmModalText" class="confirm-modal-text">你確定要刪除這筆報名嗎？</div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeConfirmModal()">取消</button>
+        <button type="button" class="confirm-danger-btn" onclick="confirmRemoveMember()">刪除</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="infoModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">俠境報名說明</div>
+      <div class="confirm-modal-text" style="margin-bottom:0;">
+        <div style="display:grid; gap:12px;">
+          <div><strong style="color:var(--text);">報名前請注意</strong><br>請先確認自己可出席的時間，再進行報名。</div>
+          <div><strong style="color:var(--text);">隊伍規則</strong><br>每隊最多 10 人，且至少需要 2 個治療位。</div>
+          <div><strong style="color:var(--text);">職業說明</strong><br>「假奶」會算作 1 個治療位。</div>
+          <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
+          <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單會自動帶入，且 (你) 只會跟著這份資料，不會因為幫別人報名而跑掉。</div>
+          <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
+          <div><strong style="color:var(--text);">標記排序</strong><br>有標記的隊員會自動排在前面，沒有標記的排在後面。</div>
+          <div><strong style="color:var(--text);">版面</strong><br>桌機一排 2 個隊伍；隊友名單一排 3 個。手機自動改為單欄。</div>
+        </div>
+      </div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeInfoModal()">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tagModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">編輯隊員標籤</div>
+
+      <label class="signup-label" for="tagInput">標籤</label>
+      <input id="tagInput" class="signup-input" type="text" placeholder="例如：拿旗 / 麻刀兵 / 補位" />
+
+      <label class="signup-label" for="noteInput">備註</label>
+      <textarea id="noteInput" class="signup-textarea" placeholder="例如：1號位、引球、先手開怪"></textarea>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeTagModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveMemberTag()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="moveModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">移動隊友</div>
+
+      <div id="moveMemberInfo" class="confirm-modal-text" style="margin-bottom:10px;">
+        請選擇要移動到哪個隊伍。
+      </div>
+
+      <label class="signup-label" for="moveTargetSelect">目標隊伍</label>
+      <select id="moveTargetSelect" class="signup-select"></select>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeMoveModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="confirmMoveMember()">確認移動</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="editRoleModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">編輯職業</div>
+
+      <div id="editRoleMemberInfo" class="confirm-modal-text" style="margin-bottom:10px;">
+        請選擇新的職業。
+      </div>
+
+      <label class="signup-label" for="editRoleSelect">職業</label>
+      <select id="editRoleSelect" class="signup-select">
+        <option value="輸出">輸出</option>
+        <option value="承傷">承傷</option>
+        <option value="治療">治療</option>
+        <option value="假奶">假奶</option>
+      </select>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeEditRoleModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveMemberRole()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="teamTypeModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">設定團類型</div>
+
+      <label class="signup-label" for="teamTypeSelect">團類型</label>
+      <select id="teamTypeSelect" class="signup-select">
+        <option value="普通團">普通團</option>
+        <option value="天賦團">天賦團</option>
+      </select>
+
+      <label class="signup-label" for="teamDescriptionInput">隊伍說明</label>
+
+      <div class="editor-toolbar">
+        <button type="button" onclick="applyFormat('bold')"><b>B</b></button>
+        <button type="button" onclick="applyFormat('italic')"><i>I</i></button>
+
+        <div class="color-picker">
+          <button type="button">🎨</button>
+          <div class="color-menu">
+            <span style="background:#ff6b81" onclick="applyColor('red')"></span>
+            <span style="background:#6ea8ff" onclick="applyColor('blue')"></span>
+            <span style="background:#34d399" onclick="applyColor('green')"></span>
+            <span style="background:#fbbf24" onclick="applyColor('yellow')"></span>
+            <span style="background:#a78bfa" onclick="applyColor('purple')"></span>
+          </div>
+        </div>
+      </div>
+
+      <textarea
+        id="teamDescriptionInput"
+        class="signup-textarea"
+        placeholder="例如：&#10;**優先給需要打天賦的人**&#10;[color=yellow]奶媽最多三位[/color]&#10;*只開一次*"
+      ></textarea>
+
+      <div class="format-help">
+        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=red]文字[/color]</code>
+      </div>
+
+      <div class="signup-modal-actions">
+        <button type="button" class="signup-cancel-btn" onclick="closeTeamTypeModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveTeamType()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="myProfileModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">我的資料</div>
+
+      <label class="signup-label" for="myProfileName">我的名字</label>
+      <input id="myProfileName" class="signup-input" type="text" placeholder="用來高亮顯示 (你)" />
+
+      <label class="signup-label" for="myProfileRole">我的常用職業</label>
+      <select id="myProfileRole" class="signup-select">
+        <option value="輸出">輸出</option>
+        <option value="承傷">承傷</option>
+        <option value="治療">治療</option>
+        <option value="假奶">假奶</option>
+      </select>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeMyProfileModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveMyProfileModal()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      collection,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3NalXMRjiag_26-g82UtxeDvuSjydg30",
+      authDomain: "pve-ab4a8.firebaseapp.com",
+      projectId: "pve-ab4a8",
+      storageBucket: "pve-ab4a8.firebasestorage.app",
+      messagingSenderId: "292971877558",
+      appId: "1:292971877558:web:69b8ed8f70987847a44217",
+      measurementId: "G-ESW46GLEV2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const CONFIG = {
+      daysToShow: 5,
+      maxPeople: 10,
+      minHealer: 2,
+      weekendTimes: ["16:00","21:30"],
+      roles: ["輸出","承傷","治療","假奶"],
+      collectionName: "schedule"
+    };
+
+    let globalData = {};
+    let isRendering = false;
+    let currentSignup = { dateKey:"", slotIndex:-1, allowedRoles:[] };
+    let selectedRoleValue = "";
+    let customSelectBound = false;
+    let pendingDelete = null;
+    let currentTagEdit = null;
+    let currentMoveEdit = null;
+    let currentRoleEdit = null;
+    let currentTeamTypeEdit = null;
+
+    function getMyProfile(){
+      return {
+        name: (localStorage.getItem("my_profile_name") || "").trim(),
+        role: (localStorage.getItem("my_profile_role") || "").trim()
+      };
+    }
+
+    function saveMyProfile(name, role){
+      localStorage.setItem("my_profile_name", name || "");
+      localStorage.setItem("my_profile_role", role || "");
+    }
+
+    function getFormDefaults(){
+      return {
+        name: (localStorage.getItem("signup_form_name") || "").trim(),
+        role: (localStorage.getItem("signup_form_role") || "").trim()
+      };
+    }
+
+    function saveFormDefaults(name, role){
+      localStorage.setItem("signup_form_name", name || "");
+      localStorage.setItem("signup_form_role", role || "");
+    }
+
+    function getTodayStart(){
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function addDays(date, n){
+      const d = new Date(date);
+      d.setDate(d.getDate() + n);
+      return d;
+    }
+
+    function pad(n){
+      return String(n).padStart(2, "0");
+    }
+
+    function formatDate(date){
+      return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    }
+
+    function displayDate(date){
+      return `${date.getMonth()+1}/${date.getDate()}`;
+    }
+
+    function weekdayText(date){
+      return ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"][date.getDay()];
+    }
+
+    function isWeekend(date){
+      return date.getDay() === 0 || date.getDay() === 6;
+    }
+
+    function getNextMonday(){
+      const now = new Date();
+      now.setHours(0,0,0,0);
+      const day = now.getDay();
+      const diff = (8 - day) % 7 || 7;
+      const nextMonday = new Date(now);
+      nextMonday.setDate(now.getDate() + diff);
+      nextMonday.setHours(0,0,0,0);
+      return nextMonday;
+    }
+
+    function getDatesToShow(){
+      const today = getTodayStart();
+      const dates = Array.from({length: CONFIG.daysToShow}, (_, i) => addDays(today, i));
+      const nextMonday = getNextMonday();
+      const nextMondayKey = formatDate(nextMonday);
+      const alreadyIncluded = dates.some(d => formatDate(d) === nextMondayKey);
+      if(!alreadyIncluded) dates.push(nextMonday);
+      dates.sort((a,b) => a - b);
+      return dates;
+    }
+
+    function sortSlots(slots){
+      slots.sort((a,b) => {
+        if(a.time === b.time) return (a.instance || 1) - (b.instance || 1);
+        return a.time.localeCompare(b.time);
+      });
+    }
+
+    function countRole(members, role){
+      if(role === "治療"){
+        return members.filter(m => m.role === "治療" || m.role === "假奶").length;
+      }
+      return members.filter(m => m.role === role).length;
+    }
+
+    function getAllowedRoles(members){
+      const healerCount = countRole(members, "治療");
+      const remaining = CONFIG.maxPeople - members.length;
+      if(remaining <= 2 && healerCount < CONFIG.minHealer){
+        return ["治療","假奶"];
+      }
+      return [...CONFIG.roles];
+    }
+
+    function getStatus(members){
+      if(members.length >= CONFIG.maxPeople){
+        return { text:"已滿", cls:"status-full" };
+      }
+      if(countRole(members, "治療") < CONFIG.minHealer){
+        return { text:"缺奶", cls:"status-warn" };
+      }
+      return { text:"達標", cls:"status-ok" };
+    }
+
+    function roleClass(role){
+      if(role === "輸出") return "role-dps";
+      if(role === "承傷") return "role-tank";
+      if(role === "假奶") return "role-fakeheal";
+      return "role-heal";
+    }
+
+    function teamTypeClass(teamType){
+      return teamType === "天賦團" ? "team-type-talent" : "team-type-normal";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function formatDescription(text){
+      if(!text) return "";
+
+      let t = text
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+
+      t = t.replace(/\*\*(.*?)\*\*/gs, "<strong>$1</strong>");
+      t = t.replace(/\*(.*?)\*/gs, "<em>$1</em>");
+
+      const colors = {
+        red:"#ff6b81",
+        blue:"#6ea8ff",
+        green:"#34d399",
+        yellow:"#fbbf24",
+        purple:"#a78bfa"
+      };
+
+      t = t.replace(/\[color=(.*?)\](.*?)\[\/color\]/gs, (m, c, content) => {
+        const color = colors[c] || "#ffffff";
+        return `<span style="color:${color}">${content}</span>`;
+      });
+
+      t = t.replace(/\n/g, "<br>");
+      return t.trim();
+    }
+
+    function wrapText(textarea, before, after){
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      const selected = text.substring(start, end);
+
+      textarea.value =
+        text.substring(0, start) +
+        before + selected + after +
+        text.substring(end);
+
+      textarea.focus();
+      textarea.setSelectionRange(start + before.length, end + before.length);
+    }
+
+    window.applyFormat = (type) => {
+      const textarea = document.getElementById("teamDescriptionInput");
+      if(!textarea) return;
+
+      if(type === "bold"){
+        wrapText(textarea, "**", "**");
+      } else if(type === "italic"){
+        wrapText(textarea, "*", "*");
+      }
+    };
+
+    window.applyColor = (color) => {
+      const textarea = document.getElementById("teamDescriptionInput");
+      if(!textarea) return;
+      wrapText(textarea, `[color=${color}]`, `[/color]`);
+    };
+
+    function buildDefaultDayData(dateObj){
+      const slots = [];
+      const day = dateObj.getDay();
+
+      if(day === 1){
+        slots.push({
+          time:"19:45",
+          instance:1,
+          members:[],
+          isCustom:false,
+          teamType:"普通團",
+          description:""
+        });
+
+        slots.push({
+          time:"19:45",
+          instance:2,
+          members:[],
+          isCustom:false,
+          teamType:"普通團",
+          description:""
+        });
+
+        slots.push({
+          time:"20:30",
+          instance:1,
+          members:[],
+          isCustom:false,
+          teamType:"普通團",
+          description:""
+        });
+      } else if(day >= 2 && day <= 5){
+        slots.push({
+          time:"19:45",
+          instance:1,
+          members:[],
+          isCustom:false,
+          teamType:"普通團",
+          description:""
+        });
+      } else {
+        CONFIG.weekendTimes.forEach(time => {
+          slots.push({
+            time,
+            instance:1,
+            members:[],
+            isCustom:false,
+            teamType:"普通團",
+            description:""
+          });
+        });
+      }
+
+      sortSlots(slots);
+      return { slots };
+    }
+
+    async function ensureDateDoc(dateKey, dateObj){
+      const ref = doc(db, CONFIG.collectionName, dateKey);
+      const snap = await getDoc(ref);
+
+      if(!snap.exists()){
+        await setDoc(ref, buildDefaultDayData(dateObj));
+      } else {
+        const data = snap.data();
+        if(!data.slots || !Array.isArray(data.slots)){
+          await setDoc(ref, buildDefaultDayData(dateObj));
+        } else {
+          let changed = false;
+
+          data.slots = data.slots.map(slot => {
+            const updatedSlot = {
+              ...slot,
+              isCustom: typeof slot.isCustom === "undefined" ? false : slot.isCustom,
+              teamType: slot.teamType || "普通團",
+              description: slot.description || "",
+              members: Array.isArray(slot.members)
+                ? slot.members.map(member => ({
+                    ...member,
+                    tag: member.tag || "",
+                    note: member.note || ""
+                  }))
+                : []
+            };
+
+            if(
+              typeof slot.isCustom === "undefined" ||
+              !slot.teamType ||
+              typeof slot.description === "undefined" ||
+              (Array.isArray(slot.members) && slot.members.some(member => typeof member.tag === "undefined" || typeof member.note === "undefined"))
+            ){
+              changed = true;
+            }
+
+            return updatedSlot;
+          });
+
+          if(changed){
+            await setDoc(ref, data);
+          }
+        }
+      }
+    }
+
+    async function initializeVisibleDates(){
+      const dates = getDatesToShow();
+      for(const dateObj of dates){
+        await ensureDateDoc(formatDate(dateObj), dateObj);
+      }
+    }
+
+    function autoCreateNextSameTimeSlot(dayData, time){
+      const sameTimeSlots = dayData.slots.filter(s => s.time === time);
+      const hasOpenSlot = sameTimeSlots.some(s => (s.members || []).length < CONFIG.maxPeople);
+
+      if(!hasOpenSlot){
+        const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
+        dayData.slots.push({
+          time,
+          instance:maxInstance + 1,
+          members:[],
+          isCustom:true,
+          teamType:"普通團",
+          description:""
+        });
+        sortSlots(dayData.slots);
+      }
+    }
+
+    function renderCustomRoleOptions(allowedRoles){
+      const menu = document.getElementById("roleSelectMenu");
+      const label = document.getElementById("roleSelectLabel");
+
+      menu.innerHTML = "";
+      selectedRoleValue = allowedRoles[0] || "";
+      label.textContent = selectedRoleValue || "請選擇職業";
+
+      allowedRoles.forEach(role => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "custom-select-option" + (role === selectedRoleValue ? " active" : "");
+        button.textContent = role;
+        button.dataset.value = role;
+        button.onclick = () => {
+          selectedRoleValue = role;
+          label.textContent = role;
+          menu.querySelectorAll(".custom-select-option").forEach(opt => {
+            opt.classList.toggle("active", opt.dataset.value === role);
+          });
+          closeCustomSelect();
+        };
+        menu.appendChild(button);
+      });
+    }
+
+    function syncRoleLabel(){
+      const label = document.getElementById("roleSelectLabel");
+      if(label){
+        label.textContent = selectedRoleValue || "請選擇職業";
+      }
+    }
+
+    function openCustomSelect(){
+      const select = document.getElementById("roleSelect");
+      const trigger = document.getElementById("roleSelectTrigger");
+      select.classList.add("open");
+      trigger.setAttribute("aria-expanded", "true");
+    }
+
+    function closeCustomSelect(){
+      const select = document.getElementById("roleSelect");
+      const trigger = document.getElementById("roleSelectTrigger");
+      select.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+
+    function bindCustomSelect(){
+      if(customSelectBound) return;
+      customSelectBound = true;
+
+      const trigger = document.getElementById("roleSelectTrigger");
+      const signupModal = document.getElementById("signupModal");
+      const confirmModal = document.getElementById("confirmModal");
+      const infoModal = document.getElementById("infoModal");
+      const tagModal = document.getElementById("tagModal");
+      const moveModal = document.getElementById("moveModal");
+      const editRoleModal = document.getElementById("editRoleModal");
+      const teamTypeModal = document.getElementById("teamTypeModal");
+      const myProfileModal = document.getElementById("myProfileModal");
+
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const select = document.getElementById("roleSelect");
+        if(select.classList.contains("open")){
+          closeCustomSelect();
+        } else {
+          openCustomSelect();
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const select = document.getElementById("roleSelect");
+        if(select && !select.contains(e.target)){
+          closeCustomSelect();
+        }
+
+        document.querySelectorAll(".member-menu.open").forEach(menu => {
+          if(!menu.contains(e.target)){
+            menu.classList.remove("open");
+          }
+        });
+
+        document.querySelectorAll(".slot-menu.open").forEach(menu => {
+          if(!menu.contains(e.target)){
+            menu.classList.remove("open");
+          }
+        });
+      });
+
+      signupModal.addEventListener("click", (e) => {
+        if(e.target.id === "signupModal") closeModal();
+      });
+
+      confirmModal.addEventListener("click", (e) => {
+        if(e.target.id === "confirmModal") closeConfirmModal();
+      });
+
+      infoModal.addEventListener("click", (e) => {
+        if(e.target.id === "infoModal") closeInfoModal();
+      });
+
+      tagModal.addEventListener("click", (e) => {
+        if(e.target.id === "tagModal") closeTagModal();
+      });
+
+      moveModal.addEventListener("click", (e) => {
+        if(e.target.id === "moveModal") closeMoveModal();
+      });
+
+      editRoleModal.addEventListener("click", (e) => {
+        if(e.target.id === "editRoleModal") closeEditRoleModal();
+      });
+
+      teamTypeModal.addEventListener("click", (e) => {
+        if(e.target.id === "teamTypeModal") closeTeamTypeModal();
+      });
+
+      myProfileModal.addEventListener("click", (e) => {
+        if(e.target.id === "myProfileModal") closeMyProfileModal();
+      });
+    }
+
+    function getSortedMembersForDisplay(members){
+      return members
+        .map((member, index) => ({ ...member, _index:index }))
+        .sort((a, b) => {
+          const aHasTag = !!String(a.tag || "").trim();
+          const bHasTag = !!String(b.tag || "").trim();
+
+          if(aHasTag !== bHasTag){
+            return aHasTag ? -1 : 1;
+          }
+
+          return a._index - b._index;
+        });
+    }
+
+    window.openModal = (dateKey, slotIndex, allowedRoles) => {
+      currentSignup = { dateKey, slotIndex, allowedRoles };
+
+      const modal = document.getElementById("signupModal");
+      const nameInput = document.getElementById("playerName");
+
+      const defaults = getFormDefaults();
+      const profile = getMyProfile();
+
+      renderCustomRoleOptions(allowedRoles);
+
+      nameInput.value = defaults.name || profile.name || "";
+
+      const preferredRole = defaults.role || profile.role || allowedRoles[0] || "";
+      if(preferredRole && allowedRoles.includes(preferredRole)){
+        selectedRoleValue = preferredRole;
+        syncRoleLabel();
+        document.querySelectorAll("#roleSelectMenu .custom-select-option").forEach(opt => {
+          opt.classList.toggle("active", opt.dataset.value === preferredRole);
+        });
+      }
+
+      closeCustomSelect();
+      bindCustomSelect();
+
+      modal.classList.add("show");
+
+      setTimeout(() => {
+        nameInput.focus();
+        nameInput.select();
+      }, 30);
+    };
+
+    window.closeModal = () => {
+      document.getElementById("signupModal").classList.remove("show");
+      closeCustomSelect();
+    };
+
+    window.submitSignup = async () => {
+      const nameInput = document.getElementById("playerName");
+      const name = nameInput.value.trim();
+      const role = selectedRoleValue;
+
+      if(!name){
+        alert("名字不可留空。");
+        nameInput.focus();
+        return;
+      }
+
+      if(!role){
+        alert("請選擇職業。");
+        return;
+      }
+
+      saveFormDefaults(name, role);
+
+      const { dateKey, slotIndex } = currentSignup;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      if(slot.members.some(m => String(m.name).trim() === name)){
+        alert("此隊伍已存在相同名字。");
+        return;
+      }
+
+      slot.members.push({ name, role, tag:"", note:"" });
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+      }
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeModal();
+    };
+
+    function openConfirmModal(dateKey, slotIndex, memberIndex){
+      const dayData = globalData[dateKey];
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      const member = members[memberIndex];
+      if(!member) return;
+
+      pendingDelete = { dateKey, slotIndex, memberIndex };
+      document.getElementById("confirmModalText").textContent = `確定要刪除報名玩家「${member.name}」嗎？`;
+      document.getElementById("confirmModal").classList.add("show");
+    }
+
+    window.closeConfirmModal = () => {
+      pendingDelete = null;
+      document.getElementById("confirmModal").classList.remove("show");
+    };
+
+    window.confirmRemoveMember = async () => {
+      if(!pendingDelete) return;
+
+      const { dateKey, slotIndex, memberIndex } = pendingDelete;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      if(!dayData.slots[slotIndex]) return;
+
+      const members = Array.isArray(dayData.slots[slotIndex].members)
+        ? dayData.slots[slotIndex].members
+        : [];
+
+      if(!members[memberIndex]) return;
+
+      members.splice(memberIndex, 1);
+      dayData.slots[slotIndex].members = members;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeConfirmModal();
+    };
+
+    window.openInfoModal = () => {
+      document.getElementById("infoModal").classList.add("show");
+    };
+
+    window.closeInfoModal = () => {
+      document.getElementById("infoModal").classList.remove("show");
+    };
+
+    function openTagModal(dateKey, slotIndex, memberIndex){
+      const member = globalData?.[dateKey]?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!member) return;
+
+      currentTagEdit = { dateKey, slotIndex, memberIndex };
+      document.getElementById("tagInput").value = member.tag || "";
+      document.getElementById("noteInput").value = member.note || "";
+      document.getElementById("tagModal").classList.add("show");
+    }
+
+    window.closeTagModal = () => {
+      currentTagEdit = null;
+      document.getElementById("tagModal").classList.remove("show");
+    };
+
+    window.saveMemberTag = async () => {
+      if(!currentTagEdit) return;
+
+      const { dateKey, slotIndex, memberIndex } = currentTagEdit;
+      const tag = document.getElementById("tagInput").value.trim();
+      const note = document.getElementById("noteInput").value.trim();
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!member) return;
+
+      member.tag = tag;
+      member.note = note;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeTagModal();
+    };
+
+    function openMoveModal(dateKey, slotIndex, memberIndex){
+      const dayData = globalData?.[dateKey];
+      const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!dayData || !member) return;
+
+      currentMoveEdit = { dateKey, slotIndex, memberIndex };
+
+      const select = document.getElementById("moveTargetSelect");
+      const info = document.getElementById("moveMemberInfo");
+
+      info.innerHTML = `要移動的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
+      select.innerHTML = "";
+
+      const newTeamOption = document.createElement("option");
+      newTeamOption.value = "__new__";
+      newTeamOption.textContent = "建立新隊伍並移入";
+      select.appendChild(newTeamOption);
+
+      dayData.slots.forEach((slot, index) => {
+        if(index === slotIndex) return;
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = `${slot.time}｜第 ${slot.instance || 1} 隊｜${(slot.members || []).length}/${CONFIG.maxPeople}`;
+        select.appendChild(option);
+      });
+
+      document.getElementById("moveModal").classList.add("show");
+    }
+
+    window.closeMoveModal = () => {
+      currentMoveEdit = null;
+      document.getElementById("moveModal").classList.remove("show");
+    };
+
+    window.confirmMoveMember = async () => {
+      if(!currentMoveEdit) return;
+
+      const { dateKey, slotIndex, memberIndex } = currentMoveEdit;
+      const targetValue = document.getElementById("moveTargetSelect").value;
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const sourceSlot = dayData.slots[slotIndex];
+      if(!sourceSlot) return;
+
+      sourceSlot.members = Array.isArray(sourceSlot.members) ? sourceSlot.members : [];
+      const member = sourceSlot.members[memberIndex];
+      if(!member) return;
+
+      if(targetValue === "__new__"){
+        const sameTimeSlots = dayData.slots.filter(s => s.time === sourceSlot.time);
+        const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
+
+        const newSlot = {
+          time: sourceSlot.time,
+          instance: maxInstance + 1,
+          members: [member],
+          isCustom: true,
+          teamType: sourceSlot.teamType || "普通團",
+          description: sourceSlot.description || ""
+        };
+
+        sourceSlot.members.splice(memberIndex, 1);
+        dayData.slots.push(newSlot);
+        sortSlots(dayData.slots);
+
+        await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+        closeMoveModal();
+        return;
+      }
+
+      const targetSlotIndex = Number(targetValue);
+      const targetSlot = dayData.slots[targetSlotIndex];
+      if(!targetSlot) return;
+
+      targetSlot.members = Array.isArray(targetSlot.members) ? targetSlot.members : [];
+
+      if(targetSlot.members.length >= CONFIG.maxPeople){
+        alert("目標隊伍已滿。");
+        return;
+      }
+
+      if(targetSlot.members.some(m => String(m.name).trim() === String(member.name).trim())){
+        alert("目標隊伍已有相同名字。");
+        return;
+      }
+
+      sourceSlot.members.splice(memberIndex, 1);
+      targetSlot.members.push(member);
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeMoveModal();
+    };
+
+    function openEditRoleModal(dateKey, slotIndex, memberIndex){
+      const member = globalData?.[dateKey]?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!member) return;
+
+      currentRoleEdit = { dateKey, slotIndex, memberIndex };
+      document.getElementById("editRoleMemberInfo").innerHTML =
+        `要編輯的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
+      document.getElementById("editRoleSelect").value = member.role || "輸出";
+      document.getElementById("editRoleModal").classList.add("show");
+    }
+
+    window.closeEditRoleModal = () => {
+      currentRoleEdit = null;
+      document.getElementById("editRoleModal").classList.remove("show");
+    };
+
+    window.saveMemberRole = async () => {
+      if(!currentRoleEdit) return;
+
+      const { dateKey, slotIndex, memberIndex } = currentRoleEdit;
+      const newRole = document.getElementById("editRoleSelect").value;
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
+      if(!member) return;
+
+      member.role = newRole;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeEditRoleModal();
+    };
+
+    function openTeamTypeModal(dateKey, slotIndex){
+      const slot = globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot) return;
+
+      currentTeamTypeEdit = { dateKey, slotIndex };
+      document.getElementById("teamTypeSelect").value = slot.teamType || "普通團";
+      document.getElementById("teamDescriptionInput").value = slot.description || "";
+      document.getElementById("teamTypeModal").classList.add("show");
+    }
+
+    window.closeTeamTypeModal = () => {
+      currentTeamTypeEdit = null;
+      document.getElementById("teamTypeModal").classList.remove("show");
+    };
+
+    window.saveTeamType = async () => {
+      if(!currentTeamTypeEdit) return;
+
+      const { dateKey, slotIndex } = currentTeamTypeEdit;
+      const value = document.getElementById("teamTypeSelect").value;
+      const description = document.getElementById("teamDescriptionInput").value.trim();
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      if(!dayData.slots[slotIndex]) return;
+
+      dayData.slots[slotIndex].teamType = value;
+      dayData.slots[slotIndex].description = description;
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeTeamTypeModal();
+    };
+
+    window.openMyProfileModal = () => {
+      const profile = getMyProfile();
+      document.getElementById("myProfileName").value = profile.name || "";
+      document.getElementById("myProfileRole").value = profile.role || "輸出";
+      document.getElementById("myProfileModal").classList.add("show");
+    };
+
+    window.closeMyProfileModal = () => {
+      document.getElementById("myProfileModal").classList.remove("show");
+    };
+
+    window.saveMyProfileModal = () => {
+      const name = document.getElementById("myProfileName").value.trim();
+      const role = document.getElementById("myProfileRole").value;
+      saveMyProfile(name, role);
+      closeMyProfileModal();
+      render();
+    };
+
+    document.addEventListener("keydown", (e) => {
+      const signupModal = document.getElementById("signupModal");
+      const confirmModal = document.getElementById("confirmModal");
+      const infoModal = document.getElementById("infoModal");
+      const tagModal = document.getElementById("tagModal");
+      const moveModal = document.getElementById("moveModal");
+      const editRoleModal = document.getElementById("editRoleModal");
+      const teamTypeModal = document.getElementById("teamTypeModal");
+      const myProfileModal = document.getElementById("myProfileModal");
+
+      if(signupModal.classList.contains("show")){
+        if(e.key === "Escape") closeModal();
+        if(e.key === "Enter"){
+          const active = document.activeElement;
+          const isCustomOpen = document.getElementById("roleSelect").classList.contains("open");
+          if(active && active.closest("#roleSelect") && isCustomOpen) return;
+          submitSignup();
+        }
+      }
+
+      if(confirmModal.classList.contains("show") && e.key === "Escape") closeConfirmModal();
+      if(infoModal.classList.contains("show") && e.key === "Escape") closeInfoModal();
+      if(tagModal.classList.contains("show") && e.key === "Escape") closeTagModal();
+      if(moveModal.classList.contains("show") && e.key === "Escape") closeMoveModal();
+      if(editRoleModal.classList.contains("show") && e.key === "Escape") closeEditRoleModal();
+      if(teamTypeModal.classList.contains("show") && e.key === "Escape") closeTeamTypeModal();
+      if(myProfileModal.classList.contains("show") && e.key === "Escape") closeMyProfileModal();
+    });
+
+    async function addMember(dateKey, slotIndex){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        alert("此隊伍已滿。");
+        return;
+      }
+
+      const allowedRoles = getAllowedRoles(slot.members);
+      openModal(dateKey, slotIndex, allowedRoles);
+    }
+
+    async function addCustomTime(dateKey){
+      const input = prompt("請輸入新時間（例如 19:45）");
+      if(input === null) return;
+
+      const trimmed = input.trim();
+      if(!/^([01]\d|2[0-3]):([0-5]\d)$/.test(trimmed)){
+        alert("時間格式錯誤，請使用 HH:MM，例如 19:45");
+        return;
+      }
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const sameTimeSlots = dayData.slots.filter(s => s.time === trimmed);
+      const nextInstance = sameTimeSlots.length
+        ? Math.max(...sameTimeSlots.map(s => s.instance || 1)) + 1
+        : 1;
+
+      dayData.slots.push({
+        time: trimmed,
+        instance: nextInstance,
+        members: [],
+        isCustom: true,
+        teamType: "普通團",
+        description: ""
+      });
+
+      sortSlots(dayData.slots);
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    }
+
+    async function deleteCustomSlot(dateKey, slotIndex){
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      if(!slot.isCustom){
+        alert("固定時間段不能刪除。");
+        return;
+      }
+
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      if(members.length > 0){
+        alert("這個時間段已有報名，不能刪除。");
+        return;
+      }
+
+      dayData.slots.splice(slotIndex, 1);
+      sortSlots(dayData.slots);
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    }
+
+    function render(){
+      if(isRendering) return;
+      isRendering = true;
+
+      const dates = getDatesToShow();
+      const daysEl = document.getElementById("days");
+      const myProfile = getMyProfile();
+      const savedName = myProfile.name;
+      let html = "";
+
+      dates.forEach(date => {
+        const dateKey = formatDate(date);
+        const dayData = globalData[dateKey];
+        const modeText = isWeekend(date) ? "週末時間表" : "平日時間表";
+
+        html += `
+          <section class="day-card">
+            <div class="day-head">
+              <h2 class="day-title">${displayDate(date)}</h2>
+              <div class="day-sub">${weekdayText(date)}｜${modeText}</div>
+              <div class="day-actions">
+                <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
+              </div>
+            </div>
+            <div class="slot-list">
+        `;
+
+        if(dayData && Array.isArray(dayData.slots)){
+          dayData.slots.forEach((slot, slotIndex) => {
+            const members = Array.isArray(slot.members) ? slot.members : [];
+            const sortedMembers = getSortedMembersForDisplay(members);
+            const dpsCount = countRole(members, "輸出");
+            const tankCount = countRole(members, "承傷");
+            const healCount = countRole(members, "治療");
+            const status = getStatus(members);
+            const allowedRoles = getAllowedRoles(members);
+            const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
+            const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
+            const isRecommended = !isWeekend(date) && slot.time === "19:45";
+            const isMyTeam = !!savedName && members.some(m => String(m.name).trim() === savedName);
+
+            const slotCardClass = members.length >= CONFIG.maxPeople
+              ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
+              : members.length > 0
+                ? `slot-card has-members${isMyTeam ? " my-team" : ""}`
+                : `slot-card${isMyTeam ? " my-team" : ""}`;
+
+            html += `
+              <div class="${slotCardClass}">
+                <div class="slot-top">
+                  <div>
+                    <div class="slot-time-wrap">
+                      <div class="slot-time">${slot.time}</div>
+                      ${isRecommended ? `<span class="recommend-badge">★ 推薦</span>` : ``}
+                    </div>
+                    <div class="slot-instance">
+                      第 ${slot.instance || 1} 隊
+                      ${isMyTeam ? "｜你的隊伍" : ""}
+                    </div>
+                    <div class="slot-meta-pills">
+                      <span class="team-type-pill ${teamTypeClass(slot.teamType || "普通團")}">
+                        ${slot.teamType || "普通團"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="slot-top-right">
+                    <div class="slot-badges">
+                      <span class="badge">${members.length}/${CONFIG.maxPeople}</span>
+                      <span class="badge ${status.cls}">
+                        ${forceHeal && members.length < CONFIG.maxPeople ? "最後位置保留治療位" : status.text}
+                      </span>
+                    </div>
+
+                    <div class="slot-menu">
+                      <button class="slot-menu-trigger" data-action="toggle-slot-menu">⋯</button>
+                      <div class="slot-menu-dropdown">
+                        <button class="slot-menu-item team" data-action="edit-team-type" data-date="${dateKey}" data-slot="${slotIndex}">
+                          團類型 / 說明
+                        </button>
+
+                        ${slot.isCustom ? `
+                          <button class="slot-menu-item delete" data-action="delete-slot" data-date="${dateKey}" data-slot="${slotIndex}" ${canDeleteCustomSlot ? "" : "disabled"}>
+                            刪除時間
+                          </button>
+                        ` : ``}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="summary">
+                  <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
+                  <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
+                  <span class="summary-pill">治療 <strong>${healCount}</strong></span>
+                </div>
+
+                ${slot.description && slot.description.trim()
+                  ? `<div class="slot-description"><div class="slot-description-title">隊伍說明</div><div class="slot-description-body">${formatDescription(slot.description)}</div></div>`
+                  : ``
+                }
+
+                <div class="member-list">
+            `;
+
+            if(sortedMembers.length === 0){
+              html += `<div class="empty-note">尚未有人報名</div>`;
+            } else {
+              sortedMembers.forEach(member => {
+                const isSelf = !!savedName && String(member.name).trim() === savedName;
+                const hasTag = !!String(member.tag || "").trim();
+
+                html += `
+                  <div class="member${isSelf ? " member-self" : ""}${hasTag ? " member-tagged" : ""}">
+                    <div class="member-left">
+                      <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+
+                      <div class="member-text">
+                        <div class="member-main-row">
+                          <span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>
+                          ${member.tag ? `<span class="tag-pill">${escapeHtml(member.tag)}</span>` : ``}
+                        </div>
+                        ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
+                      </div>
+                    </div>
+
+                    <div class="member-menu">
+                      <button class="menu-trigger" data-action="toggle-member-menu">⋯</button>
+                      <div class="member-menu-dropdown">
+                        <button class="member-menu-item" data-action="edit-member-role" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          編輯職業
+                        </button>
+                        <button class="member-menu-item tag" data-action="edit-member-tag" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          標籤 / 備註
+                        </button>
+                        <button class="member-menu-item move" data-action="move-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          移動
+                        </button>
+                        <button class="member-menu-item delete" data-action="remove-member" data-date="${dateKey}" data-slot="${slotIndex}" data-member="${member._index}">
+                          刪除
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              });
+            }
+
+            html += `
+                </div>
+
+                <div class="slot-actions">
+                  <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
+                    ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療位" : "＋ 新增報名"}
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+        }
+
+        html += `
+            </div>
+          </section>
+        `;
+      });
+
+      daysEl.innerHTML = html;
+      bindActions();
+      isRendering = false;
+    }
+
+    function bindActions(){
+      document.querySelectorAll('[data-action="toggle-member-menu"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+
+          document.querySelectorAll(".slot-menu.open").forEach(menu => {
+            menu.classList.remove("open");
+          });
+
+          document.querySelectorAll(".member-menu.open").forEach(menu => {
+            if(menu !== btn.closest(".member-menu")){
+              menu.classList.remove("open");
+            }
+          });
+
+          btn.closest(".member-menu").classList.toggle("open");
+        };
+      });
+
+      document.querySelectorAll('[data-action="toggle-slot-menu"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+
+          document.querySelectorAll(".member-menu.open").forEach(menu => {
+            menu.classList.remove("open");
+          });
+
+          document.querySelectorAll(".slot-menu.open").forEach(menu => {
+            if(menu !== btn.closest(".slot-menu")){
+              menu.classList.remove("open");
+            }
+          });
+
+          btn.closest(".slot-menu").classList.toggle("open");
+        };
+      });
+
+      document.querySelectorAll('[data-action="add-time"]').forEach(btn => {
+        btn.onclick = () => addCustomTime(btn.dataset.date);
+      });
+
+      document.querySelectorAll('[data-action="add-member"]').forEach(btn => {
+        btn.onclick = () => addMember(btn.dataset.date, Number(btn.dataset.slot));
+      });
+
+      document.querySelectorAll('[data-action="edit-team-type"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".slot-menu.open").forEach(menu => menu.classList.remove("open"));
+          openTeamTypeModal(btn.dataset.date, Number(btn.dataset.slot));
+        };
+      });
+
+      document.querySelectorAll('[data-action="edit-member-role"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".member-menu.open").forEach(menu => menu.classList.remove("open"));
+          openEditRoleModal(btn.dataset.date, Number(btn.dataset.slot), Number(btn.dataset.member));
+        };
+      });
+
+      document.querySelectorAll('[data-action="edit-member-tag"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".member-menu.open").forEach(menu => menu.classList.remove("open"));
+          openTagModal(btn.dataset.date, Number(btn.dataset.slot), Number(btn.dataset.member));
+        };
+      });
+
+      document.querySelectorAll('[data-action="move-member"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".member-menu.open").forEach(menu => menu.classList.remove("open"));
+          openMoveModal(btn.dataset.date, Number(btn.dataset.slot), Number(btn.dataset.member));
+        };
+      });
+
+      document.querySelectorAll('[data-action="remove-member"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".member-menu.open").forEach(menu => menu.classList.remove("open"));
+          openConfirmModal(btn.dataset.date, Number(btn.dataset.slot), Number(btn.dataset.member));
+        };
+      });
+
+      document.querySelectorAll('[data-action="delete-slot"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".slot-menu.open").forEach(menu => menu.classList.remove("open"));
+          deleteCustomSlot(btn.dataset.date, Number(btn.dataset.slot));
+        };
+      });
+    }
+
+    document.getElementById("infoBtn").onclick = () => openInfoModal();
+    document.getElementById("myProfileBtn").onclick = () => openMyProfileModal();
+
+    document.getElementById("refreshBtn").onclick = async () => {
+      await initializeVisibleDates();
+      alert("日期已整理完成。");
+    };
+
+    onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
+      const nextData = {};
+      snapshot.forEach(item => {
+        const data = item.data();
+        if(data && Array.isArray(data.slots)){
+          sortSlots(data.slots);
+          nextData[item.id] = data;
+        }
+      });
+
+      globalData = nextData;
+
+      const dates = getDatesToShow();
+      let needInit = false;
+
+      dates.forEach(dateObj => {
+        const key = formatDate(dateObj);
+        if(!globalData[key]) needInit = true;
+      });
+
+      if(needInit){
+        await initializeVisibleDates();
+        return;
+      }
+
+      render();
+    });
+
+    await initializeVisibleDates();
+    bindCustomSelect();
+  </script>
 </body>
 </html>
