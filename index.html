@@ -435,7 +435,78 @@
       line-height:1.85;
       font-size:14px;
     }
+/* Weekly Schedule Section */
+    .schedule-container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      overflow-x: auto; /* Allows scrolling on mobile */
+      backdrop-filter: blur(12px);
+    }
 
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(7, minmax(120px, 1fr));
+      gap: 10px;
+      min-width: 800px; /* Ensures grid doesn't squash too small */
+    }
+
+    .grid-header {
+      background: rgba(219, 175, 175, 0.3);
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .time-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Event Tags */
+    .event-bar {
+      grid-column: 2 / 9; /* Spans across all days */
+      background: rgba(200, 182, 175, 0.6);
+      color: #fff;
+      padding: 6px;
+      border-radius: 99px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 5px 0;
+    }
+
+    .event-card {
+      background: rgba(219, 175, 175, 0.5);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .event-card.alt {
+      background: rgba(168, 148, 140, 0.6);
+    }
+
+    .event-name {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .event-time {
+      font-size: 11px;
+      opacity: 0.9;
+    }
     .guild-quote{
       position:relative;
       background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
@@ -579,6 +650,43 @@
       </div>
     </section>
 
+    <section class="section">
+      <h2 class="section-title">百業週程表</h2>
+      <div class="schedule-container">
+        <div class="schedule-grid">
+          <div class="time-col">Time</div>
+          <div class="grid-header">週一</div>
+          <div class="grid-header">週二</div>
+          <div class="grid-header">週三</div>
+          <div class="grid-header">週四</div>
+          <div class="grid-header">週五</div>
+          <div class="grid-header">週六</div>
+          <div class="grid-header">週日</div>
+
+          <div class="time-col">19:00</div>
+          <div class="event-bar">百業派對 19:30 - 19:40</div>
+
+          <div class="time-col">20:00</div>
+          <div></div> <div class="event-card">
+            <span class="event-name">破軍殺將</span>
+            <span class="event-time">20:00</span>
+          </div>
+          <div></div> <div class="event-card">
+            <span class="event-name">破軍殺將</span>
+            <span class="event-time">20:00</span>
+          </div>
+          <div></div> <div></div> <div></div> <div class="time-col">21:00</div>
+          <div></div> <div></div> <div class="event-card alt">
+            <span class="event-name">一決高下</span>
+            <span class="event-time">21:00</span>
+          </div>
+          <div></div> <div class="event-card alt">
+            <span class="event-name">一決高下</span>
+            <span class="event-time">21:00</span>
+          </div>
+          <div></div> <div></div> <div></div> </div>
+      </div>
+    </section>
     <section class="section" id="portal">
       <h2 class="section-title">傳送門入口</h2>
 
