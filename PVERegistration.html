@@ -116,47 +116,41 @@
 
     /* 手機版適配 */
 @media (max-width: 768px) {
-      /* 增加頂部間距，確保導航列變高後不會擋住內容 */
-      body { 
-        padding-top: 150px !important; 
-      }
+  /* 增加頂部間距防止擋住標題 */
+  body { padding-top: 150px !important; }
 
-      .topbar { 
-        top: 10px; 
-        height: auto; 
-        padding: 10px 16px; 
-        /* 確保導航列永遠在最上層，不被其他容器遮擋 */
-        z-index: 9999; 
-      }
+  .topbar {
+    top: 10px;
+    height: auto;
+    padding: 8px 16px;
+    width: calc(100% - 20px);
+    border-radius: 24px;
+    z-index: 9999;
+  }
 
-      .topbar-content { 
-        flex-direction: column; 
-        gap: 8px; 
-      }
+  .topbar-content { flex-direction: column; gap: 8px; }
+  .brand-group { justify-content: center; transform: scale(0.9); }
 
-      .nav { 
-        width: 100%; 
-        justify-content: flex-start; 
-        overflow-x: auto; 
-        white-space: nowrap;
-        padding-bottom: 5px;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      /* 隱藏捲動條但維持滑動功能 */
-      .nav::-webkit-scrollbar {
-        display: none;
-      }
+  .nav {
+    width: 100%;
+    justify-content: flex-start; /* 靠左滑動模式 */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 5px 0;
+    gap: 4px;
+  }
+  .nav::-webkit-scrollbar { display: none; }
 
-      /* 讓內容容器在手機上稍微往下一點 */
-      .container {
-        margin-top: 10px;
-      }
-    }
-    .container{
-      max-width:1600px;
-      margin:0 auto;
-    }
+  .nav a {
+    padding: 6px 12px;
+    font-size: 11px !important; /* 同步 Gallery 的 11px */
+    white-space: nowrap;
+  }
+
+  .nav a.home-btn { box-shadow: 0 2px 8px rgba(110,168,255,0.3); }
+
+  .container { margin-top: 10px; }
+}
 
     .hero{
       background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
@@ -1116,8 +1110,8 @@
 
     <div class="nav">
       <a href="index.html" class="home-btn">首頁</a>
-      <a href="PveRegistration.html" id="nav-pve">俠境報名</a>
-      <a href="gallery.html" id="nav-gallery">江湖回憶錄</a>
+      <a href="PveRegistration.html" class="active">俠境報名</a>
+      <a href="gallery.html">江湖回憶錄</a>
       <a href="#" id="myProfileBtn" style="background:rgba(255,255,255,0.06); color:var(--gold);">我的資料</a>
     </div>
   </div>
@@ -1192,7 +1186,6 @@
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單會自動帶入，且 (你) 只會跟著這份資料，不會因為幫別人報名而跑掉。</div>
           <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
           <div><strong style="color:var(--text);">標記排序</strong><br>有標記的隊員會自動排在前面，沒有標記的排在後面。</div>
-          <div><strong style="color:var(--text);">版面</strong><br>桌機一排 2 個隊伍；隊友名單一排 3 個。手機自動改為單欄。</div>
         </div>
       </div>
       <div class="confirm-modal-actions">
@@ -2585,6 +2578,27 @@
 
     await initializeVisibleDates();
     bindCustomSelect();
+    /* Navbar 捲動效果切換 */
+const nav = document.getElementById('floatingNav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+}, { passive: true });
+
+/* 綁定原本 Pve 頁面的「我的資料」按鈕功能 */
+const profileBtn = document.getElementById("myProfileBtn");
+if (profileBtn) {
+  profileBtn.onclick = (e) => {
+    e.preventDefault();
+    if (typeof openMyProfileModal === "function") {
+      openMyProfileModal();
+    }
+  };
+}
   </script>
+  
 </body>
 </html>
