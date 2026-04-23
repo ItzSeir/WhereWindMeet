@@ -215,7 +215,19 @@
       border:1px solid rgba(255,255,255,0.08);
       backdrop-filter:blur(20px);
     }
-
+@media (max-width: 768px) {
+  .nav {
+    justify-content: flex-start;
+    overflow-x: auto; /* 開啟左右滑動 */
+    -webkit-overflow-scrolling: touch; /* 滑動順暢度 */
+    padding: 5px 0;
+    width: 100%;
+  }
+  /* 隱藏滑動條但保持功能 */
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+}
     /* ===== Header ===== */
     .page-header{
       text-align:center;
