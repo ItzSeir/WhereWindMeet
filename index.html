@@ -90,146 +90,176 @@
       padding:24px 14px 40px;
     }
 
-/* ===== 統一 Navbar 樣式 (Floating Capsule) ===== */
-    .topbar {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 40px);
-      max-width: 1100px;
-      height: 64px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      border-radius: 999px;
-      background: rgba(15, 22, 42, 0.6);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition: .3s;
-    }
+/* ===== 統一 Navbar 樣式 (由 Gallery 頁面拿來的基礎) ===== */
+.topbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 1100px;
+  height: 64px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(15, 22, 42, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: top, background;
+}
 
-    .topbar.scrolled {
-      top: 10px;
-      background: rgba(10,15,30,0.85);
-    }
+.topbar.scrolled {
+  top: 10px;
+  background: rgba(10, 15, 30, 0.85);
+}
 
-    .topbar-content {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.topbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .brand-group {
-      display: flex;
-      gap: 8px;
-    }
+.brand-group {
+  display: flex;
+  gap: 8px;
+}
 
-    .brand-badge {
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-    }
+.brand-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  font-weight: 700;
+}
 
-    .brand-badge.sub { color: var(--gold); }
+.brand-badge.sub {
+  color: var(--gold);
+}
 
-    .nav { display: flex; gap: 8px; }
+/* ===== 導航連結 (你要求的 Gallery 風格) ===== */
+.nav {
+  display: flex;
+  gap: 8px;
+}
 
-    .nav a {
-      text-decoration: none;
-      color: var(--muted);
-      padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.25s ease;
-      border: 1px solid transparent;
-    }
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px; /* 電腦版統一字體 */
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+}
 
-    .nav a:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+.nav a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
 
-    /* 首頁主按鈕樣式 */
-    .nav a.home-btn {
-      color: #fff;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 4px 15px rgba(110,168,255,0.4);
-      font-weight: 700;
-    }
+/* 🔥 首頁（主按鈕）漸層效果 */
+.nav a.home-btn {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 4px 15px rgba(110, 168, 255, 0.4);
+  font-weight: 700;
+}
 
-    .nav a.active:not(.home-btn) {
-      color: #fff;
-      background: rgba(255,255,255,0.12);
-    }
+.nav a.home-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(110, 168, 255, 0.5);
+}
 
-    /* 調整 body padding 避免內容被導航列遮擋 */
-    body { padding-top: 100px; }
+/* 目前所在頁面高亮 */
+.nav a.active:not(.home-btn) {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
 
-/* ===== 統一手機版優化核心 ===== */
+/* ===== 統一手機版優化核心 (修正字體不一與遮擋) ===== */
 @media (max-width: 768px) {
-  /* 1. 增加頂部間距，確保導航列變為兩行後不會擋住標題 */
+  /* 1. 徹底解決遮擋問題，增加內距 */
   body {
-    padding-top: 160px !important;
+    padding-top: 150px !important;
   }
 
-  /* 2. 調整 Navbar 容器 */
   .topbar {
     top: 10px;
     height: auto;
     padding: 10px 16px;
     width: calc(100% - 20px);
     border-radius: 24px;
-    z-index: 9999;
   }
 
   .topbar-content {
-    flex-direction: column; /* 改為上下排列：上標誌、下選單 */
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  /* 3. 標誌區塊：取消縮放，保持字體清晰 */
   .brand-group {
     justify-content: center;
-    transform: none; 
+    transform: none; /* 移除 scale 確保字體不模糊 */
   }
 
-  /* 4. 導航選單：統一字體大小為 13px */
+  /* 2. 導航區域 */
   .nav {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap; 
-    gap: 6px;
-    padding-bottom: 5px;
-    /* 如果要滑動，可改回 justify-content: flex-start 並配合 overflow-x: auto */
+    gap: 4px;
+    padding-bottom: 4px;
   }
 
+  /* 3. 核心修正：統一三個按鈕字體為 13px，與電腦版一致 */
   .nav a {
-    padding: 6px 14px; 
-    font-size: 13px !important; /* 強制與電腦版/江湖回憶錄一致 */
+    padding: 6px 12px;
+    font-size: 13px !important; /* 強制使用 13px */
     font-weight: 700;
     white-space: nowrap;
   }
 
-  /* 確保首頁按鈕字體也一致 */
   .nav a.home-btn {
-    font-size: 13px !important;
-    box-shadow: 0 2px 8px rgba(110,168,255,0.3);
+    box-shadow: 0 2px 8px rgba(110, 168, 255, 0.3);
   }
+}
 
-  /* 5. 容器與標題優化 */
+/* 針對極小螢幕優化 */
+@media (max-width: 380px) {
+  .brand-group {
+    display: none;
+  }
+  .nav a {
+    padding: 6px 10px;
+    font-size: 12px !important;
+  }
+}
+
+/* ===== 內容容器樣式 (統一玻璃擬態) ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 40px 24px 60px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 1;
+}
+
+/* 確保容器內容不會被 Navbar 擋住的額外微調 */
+@media (max-width: 768px) {
   .container {
-    padding: 20px 16px;
-    margin-bottom: 30px;
-  }
-
-  .page-header h1 {
-    font-size: 28px;
+    padding: 24px 16px;
+    margin-top: 10px;
   }
 }
 
