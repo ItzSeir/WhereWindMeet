@@ -85,31 +85,58 @@
       color:var(--muted);
     }
 
-    .nav{
-      display:flex;
-      gap:8px;
-    }
+    /* ===== 導航 ===== */
+.nav {
+  display: flex;
+  gap: 8px;
+}
 
-    .nav a{
-      text-decoration:none;
-      color:var(--muted);
-      padding:8px 18px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:600;
-      transition:.25s;
-    }
+/* 預設（次級） */
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
 
-    .nav a:hover{
-      color:var(--text);
-      background:rgba(255,255,255,0.08);
-    }
+  padding: 8px 18px;
+  border-radius: 999px;
 
-    .nav a.active{
-      color:#fff;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow:0 4px 15px rgba(110,168,255,0.35);
-    }
+  font-size: 13px;
+  font-weight: 600;
+
+  background: transparent;
+  border: 1px solid transparent;
+
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.nav a:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.08);
+}
+
+/* 🔥 首頁（主按鈕） */
+.nav a.home-btn {
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent2)
+  );
+  box-shadow: 0 4px 15px rgba(110,168,255,0.4);
+  font-weight: 700;
+}
+
+/* 首頁 hover */
+.nav a.home-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(110,168,255,0.5);
+}
+
+/* Active（目前頁面） */
+.nav a.active:not(.home-btn) {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+}
 
     /* ===== Container ===== */
     .container{
@@ -235,15 +262,18 @@
 <!-- Navbar -->
 <nav class="topbar" id="floatingNav">
   <div class="topbar-content">
+
     <div class="brand-group">
       <span class="brand-badge">夢回花深處</span>
       <span class="brand-badge sub">江湖回憶錄</span>
     </div>
+
     <div class="nav">
-      <a href="index.html">首頁</a>
-      <a href="schedule.html">活動</a>
-      <a href="gallery.html">相簿</a>
+      <a href="index.html" class="home-btn">首頁</a>
+      <a href="PveRegistration.html">俠境報名</a>
+      <a href="Photo.html">江湖回憶錄</a>
     </div>
+
   </div>
 </nav>
 
