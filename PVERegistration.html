@@ -115,12 +115,43 @@
     body { padding-top: 100px; }
 
     /* 手機版適配 */
-    @media (max-width: 768px) {
-      .topbar { top: 10px; height: auto; padding: 8px 16px; flex-direction: column; border-radius: 24px; }
-      .topbar-content { flex-direction: column; gap: 8px; }
-      .nav { width: 100%; justify-content: center; flex-wrap: wrap; }
-      .nav a { padding: 6px 12px; font-size: 11px; }
-      body { padding-top: 140px; }
+@media (max-width: 768px) {
+      /* 增加頂部間距，確保導航列變高後不會擋住內容 */
+      body { 
+        padding-top: 150px !important; 
+      }
+
+      .topbar { 
+        top: 10px; 
+        height: auto; 
+        padding: 10px 16px; 
+        /* 確保導航列永遠在最上層，不被其他容器遮擋 */
+        z-index: 9999; 
+      }
+
+      .topbar-content { 
+        flex-direction: column; 
+        gap: 8px; 
+      }
+
+      .nav { 
+        width: 100%; 
+        justify-content: flex-start; 
+        overflow-x: auto; 
+        white-space: nowrap;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* 隱藏捲動條但維持滑動功能 */
+      .nav::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* 讓內容容器在手機上稍微往下一點 */
+      .container {
+        margin-top: 10px;
+      }
     }
     .container{
       max-width:1600px;
