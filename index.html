@@ -171,49 +171,65 @@
     /* 調整 body padding 避免內容被導航列遮擋 */
     body { padding-top: 100px; }
 
-    /* 手機版優化 (左右滑動式) */
- /* ===== 手機版導航優化 ===== */
+/* ===== 統一手機版優化核心 ===== */
 @media (max-width: 768px) {
-  /* 確保 body 的推擠足夠，避免遮擋內容 */
-  body { 
-    padding-top: 140px !important; 
+  /* 1. 增加頂部間距，確保導航列變為兩行後不會擋住標題 */
+  body {
+    padding-top: 160px !important;
   }
 
+  /* 2. 調整 Navbar 容器 */
   .topbar {
     top: 10px;
     height: auto;
-    padding: 10px 12px;
+    padding: 10px 16px;
     width: calc(100% - 20px);
+    border-radius: 24px;
+    z-index: 9999;
   }
 
   .topbar-content {
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: column; /* 改為上下排列：上標誌、下選單 */
+    gap: 10px;
   }
 
+  /* 3. 標誌區塊：取消縮放，保持字體清晰 */
   .brand-group {
     justify-content: center;
-    /* 移除 scale 避免導致標籤與按鈕字體比例失調 */
     transform: none; 
   }
 
+  /* 4. 導航選單：統一字體大小為 13px */
   .nav {
     width: 100%;
     justify-content: center;
-    gap: 4px; /* 按鈕間距 */
+    flex-wrap: wrap; 
+    gap: 6px;
+    padding-bottom: 5px;
+    /* 如果要滑動，可改回 justify-content: flex-start 並配合 overflow-x: auto */
   }
 
-  /* 核心修正：統一三個按鈕的字體大小 */
   .nav a {
     padding: 6px 14px; 
-    font-size: 13px !important; /* 強制使用統一大小 */
+    font-size: 13px !important; /* 強制與電腦版/江湖回憶錄一致 */
     font-weight: 700;
     white-space: nowrap;
   }
 
-  /* 首頁主按鈕在手機上也不要縮放字體 */
+  /* 確保首頁按鈕字體也一致 */
   .nav a.home-btn {
     font-size: 13px !important;
+    box-shadow: 0 2px 8px rgba(110,168,255,0.3);
+  }
+
+  /* 5. 容器與標題優化 */
+  .container {
+    padding: 20px 16px;
+    margin-bottom: 30px;
+  }
+
+  .page-header h1 {
+    font-size: 28px;
   }
 }
 
