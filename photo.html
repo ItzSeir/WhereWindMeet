@@ -19,13 +19,13 @@
       --accent:#6ea8ff;
       --accent2:#8b5cf6;
       --gold:#ffd76a;
-      --nav-bg: rgba(11, 16, 32, 0.7);
+      /* 導航欄背景，稍微調暗一點點以增加對比 */
+      --nav-bg: rgba(15, 22, 42, 0.6);
     }
 
     :root{
       --font-main:"Noto Sans TC", system-ui, -apple-system, "Segoe UI", sans-serif;
-      --fs-h1:clamp(32px, 5vw, 42px);
-      --fs-h2:26px;
+      --fs-h1:clamp(30px, 5vw, 40px);
       --fs-body:14px;
       --fs-small:12px;
     }
@@ -34,7 +34,8 @@
 
     body{
       margin:0;
-      padding-top: 80px; /* 為固定導航留空間 */
+      /* 為浮動導航留空間，因為它是浮動的，所以這裡用 padding-top */
+      padding-top: 100px; 
       font-family:var(--font-main);
       color:var(--text);
       background:
@@ -56,68 +57,98 @@
     .orb1{ width:300px;height:300px;background:rgba(110,168,255,.2);top:10%;left:-5%; }
     .orb2{ width:400px;height:400px;background:rgba(139,92,246,.15);bottom:10%;right:-5%; }
 
-    /* ===== 獨立導航列 (拉出外面) ===== */
+    /* ===== 浮動導航列 (Floating Navbar) ===== */
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
+      top: 20px; /* 距離頂部一些距離 */
+      left: 50%;
+      transform: translateX(-50%); /* 水平置中核心 */
+      width: calc(100% - 40px); /* 在小螢幕時保持左右間距 */
+      max-width: 1100px; /* 限制最大寬度，比 container 窄一點點看起來更精緻 */
+      height: 64px;
       z-index: 100;
+      
+      /* 核心：圓滑長方形框框 */
       background: var(--nav-bg);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-radius: 999px; /* 超圓滑邊角 */
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      
+      /* 深邃陰影，讓它「浮」起來 */
+      box-shadow: 
+        0 10px 30px rgba(0,0,0,0.3),
+        inset 0 1px 1px rgba(255,255,255,0.1);
+      
       display: flex;
       align-items: center;
+      padding: 0 10px; /* 內縮一些 */
+      transition: all 0.3s ease;
+    }
+
+    /* 捲動時導航欄的微調 (可選，增加質感) */
+    .topbar.scrolled {
+      top: 10px;
+      background: rgba(10, 15, 30, 0.8);
+      border-color: rgba(255, 255, 255, 0.08);
     }
 
     .topbar-content {
       width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 10px;
     }
 
     .brand-group {
       display: flex;
-      gap: 10px;
+      gap: 8px;
+      align-items: center;
     }
 
     .brand-badge {
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: 999px;
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.05);
       border: 1px solid var(--line);
       font-size: 13px;
       font-weight: 700;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Gallery 字樣使用金屬光澤 */
+    .brand-badge.gallery-tag {
+      background: linear-gradient(135deg, rgba(255,215,106,0.1) 0%, rgba(255,255,255,0.05) 100%);
+      color: var(--gold);
+      border-color: rgba(255,215,106,0.2);
     }
 
     .nav a {
       text-decoration: none;
       color: var(--text);
-      padding: 8px 20px;
-      border-radius: 12px;
-      background: var(--accent);
-      font-weight: 700;
-      font-size: 14px;
+      padding: 8px 24px;
+      border-radius: 999px; /* 按鈕也改為圓滑樣式 */
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      font-weight: 800;
+      font-size: 13px;
       transition: .3s;
       box-shadow: 0 4px 15px rgba(110,168,255,0.3);
+      letter-spacing: 0.5px;
     }
 
     .nav a:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(110,168,255,0.5);
+      filter: brightness(1.1);
     }
 
-    /* ===== 主容器 ===== */
+    /* ===== 主容器 (微調頂部邊距) ===== */
     .container {
       position: relative;
       z-index: 1;
       max-width: 1200px;
-      margin: 20px auto 60px;
+      margin: 0 auto 60px;
       padding: 40px 24px 60px;
       border-radius: 32px;
       background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
@@ -140,149 +171,49 @@
       pointer-events: none;
     }
 
-    /* ===== 頁面標題 ===== */
-    .page-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
+    /* ===== 其他樣式保持不變 ===== */
+    .page-header { text-align: center; margin-bottom: 40px; }
     .page-header h1 {
-      font-size: var(--fs-h1);
-      margin: 0 0 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
+      font-size: var(--fs-h1); margin: 0 0 12px; font-weight: 800; letter-spacing: 1px;
       background: linear-gradient(90deg, #fff, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
+    .page-header p { font-size: var(--fs-body); color: var(--muted); max-width: 500px; margin: 0 auto; line-height: 1.6; }
 
-    .page-header p {
-      font-size: var(--fs-body);
-      color: var(--muted);
-      max-width: 500px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* ===== 篩選器 ===== */
-    .gallery-filter {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
+    .gallery-filter { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
     .filter-btn {
-      padding: 10px 24px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .3s;
+      padding: 10px 24px; border-radius: 999px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line); color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; transition: .3s;
     }
+    .filter-btn:hover, .filter-btn.active { background: rgba(255,255,255,0.12); color: var(--accent); border-color: var(--accent); }
 
-    .filter-btn:hover, .filter-btn.active {
-      background: rgba(255,255,255,0.12);
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    /* ===== 照片牆 ===== */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      grid-auto-rows: 220px;
-      gap: 24px;
-    }
-
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); grid-auto-rows: 220px; gap: 24px; }
     .gallery-item {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      cursor: pointer;
-      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative; border-radius: 24px; overflow: hidden; border: 1px solid var(--line);
+      background: var(--panel); cursor: pointer; transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-
     .gallery-item.v-2 { grid-row: span 2; }
     .gallery-item.v-1 { grid-row: span 1.5; }
-
-    .gallery-item:hover {
-      transform: translateY(-10px) scale(1.02);
-      border-color: var(--accent);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      z-index: 2;
-    }
-
-    .gallery-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: .6s;
-    }
-
-    .gallery-item:hover .gallery-img {
-      transform: scale(1.1);
-      filter: brightness(0.6);
-    }
-
+    .gallery-item:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5); z-index: 2; }
+    .gallery-img { width: 100%; height: 100%; object-fit: cover; transition: .6s; }
+    .gallery-item:hover .gallery-img { transform: scale(1.1); filter: brightness(0.6); }
     .gallery-info {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 24px;
-      background: linear-gradient(to top, rgba(11,16,32,0.95) 0%, transparent 60%);
-      opacity: 0;
-      transition: .4s;
+      position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px;
+      background: linear-gradient(to top, rgba(11,16,32,0.95) 0%, transparent 60%); opacity: 0; transition: .4s;
     }
-
-    .gallery-item:hover .gallery-info {
-      opacity: 1;
-    }
-
-    .gallery-info .date {
-      font-size: var(--fs-small);
-      color: var(--gold);
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-    }
-
-    .gallery-info .title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    /* ===== 頁腳連結 ===== */
-    .back-home {
-      display: block;
-      margin-top: 50px;
-      text-align: center;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: .3s;
-    }
-
-    .back-home:hover {
-      color: var(--accent);
-    }
+    .gallery-item:hover .gallery-info { opacity: 1; }
+    .gallery-info .date { font-size: var(--fs-small); color: var(--gold); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .gallery-info .title { font-size: 18px; font-weight: 700; color: #fff; }
+    .back-home { display: block; margin-top: 50px; text-align: center; color: var(--muted); text-decoration: none; font-size: 14px; transition: .3s; }
+    .back-home:hover { color: var(--gold); }
 
     @media(max-width:768px){
-      body { padding-top: 70px; }
+      body { padding-top: 90px; }
+      .topbar { width: calc(100% - 20px); top: 10px; padding: 0 5px; height: 56px; }
+      .brand-badge { padding: 5px 12px; font-size: 12px; }
+      .nav a { padding: 6px 18px; font-size: 12px; }
       .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 250px; }
       .gallery-item.v-2, .gallery-item.v-1 { grid-row: span 1; }
-      .page-header h1 { font-size: 32px; }
     }
   </style>
 </head>
@@ -292,14 +223,14 @@
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
 
-<nav class="topbar">
+<nav class="topbar" id="floatingNav">
   <div class="topbar-content">
     <div class="brand-group">
       <span class="brand-badge">夢回花深處</span>
-      <span class="brand-badge">GALLERY</span>
+      <span class="brand-badge gallery-tag">GALLERY</span>
     </div>
     <div class="nav">
-      <a href="index.html">返回百業首頁</a>
+      <a href="index.html">返回首頁</a>
     </div>
   </div>
 </nav>
@@ -308,7 +239,7 @@
 
   <header class="page-header">
     <h1>江湖回憶錄</h1>
-    <p>記載著我們在燕雲十六聲中的點點滴滴，那些並肩作戰與把酒言歡的瞬間。</p>
+    <p>那些並肩作戰與把酒言歡的瞬間，都值得被妥善收藏。</p>
   </header>
 
   <div class="gallery-filter">
@@ -364,6 +295,16 @@
       btns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     });
+  });
+
+  // 捲動時導航欄效果 (可選)
+  const nav = document.getElementById('floatingNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   });
 </script>
 
