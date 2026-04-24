@@ -34,7 +34,7 @@
         linear-gradient(180deg, var(--bg), var(--bg2));
     }
 
-    /* ===== Navbar ===== */
+    /* ===== 統一 Navbar 樣式 ===== */
     .topbar {
       position: fixed;
       top: 20px;
@@ -43,7 +43,7 @@
       width: calc(100% - 40px);
       max-width: 1100px;
       height: 64px;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       align-items: center;
       padding: 0 12px;
@@ -52,92 +52,68 @@
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition:.3s;
+      transition: .3s;
     }
 
     .topbar.scrolled {
-      top:10px;
+      top: 10px;
       background: rgba(10,15,30,0.85);
     }
 
-    .topbar-content{
-      width:100%;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+    .topbar-content {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .brand-group{
-      display:flex;
-      gap:8px;
+    .brand-group {
+      display: flex;
+      gap: 8px;
     }
 
-    .brand-badge{
-      padding:6px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.1);
-      font-size:12px;
-      font-weight:700;
+    .brand-badge {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    .brand-badge.sub{
-      color:var(--muted);
+.brand-badge.sub { 
+  color: var(--muted) !important; 
+}
+    
+    .nav { display: flex; gap: 8px; }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.25s ease;
     }
 
-    /* ===== 導航 ===== */
-.nav {
-  display: flex;
-  gap: 8px;
-}
+    .nav a:hover { color: var(--text); background: rgba(255,255,255,0.08); }
 
-/* 預設（次級） */
-.nav a {
-  text-decoration: none;
-  color: var(--muted);
+    .nav a.home-btn {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 4px 15px rgba(110,168,255,0.4);
+      font-weight: 700;
+    }
 
-  padding: 8px 18px;
-  border-radius: 999px;
+    .nav a.active:not(.home-btn) {
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+    }
 
-  font-size: 13px;
-  font-weight: 600;
+    /* 調整主容器頂部間距以適應固定導航 */
+    body { padding-top: 100px; }
 
-  background: transparent;
-  border: 1px solid transparent;
-
-  transition: all 0.25s ease;
-}
-
-/* Hover */
-.nav a:hover {
-  color: var(--text);
-  background: rgba(255,255,255,0.08);
-}
-
-/* 🔥 首頁（主按鈕） */
-.nav a.home-btn {
-  color: #fff;
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    var(--accent2)
-  );
-  box-shadow: 0 4px 15px rgba(110,168,255,0.4);
-  font-weight: 700;
-}
-
-/* 首頁 hover */
-.nav a.home-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(110,168,255,0.5);
-}
-
-/* Active（目前頁面） */
-.nav a.active:not(.home-btn) {
-  color: #fff;
-  background: rgba(255,255,255,0.12);
-}
-/* ===== 手機版優化核心 ===== */
 /* ===== 手機版精準適配 (同步江湖回憶錄 1:1 風格) ===== */
 @media (max-width: 768px) {
   body { padding-top: 150px !important; }
@@ -183,6 +159,7 @@
     font-weight: 700 !important;
   }
 }
+
     /* ===== Container ===== */
     .container{
       max-width:1200px;
