@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>夢回花深處｜江湖回憶錄</title>
 
-  <!-- 字體 -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -19,14 +18,15 @@
       --accent:#6ea8ff;
       --accent2:#8b5cf6;
       --gold:#ffd76a;
+      --shadow:0 18px 40px rgba(0,0,0,.28);
     }
 
     *{ box-sizing:border-box; }
 
-    body{
+    html,body{
       margin:0;
-      padding-top:100px;
-      font-family:"Noto Sans TC", system-ui;
+      padding:0;
+      font-family:"Noto Sans TC", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
       color:var(--text);
       background:
         radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 26%),
@@ -34,7 +34,10 @@
         linear-gradient(180deg, var(--bg), var(--bg2));
     }
 
-    /* ===== 統一 Navbar 樣式 ===== */
+    /* 調整主容器頂部間距以適應固定導航 */
+    body { padding-top: 100px; }
+
+    /* ===== 統一 Navbar 樣式 (搬移自 index.html) ===== */
     .topbar {
       position: fixed;
       top: 20px;
@@ -81,9 +84,10 @@
       font-weight: 700;
     }
 
-.brand-badge.sub { 
-  color: var(--muted) !important; 
-}
+    /* 修正 sub 顏色 */
+    .brand-badge.sub { 
+      color: var(--muted) !important; 
+    }
     
     .nav { display: flex; gap: 8px; }
 
@@ -111,56 +115,51 @@
       background: rgba(255,255,255,0.12);
     }
 
-    /* 調整主容器頂部間距以適應固定導航 */
-    body { padding-top: 100px; }
+    /* ===== 手機版精準適配 (同步 1:1 風格) ===== */
+    @media (max-width: 768px) {
+      body { padding-top: 150px !important; }
 
-/* ===== 手機版精準適配 (同步江湖回憶錄 1:1 風格) ===== */
-@media (max-width: 768px) {
-  body { padding-top: 150px !important; }
+      .topbar {
+        top: 10px;
+        height: auto;
+        padding: 10px 16px;
+        width: calc(100% - 20px);
+        border-radius: 24px;
+        z-index: 9999;
+      }
 
-  .topbar {
-    top: 10px;
-    height: auto;
-    padding: 10px 16px;
-    width: calc(100% - 20px);
-    border-radius: 24px;
-    z-index: 9999;
-  }
+      .topbar-content { flex-direction: column; gap: 8px; }
 
-  .topbar-content { flex-direction: column; gap: 8px; }
+      /* 移除縮放，保持文字與邊框粗細一致 */
+      .brand-group { 
+        justify-content: center; 
+        transform: none !important; 
+      }
 
-  /* 核心修正：移除 transform: scale 確保文字粗細(bold)與邊框不變細 */
-  .brand-group { 
-    justify-content: center; 
-    transform: none !important; 
-  }
+      .nav {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 5px 0;
+        gap: 4px;
+      }
+      .nav::-webkit-scrollbar { display: none; }
 
-  .nav {
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 5px 0;
-    gap: 4px;
-  }
-  .nav::-webkit-scrollbar { display: none; }
+      /* 統一手機版按鈕內距、大小與字體加粗 */
+      .nav a {
+        padding: 6px 12px !important;
+        font-size: 11px !important; 
+        font-weight: 700 !important;
+        white-space: nowrap;
+      }
 
-  /* 核心修正：強制統一按鈕內距、字體與粗細 */
-  .nav a {
-    padding: 6px 12px !important; /* 精確控制按鈕大小 */
-    font-size: 11px !important; 
-    font-weight: 700 !important; /* 確保加粗程度一致 */
-    white-space: nowrap;
-  }
+      .nav a.home-btn {
+        box-shadow: 0 2px 8px rgba(110,168,255,0.3);
+      }
+    }
 
-  /* 確保首頁按鈕在手機上也不會因為漸層縮放而改變大小 */
-  .nav a.home-btn {
-    box-shadow: 0 2px 8px rgba(110,168,255,0.3);
-    font-weight: 700 !important;
-  }
-}
-
-    /* ===== Container ===== */
+    /* ===== Gallery 特有樣式 ===== */
     .container{
       max-width:1200px;
       margin:0 auto 60px;
@@ -170,20 +169,7 @@
       border:1px solid rgba(255,255,255,0.08);
       backdrop-filter:blur(20px);
     }
-@media (max-width: 768px) {
-  .nav {
-    justify-content: flex-start;
-    overflow-x: auto; /* 開啟左右滑動 */
-    -webkit-overflow-scrolling: touch; /* 滑動順暢度 */
-    padding: 5px 0;
-    width: 100%;
-  }
-  /* 隱藏滑動條但保持功能 */
-  .nav::-webkit-scrollbar {
-    display: none;
-  }
-}
-    /* ===== Header ===== */
+
     .page-header{
       text-align:center;
       margin-bottom:40px;
@@ -202,7 +188,6 @@
       font-size:14px;
     }
 
-    /* ===== Filter ===== */
     .gallery-filter{
       display:flex;
       justify-content:center;
@@ -219,14 +204,16 @@
       color:var(--muted);
       font-size:13px;
       cursor:pointer;
+      transition: 0.3s;
     }
+
+    .filter-btn:hover { background: rgba(255,255,255,0.1); }
 
     .filter-btn.active{
       background:var(--accent);
       color:#fff;
     }
 
-    /* ===== Gallery ===== */
     .gallery-grid{
       display:grid;
       grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
@@ -274,74 +261,62 @@
     .gallery-info .date{
       font-size:12px;
       color:var(--gold);
+      display: block;
     }
 
     .gallery-info .title{
       font-size:16px;
       font-weight:700;
     }
-
-    .back-home{
-      display:block;
-      text-align:center;
-      margin-top:40px;
-      color:var(--muted);
-      text-decoration:none;
-    }
   </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
 <nav class="topbar" id="floatingNav">
   <div class="topbar-content">
-
     <div class="brand-group">
       <span class="brand-badge">夢回花深處</span>
       <span class="brand-badge sub">江湖回憶錄</span>
     </div>
 
     <div class="nav">
-      <a href="index" class="home-btn">首頁</a>
-      <a href="PVERegistration">俠境報名</a>
-      <a href="gallery">江湖回憶錄</a>
+      <a href="index.html" class="home-btn">首頁</a>
+      <a href="PveRegistration.html">俠境報名</a>
+      <a href="gallery.html" class="active">江湖回憶錄</a>
     </div>
-
   </div>
 </nav>
 
 <div class="container">
-
   <header class="page-header">
     <h1>江湖回憶錄</h1>
     <p>那些並肩作戰與把酒言歡的瞬間，都值得被妥善收藏。</p>
   </header>
 
-<div class="gallery-filter">
-  <div class="filter-btn active" data-filter="all">全部</div>
-  <div class="filter-btn" data-filter="cross">跨年夜</div>
-  <div class="filter-btn" data-filter="event">其他活動</div>
-</div>
-
-<div class="gallery-grid">
-  <div class="gallery-item v-2" data-category="cross">
-    <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
-    <div class="gallery-info">
-      <span class="date">2026.01.01</span>
-      <span class="title">跨年合照</span>
-    </div>
+  <div class="gallery-filter">
+    <div class="filter-btn active" data-filter="all">全部</div>
+    <div class="filter-btn" data-filter="cross">跨年夜</div>
+    <div class="filter-btn" data-filter="event">其他活動</div>
   </div>
 
-  <div class="gallery-item" data-category="quest">
-    <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
-    <div class="gallery-info">
-      <span class="date">2026.04.20</span>
-      <span class="title">行俠任務截圖</span>
+  <div class="gallery-grid">
+    <div class="gallery-item v-2" data-category="cross">
+      <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
+      <div class="gallery-info">
+        <span class="date">2026.01.01</span>
+        <span class="title">跨年合照</span>
+      </div>
+    </div>
+
+    <div class="gallery-item" data-category="event">
+      <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
+      <div class="gallery-info">
+        <span class="date">2026.04.20</span>
+        <span class="title">行俠任務截圖</span>
+      </div>
     </div>
   </div>
-</div>
-
 </div>
 
 <script>
@@ -351,20 +326,23 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 50);
 });
 
-/* Active 自動 */
-const links = document.querySelectorAll('.nav a');
-const current = window.location.pathname.split("/").pop();
-links.forEach(link=>{
-  if(link.getAttribute("href")===current){
-    link.classList.add("active");
-  }
-});
-
-/* Filter UI */
+/* Filter UI Logic */
 document.querySelectorAll('.filter-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    const filter = btn.dataset.filter;
+    
+    // UI 切換
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
+
+    // 過濾功能
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      if(filter === 'all' || item.dataset.category === filter) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
   });
 });
 </script>
