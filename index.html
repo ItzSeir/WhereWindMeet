@@ -247,8 +247,6 @@
 /* 1. 容器：開啟水平滑動，解決手機看不到週五之後的問題 */
 /* ===== 手機可滑動週程表（最終穩定版） ===== */
 
-/* ===== 週程表（最終版） ===== */
-
 .schedule-container {
   position: relative;
   border-radius: 24px;
@@ -265,22 +263,26 @@
 
   box-shadow: 0 20px 60px rgba(0,0,0,0.35);
 
-  /* ✅ 關鍵 */
+  /* ✅ 核心：開啟橫向滑動 */
   overflow-x: auto;
-  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
+/* Grid */
 .schedule-grid {
   display: grid;
+
+  /* ✅ 固定時間欄 + 7天最小寬度 */
   grid-template-columns: 60px repeat(7, minmax(100px, 1fr));
   grid-template-rows: auto 70px 120px 120px;
+
   gap: 12px;
 
-  /* ✅ 防止手機壓縮 */
+  /* ✅ 關鍵：避免手機擠壓 */
   min-width: 760px;
 }
 
+/* Header */
 .grid-header {
   background: rgba(255,255,255,0.06);
   padding: 10px;
@@ -290,12 +292,8 @@
   font-weight: 700;
 }
 
-/* 左側時間固定 */
+/* 時間欄（固定） */
 .time-col {
-  position: sticky;
-  left: 0;
-  z-index: 10;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -303,6 +301,10 @@
   font-size: 12px;
   font-weight: 700;
   color: rgba(255,255,255,0.6);
+
+  position: sticky;
+  left: 0;
+  z-index: 10;
 
   background: rgba(11,16,32,0.95);
   border-right: 1px solid rgba(255,255,255,0.1);
@@ -320,6 +322,7 @@
 
   border: 1px solid rgba(255,255,255,0.08);
   backdrop-filter: blur(4px);
+
   transition: 0.25s;
 }
 
@@ -338,8 +341,24 @@
 .span-2-rows { grid-row: span 2; }
 
 /* 文字 */
-.event-name { font-size: 13px; font-weight: 700; }
-.event-time { font-size: 10px; opacity: 0.7; }
+.event-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.event-time {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* 手機優化 */
+@media (max-width: 768px) {
+  .schedule-container {
+    padding: 12px 6px;
+  }
+
+  .event-name { font-size: 12px; }
+  .event-time { font-size: 9px; }
 }
     }
 
