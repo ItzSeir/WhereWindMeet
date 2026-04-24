@@ -243,33 +243,38 @@
       gap:10px;
       margin-bottom:18px;
       
-/* 容器：加入左右捲動功能 */
-/* 1. 容器：開啟水平滑動，解決手機看不到週五之後的問題 */
+/* ===== 周程表核心優化 (解決手機滑動問題) ===== */
+:root {
+  --color-party: rgba(255, 190, 120, 0.25);
+  --color-boss: rgba(255, 120, 120, 0.25);
+  --color-duel: rgba(120, 160, 255, 0.25);
+  --color-war: rgba(180, 120, 255, 0.25);
+}
+
 .schedule-container {
   position: relative;
   border-radius: 32px;
-  padding: 24px 16px; 
+  padding: 32px;
   background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
   border: 1px solid rgba(255,255,255,0.08);
   backdrop-filter: blur(20px);
   box-shadow: 0 20px 60px rgba(0,0,0,0.35);
   
-  /* 核心修正：開啟橫向捲動 */
+  /* 關鍵修正：確保容器可以水平溢出捲動 */
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動更順暢 */
+  -webkit-overflow-scrolling: touch;
 }
 
-/* 2. Grid 佈局：設定最小總寬度 */
 .schedule-grid {
   display: grid;
-  /* 時間欄 60px，其餘 7 天每天至少 100px (總寬約 760px) */
-  grid-template-columns: 60px repeat(7, minmax(100px, 1fr));
+  /* 強制每列最小寬度，總寬約 800px 才能滑動 */
+  grid-template-columns: 80px repeat(7, minmax(110px, 1fr));
   grid-template-rows: auto 70px 120px 120px;
-  gap: 12px;
-  min-width: 760px; /* 確保在手機上不會擠成一團 */
+  gap: 16px;
+  min-width: 850px; 
 }
 
-/* 3. 時間欄：滑動時固定在最左邊 (Sticky) */
+/* 時間欄：滑動時固定在左側 */
 .time-col {
   display: flex;
   align-items: center;
@@ -278,55 +283,74 @@
   font-weight: 700;
   color: rgba(255,255,255,0.5);
   
-  /* 核心修正：固定定位 */
+  /* 關鍵修正：Sticky 定位配合背景色防止穿透 */
   position: sticky;
   left: 0;
   z-index: 10;
-  background: rgba(11, 16, 32, 0.95); /* 深色背景防止滑動時文字重疊 */
-  border-right: 1px solid rgba(255,255,255,0.1);
-  padding: 0 5px;
+  background: #0b1020; 
+  padding: 0 10px;
 }
 
-/* 手機版字體微調 */
-@media (max-width: 768px) {
-  .grid-header { padding: 10px 5px; font-size: 12px; }
-  .event-name { font-size: 13px; }
-  .event-time { font-size: 10px; }
-}
-/* 時間欄：在滑動時固定在左側 (Sticky) */
-.time-col {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
+.grid-header {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 14px;
+  border-radius: 14px;
+  text-align: center;
   font-weight: 700;
-  color: rgba(255,255,255,0.5);
-  background: rgba(11, 16, 32, 0.8); /* 稍微深色背景避免穿透 */
-  
-  /* 關鍵：固定在左側 */
-  position: sticky;
-  left: 0;
-  z-index: 5;
-  backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255,255,255,0.1);
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
 }
 
-/* 手機版額外微調 */
+/* 活動卡片樣式 */
+.event-card {
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.event-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.party { background: var(--color-party); color: #fff; }
+.boss  { background: var(--color-boss); color: #fff; }
+.duel  { background: var(--color-duel); color: #fff; }
+.war   { background: var(--color-war); color: #fff; }
+
+.span-all-days { grid-column: 2 / 9; }
+.span-2-rows { grid-row: span 2; }
+
+.event-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.event-time { font-size: 12px; opacity: 0.8; }
+
+/* 手機版適配微調 */
 @media (max-width: 768px) {
   .schedule-container {
+    padding: 16px 12px;
     border-radius: 20px;
-    padding: 16px 8px;
+    margin-bottom: 20px;
   }
   
-  .event-name {
-    font-size: 10px; /* 稍微縮小字體 */
+  .event-name { font-size: 13px; }
+  .event-time { font-size: 11px; }
+
+  /* 隱藏捲動條但保持滑動 */
+  .schedule-container::-webkit-scrollbar {
+    height: 4px;
   }
-  
-  .event-time {
-    font-size: 8px;
+  .schedule-container::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
   }
 }
-    }
 
     .hero-badge{
       padding:8px 12px;
