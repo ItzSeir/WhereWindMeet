@@ -128,7 +128,7 @@ body{
 }
 
 .item{
-  position:absolute;
+  position:relative;
   width:calc(33.333% - 12px);
   margin:6px;
   border-radius:20px;
@@ -138,6 +138,7 @@ body{
 }
 
 .item.v2{
+  position:relative;
   width:calc(66.666% - 12px);
 }
 
@@ -161,10 +162,14 @@ body{
   left:0;
   right:0;
   padding:20px;
+
   background:linear-gradient(to top,rgba(0,0,0,0.85),transparent);
+
   opacity:0;
   transform:translateY(20px);
   transition:.3s;
+
+  z-index:2; /* 🔥 關鍵 */
 }
 
 .item:hover .gallery-info{
@@ -347,8 +352,14 @@ function layout(){
   items.forEach(item=>{
     if(item.classList.contains('hide')) return;
 
-    const span = item.classList.contains('v2') ? 2 : 1;
+    const isBig = item.classList.contains('v2');
+
     let col = heights.indexOf(Math.min(...heights));
+
+    /* 🔥 防止 v2 爆版 */
+    if(isBig && col === cols - 1){
+      col = cols - 2;
+    }
 
     const x = col * (100/cols);
     const y = heights[col];
@@ -358,14 +369,14 @@ function layout(){
     const h = item.offsetHeight + 12;
 
     heights[col] += h;
-    if(span===2 && col+1<cols){
-      heights[col+1] += h;
+
+    if(isBig && col + 1 < cols){
+      heights[col + 1] += h;
     }
   });
 
-  grid.style.height = Math.max(...heights)+'px';
+  grid.style.height = Math.max(...heights) + 'px';
 }
-
 /* filter */
 document.querySelectorAll('.filter button').forEach(btn=>{
   btn.onclick=()=>{
