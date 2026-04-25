@@ -5,20 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>夢回花深處｜江湖回憶錄</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#0b1020;
   --bg2:#131c35;
+  --panel:rgba(255,255,255,.08);
   --line:rgba(255,255,255,.12);
   --text:#eef2ff;
   --muted:#a8b3cf;
   --accent:#6ea8ff;
+  --accent2:#8b5cf6;
   --gold:#ffd76a;
 }
 
-/* ===== Base ===== */
+/* ===== base ===== */
 *{ box-sizing:border-box; }
 
 body{
@@ -26,308 +28,400 @@ body{
   font-family:"Noto Sans TC", sans-serif;
   color:var(--text);
   background:
-    radial-gradient(circle at top left, rgba(110,168,255,.15), transparent 30%),
-    radial-gradient(circle at top right, rgba(139,92,246,.15), transparent 30%),
+    radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
     linear-gradient(180deg, var(--bg), var(--bg2));
-  padding-top:100px;
+  padding-top:110px;
 }
 
-/* ===== Navbar ===== */
-.topbar{
-  position:fixed;
-  top:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:calc(100% - 40px);
-  max-width:1100px;
-  height:64px;
-  display:flex;
-  align-items:center;
-  padding:0 16px;
-  border-radius:999px;
-  background:rgba(15,22,42,0.6);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.1);
-  z-index:999;
+/* ===== navbar ===== */
+.topbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 1100px;
+  height: 64px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(15, 22, 42, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.topbar-content{
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.topbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.brand{
-  font-weight:700;
-  font-size:14px;
+.brand-group { display: flex; gap: 8px; }
+
+.brand-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.nav a{
-  color:var(--muted);
-  text-decoration:none;
-  margin-left:10px;
-  font-size:13px;
+.brand-badge.sub { color: var(--muted); }
+
+.nav { display: flex; gap: 8px; }
+
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.nav a.active{
-  color:#fff;
+.nav a.home-btn {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
 }
 
-/* ===== Container ===== */
+.nav a.active:not(.home-btn) {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+}
+
+/* ===== container ===== */
 .container{
   max-width:1200px;
   margin:auto;
   padding:40px 20px;
 }
 
-/* ===== Header ===== */
-.page-header{
+/* ===== filter ===== */
+.filter{
   text-align:center;
-  margin-bottom:30px;
+  margin-bottom:20px;
 }
 
-.page-header h1{
-  font-size:38px;
-  background:linear-gradient(90deg,#fff,var(--accent));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-/* ===== Filter ===== */
-.gallery-filter{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:30px;
-}
-
-.filter-btn{
-  padding:8px 18px;
-  border-radius:999px;
-  border:1px solid var(--line);
+.filter button{
+  margin:5px;
+  padding:8px 16px;
+  border:none;
+  border-radius:20px;
   cursor:pointer;
+  background:rgba(255,255,255,.05);
+  color:var(--text);
 }
 
-.filter-btn.active{
+.filter .active{
   background:var(--accent);
-  color:#fff;
 }
 
-/* ===== Masonry ===== */
-.gallery-grid{
-  column-count:3;
-  column-gap:18px;
-}
-
-@media (max-width:900px){
-  .gallery-grid{ column-count:2; }
-}
-
-@media (max-width:600px){
-  .gallery-grid{ column-count:1; }
-}
-
-.gallery-item{
-  break-inside:avoid;
-  margin-bottom:18px;
-  border-radius:18px;
-  overflow:hidden;
+/* ===== masonry ===== */
+.grid{
   position:relative;
-  cursor:pointer;
-  transition:.3s;
 }
 
-.gallery-item:hover{
-  transform:translateY(-5px);
+.item{
+  position:absolute;
+  width:calc(33.333% - 12px);
+  margin:6px;
+  border-radius:20px;
+  overflow:hidden;
+  cursor:pointer;
+  transition: transform .4s, opacity .4s;
+}
+
+.item.v2{
+  width:calc(66.666% - 12px);
+}
+
+.item.hide{
+  opacity:0;
+  transform:scale(.85);
+  pointer-events:none;
 }
 
 /* image */
 .gallery-img{
   width:100%;
+  height:auto;
   display:block;
 }
 
-/* overlay */
+/* ===== hover info（你的設計） ===== */
 .gallery-info{
   position:absolute;
-  inset:0;
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  background:linear-gradient(to top,rgba(0,0,0,.75),transparent);
+  bottom:0;
+  left:0;
+  right:0;
+  padding:20px;
+  background:linear-gradient(to top,rgba(0,0,0,0.85),transparent);
   opacity:0;
+  transform:translateY(20px);
   transition:.3s;
 }
 
-.gallery-item:hover .gallery-info{
+.item:hover .gallery-info{
   opacity:1;
+  transform:translateY(0);
 }
 
-/* ===== Lightbox ===== */
+.gallery-info .date{
+  font-size:12px;
+  color:var(--gold);
+  display:block;
+}
+
+.gallery-info .title{
+  font-size:16px;
+  font-weight:700;
+}
+
+/* ===== lightbox ===== */
 .lightbox{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.9);
+  background:rgba(0,0,0,.92);
   display:none;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   z-index:9999;
 }
 
 .lightbox.show{ display:flex; }
 
-.lightbox img{
-  max-width:90%;
-  max-height:80%;
-  border-radius:14px;
-}
-
-.lightbox-controls{
-  margin-top:20px;
+.lightbox-inner{
+  max-width:900px;
+  width:90%;
   display:flex;
-  gap:20px;
+  flex-direction:column;
+  gap:16px;
 }
 
-.ctrl{
-  cursor:pointer;
-  padding:10px 16px;
-  border-radius:999px;
-  background:rgba(255,255,255,.1);
+.lightbox img{
+  width:100%;
+  border-radius:16px;
+}
+
+.lb-meta{
+  background:rgba(255,255,255,.05);
+  padding:16px;
+  border-radius:12px;
+}
+
+.lb-date{
+  font-size:12px;
+  color:var(--gold);
+}
+
+.lb-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.lb-desc{
+  font-size:14px;
+  color:var(--muted);
 }
 
 /* arrows */
 .arrow{
   position:absolute;
   top:50%;
-  transform:translateY(-50%);
-  font-size:30px;
+  font-size:40px;
   cursor:pointer;
-  padding:10px;
 }
 
-.arrow.left{ left:20px; }
-.arrow.right{ right:20px; }
+.left{ left:30px; }
+.right{ right:30px; }
 
 </style>
 </head>
 
 <body>
 
+<!-- navbar -->
 <nav class="topbar">
   <div class="topbar-content">
-    <div class="brand">夢回花深處</div>
+    <div class="brand-group">
+      <span class="brand-badge">夢回花深處</span>
+      <span class="brand-badge sub">江湖回憶錄</span>
+    </div>
+
     <div class="nav">
-      <a href="#">首頁</a>
-      <a class="active">回憶錄</a>
+      <a href="index.html" class="home-btn">首頁</a>
+      <a href="PVERegistration.html">俠境報名</a>
+      <a href="gallery.html" class="active">江湖回憶錄</a>
     </div>
   </div>
 </nav>
 
 <div class="container">
 
-<div class="page-header">
-  <h1>江湖回憶錄</h1>
+<div class="filter">
+  <button class="active" data-filter="all">全部</button>
+  <button data-filter="nye">跨年</button>
+  <button data-filter="daily">日常</button>
 </div>
 
-<div class="gallery-filter">
-  <div class="filter-btn active" data-filter="all">全部</div>
-  <div class="filter-btn" data-filter="nye">跨年夜</div>
-  <div class="filter-btn" data-filter="daily">日常</div>
-</div>
+<div class="grid" id="grid">
 
-<div class="gallery-grid" id="gallery">
-
-  <!-- items -->
-  <div class="gallery-item" data-category="nye">
+  <div class="item" data-category="nye"
+       data-title="跨年合照"
+       data-date="2026.01.01"
+       data-desc="那一晚煙火與歡笑交織，我們一起迎接新的江湖篇章。">
     <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
+    <div class="gallery-info">
+      <span class="date">2026.01.01</span>
+      <span class="title">跨年合照</span>
+    </div>
   </div>
 
-  <div class="gallery-item" data-category="daily">
+  <div class="item v2" data-category="daily"
+       data-title="夢回舞獅團"
+       data-date="2026.02.13"
+       data-desc="鼓聲震天，獅影翻飛，這是屬於我們的節奏。">
     <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%88%9E%E7%8D%85%EF%BC%8813Feb26%EF%BC%89.png" class="gallery-img">
+    <div class="gallery-info">
+      <span class="date">2026.02.13</span>
+      <span class="title">夢回舞獅團</span>
+    </div>
   </div>
 
-  <div class="gallery-item" data-category="daily">
+  <div class="item" data-category="daily"
+       data-title="搖滾歌手"
+       data-date="2026.02.16"
+       data-desc="音符與熱血交錯的夜晚。">
     <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E6%90%96%E6%BB%BE%E6%AD%8C%E6%89%8B%20%40%E6%9B%B2%E7%B5%A1%E5%AF%A7.png" class="gallery-img">
+    <div class="gallery-info">
+      <span class="date">2026.02.16</span>
+      <span class="title">搖滾歌手</span>
+    </div>
   </div>
 
 </div>
 </div>
 
-<!-- Lightbox -->
+<!-- lightbox -->
 <div class="lightbox" id="lightbox">
   <div class="arrow left" id="prev">‹</div>
-  <img id="light-img">
+
+  <div class="lightbox-inner">
+    <img id="light-img">
+    <div class="lb-meta">
+      <div class="lb-date" id="lb-date"></div>
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-desc" id="lb-desc"></div>
+    </div>
+  </div>
+
   <div class="arrow right" id="next">›</div>
 </div>
 
 <script>
+const grid = document.getElementById('grid');
+const items = Array.from(document.querySelectorAll('.item'));
 
-const items = Array.from(document.querySelectorAll('.gallery-item'));
-const lightbox = document.getElementById('lightbox');
-const lightImg = document.getElementById('light-img');
+let current = 0;
 
-let currentIndex = 0;
+/* masonry */
+function layout(){
+  const cols = window.innerWidth < 768 ? 1 :
+               window.innerWidth < 1100 ? 2 : 3;
 
-/* open */
+  const heights = Array(cols).fill(0);
+
+  items.forEach(item=>{
+    if(item.classList.contains('hide')) return;
+
+    const span = item.classList.contains('v2') ? 2 : 1;
+    let col = heights.indexOf(Math.min(...heights));
+
+    const x = col * (100/cols);
+    const y = heights[col];
+
+    item.style.transform = `translate(${x}%, ${y}px)`;
+
+    const h = item.offsetHeight + 12;
+
+    heights[col] += h;
+    if(span===2 && col+1<cols){
+      heights[col+1] += h;
+    }
+  });
+
+  grid.style.height = Math.max(...heights)+'px';
+}
+
+/* filter */
+document.querySelectorAll('.filter button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.filter button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const f=btn.dataset.filter;
+
+    items.forEach(item=>{
+      item.classList.toggle('hide', !(f==='all'||item.dataset.category===f));
+    });
+
+    setTimeout(layout,300);
+  };
+});
+
+/* lightbox */
+const lightbox=document.getElementById('lightbox');
+const lightImg=document.getElementById('light-img');
+
+const lbTitle=document.getElementById('lb-title');
+const lbDate=document.getElementById('lb-date');
+const lbDesc=document.getElementById('lb-desc');
+
+function show(i){
+  const item=items[i];
+  lightImg.src=item.querySelector('img').src;
+  lbTitle.textContent=item.dataset.title;
+  lbDate.textContent=item.dataset.date;
+  lbDesc.textContent=item.dataset.desc;
+}
+
 items.forEach((item,i)=>{
-  item.onclick = ()=>{
-    currentIndex = i;
-    showImage();
+  item.onclick=()=>{
+    current=i;
+    show(i);
     lightbox.classList.add('show');
   };
 });
 
-function showImage(){
-  const img = items[currentIndex].querySelector('img');
-  lightImg.src = img.src;
-}
-
-/* next prev */
-document.getElementById('next').onclick = ()=>{
-  currentIndex = (currentIndex + 1) % items.length;
-  showImage();
+document.getElementById('next').onclick=()=>{
+  current=(current+1)%items.length;
+  show(current);
 };
 
-document.getElementById('prev').onclick = ()=>{
-  currentIndex = (currentIndex - 1 + items.length) % items.length;
-  showImage();
+document.getElementById('prev').onclick=()=>{
+  current=(current-1+items.length)%items.length;
+  show(current);
 };
 
-/* keyboard */
-document.addEventListener('keydown', e=>{
+document.addEventListener('keydown',e=>{
   if(!lightbox.classList.contains('show')) return;
-
-  if(e.key === 'ArrowRight') document.getElementById('next').click();
-  if(e.key === 'ArrowLeft') document.getElementById('prev').click();
-  if(e.key === 'Escape') lightbox.classList.remove('show');
+  if(e.key==="ArrowRight") document.getElementById('next').click();
+  if(e.key==="ArrowLeft") document.getElementById('prev').click();
+  if(e.key==="Escape") lightbox.classList.remove('show');
 });
 
-/* close */
-lightbox.onclick = (e)=>{
-  if(e.target === lightbox){
-    lightbox.classList.remove('show');
-  }
+lightbox.onclick=e=>{
+  if(e.target===lightbox) lightbox.classList.remove('show');
 };
 
-/* filter */
-document.querySelectorAll('.filter-btn').forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const f = btn.dataset.filter;
-
-    items.forEach(item=>{
-      item.style.display =
-        (f==='all'||item.dataset.category===f)
-        ? 'block' : 'none';
-    });
-  };
-});
-
+window.addEventListener('load',layout);
+window.addEventListener('resize',layout);
 </script>
 
 </body>
