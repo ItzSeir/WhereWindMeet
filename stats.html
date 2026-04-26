@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>夢回花深處｜幫會數據庫</title>
+<title>夢回花深處｜江湖數據庫</title>
 
 <meta name="view-transition" content="same-origin" />
-
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
 
 <style>
@@ -20,331 +18,215 @@
   --text:#eef2ff;
   --muted:#a8b3cf;
   --accent:#6ea8ff;
-  --accent2:#8b5cf6;
   --gold:#ffd76a;
-  /* 師徒世代配色 - 嚴格遵循圖片 */
-  --gen1: #1e40af; /* 深藍 */
-  --gen2: #3b82f6; /* 亮藍 */
-  --gen3: #8b5cf6; /* 紫色 */
-  --gen4: #ec4899; /* 粉紅 */
-  --gen5: #f97316; /* 橙色 */
+  /* 世代色調 - 調整為發亮質感 */
+  --gen1: #3b82f6; --gen2: #60a5fa; --gen3: #a78bfa; --gen4: #f472b6; --gen5: #fb923c;
 }
 
-/* ===== 基礎設定 ===== */
 *{ box-sizing:border-box; }
-
 body{
-  margin:0;
-  font-family:"Noto Sans TC", sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(110,168,255,.12), transparent 30%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  padding-top:110px;
-  min-height: 100vh;
+  margin:0; font-family:"Noto Sans TC", sans-serif; color:var(--text);
+  background: var(--bg); padding-top:110px; min-height: 100vh;
 }
 
-/* ===== Navbar (統一設計) ===== */
+/* ===== Navbar ===== */
 .topbar {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 40px);
-  max-width: 1100px;
-  height: 64px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: rgba(15, 22, 42, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  view-transition-name: main-nav;
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 40px); max-width: 1100px; height: 64px; z-index: 1000;
+  display: flex; align-items: center; padding: 0 12px; border-radius: 999px;
+  background: rgba(15, 22, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
 }
-
 .topbar-content { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-.brand-group { display: flex; gap: 8px; cursor: pointer; }
-.brand-badge { padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); font-size: 12px; font-weight: 700; }
-.nav { display: flex; gap: 8px; }
-.nav a { text-decoration: none; color: var(--muted); padding: 8px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; transition: 0.3s; }
-.nav a.active { color: #fff; background: rgba(255,255,255,0.12); }
-.nav a.home-btn { color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.nav a { text-decoration: none; color: var(--muted); padding: 8px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.nav a.active { color: #fff; background: rgba(255,255,255,0.1); }
+.nav a.home-btn { color: #fff; background: linear-gradient(135deg, #6ea8ff, #8b5cf6); }
 
-/* ===== 內容區域 ===== */
-.container { max-width: 1200px; margin: auto; padding: 20px; }
+/* ===== 內容區 ===== */
+.container { max-width: 1300px; margin: auto; padding: 20px; }
+.page-header { text-align: center; margin-bottom: 30px; }
+.page-title { font-size: 32px; font-weight: 800; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-.page-header { text-align: center; margin-bottom: 40px; }
-.page-title { font-size: 36px; font-weight: 800; margin: 0; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-/* ===== 數據網格 ===== */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.stat-card {
-  background: var(--panel);
+/* ===== Chart 容器 ===== */
+.chart-card {
+  background: var(--bg2);
   border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 30px;
-}
-
-.stat-card.full { grid-column: span 3; }
-
-.stat-header { margin-bottom: 25px; }
-.stat-title { font-size: 18px; font-weight: 700; color: var(--accent); display: block; margin-bottom: 5px;}
-
-/* 數據顯示樣式 */
-.stat-main-value { font-size: 40px; font-weight: 800; color: #fff; margin: 10px 0; }
-
-/* 進度條 */
-.progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin: 15px 0; }
-.progress-fill { height: 100%; background: var(--accent); transition: width 1s ease; }
-
-/* ===== 江湖脈絡傳承：動態網絡圖 (像圖片一樣連結起來) ===== */
-#lineage_chart_container {
-  background: rgba(255,255,255,0.02);
-  border-radius: 20px;
-  border: 1px solid var(--line);
+  border-radius: 30px;
   position: relative;
   overflow: hidden;
-  margin-top: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
 #cy {
   width: 100%;
-  height: 600px; /* Chart 高度 */
-  display: block;
+  height: 750px;
+  background-image: 
+    radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+  background-size: 40px 40px; /* 網格背景 */
 }
 
 /* 圖例 */
 .legend {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(11, 16, 32, 0.8);
-  backdrop-filter: blur(5px);
-  border-radius: 12px;
-  padding: 15px;
-  border: 1px solid var(--line);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  position: absolute; bottom: 30px; left: 30px;
+  background: rgba(15, 22, 42, 0.9);
+  padding: 20px; border-radius: 20px; border: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 10px; z-index: 10;
 }
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
-.dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 5px currentColor; }
-
-/* 響應式優化 */
-@media (max-width: 900px) {
-  .stats-grid { grid-template-columns: 1fr; }
-  .stat-card.full { grid-column: span 1; }
-  #cy { height: 400px; }
-}
+.legend-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
 
 </style>
 </head>
-
 <body>
 
 <nav class="topbar">
   <div class="topbar-content">
-    <div class="brand-group" onclick="location.href='index.html'">
-      <span class="brand-badge">夢回花深處</span>
-      <span class="brand-badge sub">江湖統計</span>
-    </div>
+    <div style="font-weight: 800; padding: 0 20px;">夢回花深處</div>
     <div class="nav">
       <a href="index.html" class="home-btn">首頁</a>
-      <a href="PVERegistration.html">俠境報名</a>
       <a href="gallery.html">江湖回憶錄</a>
-      <a href="stats.html" class="active">實時數據</a>
+      <a href="stats.html" class="active">江湖脈絡</a>
     </div>
   </div>
 </nav>
 
 <div class="container">
   <header class="page-header">
-    <h1 class="page-title">幫會數據庫與江湖脈絡圖</h1>
-    <p style="color: var(--muted); margin-top:10px; letter-spacing: 2px;">REAL-TIME DATA & INTERACTIVE LINEAGE CHART</p>
+    <h1 class="page-title">江湖脈絡 · 師徒傳承圖</h1>
   </header>
 
-  <div class="stats-grid">
-    
-    <div class="stat-card">
-      <div class="stat-header">
-        <span class="stat-title">當前成員數</span>
-      </div>
-      <div class="stat-main-value">62 <small style="font-size: 16px; color:var(--muted)">/ 100</small></div>
-      <div class="progress-bar"><div class="progress-fill" style="width: 62%;"></div></div>
-      <p style="font-size: 13px; color: var(--muted);">幫會活躍評級：<span style="color:var(--gold)">極高 (S)</span></p>
+  <div class="chart-card">
+    <div class="legend">
+      <div class="legend-item"><span class="dot" style="background:var(--gen1)"></span> 第一代 (宗師)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--gen2)"></span> 第二代</div>
+      <div class="legend-item"><span class="dot" style="background:var(--gen3)"></span> 第三代</div>
+      <div class="legend-item"><span class="dot" style="background:var(--gen4)"></span> 第四代</div>
+      <div class="legend-item"><span class="dot" style="background:var(--gen5)"></span> 第五代</div>
     </div>
-
-    <div class="stat-card full">
-      <div class="stat-header">
-        <span class="stat-title">江湖脈絡傳承 (師徒連結圖 Chart)</span>
-        <p style="color: var(--muted); font-size: 13px;">滑鼠懸停發亮，可拖拽、縮放，全面呈現百業師徒連結。</p>
-      </div>
-      
-      <div id="lineage_chart_container">
-        <div class="legend">
-          <div class="legend-item"><span class="dot" style="color: var(--gen1);"></span> 第一代</div>
-          <div class="legend-item"><span class="dot" style="color: var(--gen2);"></span> 第二代</div>
-          <div class="legend-item"><span class="dot" style="color: var(--gen3);"></span> 第三代</div>
-          <div class="legend-item"><span class="dot" style="color: var(--gen4);"></span> 第四代</div>
-          <div class="legend-item"><span class="dot" style="color: var(--gen5);"></span> 第五代</div>
-        </div>
-        <div id="cy"></div>
-      </div>
-    </div>
-
+    <div id="cy"></div>
   </div>
 </div>
 
 <script>
-// 通用頁面切換動畫
-document.querySelectorAll('a').forEach(link => {
-  link.onclick = (e) => {
-    const href = link.getAttribute('href');
-    if (href && !href.startsWith('#') && document.startViewTransition) {
-      e.preventDefault();
-      document.startViewTransition(() => location.href = href);
-    }
-  };
-});
-
-// 啟動進度條動畫
-window.addEventListener('load', () => {
-  document.querySelectorAll('.progress-fill').forEach(bar => {
-    const w = bar.style.width;
-    bar.style.width = '0%';
-    setTimeout(() => bar.style.width = w, 200);
-  });
-});
-
-// ===== Cytoscape.js 江湖脈絡圖初始化 =====
 document.addEventListener('DOMContentLoaded', function(){
-  
-  // 代數配色對應 JS 變數
-  const colors = {
-    gen1: '#1e40af', gen2: '#3b82f6', gen3: '#8b5cf6', gen4: '#ec4899', gen5: '#f97316',
-    muted: '#a8b3cf', accent: '#6ea8ff'
-  };
-
-  // 初始化 Cytoscape
-  var cy = window.cy = cytoscape({
-    container: document.getElementById('cy'), // 畫布容器
-
-    // 網絡圖佈局設定：cose (彈簧算法) 最能錯落排開支脈
+  const cy = cytoscape({
+    container: document.getElementById('cy'),
     layout: {
-      name: 'cose',
-      idealEdgeLength: 100, // 連線長度
-      nodeOverlap: 20, // 節點間距
-      refresh: 20,
-      fit: true, // 自動適配畫布
-      padding: 30,
-      randomize: false, // 佈局一致性
-      componentSpacing: 100,
-      nodeRepulsion: 400000,
+      name: 'cose', // 彈簧佈局
+      componentSpacing: 120,
+      nodeRepulsion: 8000,
       edgeElasticity: 100,
-      nestingFactor: 5,
-      gravity: 80,
+      nestingFactor: 1.2,
+      padding: 50,
+      animate: true,
+      gravity: 0.25
     },
-
-    // 節點與連線樣式設定
     style: [
       {
-        selector: 'node', // 基礎節點樣式
+        selector: 'node',
         style: {
-          'label': 'data(id)', // 顯示名字
-          'color': colors.muted,
+          'label': 'data(id)',
+          'color': '#fff',
           'font-size': '12px',
-          'font-weight': '600',
-          'text-valign': 'center',
-          'text-halign': 'center',
-          'background-color': colors.muted,
-          'width': '20px', 'height': '20px',
-          'box-shadow': '0 0 10px currentColor',
-          'transition-property': 'background-color, width, height, color, box-shadow',
-          'transition-duration': '0.2s'
+          'text-valign': 'bottom',
+          'text-margin-y': '8px',
+          'background-color': 'var(--muted)',
+          'width': '16px', 'height': '16px',
+          'text-outline-width': 2,
+          'text-outline-color': '#0b1020',
+          'transition-property': 'width, height, background-color, box-shadow',
+          'transition-duration': '0.3s'
         }
       },
       {
-        selector: 'edge', // 基礎連線樣式 (箭頭)
+        selector: 'edge',
         style: {
-          'width': 2,
-          'line-color': colors.muted,
-          'target-arrow-color': colors.muted,
-          'target-arrow-shape': 'triangle', // 箭頭形狀
-          'curve-style': 'bezier', // 平滑曲線
-          'opacity': 0.15,
-          'transition-property': 'line-color, target-arrow-color, opacity, width',
-          'transition-duration': '0.2s'
+          'width': 1.5,
+          'line-color': 'rgba(255,255,255,0.1)',
+          'target-arrow-color': 'rgba(255,255,255,0.2)',
+          'target-arrow-shape': 'vee',
+          'curve-style': 'bezier',
+          'arrow-scale': 0.8
         }
       },
+      // 世代樣式定義
+      { selector: '.g1', style: { 'background-color': '#3b82f6', 'width': 22, 'height': 22, 'box-shadow': '0 0 15px #3b82f6' } },
+      { selector: '.g2', style: { 'background-color': '#60a5fa', 'width': 18, 'height': 18 } },
+      { selector: '.g3', style: { 'background-color': '#a78bfa' } },
+      { selector: '.g4', style: { 'background-color': '#f472b6' } },
+      { selector: '.g5', style: { 'background-color': '#fb923c' } },
       
-      // 代數樣式 override (依照世代配色)
-      { selector: '.g1', style: { 'background-color': colors.gen1, 'color': colors.gen1, 'width': '30px', 'height': '30px', 'box-shadow': '0 0 15px currentColor' } },
-      { selector: '.g2', style: { 'background-color': colors.gen2, 'color': colors.gen2, 'width': '25px', 'height': '25px', 'box-shadow': '0 0 12px currentColor' } },
-      { selector: '.g3', style: { 'background-color': colors.gen3, 'color': colors.gen3 } },
-      { selector: '.g4', style: { 'background-color': colors.gen4, 'color': colors.gen4 } },
-      { selector: '.g5', style: { 'background-color': colors.gen5, 'color': colors.gen5 } },
-
-      // 滑鼠懸停樣式 (發亮、突出)
-      { selector: 'node:hover', style: { 'width': '40px', 'height': '40px', 'color': '#fff', 'box-shadow': '0 0 25px currentColor', 'z-index': 100 } },
-      { selector: 'edge:hover', style: { 'width': 4, 'opacity': 0.8, 'line-color': colors.accent, 'target-arrow-color': colors.accent } }
+      // 懸停互動
+      { selector: 'node:hover', style: { 'width': 28, 'height': 28, 'font-size': '14px', 'z-index': 999 } },
+      { selector: 'edge:hover', style: { 'line-color': '#6ea8ff', 'width': 3, 'opacity': 1 } }
     ],
-
-    // 網絡數據：節點 (成員) 與連線 (師徒關係)
     elements: [
-      // 第一代節點 (g1)
+      // 節點定義
       { data: { id: '姜澈' }, classes: 'g1' },
-      { data: { id: '楚小閣' }, classes: 'g1' },
+      { data: { id: '花臻茵' }, classes: 'g2' },
+      { data: { id: '似水' }, classes: 'g3' },
+      { data: { id: '酥酥不酥' }, classes: 'g4' },
+      { data: { id: '青葉' }, classes: 'g4' },
+      { data: { id: '郁竹' }, classes: 'g4' },
+      { data: { id: '多多' }, classes: 'g5' },
+      { data: { id: '少音' }, classes: 'g5' },
+
+      { data: { id: '曲絡寧' }, classes: 'g2' },
+      { data: { id: '白離' }, classes: 'g3' },
+      { data: { id: '沐雨橙風' }, classes: 'g4' },
+      { data: { id: '雨宮天' }, classes: 'g4' },
+      { data: { id: '染冉' }, classes: 'g5' },
+      { data: { id: '艾倫' }, classes: 'g5' },
+      { data: { id: '東方念' }, classes: 'g5' },
+      { data: { id: '筱風' }, classes: 'g5' },
+
       { data: { id: '芝士漢堡' }, classes: 'g1' },
+      { data: { id: '顧立舟' }, classes: 'g2' },
+      { data: { id: '葉染塵' }, classes: 'g2' },
+      { data: { id: '一杯豆漿' }, classes: 'g2' },
+      { data: { id: '羽玄' }, classes: 'g3' },
+
+      { data: { id: '楚小閣' }, classes: 'g1' },
+      { data: { id: '稚米' }, classes: 'g2' },
+
       { data: { id: '鯨滿' }, classes: 'g1' },
-      { data: { id: '白雲凌' }, classes: 'g1' },
+      { data: { id: '姬蕭遙' }, classes: 'g2' },
+
       { data: { id: '蘋' }, classes: 'g1' },
-      { data: { id: '楚蕭' }, classes: 'g1' },
-      { data: { id: '顧立舟' }, classes: 'g1' },
-      { data: { id: '曲絡寧' }, classes: 'g1' },
-      { data: { id: '姜澈-分支-2' }, classes: 'g1' }, // 圖片中姜澈出現在兩個不同鏈，g1 顏色
+      { data: { id: '冉冉生煙' }, classes: 'g2' },
 
-      // 第二代節點與連線 (g1 -> g2)
-      { data: { id: '花臻茵' }, classes: 'g2' }, { data: { source: '姜澈', target: '花臻茵' } },
-      { data: { id: '稚米' }, classes: 'g2' }, { data: { source: '楚小閣', target: '稚米' } },
-      { data: { id: '一杯豆漿' }, classes: 'g2' }, { data: { source: '芝士漢堡', target: '一杯豆漿' } },
-      { data: { id: '顧立舟-g2' }, classes: 'g2' }, { data: { source: '芝士漢堡', target: '顧立舟-g2' } },
-      { data: { id: '葉染塵' }, classes: 'g2' }, { data: { source: '芝士漢堡', target: '葉染塵' } },
-      { data: { id: '姬蕭遙' }, classes: 'g2' }, { data: { source: '鯨滿', target: '姬蕭遙' } },
-      { data: { id: '無名' }, classes: 'g2' }, { data: { source: '白雲凌', target: '無名' } },
-      { data: { id: '冉冉生煙' }, classes: 'g2' }, { data: { source: '蘋', target: '冉冉生煙' } },
-      { data: { id: '乖乖' }, classes: 'g2' }, { data: { source: '楚蕭', target: '乖乖' } },
-      { data: { id: '羽玄' }, classes: 'g2' }, { data: { source: '顧立舟', target: '羽玄' } },
-      { data: { id: '白離' }, classes: 'g2' }, { data: { source: '曲絡寧', target: '白離' } },
-      { data: { id: '花臻茵-分支-2' }, classes: 'g2' }, { data: { source: '姜澈-分支-2', target: '花臻茵-分支-2' } },
+      { data: { id: '白雲凌' }, classes: 'g1' },
+      { data: { id: '無名' }, classes: 'g2' },
 
-      // 第三代節點與連線 (g2 -> g3)
-      { data: { id: '似水' }, classes: 'g3' }, { data: { source: '花臻茵', target: '似水' } },
-      { data: { id: '沐雨橙風' }, classes: 'g3' }, { data: { source: '白離', target: '沐雨橙風' } },
-      { data: { id: '雨宮天' }, classes: 'g3' }, { data: { source: '白離', target: '雨宮天' } },
-      { data: { id: '似水-分支-2' }, classes: 'g3' }, { data: { source: '花臻茵-分支-2', target: '似水-分支-2' } },
+      { data: { id: '乖乖' }, classes: 'g1' },
 
-      // 第四代節點與連線 (g3 -> g4)
-      { data: { id: '酥酥不酥' }, classes: 'g4' }, { data: { source: '似水', target: '酥酥不酥' } },
-      { data: { id: '青葉' }, classes: 'g4' }, { data: { source: '似水', target: '青葉' } },
-      { data: { id: '染冉' }, classes: 'g4' }, { data: { source: '沐雨橙風', target: '染冉' } },
-      { data: { id: '青葉-分支-2' }, classes: 'g4' }, { data: { source: '似水-分支-2', target: '青葉-分支-2' } },
-      { data: { id: '艾倫' }, classes: 'g4' }, { data: { source: '雨宮天', target: '艾倫' } },
-      { data: { id: '東方念' }, classes: 'g4' }, { data: { source: '雨宮天', target: '東方念' } },
-      { data: { id: '筱風' }, classes: 'g4' }, { data: { source: '雨宮天', target: '筱風' } },
-      
-      // 第五代節點與連線 (g4 -> g5)
-      { data: { id: '多多' }, classes: 'g5' }, { data: { source: '青葉', target: '多多' } },
-      { data: { id: '少音' }, classes: 'g5' }, { data: { source: '青葉', target: '少音' } },
-      { data: { id: '多多-分支-2' }, classes: 'g5' }, { data: { source: '青葉-分支-2', target: '多多-分支-2' } }
+      // 連線關係 (嚴格按照圖片一)
+      { data: { source: '姜澈', target: '花臻茵' } },
+      { data: { source: '花臻茵', target: '似水' } },
+      { data: { source: '花臻茵', target: '曲絡寧' } },
+      { data: { source: '似水', target: '酥酥不酥' } },
+      { data: { source: '似水', target: '青葉' } },
+      { data: { source: '似水', target: '郁竹' } },
+      { data: { source: '青葉', target: '多多' } },
+      { data: { source: '青葉', target: '少音' } },
+
+      { data: { source: '曲絡寧', target: '白離' } },
+      { data: { source: '白離', target: '沐雨橙風' } },
+      { data: { source: '白離', target: '雨宮天' } },
+      { data: { source: '沐雨橙風', target: '染冉' } },
+      { data: { source: '雨宮天', target: '艾倫' } },
+      { data: { source: '雨宮天', target: '東方念' } },
+      { data: { source: '雨宮天', target: '筱風' } },
+
+      { data: { source: '芝士漢堡', target: '顧立舟' } },
+      { data: { source: '芝士漢堡', target: '葉染塵' } },
+      { data: { source: '芝士漢堡', target: '一杯豆漿' } },
+      { data: { source: '顧立舟', target: '羽玄' } },
+
+      { data: { source: '楚小閣', target: '稚米' } },
+      { data: { source: '鯨滿', target: '姬蕭遙' } },
+      { data: { source: '蘋', target: '冉冉生煙' } },
+      { data: { source: '白雲凌', target: '無名' } },
+      { data: { source: '乖乖', target: '羽玄' } }
     ]
   });
 });
