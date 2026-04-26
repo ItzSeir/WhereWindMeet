@@ -177,17 +177,22 @@ body{
 
 .item {
   position: absolute;
-  /* 寬度會由 JS 動態精準控制 */
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   background-color: var(--panel);
+
+  /* 🔥 加這個 */
+  aspect-ratio: 3 / 2;
+
   transition: 
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
     opacity 0.5s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
+.item.v2 {
+  aspect-ratio: 3 / 4; /* 🔥 更高 */
+}
+  
 .item.hide {
   opacity: 0;
   transform: scale(0.8) translate(0, 50px) !important;
@@ -196,11 +201,9 @@ body{
 
 .gallery-img {
   width: 100%;
-  height: auto;
-  display: block;
-  transition: transform 0.8s ease;
+  height: 100%;
+  object-fit: cover; /* 🔥 關鍵 */
 }
-
 .item:hover .gallery-img {
   transform: scale(1.08);
 }
@@ -326,43 +329,45 @@ const items = Array.from(document.querySelectorAll('.item'));
 
 function layout(){
   const containerWidth = grid.offsetWidth;
-  // 強制設定：螢幕寬度 > 768 則為 3 欄，否則根據寬度決定 1 或 2 欄
   const cols = window.innerWidth > 768 ? 3 : (window.innerWidth < 500 ? 1 : 2);
   const gutter = 20;
   const colWidth = (containerWidth - (gutter * (cols - 1))) / cols;
-  
+
   const heights = Array(cols).fill(0);
 
   items.forEach(item => {
-    if(item.classList.contains('hide')) {
-      item.style.transform = `scale(0.8) translateY(50px)`;
+
+    if(item.classList.contains('hide')){
       item.style.opacity = '0';
       return;
     }
 
     item.style.opacity = '1';
-    const isBig = item.classList.contains('v2') && cols >= 3; // 只有在 3 欄以上才跨欄
-    
-    // 找出目前最短的欄位
+
+    const isBig = item.classList.contains('v2') && cols >= 3;
+
     let col = heights.indexOf(Math.min(...heights));
-    
-    // 處理寬圖跨欄邏輯
+
     if(isBig && col === cols - 1) col = cols - 2;
+
+    const width = isBig ? (colWidth * 2 + gutter) : colWidth;
+
+    /* 🔥 高度直接用比例算（不靠 offsetHeight） */
+    const ratio = isBig ? (4/3) : (2/3);
+    const height = width * ratio;
 
     const x = col * (colWidth + gutter);
     const y = heights[col];
 
-    // 精準設定 item 寬度
-    const currentItemWidth = isBig ? (colWidth * 2 + gutter) : colWidth;
-    item.style.width = `${currentItemWidth}px`;
+    item.style.width = `${width}px`;
+    item.style.height = `${height}px`;
     item.style.transform = `translate(${x}px, ${y}px)`;
 
-    // 取得實際高度 (offsetHeight) 並更新欄位高度
-    const h = item.offsetHeight + gutter;
+    const h = height + gutter;
 
-    if(isBig) {
-      const maxH = Math.max(heights[col] + h, heights[col+1] + h);
-      heights[col] = heights[col+1] = maxH;
+    if(isBig){
+      heights[col] += h;
+      heights[col+1] += h;
     } else {
       heights[col] += h;
     }
@@ -380,12 +385,6 @@ document.querySelectorAll('.filter button').forEach(btn => {
     items.forEach(item => {
       item.classList.toggle('hide', !(f === 'all' || item.dataset.category === f));
     });
-    // 動畫期間多次計算確保高度準確
-    let count = 0;
-    const interval = setInterval(() => {
-      layout();
-      if(count++ > 30) clearInterval(interval);
-    }, 16);
   };
 });
 
