@@ -139,7 +139,7 @@ body{
   border-radius: 2px;
 }
 
-/* ===== filter buttons美化 ===== */
+/* ===== filter buttons ===== */
 .filter {
   text-align: center;
   margin-bottom: 40px;
@@ -161,13 +161,6 @@ body{
   backdrop-filter: blur(10px);
 }
 
-.filter button:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
 .filter .active {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   color: #fff;
@@ -175,7 +168,7 @@ body{
   box-shadow: 0 8px 20px rgba(110, 168, 255, 0.3);
 }
 
-/* ===== masonry grid & items比例與動畫 ===== */
+/* ===== masonry grid ===== */
 .grid {
   position: relative;
   width: 100%;
@@ -184,27 +177,20 @@ body{
 
 .item {
   position: absolute;
-  /* 初始寬度由 JS 計算以精確控制一行三個 */
+  /* 寬度會由 JS 動態精準控制 */
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   background-color: var(--panel);
-  /* 關鍵切換動畫 */
   transition: 
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-    opacity 0.5s ease, 
-    filter 0.3s ease;
+    opacity 0.5s ease;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.item:hover {
-  filter: brightness(1.1);
-  z-index: 10;
 }
 
 .item.hide {
   opacity: 0;
-  transform: scale(0.8) translate(0, 50px) !important; /* 強制覆蓋 JS 的 translate */
+  transform: scale(0.8) translate(0, 50px) !important;
   pointer-events: none;
 }
 
@@ -226,11 +212,10 @@ body{
   left: 0;
   right: 0;
   padding: 25px 20px;
-  background: linear-gradient(to top, rgba(11, 16, 32, 0.95) 0%, rgba(11, 16, 32, 0.6) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(11, 16, 32, 0.95) 0%, transparent 100%);
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.4s ease;
-  z-index: 2;
 }
 
 .item:hover .gallery-info {
@@ -238,21 +223,8 @@ body{
   transform: translateY(0);
 }
 
-.gallery-info .date {
-  font-size: 11px;
-  color: var(--gold);
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.gallery-info .title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
+.gallery-info .date { font-size: 11px; color: var(--gold); display: block; margin-bottom: 4px;}
+.gallery-info .title { font-size: 16px; font-weight: 700; color: #fff; }
 
 /* ===== lightbox ===== */
 .lightbox {
@@ -265,53 +237,14 @@ body{
   z-index: 9999;
   backdrop-filter: blur(15px);
 }
-
 .lightbox.show { display: flex; }
-
-.lightbox-inner {
-  max-width: 1000px;
-  width: 90%;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.lightbox img {
-  max-width: 100%;
-  max-height: 75vh;
-  width: auto;
-  height: auto;
-  margin: auto;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-}
-
-.lb-meta {
-  background: rgba(255,255,255,.05);
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.lb-date { font-size: 12px; color: var(--gold); font-weight: 600;}
-.lb-title { font-size: 22px; font-weight: 800; margin: 5px 0 10px; }
-.lb-desc { font-size: 15px; color: var(--muted); line-height: 1.6; }
-
-/* arrows */
-.arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 60px;
-  color: rgba(255,255,255,0.2);
-  cursor: pointer;
-  transition: 0.3s;
-  user-select: none;
-  padding: 20px;
-}
-
+.lightbox-inner { max-width: 1000px; width: 90%; display: flex; flex-direction: column; gap: 20px; }
+.lightbox img { max-width: 100%; max-height: 75vh; margin: auto; object-fit: contain; border-radius: 12px; }
+.lb-meta { background: rgba(255,255,255,.05); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+.lb-date { color: var(--gold); font-size: 12px; }
+.lb-title { font-size: 22px; font-weight: 800; margin: 5px 0; }
+.lb-desc { color: var(--muted); font-size: 15px; }
+.arrow { position: absolute; top: 50%; font-size: 60px; color: rgba(255,255,255,0.2); cursor: pointer; padding: 20px; transform: translateY(-50%); }
 .arrow:hover { color: var(--accent); }
 .left { left: 20px; }
 .right { right: 20px; }
@@ -327,7 +260,6 @@ body{
       <span class="brand-badge">夢回花深處</span>
       <span class="brand-badge sub">江湖回憶錄</span>
     </div>
-
     <div class="nav">
       <a href="index.html" class="home-btn">首頁</a>
       <a href="PVERegistration.html">俠境報名</a>
@@ -337,7 +269,6 @@ body{
 </nav>
 
 <div class="container">
-
   <div class="page-header">
     <h1 class="page-title">夢回花深處</h1>
     <p class="page-subtitle">MEMORIES OF JIANGHU</p>
@@ -350,11 +281,7 @@ body{
   </div>
 
   <div class="grid" id="grid">
-
-    <div class="item" data-category="nye"
-         data-title="跨年合照"
-         data-date="2026.01.01"
-         data-desc="那一晚煙火與歡笑交織，我們一起迎接新的江湖篇章。">
+    <div class="item" data-category="nye" data-title="跨年合照" data-date="2026.01.01" data-desc="迎接新的江湖篇章。">
       <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
       <div class="gallery-info">
         <span class="date">2026.01.01</span>
@@ -362,10 +289,7 @@ body{
       </div>
     </div>
 
-    <div class="item v2" data-category="daily"
-         data-title="夢回舞獅團"
-         data-date="2026.02.13"
-         data-desc="夢回舞獅團出戰！慶祝江湖盛世。">
+    <div class="item v2" data-category="daily" data-title="夢回舞獅團" data-date="2026.02.13" data-desc="慶祝江湖盛世。">
       <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%88%9E%E7%8D%85%EF%BC%8813Feb26%EF%BC%89.png" class="gallery-img">
       <div class="gallery-info">
         <span class="date">2026.02.13</span>
@@ -373,17 +297,13 @@ body{
       </div>
     </div>
 
-    <div class="item" data-category="daily"
-         data-title="搖滾歌手"
-         data-date="2026.02.16"
-         data-desc="這是搖滾歌手還是殺手？在花深處的音律之夜。">
+    <div class="item" data-category="daily" data-title="搖滾歌手" data-date="2026.02.16" data-desc="在花深處的音律之夜。">
       <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E6%90%96%E6%BB%BE%E6%AD%8C%E6%89%8B%20%40%E6%9B%B2%E7%B5%A1%E5%AF%A7.png" class="gallery-img">
       <div class="gallery-info">
         <span class="date">2026.02.16</span>
         <span class="title">搖滾歌手 @曲絡寧</span>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -403,44 +323,46 @@ body{
 <script>
 const grid = document.getElementById('grid');
 const items = Array.from(document.querySelectorAll('.item'));
-let current = 0;
 
-/* 強化版 Masonry 佈局：固定一行三個圖片 */
 function layout(){
-  const width = grid.offsetWidth;
-  const cols = window.innerWidth < 768 ? (window.innerWidth < 500 ? 1 : 2) : 3; // 桌面端固定 3 欄
-  
-  const gutter = 20; // 間距
-  const colWidth = (width - (gutter * (cols - 1))) / cols;
+  const containerWidth = grid.offsetWidth;
+  // 強制設定：螢幕寬度 > 768 則為 3 欄，否則根據寬度決定 1 或 2 欄
+  const cols = window.innerWidth > 768 ? 3 : (window.innerWidth < 500 ? 1 : 2);
+  const gutter = 20;
+  const colWidth = (containerWidth - (gutter * (cols - 1))) / cols;
   
   const heights = Array(cols).fill(0);
 
   items.forEach(item => {
     if(item.classList.contains('hide')) {
-        // 隱藏時不參與高度計算
-        return;
+      item.style.transform = `scale(0.8) translateY(50px)`;
+      item.style.opacity = '0';
+      return;
     }
 
-    const isBig = item.classList.contains('v2') && cols > 1;
+    item.style.opacity = '1';
+    const isBig = item.classList.contains('v2') && cols >= 3; // 只有在 3 欄以上才跨欄
+    
+    // 找出目前最短的欄位
     let col = heights.indexOf(Math.min(...heights));
-
-    // 寬圖跨欄處理
-    if (isBig && col === cols - 1) col = cols - 2;
+    
+    // 處理寬圖跨欄邏輯
+    if(isBig && col === cols - 1) col = cols - 2;
 
     const x = col * (colWidth + gutter);
     const y = heights[col];
 
-    // 設定寬度並定位
+    // 精準設定 item 寬度
     const currentItemWidth = isBig ? (colWidth * 2 + gutter) : colWidth;
     item.style.width = `${currentItemWidth}px`;
     item.style.transform = `translate(${x}px, ${y}px)`;
 
+    // 取得實際高度 (offsetHeight) 並更新欄位高度
     const h = item.offsetHeight + gutter;
 
-    if(isBig){
+    if(isBig) {
       const maxH = Math.max(heights[col] + h, heights[col+1] + h);
-      heights[col] = maxH;
-      heights[col+1] = maxH;
+      heights[col] = heights[col+1] = maxH;
     } else {
       heights[col] += h;
     }
@@ -449,24 +371,21 @@ function layout(){
   grid.style.height = Math.max(...heights) + 'px';
 }
 
-/* 篩選器觸發動畫 */
+// 篩選邏輯
 document.querySelectorAll('.filter button').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('.filter button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     const f = btn.dataset.filter;
-
     items.forEach(item => {
-      if(f === 'all' || item.dataset.category === f) {
-        item.classList.remove('hide');
-      } else {
-        item.classList.add('hide');
-      }
+      item.classList.toggle('hide', !(f === 'all' || item.dataset.category === f));
     });
-
-    // 延遲執行 layout 以確保動畫平滑
-    requestAnimationFrame(layout);
+    // 動畫期間多次計算確保高度準確
+    let count = 0;
+    const interval = setInterval(() => {
+      layout();
+      if(count++ > 30) clearInterval(interval);
+    }, 16);
   };
 });
 
@@ -476,48 +395,45 @@ const lightImg = document.getElementById('light-img');
 const lbTitle = document.getElementById('lb-title');
 const lbDate = document.getElementById('lb-date');
 const lbDesc = document.getElementById('lb-desc');
+let currentIdx = 0;
 
-function show(i){
-  const visibleItems = items.filter(item => !item.classList.contains('hide'));
-  const target = visibleItems[i] || visibleItems[0];
+function showLightbox(idx){
+  const visibleItems = items.filter(i => !i.classList.contains('hide'));
+  const target = visibleItems[idx];
   if(!target) return;
-  
   lightImg.src = target.querySelector('img').src;
   lbTitle.textContent = target.dataset.title;
   lbDate.textContent = target.dataset.date;
   lbDesc.textContent = target.dataset.desc;
 }
 
-items.forEach((item) => {
+items.forEach(item => {
   item.onclick = () => {
     const visibleItems = items.filter(i => !i.classList.contains('hide'));
-    current = visibleItems.indexOf(item);
-    show(current);
+    currentIdx = visibleItems.indexOf(item);
+    showLightbox(currentIdx);
     lightbox.classList.add('show');
   };
 });
 
 document.getElementById('next').onclick = () => {
   const visibleItems = items.filter(i => !i.classList.contains('hide'));
-  current = (current + 1) % visibleItems.length;
-  show(current);
+  currentIdx = (currentIdx + 1) % visibleItems.length;
+  showLightbox(currentIdx);
 };
 
 document.getElementById('prev').onclick = () => {
   const visibleItems = items.filter(i => !i.classList.contains('hide'));
-  current = (current - 1 + visibleItems.length) % visibleItems.length;
-  show(current);
+  currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+  showLightbox(currentIdx);
 };
 
 lightbox.onclick = e => { if(e.target === lightbox) lightbox.classList.remove('show'); };
 
-// 監聽圖片加載以確保高度正確
+// 監聽加載與縮放
 window.addEventListener('load', layout);
 window.addEventListener('resize', layout);
-// 圖片加載後再次觸發，防止 offsetHeight 為 0
-items.forEach(item => {
-  item.querySelector('img').onload = layout;
-});
+items.forEach(item => item.querySelector('img').onload = layout);
 </script>
 
 </body>
