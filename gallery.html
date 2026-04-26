@@ -20,7 +20,6 @@
   --gold:#ffd76a;
 }
 
-/* ===== base ===== */
 *{ box-sizing:border-box; }
 
 body{
@@ -32,7 +31,6 @@ body{
     radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
     linear-gradient(180deg, var(--bg), var(--bg2));
   padding-top:110px;
-  min-height: 100vh;
 }
 
 /* ===== navbar ===== */
@@ -52,7 +50,6 @@ body{
   background: rgba(15, 22, 42, 0.6);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .topbar-content {
@@ -103,155 +100,143 @@ body{
   padding:40px 20px;
 }
 
-/* ===== title area design ===== */
+/* ===== header ===== */
 .page-header {
   text-align: center;
   margin-bottom: 50px;
-  position: relative;
 }
 
 .page-title {
   font-size: 42px;
   font-weight: 800;
-  margin: 0;
   background: linear-gradient(to right, #fff, var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 4px;
 }
 
 .page-subtitle {
   color: var(--muted);
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 14px;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  opacity: 0.8;
 }
 
-.page-header::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: var(--accent);
-  margin: 20px auto 0;
-  border-radius: 2px;
-}
-
-/* ===== filter buttons ===== */
+/* ===== filter ===== */
 .filter {
-  text-align: center;
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-bottom:40px;
 }
 
 .filter button {
-  padding: 12px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(10px);
+  padding:10px 24px;
+  border-radius:50px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.03);
+  color:var(--muted);
+  cursor:pointer;
 }
 
 .filter .active {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 8px 20px rgba(110, 168, 255, 0.3);
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
 }
 
-/* ===== masonry grid ===== */
+/* ===== grid ===== */
 .grid {
-  position: relative;
-  width: 100%;
-  margin-top: 20px;
+  position:relative;
 }
 
 .item {
-  position: absolute;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  background-color: var(--panel);
-
-  /* 🔥 加這個 */
-  aspect-ratio: 3 / 2;
-
-  transition: 
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-    opacity 0.5s ease;
+  position:absolute;
+  border-radius:20px;
+  overflow:hidden;
+  background:var(--panel);
+  cursor:pointer;
+  transition:
+    transform 0.55s cubic-bezier(.2,.8,.2,1),
+    width 0.4s ease,
+    height 0.4s ease,
+    opacity 0.35s ease;
 }
-.item.v2 {
-  aspect-ratio: 3 / 4; /* 🔥 更高 */
-}
-  
+
 .item.hide {
-  opacity: 0;
-  transform: scale(0.8) translate(0, 50px) !important;
-  pointer-events: none;
+  opacity:0;
+  transform:scale(0.9);
+  pointer-events:none;
 }
 
 .gallery-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* 🔥 關鍵 */
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition: transform 0.6s;
 }
+
 .item:hover .gallery-img {
-  transform: scale(1.08);
+  transform:scale(1.08);
 }
 
 /* ===== hover info ===== */
-.gallery-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 25px 20px;
-  background: linear-gradient(to top, rgba(11, 16, 32, 0.95) 0%, transparent 100%);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s ease;
+.gallery-info{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:20px;
+  background:linear-gradient(to top,rgba(0,0,0,0.85),transparent);
+  opacity:0;
+  transform:translateY(15px);
+  transition:.3s;
+  z-index:2;
 }
 
-.item:hover .gallery-info {
-  opacity: 1;
-  transform: translateY(0);
+.item:hover .gallery-info{
+  opacity:1;
+  transform:translateY(0);
 }
 
-.gallery-info .date { font-size: 11px; color: var(--gold); display: block; margin-bottom: 4px;}
-.gallery-info .title { font-size: 16px; font-weight: 700; color: #fff; }
+.date{ font-size:12px; color:var(--gold);}
+.title{ font-size:16px; font-weight:700;}
 
 /* ===== lightbox ===== */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(7, 10, 20, 0.96);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(15px);
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
 }
-.lightbox.show { display: flex; }
-.lightbox-inner { max-width: 1000px; width: 90%; display: flex; flex-direction: column; gap: 20px; }
-.lightbox img { max-width: 100%; max-height: 75vh; margin: auto; object-fit: contain; border-radius: 12px; }
-.lb-meta { background: rgba(255,255,255,.05); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
-.lb-date { color: var(--gold); font-size: 12px; }
-.lb-title { font-size: 22px; font-weight: 800; margin: 5px 0; }
-.lb-desc { color: var(--muted); font-size: 15px; }
-.arrow { position: absolute; top: 50%; font-size: 60px; color: rgba(255,255,255,0.2); cursor: pointer; padding: 20px; transform: translateY(-50%); }
-.arrow:hover { color: var(--accent); }
-.left { left: 20px; }
-.right { right: 20px; }
 
+.lightbox.show{ display:flex; }
+
+.lightbox-inner{
+  max-width:900px;
+  width:90%;
+}
+
+.lightbox img{
+  max-width:100%;
+  max-height:70vh;
+  object-fit:contain;
+}
+
+.lb-meta{ margin-top:15px; }
+.lb-title{ font-size:20px; font-weight:800;}
+.lb-desc{ color:var(--muted); }
+
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:50px;
+  cursor:pointer;
+  color:#aaa;
+}
+.left{ left:20px; }
+.right{ right:20px; }
 </style>
 </head>
 
@@ -272,167 +257,155 @@ body{
 </nav>
 
 <div class="container">
-  <div class="page-header">
-    <h1 class="page-title">夢回花深處</h1>
-    <p class="page-subtitle">MEMORIES OF JIANGHU</p>
-  </div>
 
-  <div class="filter">
-    <button class="active" data-filter="all">全部回憶</button>
-    <button data-filter="nye">歲末跨年</button>
-    <button data-filter="daily">江湖日常</button>
-  </div>
+<div class="page-header">
+  <h1 class="page-title">夢回花深處</h1>
+  <p class="page-subtitle">MEMORIES</p>
+</div>
 
-  <div class="grid" id="grid">
-    <div class="item" data-category="nye" data-title="跨年合照" data-date="2026.01.01" data-desc="迎接新的江湖篇章。">
-      <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
-      <div class="gallery-info">
-        <span class="date">2026.01.01</span>
-        <span class="title">跨年合照</span>
-      </div>
-    </div>
+<div class="filter">
+  <button class="active" data-filter="all">全部</button>
+  <button data-filter="nye">跨年</button>
+  <button data-filter="daily">日常</button>
+</div>
 
-    <div class="item" data-category="daily" data-title="夢回舞獅團" data-date="2026.02.13" data-desc="慶祝江湖盛世。">
-      <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%88%9E%E7%8D%85%EF%BC%8813Feb26%EF%BC%89.png" class="gallery-img">
-      <div class="gallery-info">
-        <span class="date">2026.02.13</span>
-        <span class="title">夢回舞獅團</span>
-      </div>
-    </div>
+<div class="grid" id="grid">
 
-    <div class="item v2" data-category="daily" data-title="搖滾歌手" data-date="2026.02.16" data-desc="在花深處的音律之夜。">
-      <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E6%90%96%E6%BB%BE%E6%AD%8C%E6%89%8B%20%40%E6%9B%B2%E7%B5%A1%E5%AF%A7.png" class="gallery-img">
-      <div class="gallery-info">
-        <span class="date">2026.02.16</span>
-        <span class="title">搖滾歌手 @曲絡寧</span>
-      </div>
-    </div>
-  </div>
+<div class="item" data-category="nye" data-title="跨年合照" data-date="2026.01.01" data-desc="迎接新的江湖篇章。">
+<img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img">
+<div class="gallery-info">
+<span class="date">2026.01.01</span>
+<span class="title">跨年合照</span>
+</div>
+</div>
+
+<div class="item v2" data-category="daily" data-title="夢回舞獅團" data-date="2026.02.13" data-desc="慶祝江湖盛世。">
+<img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%88%9E%E7%8D%85%EF%BC%8813Feb26%EF%BC%89.png" class="gallery-img">
+<div class="gallery-info">
+<span class="date">2026.02.13</span>
+<span class="title">夢回舞獅團</span>
+</div>
+</div>
+
+<div class="item" data-category="daily" data-title="搖滾歌手" data-date="2026.02.16" data-desc="在花深處的音律之夜。">
+<img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E6%90%96%E6%BB%BE%E6%AD%8C%E6%89%8B%20%40%E6%9B%B2%E7%B5%A1%E5%AF%A7.png" class="gallery-img">
+<div class="gallery-info">
+<span class="date">2026.02.16</span>
+<span class="title">搖滾歌手</span>
+</div>
+</div>
+
+</div>
 </div>
 
 <div class="lightbox" id="lightbox">
-  <div class="arrow left" id="prev">‹</div>
-  <div class="lightbox-inner">
-    <img id="light-img">
-    <div class="lb-meta">
-      <div class="lb-date" id="lb-date"></div>
-      <div class="lb-title" id="lb-title"></div>
-      <div class="lb-desc" id="lb-desc"></div>
-    </div>
-  </div>
-  <div class="arrow right" id="next">›</div>
+<div class="arrow left" id="prev">‹</div>
+<div class="lightbox-inner">
+<img id="light-img">
+<div class="lb-meta">
+<div id="lb-title" class="lb-title"></div>
+<div id="lb-desc" class="lb-desc"></div>
+</div>
+</div>
+<div class="arrow right" id="next">›</div>
 </div>
 
 <script>
 const grid = document.getElementById('grid');
-const items = Array.from(document.querySelectorAll('.item'));
+const items = [...document.querySelectorAll('.item')];
 
 function layout(){
-  const containerWidth = grid.offsetWidth;
-  const cols = window.innerWidth > 768 ? 3 : (window.innerWidth < 500 ? 1 : 2);
-  const gutter = 20;
-  const colWidth = (containerWidth - (gutter * (cols - 1))) / cols;
+  const cols = window.innerWidth > 768 ? 3 : 2;
+  const gap = 20;
+  const colWidth = (grid.offsetWidth - gap*(cols-1))/cols;
 
   const heights = Array(cols).fill(0);
 
-  items.forEach(item => {
+  items.forEach(item=>{
+    if(item.classList.contains('hide')) return;
 
-    if(item.classList.contains('hide')){
-      item.style.opacity = '0';
-      return;
-    }
-
-    item.style.opacity = '1';
-
-    const isBig = item.classList.contains('v2') && cols >= 3;
-
+    const isBig = item.classList.contains('v2') && cols>=3;
     let col = heights.indexOf(Math.min(...heights));
+    if(isBig && col===cols-1) col--;
 
-    if(isBig && col === cols - 1) col = cols - 2;
+    const width = isBig ? colWidth*2+gap : colWidth;
 
-    const width = isBig ? (colWidth * 2 + gutter) : colWidth;
-
-    /* 🔥 高度直接用比例算（不靠 offsetHeight） */
-    const ratio = isBig ? (4/3) : (2/3);
+    const ratio = isBig ? 0.75 : 0.66;
     const height = width * ratio;
 
-    const x = col * (colWidth + gutter);
+    const x = col*(colWidth+gap);
     const y = heights[col];
 
-    item.style.width = `${width}px`;
-    item.style.height = `${height}px`;
-    item.style.transform = `translate(${x}px, ${y}px)`;
+    item.style.width = width+"px";
+    item.style.height = height+"px";
+    item.style.transform = `translate(${x}px,${y}px)`;
 
-    const h = height + gutter;
+    const h = height+gap;
 
     if(isBig){
-      heights[col] += h;
-      heights[col+1] += h;
-    } else {
-      heights[col] += h;
-    }
+      heights[col]+=h;
+      heights[col+1]+=h;
+    } else heights[col]+=h;
   });
 
-  grid.style.height = Math.max(...heights) + 'px';
+  grid.style.height = Math.max(...heights)+"px";
 }
 
-// 篩選邏輯
-document.querySelectorAll('.filter button').forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll('.filter button').forEach(b => b.classList.remove('active'));
+/* filter */
+document.querySelectorAll('.filter button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.filter button').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    const f = btn.dataset.filter;
-    items.forEach(item => {
-      item.classList.toggle('hide', !(f === 'all' || item.dataset.category === f));
+
+    const f=btn.dataset.filter;
+    items.forEach(i=>{
+      i.classList.toggle('hide',!(f==="all"||i.dataset.category===f));
     });
+
+    requestAnimationFrame(layout);
   };
 });
 
-/* Lightbox 邏輯 */
-const lightbox = document.getElementById('lightbox');
-const lightImg = document.getElementById('light-img');
-const lbTitle = document.getElementById('lb-title');
-const lbDate = document.getElementById('lb-date');
-const lbDesc = document.getElementById('lb-desc');
-let currentIdx = 0;
+/* lightbox */
+const lb=document.getElementById('lightbox');
+const img=document.getElementById('light-img');
+const title=document.getElementById('lb-title');
+const desc=document.getElementById('lb-desc');
+let idx=0;
 
-function showLightbox(idx){
-  const visibleItems = items.filter(i => !i.classList.contains('hide'));
-  const target = visibleItems[idx];
-  if(!target) return;
-  lightImg.src = target.querySelector('img').src;
-  lbTitle.textContent = target.dataset.title;
-  lbDate.textContent = target.dataset.date;
-  lbDesc.textContent = target.dataset.desc;
+function show(i){
+  const list=items.filter(x=>!x.classList.contains('hide'));
+  const t=list[i];
+  img.src=t.querySelector('img').src;
+  title.textContent=t.dataset.title;
+  desc.textContent=t.dataset.desc;
 }
 
-items.forEach(item => {
-  item.onclick = () => {
-    const visibleItems = items.filter(i => !i.classList.contains('hide'));
-    currentIdx = visibleItems.indexOf(item);
-    showLightbox(currentIdx);
-    lightbox.classList.add('show');
+items.forEach((item,i)=>{
+  item.onclick=()=>{
+    idx=i;
+    show(idx);
+    lb.classList.add('show');
   };
 });
 
-document.getElementById('next').onclick = () => {
-  const visibleItems = items.filter(i => !i.classList.contains('hide'));
-  currentIdx = (currentIdx + 1) % visibleItems.length;
-  showLightbox(currentIdx);
+document.getElementById('next').onclick=()=>{
+  const list=items.filter(x=>!x.classList.contains('hide'));
+  idx=(idx+1)%list.length;
+  show(idx);
+};
+document.getElementById('prev').onclick=()=>{
+  const list=items.filter(x=>!x.classList.contains('hide'));
+  idx=(idx-1+list.length)%list.length;
+  show(idx);
 };
 
-document.getElementById('prev').onclick = () => {
-  const visibleItems = items.filter(i => !i.classList.contains('hide'));
-  currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
-  showLightbox(currentIdx);
+lb.onclick=e=>{
+  if(e.target===lb) lb.classList.remove('show');
 };
 
-lightbox.onclick = e => { if(e.target === lightbox) lightbox.classList.remove('show'); };
-
-// 監聽加載與縮放
-window.addEventListener('load', layout);
-window.addEventListener('resize', layout);
-items.forEach(item => item.querySelector('img').onload = layout);
+window.addEventListener('load',layout);
+window.addEventListener('resize',layout);
 </script>
 
 </body>
