@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>夢回花深處｜江湖數據庫</title>
+<title>夢回花深處｜幫會數據庫</title>
 
 <meta name="view-transition" content="same-origin" />
 
@@ -20,16 +20,15 @@
   --accent:#6ea8ff;
   --accent2:#8b5cf6;
   --gold:#ffd76a;
+  /* 師徒世代配色 - 嚴格遵循圖片 */
+  --gen1: #1e40af; /* 深藍 */
+  --gen2: #3b82f6; /* 亮藍 */
+  --gen3: #8b5cf6; /* 紫色 */
+  --gen4: #ec4899; /* 粉紅 */
+  --gen5: #f97316; /* 橙色 */
 }
 
-/* ===== 頁面切換動畫定義 ===== */
-@keyframes fade-in { from { opacity: 0; transform: translateY(10px); } }
-@keyframes fade-out { to { opacity: 0; transform: translateY(-10px); } }
-
-::view-transition-old(root) { animation: 0.3s ease both fade-out; }
-::view-transition-new(root) { animation: 0.4s ease 0.1s both fade-in; }
-
-/* ===== 基礎樣式 ===== */
+/* ===== 基礎設定 ===== */
 *{ box-sizing:border-box; }
 
 body{
@@ -43,7 +42,7 @@ body{
   min-height: 100vh;
 }
 
-/* ===== Navbar (與其他頁面統一) ===== */
+/* ===== Navbar (統一設計) ===== */
 .topbar {
   position: fixed;
   top: 20px;
@@ -61,7 +60,7 @@ body{
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  view-transition-name: main-nav; /* 導航欄固定不參與動畫 */
+  view-transition-name: main-nav;
 }
 
 .topbar-content { width: 100%; display: flex; justify-content: space-between; align-items: center; }
@@ -69,22 +68,20 @@ body{
 .brand-badge { padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); font-size: 12px; font-weight: 700; }
 .nav { display: flex; gap: 8px; }
 .nav a { text-decoration: none; color: var(--muted); padding: 8px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; transition: 0.3s; }
-.nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
 .nav a.active { color: #fff; background: rgba(255,255,255,0.12); }
 .nav a.home-btn { color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
 
 /* ===== 內容區域 ===== */
-.container { max-width: 1100px; margin: auto; padding: 40px 20px; }
+.container { max-width: 1200px; margin: auto; padding: 20px; }
 
-.page-header { text-align: center; margin-bottom: 60px; }
+.page-header { text-align: center; margin-bottom: 40px; }
 .page-title { font-size: 36px; font-weight: 800; margin: 0; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.page-subtitle { color: var(--muted); margin-top: 10px; font-size: 14px; letter-spacing: 4px; }
 
-/* ===== 數據看板佈局 (Pinterest 風格卡片) ===== */
+/* ===== Pinterest 數據網格 ===== */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .stat-card {
@@ -92,43 +89,63 @@ body{
   border: 1px solid var(--line);
   border-radius: 24px;
   padding: 30px;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(110,168,255,0.4);
-  background: rgba(255,255,255,0.08);
-}
+.stat-card.wide { grid-column: span 2; }
+.stat-card.full { grid-column: span 3; }
 
-.stat-header {
+.stat-header { margin-bottom: 25px; }
+.stat-title { font-size: 18px; font-weight: 700; color: var(--accent); display: block; margin-bottom: 5px;}
+
+/* 數據顯示樣式 */
+.stat-main-value { font-size: 40px; font-weight: 800; color: #fff; margin: 10px 0; }
+
+/* 進度條 */
+.progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin: 15px 0; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 1s ease; }
+
+/* ===== 師徒脈絡關係圖 (Pinterest 風格整合) ===== */
+.lineage-container {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.lineage-branch {
+  flex: 1;
+  min-width: 250px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 20px;
+  padding: 20px;
+  border-left: 2px solid var(--line);
+}
+
+.node-item {
+  display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  position: relative;
+  transition: 0.2s;
 }
+.node-item:hover { transform: translateX(5px); }
 
-.stat-title { font-size: 18px; font-weight: 700; color: var(--accent); }
-.stat-value { font-size: 32px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+.node-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
 
-/* 進度條樣式 */
-.progress-container { margin-top: 15px; }
-.progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-.progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; width: 0; transition: width 1.5s cubic-bezier(0.1, 0.5, 0.1, 1); }
+/* 深度縮進與色彩控制 */
+.node-d1 { padding-left: 0; color: var(--gen1); font-weight: 700; }
+.node-d2 { padding-left: 15px; color: var(--gen2); }
+.node-d3 { padding-left: 30px; color: var(--gen3); }
+.node-d4 { padding-left: 45px; color: var(--gen4); }
+.node-d5 { padding-left: 60px; color: var(--gen5); }
 
-/* 分類列表樣式 */
-.data-list { list-style: none; padding: 0; margin: 20px 0 0; }
-.data-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 15px;
+/* 響應式優化 */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-card.wide, .stat-card.full { grid-column: span 1; }
 }
-.data-item:last-child { border-bottom: none; }
-.data-label { color: var(--muted); }
-.data-num { color: var(--gold); font-weight: 700; }
 
 </style>
 </head>
@@ -139,105 +156,129 @@ body{
   <div class="topbar-content">
     <div class="brand-group" onclick="location.href='index.html'">
       <span class="brand-badge">夢回花深處</span>
-      <span class="brand-badge sub">江湖數據庫</span>
+      <span class="brand-badge sub">江湖統計</span>
     </div>
     <div class="nav">
       <a href="index.html" class="home-btn">首頁</a>
       <a href="PVERegistration.html">俠境報名</a>
       <a href="gallery.html">江湖回憶錄</a>
-      <a href="stats.html" class="active">江湖數據庫</a>
+      <a href="stats.html" class="active">實時數據</a>
     </div>
   </div>
 </nav>
 
 <div class="container">
-  <div class="page-header">
-    <h1 class="page-title">幫會數據分析</h1>
-    <p class="page-subtitle">1</p>
-  </div>
+  <header class="page-header">
+    <h1 class="page-title">數據統計與師徒傳承</h1>
+    <p style="color: var(--muted); margin-top:10px; letter-spacing: 2px;">REAL-TIME DATA & LINEAGE RELATIONSHIP</p>
+  </header>
 
   <div class="stats-grid">
     
     <div class="stat-card">
       <div class="stat-header">
         <span class="stat-title">當前成員數</span>
-        <span class="stat-value">62</span>
       </div>
-      <div class="progress-container">
-        <div class="progress-label">
-          <span>幫會容納量</span>
-          <span>62 / 100</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-fill" style="width: 62%;"></div>
-        </div>
-      </div>
-      <ul class="data-list">
-        <li class="data-item"><span class="data-label">活躍成員</span><span class="data-num">58</span></li>
-        <li class="data-item"><span class="data-label">平均戰力</span><span class="data-num">125,400</span></li>
-      </ul>
+      <div class="stat-main-value">62 <small style="font-size: 16px; color:var(--muted)">/ 100</small></div>
+      <div class="progress-bar"><div class="progress-fill" style="width: 62%;"></div></div>
+      <p style="font-size: 13px; color: var(--muted);">幫會活躍評級：<span style="color:var(--gold)">極高 (S)</span></p>
     </div>
 
     <div class="stat-card">
       <div class="stat-header">
         <span class="stat-title">成員等級分布</span>
       </div>
-      <ul class="data-list">
-        <li class="data-item"><span class="data-label">100級以上 (宗師)</span><span class="data-num">12 人</span></li>
-        <li class="data-item"><span class="data-label">90 - 99 級</span><span class="data-num">28 人</span></li>
-        <li class="data-item"><span class="data-label">80 - 89 級</span><span class="data-num">15 人</span></li>
-        <li class="data-item"><span class="data-label">80 級以下</span><span class="data-num">7 人</span></li>
-      </ul>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display:flex; justify-content:space-between;"><span>宗師級 (100+)</span><span style="color:var(--gold)">12 人</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>精英級 (90-99)</span><span style="color:var(--gold)">35 人</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>中堅級 (80-89)</span><span style="color:var(--gold)">15 人</span></div>
+      </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-header">
-        <span class="stat-title">當前俠境進度</span>
-        <span class="stat-value">85%</span>
+        <span class="stat-title">幫會領地進度</span>
       </div>
-      <div class="progress-container">
-        <div class="progress-label">
-          <span>地圖探索度</span>
-          <span>高階領地</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-fill" style="width: 85%; background: var(--gold);"></div>
-        </div>
+      <div class="stat-main-value" style="color: var(--accent2);">85%</div>
+      <div class="progress-bar"><div class="progress-fill" style="width: 85%; background: var(--accent2);"></div></div>
+      <p style="font-size: 13px; color: var(--muted);">已解鎖：<span style="color:#fff">高階俠境區域</span></p>
+    </div>
+
+    <div class="stat-card full">
+      <div class="stat-header">
+        <span class="stat-title">江湖脈絡傳承 (師徒關係圖集)</span>
       </div>
-      <p style="font-size: 13px; color: var(--muted); margin-top: 15px; line-height: 1.5;">
-        幫會已成功佔領主要交通要道，正在向核心據點推進。
-      </p>
+      
+      <div class="lineage-container">
+        
+        <div class="lineage-branch">
+          <div class="node-item node-d1"><span class="node-dot" style="background:var(--gen1)"></span> 姜澈</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 花臻茵</div>
+          <div class="node-item node-d3"><span class="node-dot" style="background:var(--gen3)"></span> 似水</div>
+          <div class="node-item node-d4"><span class="node-dot" style="background:var(--gen4)"></span> 酥酥不酥</div>
+          <div class="node-item node-d4"><span class="node-dot" style="background:var(--gen4)"></span> 青葉</div>
+          <div class="node-item node-d5"><span class="node-dot" style="background:var(--gen5)"></span> 多多</div>
+          <div class="node-item node-d5"><span class="node-dot" style="background:var(--gen5)"></span> 少音</div>
+        </div>
+
+        <div class="lineage-branch">
+          <div class="node-item node-d1"><span class="node-dot" style="background:var(--gen1)"></span> 楚小閣</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 稚米</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 楚蕭</div>
+        </div>
+
+        <div class="lineage-branch">
+          <div class="node-item node-d1"><span class="node-dot" style="background:var(--gen1)"></span> 芝士漢堡</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 顧立舟</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 葉染塵</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 一杯豆漿</div>
+        </div>
+
+        <div class="lineage-branch">
+          <div class="node-item node-d1"><span class="node-dot" style="background:var(--gen1)"></span> 鯨滿</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 姬蕭遙</div>
+        </div>
+
+        <div class="lineage-branch">
+          <div class="node-item node-d1"><span class="node-dot" style="background:var(--gen1)"></span> 白雲凌</div>
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 無名</div>
+        </div>
+
+        <div class="lineage-branch">
+          <div class="node-item node-d2"><span class="node-dot" style="background:var(--gen2)"></span> 曲絡寧</div>
+          <div class="node-item node-d3"><span class="node-dot" style="background:var(--gen3)"></span> 白離</div>
+          <div class="node-item node-d4"><span class="node-dot" style="background:var(--gen4)"></span> 沐雨橙風</div>
+          <div class="node-item node-d4"><span class="node-dot" style="background:var(--gen4)"></span> 雨宮天</div>
+          <div class="node-item node-d5"><span class="node-dot" style="background:var(--gen5)"></span> 染冉</div>
+        </div>
+
+      </div>
     </div>
 
   </div>
 </div>
 
 <script>
-// 頁面進入時觸發進度條動畫
-window.addEventListener('load', () => {
-  document.querySelectorAll('.progress-fill').forEach(bar => {
-    // 重新觸發寬度，讓 CSS transition 起作用
-    const targetWidth = bar.style.width;
-    bar.style.width = '0';
-    setTimeout(() => {
-      bar.style.width = targetWidth;
-    }, 100);
-  });
-});
-
-// 通用跨頁切換邏輯 (與 Gallery 頁面通用)
-document.querySelectorAll('.nav a, .home-btn, .brand-group').forEach(link => {
+// 跨頁面切換動畫腳本
+document.querySelectorAll('a').forEach(link => {
   link.onclick = (e) => {
-    const targetUrl = link.getAttribute('href');
-    if (!targetUrl || targetUrl.startsWith('#')) return;
-
-    if (document.startViewTransition) {
+    const href = link.getAttribute('href');
+    if (href && !href.startsWith('#') && document.startViewTransition) {
       e.preventDefault();
       document.startViewTransition(() => {
-        location.href = targetUrl;
+        location.href = href;
       });
     }
   };
+});
+
+// 啟動進度條動畫
+window.addEventListener('load', () => {
+  document.querySelectorAll('.progress-fill').forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => bar.style.width = w, 200);
+  });
 });
 </script>
 
