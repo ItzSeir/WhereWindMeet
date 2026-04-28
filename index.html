@@ -43,7 +43,7 @@ html,body{
     radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 26%),
     radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
     linear-gradient(180deg, var(--bg), var(--bg2));
-  overflow-x:hidden;
+  overflow-x:clip;
 }
 
 body{
@@ -392,6 +392,7 @@ body{
   overflow-x:auto;
   overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
+  touch-action:pan-x;
   border-radius:28px;
   padding:16px;
   background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
@@ -410,10 +411,11 @@ body{
 
 .schedule-grid{
   display:grid;
-  grid-template-columns:64px repeat(7, 105px);
+  grid-template-columns:64px repeat(7, minmax(0, 1fr));
   grid-template-rows:auto 64px 110px 110px;
   gap:10px;
-  min-width:860px;
+  width:100%;
+  min-width:0;
 }
 
 .grid-header{
@@ -719,6 +721,7 @@ body{
     grid-template-columns:56px repeat(7, 96px);
     grid-template-rows:auto 60px 102px 102px;
     gap:8px;
+    width:max-content;
     min-width:780px;
   }
 
