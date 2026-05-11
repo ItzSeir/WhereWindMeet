@@ -1198,13 +1198,11 @@ body {
       <div class="confirm-modal-title">俠境報名說明</div>
       <div class="confirm-modal-text" style="margin-bottom:0;">
         <div style="display:grid; gap:12px;">
-          <div><strong style="color:var(--text);">報名前請注意</strong><br>請先確認自己可出席的時間，再進行報名。</div>
+          <div><strong style="color:var(--text);">報名前請注意</strong><br>請先確認自己可出席的時間，再進行報名。若無法參加可回到這刪除自己的名字。</div>
           <div><strong style="color:var(--text);">隊伍規則</strong><br>每隊最多 10 人，且至少需要 2 個治療位。</div>
-          <div><strong style="color:var(--text);">職業說明</strong><br>「假奶」會算作 1 個治療位。</div>
           <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單會自動帶入，且 (你) 只會跟著這份資料，不會因為幫別人報名而跑掉。</div>
           <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
-          <div><strong style="color:var(--text);">標記排序</strong><br>有標記的隊員會自動排在前面，沒有標記的排在後面。</div>
         </div>
       </div>
       <div class="confirm-modal-actions">
@@ -2372,7 +2370,7 @@ body {
                     <div class="slot-badges">
                       <span class="badge">${members.length}/${CONFIG.maxPeople}</span>
                       <span class="badge ${status.cls}">
-                        ${forceHeal && members.length < CONFIG.maxPeople ? "最後位置保留治療位" : status.text}
+                        ${forceHeal && members.length < CONFIG.maxPeople ? "保留治療位" : status.text}
                       </span>
                     </div>
 
