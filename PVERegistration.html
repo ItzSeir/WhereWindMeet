@@ -1489,13 +1489,16 @@ body {
     }
 
     function getAllowedRoles(members){
-      const healerCount = countRole(members, "治療");
-      const remaining = CONFIG.maxPeople - members.length;
-      if(remaining <= 2 && healerCount < CONFIG.minHealer){
-        return ["治療","假奶"];
-      }
-      return [...CONFIG.roles];
-    }
+  const healerCount = countRole(members, "治療");
+  const remaining = CONFIG.maxPeople - members.length;
+  const missingHealer = Math.max(CONFIG.minHealer - healerCount, 0);
+
+  if(missingHealer > 0 && remaining <= missingHealer){
+    return ["治療","假奶"];
+  }
+
+  return [...CONFIG.roles];
+}
 
     function getStatus(members){
       if(members.length >= CONFIG.maxPeople){
