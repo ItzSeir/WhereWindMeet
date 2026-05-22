@@ -959,6 +959,17 @@ body {
     .add-btn{
       flex:1 1 auto;
       min-width:0;
+      color:var(--text);
+      background:rgba(255,255,255,.06);
+      border:1px dashed rgba(255,255,255,.18);
+      box-shadow:none;
+      white-space:nowrap;
+    }
+
+    .add-btn:hover{
+      background:rgba(255,255,255,.09);
+      border-color:rgba(255,255,255,.26);
+      box-shadow:none;
     }
 
     .batch-signup-btn{
@@ -3546,7 +3557,187 @@ body {
       renderBatchPresetSelect();
     };
 
-\n\n    function createPresetManageRow(name = "", role = "輸出"){\n      const row = document.createElement("div");\n      row.className = "batch-player-row";\n\n      const nameInput = document.createElement("input");\n      nameInput.type = "text";\n      nameInput.className = "signup-input batch-name-input";\n      nameInput.placeholder = "名字";\n      nameInput.value = name;\n\n      const roleSelect = document.createElement("select");\n      roleSelect.className = "signup-select batch-role-select";\n      CONFIG.roles.forEach(roleName => {\n        const option = document.createElement("option");\n        option.value = roleName;\n        option.textContent = roleName;\n        roleSelect.appendChild(option);\n      });\n      roleSelect.value = CONFIG.roles.includes(role) ? role : "輸出";\n\n      const removeBtn = document.createElement("button");\n      removeBtn.type = "button";\n      removeBtn.className = "batch-remove-btn";\n      removeBtn.textContent = "×";\n      removeBtn.title = "移除這位玩家";\n      removeBtn.onclick = () => {\n        const list = document.getElementById("presetManagePlayerList");\n        if(list && list.querySelectorAll(".batch-player-row").length > 1){\n          row.remove();\n        } else {\n          nameInput.value = "";\n          roleSelect.value = "輸出";\n          nameInput.focus();\n        }\n      };\n\n      row.appendChild(nameInput);\n      row.appendChild(roleSelect);\n      row.appendChild(removeBtn);\n      return row;\n    }\n\n    window.addPresetManageRow = (name = "", role = "輸出") => {\n      const list = document.getElementById("presetManagePlayerList");\n      if(!list) return;\n      const row = createPresetManageRow(name, role);\n      list.appendChild(row);\n      setTimeout(() => row.querySelector(".batch-name-input")?.focus(), 20);\n    };\n\n    function renderBatchPresetManageList(){\n      const container = document.getElementById("batchPresetManageList");\n      if(!container) return;\n\n      const presets = getBatchPresetList();\n      container.innerHTML = "";\n\n      if(presets.length === 0){\n        const empty = document.createElement("div");\n        empty.className = "preset-manager-empty";\n        empty.textContent = "目前還沒有儲存常用批量隊伍資料。";\n        container.appendChild(empty);\n        return;\n      }\n\n      presets.forEach((preset, index) => {\n        const players = Array.isArray(preset.players) ? preset.players : [];\n        const card = document.createElement("div");\n        card.className = "preset-manager-card";\n        card.innerHTML = `\n          <div class="preset-manager-top">\n            <div>\n              <div class="preset-manager-title">${escapeHtml(preset.name || `常用隊伍 ${index + 1}`)}</div>\n              <div class="preset-manager-sub">${players.length} 人｜${escapeHtml(players.map(p => p.name).filter(Boolean).join("、") || "未填名字")}</div>\n            </div>\n            <div class="preset-manager-actions">\n              <button type="button" class="preset-manager-btn" data-action="edit">編輯</button>\n              <button type="button" class="preset-manager-btn danger" data-action="delete">刪除</button>\n            </div>\n          </div>\n        `;\n\n        card.querySelector('[data-action="edit"]').onclick = () => editBatchPresetFromManager(index);\n        card.querySelector('[data-action="delete"]').onclick = () => deleteBatchPresetFromManager(index);\n        container.appendChild(card);\n      });\n    }\n\n    function resetPresetManageRows(players = []){\n      const list = document.getElementById("presetManagePlayerList");\n      if(!list) return;\n      list.innerHTML = "";\n\n      const rows = players.length ? players : [{ name:"", role:"輸出" }];\n      rows.forEach(player => {\n        list.appendChild(createPresetManageRow(player.name || "", player.role || "輸出"));\n      });\n    }\n\n    window.openBatchPresetManageModal = () => {\n      editingBatchPresetIndex = -1;\n      document.getElementById("presetManageName").value = "";\n      resetPresetManageRows();\n      renderBatchPresetManageList();\n      document.getElementById("batchPresetManageModal").classList.add("show");\n    };\n\n    window.closeBatchPresetManageModal = () => {\n      editingBatchPresetIndex = -1;\n      document.getElementById("batchPresetManageModal").classList.remove("show");\n    };\n\n    window.clearPresetManageForm = () => {\n      editingBatchPresetIndex = -1;\n      document.getElementById("presetManageName").value = "";\n      resetPresetManageRows();\n    };\n\n    window.editBatchPresetFromManager = (index) => {\n      const presets = getBatchPresetList();\n      const preset = presets[index];\n      if(!preset) return;\n\n      editingBatchPresetIndex = index;\n      document.getElementById("presetManageName").value = preset.name || `常用隊伍 ${index + 1}`;\n      resetPresetManageRows(Array.isArray(preset.players) ? preset.players : []);\n    };\n\n    window.deleteBatchPresetFromManager = (index) => {\n      const presets = getBatchPresetList();\n      const preset = presets[index];\n      if(!preset) return;\n      if(!confirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`)) return;\n\n      presets.splice(index, 1);\n      saveBatchPresetList(presets);\n      clearPresetManageForm();\n      renderBatchPresetManageList();\n      renderBatchPresetSelect();\n    };\n\n    window.savePresetManageForm = () => {\n      const nameInput = document.getElementById("presetManageName");\n      const rows = Array.from(document.querySelectorAll("#presetManagePlayerList .batch-player-row"));\n      const players = rows\n        .map(row => ({\n          name: (row.querySelector(".batch-name-input")?.value || "").trim(),\n          role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()\n        }))\n        .filter(player => player.name);\n\n      if(players.length === 0){\n        alert("請先輸入至少一位玩家。 ");\n        return;\n      }\n\n      const presets = getBatchPresetList();\n      const name = (nameInput.value || "").trim() || `常用隊伍 ${players.length}人`;\n      const duplicateIndex = presets.findIndex((preset, index) => index !== editingBatchPresetIndex && String(preset.name || "").trim() === name);\n\n      if(duplicateIndex >= 0){\n        alert("已經有相同名稱的常用批量，請換一個名稱。 ");\n        nameInput.focus();\n        return;\n      }\n\n      const presetData = { name, players };\n      if(editingBatchPresetIndex >= 0 && presets[editingBatchPresetIndex]){\n        presets[editingBatchPresetIndex] = presetData;\n      } else {\n        presets.push(presetData);\n      }\n\n      saveBatchPresetList(presets);\n      renderBatchPresetManageList();\n      renderBatchPresetSelect();\n      clearPresetManageForm();\n      alert("已儲存常用批量隊伍資料。 ");\n    };\n
+
+
+    function createPresetManageRow(name = "", role = "輸出"){
+      const row = document.createElement("div");
+      row.className = "batch-player-row";
+
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.className = "signup-input batch-name-input";
+      nameInput.placeholder = "名字";
+      nameInput.value = name;
+
+      const roleSelect = document.createElement("select");
+      roleSelect.className = "signup-select batch-role-select";
+      CONFIG.roles.forEach(roleName => {
+        const option = document.createElement("option");
+        option.value = roleName;
+        option.textContent = roleName;
+        roleSelect.appendChild(option);
+      });
+      roleSelect.value = CONFIG.roles.includes(role) ? role : "輸出";
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "batch-remove-btn";
+      removeBtn.textContent = "×";
+      removeBtn.title = "移除這位玩家";
+      removeBtn.onclick = () => {
+        const list = document.getElementById("presetManagePlayerList");
+        if(list && list.querySelectorAll(".batch-player-row").length > 1){
+          row.remove();
+        } else {
+          nameInput.value = "";
+          roleSelect.value = "輸出";
+          nameInput.focus();
+        }
+      };
+
+      row.appendChild(nameInput);
+      row.appendChild(roleSelect);
+      row.appendChild(removeBtn);
+      return row;
+    }
+
+    window.addPresetManageRow = (name = "", role = "輸出") => {
+      const list = document.getElementById("presetManagePlayerList");
+      if(!list) return;
+      const row = createPresetManageRow(name, role);
+      list.appendChild(row);
+      setTimeout(() => row.querySelector(".batch-name-input")?.focus(), 20);
+    };
+
+    function renderBatchPresetManageList(){
+      const container = document.getElementById("batchPresetManageList");
+      if(!container) return;
+
+      const presets = getBatchPresetList();
+      container.innerHTML = "";
+
+      if(presets.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "preset-manager-empty";
+        empty.textContent = "目前還沒有儲存常用批量隊伍資料。";
+        container.appendChild(empty);
+        return;
+      }
+
+      presets.forEach((preset, index) => {
+        const players = Array.isArray(preset.players) ? preset.players : [];
+        const card = document.createElement("div");
+        card.className = "preset-manager-card";
+        card.innerHTML = `
+          <div class="preset-manager-top">
+            <div>
+              <div class="preset-manager-title">${escapeHtml(preset.name || `常用隊伍 ${index + 1}`)}</div>
+              <div class="preset-manager-sub">${players.length} 人｜${escapeHtml(players.map(p => p.name).filter(Boolean).join("、") || "未填名字")}</div>
+            </div>
+            <div class="preset-manager-actions">
+              <button type="button" class="preset-manager-btn" data-action="edit">編輯</button>
+              <button type="button" class="preset-manager-btn danger" data-action="delete">刪除</button>
+            </div>
+          </div>
+        `;
+
+        card.querySelector('[data-action="edit"]').onclick = () => editBatchPresetFromManager(index);
+        card.querySelector('[data-action="delete"]').onclick = () => deleteBatchPresetFromManager(index);
+        container.appendChild(card);
+      });
+    }
+
+    function resetPresetManageRows(players = []){
+      const list = document.getElementById("presetManagePlayerList");
+      if(!list) return;
+      list.innerHTML = "";
+
+      const rows = players.length ? players : [{ name:"", role:"輸出" }];
+      rows.forEach(player => {
+        list.appendChild(createPresetManageRow(player.name || "", player.role || "輸出"));
+      });
+    }
+
+    window.openBatchPresetManageModal = () => {
+      editingBatchPresetIndex = -1;
+      document.getElementById("presetManageName").value = "";
+      resetPresetManageRows();
+      renderBatchPresetManageList();
+      document.getElementById("batchPresetManageModal").classList.add("show");
+    };
+
+    window.closeBatchPresetManageModal = () => {
+      editingBatchPresetIndex = -1;
+      document.getElementById("batchPresetManageModal").classList.remove("show");
+    };
+
+    window.clearPresetManageForm = () => {
+      editingBatchPresetIndex = -1;
+      document.getElementById("presetManageName").value = "";
+      resetPresetManageRows();
+    };
+
+    window.editBatchPresetFromManager = (index) => {
+      const presets = getBatchPresetList();
+      const preset = presets[index];
+      if(!preset) return;
+
+      editingBatchPresetIndex = index;
+      document.getElementById("presetManageName").value = preset.name || `常用隊伍 ${index + 1}`;
+      resetPresetManageRows(Array.isArray(preset.players) ? preset.players : []);
+    };
+
+    window.deleteBatchPresetFromManager = (index) => {
+      const presets = getBatchPresetList();
+      const preset = presets[index];
+      if(!preset) return;
+      if(!confirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`)) return;
+
+      presets.splice(index, 1);
+      saveBatchPresetList(presets);
+      clearPresetManageForm();
+      renderBatchPresetManageList();
+      renderBatchPresetSelect();
+    };
+
+    window.savePresetManageForm = () => {
+      const nameInput = document.getElementById("presetManageName");
+      const rows = Array.from(document.querySelectorAll("#presetManagePlayerList .batch-player-row"));
+      const players = rows
+        .map(row => ({
+          name: (row.querySelector(".batch-name-input")?.value || "").trim(),
+          role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()
+        }))
+        .filter(player => player.name);
+
+      if(players.length === 0){
+        alert("請先輸入至少一位玩家。 ");
+        return;
+      }
+
+      const presets = getBatchPresetList();
+      const name = (nameInput.value || "").trim() || `常用隊伍 ${players.length}人`;
+      const duplicateIndex = presets.findIndex((preset, index) => index !== editingBatchPresetIndex && String(preset.name || "").trim() === name);
+
+      if(duplicateIndex >= 0){
+        alert("已經有相同名稱的常用批量，請換一個名稱。 ");
+        nameInput.focus();
+        return;
+      }
+
+      const presetData = { name, players };
+      if(editingBatchPresetIndex >= 0 && presets[editingBatchPresetIndex]){
+        presets[editingBatchPresetIndex] = presetData;
+      } else {
+        presets.push(presetData);
+      }
+
+      saveBatchPresetList(presets);
+      renderBatchPresetManageList();
+      renderBatchPresetSelect();
+      clearPresetManageForm();
+      alert("已儲存常用批量隊伍資料。 ");
+    };
     function openBatchSignupModal(dateKey, slotIndex){
       const dayData = globalData?.[dateKey];
       const slot = dayData?.slots?.[slotIndex];
