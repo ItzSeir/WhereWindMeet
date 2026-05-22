@@ -304,13 +304,12 @@ body {
       align-items:center;
       justify-content:space-between;
       gap:14px;
-      margin:-4px 0 18px;
-      padding:14px;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:22px;
-      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
-      box-shadow:0 14px 32px rgba(0,0,0,.18);
-      backdrop-filter:blur(14px);
+      margin:-2px 0 18px;
+      padding:0;
+      border:none;
+      background:transparent;
+      box-shadow:none;
+      backdrop-filter:none;
     }
 
     .top-action-left,
@@ -337,15 +336,6 @@ body {
       box-shadow:0 8px 20px rgba(110,168,255,.12);
     }
 
-    .btn-profile::before{
-      content:"👤";
-      margin-right:6px;
-    }
-
-    .btn-info-soft::before{
-      content:"ℹ️";
-      margin-right:6px;
-    }
 
     .btn-refresh-soft::before{
       content:"↻";
@@ -893,15 +883,15 @@ body {
 
     .quick-signup-btn{
       flex:0 0 104px;
-      color:#f7f2ff;
-      background:linear-gradient(135deg, rgba(168,85,247,.88), rgba(99,102,241,.82));
-      border:1px solid rgba(196,181,253,.46);
-      box-shadow:0 8px 18px rgba(139,92,246,.20);
+      color:#fff7ed;
+      background:linear-gradient(135deg, rgba(251,146,60,.90), rgba(244,63,94,.82));
+      border:1px solid rgba(253,186,116,.48);
+      box-shadow:0 8px 18px rgba(244,63,94,.18);
       white-space:nowrap;
     }
 
     .quick-signup-btn:hover{
-      box-shadow:0 10px 24px rgba(168,85,247,.30);
+      box-shadow:0 10px 24px rgba(251,146,60,.28);
     }
 
     .delete-slot-btn{
@@ -1244,7 +1234,7 @@ body {
         align-items:flex-start;
         flex-direction:column;
         gap:10px;
-        padding:12px;
+        padding:0;
       }
 
       .top-action-left,
@@ -1309,7 +1299,7 @@ body {
         <button class="btn-ghost btn-info-soft" id="infoBtn">介紹</button>
       </div>
       <div class="top-action-right">
-        <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">✨ 新增日期/時間</button>
+        <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">新增日期/時間</button>
         <button class="btn-ghost btn-refresh-soft" id="refreshBtn">整理日期</button>
       </div>
     </div>
@@ -2852,7 +2842,7 @@ body {
                     ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療位" : "＋ 新增報名"}
                   </button>
                   <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
-                    ⚡ 快速報名
+                    快速報名
                   </button>
                 </div>
               </div>
