@@ -866,6 +866,85 @@ body {
     .add-btn,
     .batch-signup-btn,
     .quick-signup-btn,
+
+
+    .btn-batch-preset-manage{
+      color:#f5f3ff;
+      background:linear-gradient(135deg, rgba(124,58,237,.78), rgba(168,85,247,.72));
+      border:1px solid rgba(196,181,253,.34);
+      box-shadow:0 8px 18px rgba(124,58,237,.16);
+    }
+
+    .btn-batch-preset-manage:hover{
+      box-shadow:0 10px 24px rgba(124,58,237,.24);
+    }
+
+    .preset-manager-card{
+      display:grid;
+      gap:8px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+      margin-bottom:10px;
+    }
+
+    .preset-manager-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .preset-manager-title{
+      font-size:14px;
+      font-weight:800;
+      color:#fff;
+    }
+
+    .preset-manager-sub{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .preset-manager-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .preset-manager-btn{
+      padding:8px 10px;
+      border-radius:11px;
+      font-size:12px;
+      font-weight:800;
+      color:#eef2ff;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .preset-manager-btn.danger{
+      color:#ffb4c1;
+      background:rgba(255,107,129,.08);
+      border-color:rgba(255,107,129,.22);
+    }
+
+    .preset-manager-empty{
+      padding:14px;
+      border-radius:14px;
+      color:var(--muted);
+      font-size:13px;
+      background:rgba(255,255,255,.045);
+      border:1px dashed rgba(255,255,255,.14);
+    }
+
+    .preset-manager-divider{
+      height:1px;
+      background:rgba(255,255,255,.10);
+      margin:14px 0;
+    }
+
     .delete-slot-btn{
       background:rgba(255,255,255,.06);
       color:var(--text);
@@ -906,6 +985,85 @@ body {
 
     .quick-signup-btn:hover{
       box-shadow:0 10px 24px rgba(168,85,247,.32);
+    }
+
+
+
+    .btn-batch-preset-manage{
+      color:#f5f3ff;
+      background:linear-gradient(135deg, rgba(124,58,237,.78), rgba(168,85,247,.72));
+      border:1px solid rgba(196,181,253,.34);
+      box-shadow:0 8px 18px rgba(124,58,237,.16);
+    }
+
+    .btn-batch-preset-manage:hover{
+      box-shadow:0 10px 24px rgba(124,58,237,.24);
+    }
+
+    .preset-manager-card{
+      display:grid;
+      gap:8px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+      margin-bottom:10px;
+    }
+
+    .preset-manager-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .preset-manager-title{
+      font-size:14px;
+      font-weight:800;
+      color:#fff;
+    }
+
+    .preset-manager-sub{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .preset-manager-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .preset-manager-btn{
+      padding:8px 10px;
+      border-radius:11px;
+      font-size:12px;
+      font-weight:800;
+      color:#eef2ff;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .preset-manager-btn.danger{
+      color:#ffb4c1;
+      background:rgba(255,107,129,.08);
+      border-color:rgba(255,107,129,.22);
+    }
+
+    .preset-manager-empty{
+      padding:14px;
+      border-radius:14px;
+      color:var(--muted);
+      font-size:13px;
+      background:rgba(255,255,255,.045);
+      border:1px dashed rgba(255,255,255,.14);
+    }
+
+    .preset-manager-divider{
+      height:1px;
+      background:rgba(255,255,255,.10);
+      margin:14px 0;
     }
 
     .delete-slot-btn{
@@ -1210,6 +1368,51 @@ body {
 
 
 
+
+    .batch-modal-box{
+      width:min(620px, 100%);
+      max-height:min(86vh, 760px);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      padding:0;
+    }
+
+    .batch-modal-header{
+      flex:0 0 auto;
+      padding:20px 20px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,0));
+    }
+
+    .batch-modal-scroll{
+      flex:1 1 auto;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      padding:14px 20px 12px;
+      min-height:0;
+    }
+
+    .batch-modal-scroll::-webkit-scrollbar{
+      width:8px;
+    }
+
+    .batch-modal-scroll::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.18);
+      border-radius:999px;
+    }
+
+    .batch-modal-actions{
+      flex:0 0 auto;
+      position:sticky;
+      bottom:0;
+      margin-top:0;
+      padding:14px 20px 18px;
+      background:linear-gradient(180deg, rgba(16,23,38,.88), rgba(16,23,38,.98));
+      border-top:1px solid rgba(255,255,255,.10);
+      box-shadow:0 -14px 28px rgba(0,0,0,.22);
+    }
+
     .batch-player-list{
       display:grid;
       gap:10px;
@@ -1282,6 +1485,84 @@ body {
       border:1px solid rgba(255,255,255,.08);
       padding:1px 5px;
       border-radius:6px;
+    }
+
+
+
+    .batch-preset-panel{
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(139,92,246,.13), rgba(110,168,255,.08));
+      border:1px solid rgba(196,181,253,.20);
+    }
+
+    .batch-preset-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      color:#eef2ff;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .batch-preset-count{
+      color:#c4b5fd;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .batch-preset-row{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto auto auto;
+      gap:8px;
+      align-items:center;
+    }
+
+    .batch-preset-row .signup-select{
+      height:40px;
+      padding:8px 11px;
+      border-radius:11px;
+      font-size:13px;
+    }
+
+    .batch-preset-btn{
+      height:40px;
+      padding:8px 11px;
+      border-radius:11px;
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+      color:#ffffff;
+      background:rgba(139,92,246,.20);
+      border:1px solid rgba(196,181,253,.28);
+    }
+
+    .batch-preset-btn:hover{
+      background:rgba(139,92,246,.30);
+    }
+
+    .batch-preset-btn.danger{
+      color:#ffb4c1;
+      background:rgba(255,107,129,.10);
+      border-color:rgba(255,107,129,.22);
+    }
+
+    .batch-preset-btn:disabled,
+    .batch-add-row-btn:disabled{
+      opacity:.42;
+      cursor:not-allowed;
+      filter:saturate(.55);
+      transform:none;
+    }
+
+    .batch-limit-note{
+      margin-top:10px;
+      color:#b8c3df;
+      font-size:12px;
+      line-height:1.6;
     }
 
     .date-limit-note{
@@ -1470,6 +1751,24 @@ body {
         height:36px;
       }
 
+
+      .batch-modal-box{
+        max-height:88vh;
+        border-radius:18px;
+      }
+
+      .batch-modal-header{
+        padding:16px 16px 8px;
+      }
+
+      .batch-modal-scroll{
+        padding:12px 16px 10px;
+      }
+
+      .batch-modal-actions{
+        padding:12px 16px 16px;
+      }
+
       .datetime-modal-box{
         padding:18px;
       }
@@ -1514,6 +1813,7 @@ body {
     <div class="top-action-panel">
       <div class="top-action-left">
         <button class="btn-ghost btn-profile" id="myProfileBtn">我的資料</button>
+        <button class="btn-ghost btn-batch-preset-manage" id="batchPresetManageBtn">常用批量隊伍資料</button>
         <button class="btn-ghost btn-info-soft" id="infoBtn">介紹</button>
       </div>
       <div class="top-action-right">
@@ -1550,23 +1850,77 @@ body {
 
 
   <div id="batchSignupModal" class="confirm-modal">
-    <div class="confirm-modal-box">
-      <div class="confirm-modal-title">批量報名</div>
-      <div id="batchSignupInfo" class="confirm-modal-text" style="margin-bottom:10px;">
-        一次加入多位玩家。
+    <div class="confirm-modal-box batch-modal-box">
+      <div class="batch-modal-header">
+        <div class="confirm-modal-title">批量報名</div>
+        <div id="batchSignupInfo" class="confirm-modal-text" style="margin-bottom:0;">
+          一次加入多位玩家。
+        </div>
       </div>
 
-      <label class="signup-label">報名名單</label>
-      <div id="batchPlayerList" class="batch-player-list"></div>
-      <button type="button" class="batch-add-row-btn" onclick="addBatchSignupRow()">＋ 新的玩家報名</button>
+      <div class="batch-modal-scroll">
+        <div class="batch-preset-panel">
+          <div class="batch-preset-title">
+            <span>常用批量隊伍資料</span>
+            <span id="batchPresetCount" class="batch-preset-count">0 組</span>
+          </div>
+          <div class="batch-preset-row">
+            <select id="batchPresetSelect" class="signup-select"></select>
+            <button type="button" class="batch-preset-btn" onclick="loadBatchPresetToRows()">套用</button>
+            <button type="button" class="batch-preset-btn" onclick="saveCurrentBatchAsPreset()">儲存目前</button>
+            <button type="button" class="batch-preset-btn danger" onclick="deleteSelectedBatchPreset()">刪除</button>
+          </div>
+          <div class="batch-limit-note">可先把常用隊伍名單儲存起來，之後批量報名時一鍵套用，再依需要移除或修改。</div>
+        </div>
 
-      <div class="batch-example">
-        每一行填寫 <code>名字</code> 並選擇 <code>職業</code>。系統會自動檢查人數上限、重複名字與缺奶限制。
+        <label class="signup-label">報名名單</label>
+        <div id="batchPlayerList" class="batch-player-list"></div>
+        <button id="batchAddRowBtn" type="button" class="batch-add-row-btn" onclick="addBatchSignupRow()">＋ 新的玩家報名</button>
+        <div id="batchLimitNote" class="batch-limit-note"></div>
+
+        <div class="batch-example">
+          每一行填寫 <code>名字</code> 並選擇 <code>職業</code>。系統會自動檢查人數上限、重複名字與缺奶限制。
+        </div>
       </div>
 
-      <div class="confirm-modal-actions">
+      <div class="confirm-modal-actions batch-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeBatchSignupModal()">取消</button>
         <button type="button" class="signup-confirm-btn" onclick="saveBatchSignup()">批量加入</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="batchPresetManageModal" class="confirm-modal">
+    <div class="confirm-modal-box batch-modal-box">
+      <div class="batch-modal-header">
+        <div class="confirm-modal-title">常用批量隊伍資料</div>
+        <div class="confirm-modal-text" style="margin-bottom:0;">
+          可先建立常用隊伍名單，之後在批量報名時一鍵套用，再依需求刪減。
+        </div>
+      </div>
+
+      <div class="batch-modal-scroll">
+        <label class="signup-label">已儲存資料</label>
+        <div id="batchPresetManageList"></div>
+
+        <div class="preset-manager-divider"></div>
+
+        <label class="signup-label" for="presetManageName">新增 / 編輯名稱</label>
+        <input id="presetManageName" class="signup-input" type="text" placeholder="例如：固定團 / 天賦常用隊伍" />
+
+        <label class="signup-label">玩家名單</label>
+        <div id="presetManagePlayerList" class="batch-player-list"></div>
+        <button type="button" class="batch-add-row-btn" onclick="addPresetManageRow()">＋ 新的玩家</button>
+
+        <div class="batch-limit-note">儲存後會出現在「批量報名」中的常用批量選單。</div>
+      </div>
+
+      <div class="confirm-modal-actions batch-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeBatchPresetManageModal()">關閉</button>
+        <button type="button" class="signup-cancel-btn" onclick="clearPresetManageForm()">清空</button>
+        <button type="button" class="signup-confirm-btn" onclick="savePresetManageForm()">儲存</button>
       </div>
     </div>
   </div>
@@ -1810,6 +2164,10 @@ body {
       e.preventDefault();
       openMyProfileModal();
     };
+    document.getElementById("batchPresetManageBtn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      openBatchPresetManageModal();
+    });
     const firebaseConfig = {
       apiKey: "AIzaSyD3NalXMRjiag_26-g82UtxeDvuSjydg30",
       authDomain: "pve-ab4a8.firebaseapp.com",
@@ -1844,6 +2202,7 @@ body {
     let currentTeamTypeEdit = null;
     let currentDateTimeEdit = null;
     let currentBatchSignup = null;
+    let editingBatchPresetIndex = -1;
 
     function getMyProfile(){
       return {
@@ -2305,6 +2664,7 @@ body {
       const myProfileModal = document.getElementById("myProfileModal");
       const dateTimeModal = document.getElementById("dateTimeModal");
       const batchSignupModal = document.getElementById("batchSignupModal");
+      const batchPresetManageModal = document.getElementById("batchPresetManageModal");
 
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -2380,6 +2740,10 @@ body {
 
       batchSignupModal.addEventListener("click", (e) => {
         if(e.target.id === "batchSignupModal") closeBatchSignupModal();
+      });
+
+      batchPresetManageModal.addEventListener("click", (e) => {
+        if(e.target.id === "batchPresetManageModal") closeBatchPresetManageModal();
       });
     }
 
@@ -2776,6 +3140,7 @@ body {
       const myProfileModal = document.getElementById("myProfileModal");
       const dateTimeModal = document.getElementById("dateTimeModal");
       const batchSignupModal = document.getElementById("batchSignupModal");
+      const batchPresetManageModal = document.getElementById("batchPresetManageModal");
 
       if(signupModal.classList.contains("show")){
         if(e.key === "Escape") closeModal();
@@ -2959,6 +3324,81 @@ body {
     }
 
 
+    function getBatchPresetList(){
+      try{
+        const raw = localStorage.getItem("batch_signup_presets") || "[]";
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch(e){
+        return [];
+      }
+    }
+
+    function saveBatchPresetList(presets){
+      localStorage.setItem("batch_signup_presets", JSON.stringify(Array.isArray(presets) ? presets : []));
+    }
+
+    function getBatchRemain(){
+      if(!currentBatchSignup) return 0;
+      const dayData = globalData?.[currentBatchSignup.dateKey];
+      const slot = dayData?.slots?.[currentBatchSignup.slotIndex];
+      if(!slot) return 0;
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      return Math.max(CONFIG.maxPeople - members.length, 0);
+    }
+
+    function getCurrentBatchRows(){
+      return Array.from(document.querySelectorAll("#batchPlayerList .batch-player-row"));
+    }
+
+    function updateBatchLimitUI(){
+      const remain = getBatchRemain();
+      const rows = getCurrentBatchRows().length;
+      const addBtn = document.getElementById("batchAddRowBtn");
+      const note = document.getElementById("batchLimitNote");
+
+      if(addBtn){
+        addBtn.disabled = rows >= remain;
+        addBtn.textContent = rows >= remain
+          ? `已達剩餘空位上限（${remain} 人）`
+          : `＋ 新的玩家報名（${rows}/${remain}）`;
+      }
+
+      if(note){
+        note.innerHTML = `此隊伍目前剩餘 <strong style="color:#fff;">${remain}</strong> 個空位，批量報名最多只能建立 <strong style="color:#fff;">${remain}</strong> 行。`;
+      }
+    }
+
+    function renderBatchPresetSelect(){
+      const select = document.getElementById("batchPresetSelect");
+      const count = document.getElementById("batchPresetCount");
+      if(!select) return;
+
+      const presets = getBatchPresetList();
+      select.innerHTML = "";
+
+      if(count){
+        count.textContent = `${presets.length} 組`;
+      }
+
+      if(presets.length === 0){
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "尚未儲存常用批量";
+        select.appendChild(option);
+        select.disabled = true;
+        return;
+      }
+
+      select.disabled = false;
+      presets.forEach((preset, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = `${preset.name || `常用隊伍 ${index + 1}`}（${Array.isArray(preset.players) ? preset.players.length : 0}人）`;
+        select.appendChild(option);
+      });
+    }
+
     function createBatchSignupRow(name = "", role = "輸出"){
       const row = document.createElement("div");
       row.className = "batch-player-row";
@@ -2993,6 +3433,7 @@ body {
           roleSelect.value = "輸出";
           nameInput.focus();
         }
+        updateBatchLimitUI();
       };
 
       row.appendChild(nameInput);
@@ -3001,14 +3442,111 @@ body {
       return row;
     }
 
-    window.addBatchSignupRow = (name = "", role = "輸出") => {
+    window.addBatchSignupRow = (name = "", role = "輸出", shouldFocus = true) => {
       const list = document.getElementById("batchPlayerList");
-      if(!list) return;
+      if(!list) return false;
+
+      const remain = getBatchRemain();
+      const currentRows = list.querySelectorAll(".batch-player-row").length;
+      if(currentRows >= remain){
+        updateBatchLimitUI();
+        return false;
+      }
+
       const row = createBatchSignupRow(name, role);
       list.appendChild(row);
-      setTimeout(() => row.querySelector(".batch-name-input")?.focus(), 20);
+      updateBatchLimitUI();
+
+      if(shouldFocus){
+        setTimeout(() => row.querySelector(".batch-name-input")?.focus(), 20);
+      }
+      return true;
     };
 
+    window.loadBatchPresetToRows = () => {
+      const select = document.getElementById("batchPresetSelect");
+      const list = document.getElementById("batchPlayerList");
+      if(!select || !list || select.disabled) return;
+
+      const presets = getBatchPresetList();
+      const preset = presets[Number(select.value)];
+      if(!preset || !Array.isArray(preset.players)) return;
+
+      const remain = getBatchRemain();
+      const players = preset.players.slice(0, remain);
+
+      if(preset.players.length > remain){
+        alert(`此隊伍只剩 ${remain} 個空位，所以只套用前 ${remain} 位玩家。`);
+      }
+
+      list.innerHTML = "";
+      if(players.length === 0){
+        list.appendChild(createBatchSignupRow("", "輸出"));
+      } else {
+        players.forEach(player => {
+          list.appendChild(createBatchSignupRow(player.name || "", player.role || "輸出"));
+        });
+      }
+
+      updateBatchLimitUI();
+      setTimeout(() => document.querySelector("#batchPlayerList .batch-name-input")?.focus(), 20);
+    };
+
+    window.saveCurrentBatchAsPreset = () => {
+      const rows = getCurrentBatchRows();
+      const players = rows
+        .map(row => ({
+          name: (row.querySelector(".batch-name-input")?.value || "").trim(),
+          role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()
+        }))
+        .filter(player => player.name);
+
+      if(players.length === 0){
+        alert("請先輸入至少一位玩家，才可以儲存常用批量。");
+        return;
+      }
+
+      const presetName = prompt("請輸入這組常用批量名稱：", `常用隊伍 ${players.length}人`);
+      if(presetName === null) return;
+      const name = presetName.trim() || `常用隊伍 ${players.length}人`;
+
+      const presets = getBatchPresetList();
+      const existingIndex = presets.findIndex(p => String(p.name || "").trim() === name);
+      const presetData = { name, players };
+
+      if(existingIndex >= 0){
+        if(!confirm(`已存在「${name}」，要覆蓋嗎？`)) return;
+        presets[existingIndex] = presetData;
+      } else {
+        presets.push(presetData);
+      }
+
+      saveBatchPresetList(presets);
+      renderBatchPresetSelect();
+
+      const select = document.getElementById("batchPresetSelect");
+      if(select){
+        const index = getBatchPresetList().findIndex(p => p.name === name);
+        select.value = String(Math.max(index, 0));
+      }
+    };
+
+    window.deleteSelectedBatchPreset = () => {
+      const select = document.getElementById("batchPresetSelect");
+      if(!select || select.disabled) return;
+
+      const presets = getBatchPresetList();
+      const index = Number(select.value);
+      const preset = presets[index];
+      if(!preset) return;
+
+      if(!confirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`)) return;
+      presets.splice(index, 1);
+      saveBatchPresetList(presets);
+      renderBatchPresetSelect();
+    };
+
+\n\n    function createPresetManageRow(name = "", role = "輸出"){\n      const row = document.createElement("div");\n      row.className = "batch-player-row";\n\n      const nameInput = document.createElement("input");\n      nameInput.type = "text";\n      nameInput.className = "signup-input batch-name-input";\n      nameInput.placeholder = "名字";\n      nameInput.value = name;\n\n      const roleSelect = document.createElement("select");\n      roleSelect.className = "signup-select batch-role-select";\n      CONFIG.roles.forEach(roleName => {\n        const option = document.createElement("option");\n        option.value = roleName;\n        option.textContent = roleName;\n        roleSelect.appendChild(option);\n      });\n      roleSelect.value = CONFIG.roles.includes(role) ? role : "輸出";\n\n      const removeBtn = document.createElement("button");\n      removeBtn.type = "button";\n      removeBtn.className = "batch-remove-btn";\n      removeBtn.textContent = "×";\n      removeBtn.title = "移除這位玩家";\n      removeBtn.onclick = () => {\n        const list = document.getElementById("presetManagePlayerList");\n        if(list && list.querySelectorAll(".batch-player-row").length > 1){\n          row.remove();\n        } else {\n          nameInput.value = "";\n          roleSelect.value = "輸出";\n          nameInput.focus();\n        }\n      };\n\n      row.appendChild(nameInput);\n      row.appendChild(roleSelect);\n      row.appendChild(removeBtn);\n      return row;\n    }\n\n    window.addPresetManageRow = (name = "", role = "輸出") => {\n      const list = document.getElementById("presetManagePlayerList");\n      if(!list) return;\n      const row = createPresetManageRow(name, role);\n      list.appendChild(row);\n      setTimeout(() => row.querySelector(".batch-name-input")?.focus(), 20);\n    };\n\n    function renderBatchPresetManageList(){\n      const container = document.getElementById("batchPresetManageList");\n      if(!container) return;\n\n      const presets = getBatchPresetList();\n      container.innerHTML = "";\n\n      if(presets.length === 0){\n        const empty = document.createElement("div");\n        empty.className = "preset-manager-empty";\n        empty.textContent = "目前還沒有儲存常用批量隊伍資料。";\n        container.appendChild(empty);\n        return;\n      }\n\n      presets.forEach((preset, index) => {\n        const players = Array.isArray(preset.players) ? preset.players : [];\n        const card = document.createElement("div");\n        card.className = "preset-manager-card";\n        card.innerHTML = `\n          <div class="preset-manager-top">\n            <div>\n              <div class="preset-manager-title">${escapeHtml(preset.name || `常用隊伍 ${index + 1}`)}</div>\n              <div class="preset-manager-sub">${players.length} 人｜${escapeHtml(players.map(p => p.name).filter(Boolean).join("、") || "未填名字")}</div>\n            </div>\n            <div class="preset-manager-actions">\n              <button type="button" class="preset-manager-btn" data-action="edit">編輯</button>\n              <button type="button" class="preset-manager-btn danger" data-action="delete">刪除</button>\n            </div>\n          </div>\n        `;\n\n        card.querySelector('[data-action="edit"]').onclick = () => editBatchPresetFromManager(index);\n        card.querySelector('[data-action="delete"]').onclick = () => deleteBatchPresetFromManager(index);\n        container.appendChild(card);\n      });\n    }\n\n    function resetPresetManageRows(players = []){\n      const list = document.getElementById("presetManagePlayerList");\n      if(!list) return;\n      list.innerHTML = "";\n\n      const rows = players.length ? players : [{ name:"", role:"輸出" }];\n      rows.forEach(player => {\n        list.appendChild(createPresetManageRow(player.name || "", player.role || "輸出"));\n      });\n    }\n\n    window.openBatchPresetManageModal = () => {\n      editingBatchPresetIndex = -1;\n      document.getElementById("presetManageName").value = "";\n      resetPresetManageRows();\n      renderBatchPresetManageList();\n      document.getElementById("batchPresetManageModal").classList.add("show");\n    };\n\n    window.closeBatchPresetManageModal = () => {\n      editingBatchPresetIndex = -1;\n      document.getElementById("batchPresetManageModal").classList.remove("show");\n    };\n\n    window.clearPresetManageForm = () => {\n      editingBatchPresetIndex = -1;\n      document.getElementById("presetManageName").value = "";\n      resetPresetManageRows();\n    };\n\n    window.editBatchPresetFromManager = (index) => {\n      const presets = getBatchPresetList();\n      const preset = presets[index];\n      if(!preset) return;\n\n      editingBatchPresetIndex = index;\n      document.getElementById("presetManageName").value = preset.name || `常用隊伍 ${index + 1}`;\n      resetPresetManageRows(Array.isArray(preset.players) ? preset.players : []);\n    };\n\n    window.deleteBatchPresetFromManager = (index) => {\n      const presets = getBatchPresetList();\n      const preset = presets[index];\n      if(!preset) return;\n      if(!confirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`)) return;\n\n      presets.splice(index, 1);\n      saveBatchPresetList(presets);\n      clearPresetManageForm();\n      renderBatchPresetManageList();\n      renderBatchPresetSelect();\n    };\n\n    window.savePresetManageForm = () => {\n      const nameInput = document.getElementById("presetManageName");\n      const rows = Array.from(document.querySelectorAll("#presetManagePlayerList .batch-player-row"));\n      const players = rows\n        .map(row => ({\n          name: (row.querySelector(".batch-name-input")?.value || "").trim(),\n          role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()\n        }))\n        .filter(player => player.name);\n\n      if(players.length === 0){\n        alert("請先輸入至少一位玩家。 ");\n        return;\n      }\n\n      const presets = getBatchPresetList();\n      const name = (nameInput.value || "").trim() || `常用隊伍 ${players.length}人`;\n      const duplicateIndex = presets.findIndex((preset, index) => index !== editingBatchPresetIndex && String(preset.name || "").trim() === name);\n\n      if(duplicateIndex >= 0){\n        alert("已經有相同名稱的常用批量，請換一個名稱。 ");\n        nameInput.focus();\n        return;\n      }\n\n      const presetData = { name, players };\n      if(editingBatchPresetIndex >= 0 && presets[editingBatchPresetIndex]){\n        presets[editingBatchPresetIndex] = presetData;\n      } else {\n        presets.push(presetData);\n      }\n\n      saveBatchPresetList(presets);\n      renderBatchPresetManageList();\n      renderBatchPresetSelect();\n      clearPresetManageForm();\n      alert("已儲存常用批量隊伍資料。 ");\n    };\n
     function openBatchSignupModal(dateKey, slotIndex){
       const dayData = globalData?.[dateKey];
       const slot = dayData?.slots?.[slotIndex];
@@ -3025,13 +3563,18 @@ body {
       document.getElementById("batchSignupInfo").innerHTML =
         `目標隊伍：<strong style="color:var(--text);">${escapeHtml(dateKey)}｜${escapeHtml(slot.time)}｜第 ${slot.instance || 1} 隊</strong><br>目前還可加入 <strong style="color:var(--text);">${remain}</strong> 人。`;
 
+      renderBatchPresetSelect();
+
       const list = document.getElementById("batchPlayerList");
       if(list){
         list.innerHTML = "";
-        list.appendChild(createBatchSignupRow("", "輸出"));
-        list.appendChild(createBatchSignupRow("", "輸出"));
+        const defaultRows = Math.min(2, remain);
+        for(let i = 0; i < defaultRows; i++){
+          list.appendChild(createBatchSignupRow("", "輸出"));
+        }
       }
 
+      updateBatchLimitUI();
       document.getElementById("batchSignupModal").classList.add("show");
       setTimeout(() => document.querySelector("#batchPlayerList .batch-name-input")?.focus(), 30);
     }
@@ -3064,6 +3607,13 @@ body {
       const slot = dayData.slots[slotIndex];
       if(!slot) return;
       slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      const remainBeforeAdd = Math.max(CONFIG.maxPeople - slot.members.length, 0);
+      const filledPlayers = players.filter(player => player.name);
+      if(filledPlayers.length > remainBeforeAdd){
+        alert(`此隊伍只剩 ${remainBeforeAdd} 個空位，請移除多出的玩家後再加入。`);
+        return;
+      }
 
       const errors = [];
       const added = [];
@@ -3463,6 +4013,7 @@ body {
     document.getElementById("infoBtn").onclick = () => openInfoModal();
     document.getElementById("addDateTimeBtn").onclick = () => openDateTimeModal();
     document.getElementById("myProfileBtn").onclick = () => openMyProfileModal();
+    document.getElementById("batchPresetManageBtn").onclick = () => openBatchPresetManageModal();
 
     document.getElementById("refreshBtn").onclick = async () => {
       await initializeVisibleDates();
