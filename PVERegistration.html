@@ -275,6 +275,30 @@ body {
       border:1px solid var(--line);
     }
 
+    .btn-date-primary{
+      color:#ffffff;
+      background:linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6);
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:
+        0 10px 26px rgba(236,72,153,.24),
+        0 0 0 3px rgba(245,158,11,.10);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-date-primary::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, transparent, rgba(255,255,255,.22), transparent);
+      transform:translateX(-120%);
+      transition:.45s ease;
+    }
+
+    .btn-date-primary:hover::before{
+      transform:translateX(120%);
+    }
+
     .days{
       display:flex;
       flex-direction:column;
@@ -796,6 +820,7 @@ body {
     }
 
     .add-btn,
+    .quick-signup-btn,
     .delete-slot-btn{
       flex:1 1 100px;
       background:rgba(255,255,255,.06);
@@ -807,6 +832,17 @@ body {
       font-weight:700;
     }
 
+    .quick-signup-btn{
+      color:#ecfeff;
+      background:linear-gradient(135deg, rgba(20,184,166,.72), rgba(59,130,246,.72));
+      border:1px solid rgba(125,211,252,.38);
+      box-shadow:0 8px 18px rgba(14,165,233,.16);
+    }
+
+    .quick-signup-btn:hover{
+      box-shadow:0 10px 24px rgba(14,165,233,.24);
+    }
+
     .delete-slot-btn{
       color:#ffb4c1;
       border-color:rgba(255,107,129,.28);
@@ -814,9 +850,13 @@ body {
     }
 
     .add-btn:disabled,
+    .quick-signup-btn:disabled,
     .delete-slot-btn:disabled{
-      opacity:.55;
+      opacity:.45;
       cursor:not-allowed;
+      filter:saturate(.55);
+      box-shadow:none;
+      transform:none;
     }
 
     .empty-note{
@@ -1008,34 +1048,51 @@ body {
       background:rgba(255,255,255,.12);
     }
 
-    .color-picker{
+    .color-picker,
+    .highlight-picker{
       position:relative;
     }
 
-    .color-menu{
+    .color-menu,
+    .highlight-menu{
       position:absolute;
-      top:38px;
+      top:42px;
       left:0;
       display:none;
-      gap:6px;
-      padding:8px;
+      grid-template-columns:repeat(5, 22px);
+      gap:8px;
+      padding:10px;
       background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.1);
-      box-shadow:0 14px 30px rgba(0,0,0,.28);
-      z-index:30;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 18px 40px rgba(0,0,0,.38);
+      z-index:999999;
     }
 
-    .color-picker:hover .color-menu{
-      display:flex;
+    .color-picker.open .color-menu,
+    .highlight-picker.open .highlight-menu{
+      display:grid;
     }
 
-    .color-menu span{
-      width:18px;
-      height:18px;
-      border-radius:50%;
+    .highlight-menu{
+      left:auto;
+      right:0;
+    }
+
+    .color-menu span,
+    .highlight-menu span{
+      width:22px;
+      height:22px;
+      border-radius:999px;
       cursor:pointer;
-      border:1px solid rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.28);
+      box-shadow:0 3px 10px rgba(0,0,0,.22);
+    }
+
+    .color-menu span:hover,
+    .highlight-menu span:hover{
+      transform:scale(1.12);
+      outline:2px solid rgba(255,255,255,.35);
     }
 
     .format-help{
@@ -1088,14 +1145,6 @@ body {
       color:var(--muted);
       font-size:12px;
       line-height:1.6;
-    }
-
-    .selected-date-note{
-      margin-top:8px;
-      color:#dbe7ff;
-      font-size:12px;
-      font-weight:700;
-      opacity:.9;
     }
 
 
@@ -1170,7 +1219,7 @@ body {
     <div class="toolbar">
       <div class="toolbar-actions">
         <button class="btn-ghost" id="infoBtn">介紹</button>
-        <button class="btn-ghost" id="addDateTimeBtn">＋ 新增日期/時間</button>
+        <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">✨ 新增日期/時間</button>
         <button class="btn-ghost" id="refreshBtn">整理日期</button>
       </div>
     </div>
@@ -1325,14 +1374,30 @@ body {
         <button type="button" onclick="applyFormat('bold')"><b>B</b></button>
         <button type="button" onclick="applyFormat('italic')"><i>I</i></button>
 
-        <div class="color-picker">
-          <button type="button">🎨</button>
+        <div class="color-picker" id="textColorPicker">
+          <button type="button" onclick="toggleColorMenu(event)">🎨 文字</button>
           <div class="color-menu">
-            <span style="background:#ff6b81" onclick="applyColor('red')"></span>
-            <span style="background:#6ea8ff" onclick="applyColor('blue')"></span>
-            <span style="background:#34d399" onclick="applyColor('green')"></span>
-            <span style="background:#fbbf24" onclick="applyColor('yellow')"></span>
-            <span style="background:#a78bfa" onclick="applyColor('purple')"></span>
+            <span title="紅色" style="background:#ff6b81" onclick="applyColor('red')"></span>
+            <span title="藍色" style="background:#6ea8ff" onclick="applyColor('blue')"></span>
+            <span title="青色" style="background:#22d3ee" onclick="applyColor('cyan')"></span>
+            <span title="綠色" style="background:#34d399" onclick="applyColor('green')"></span>
+            <span title="黃色" style="background:#fbbf24" onclick="applyColor('yellow')"></span>
+            <span title="橙色" style="background:#fb923c" onclick="applyColor('orange')"></span>
+            <span title="粉色" style="background:#f472b6" onclick="applyColor('pink')"></span>
+            <span title="紫色" style="background:#a78bfa" onclick="applyColor('purple')"></span>
+            <span title="白色" style="background:#ffffff" onclick="applyColor('white')"></span>
+            <span title="灰色" style="background:#94a3b8" onclick="applyColor('gray')"></span>
+          </div>
+        </div>
+
+        <div class="highlight-picker" id="highlightPicker">
+          <button type="button" onclick="toggleHighlightMenu(event)">🖍 Highlight</button>
+          <div class="highlight-menu">
+            <span title="黃底" style="background:#facc15" onclick="applyHighlight('yellow')"></span>
+            <span title="橙底" style="background:#fb923c" onclick="applyHighlight('orange')"></span>
+            <span title="粉底" style="background:#f472b6" onclick="applyHighlight('pink')"></span>
+            <span title="藍底" style="background:#60a5fa" onclick="applyHighlight('blue')"></span>
+            <span title="綠底" style="background:#34d399" onclick="applyHighlight('green')"></span>
           </div>
         </div>
       </div>
@@ -1344,7 +1409,7 @@ body {
       ></textarea>
 
       <div class="format-help">
-        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=red]文字[/color]</code>
+        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=blue]文字[/color]</code>、<code>[highlight=yellow]重點[/highlight]</code>
       </div>
 
       <div class="signup-modal-actions">
@@ -1608,14 +1673,32 @@ body {
       const colors = {
         red:"#ff6b81",
         blue:"#6ea8ff",
+        cyan:"#22d3ee",
         green:"#34d399",
         yellow:"#fbbf24",
-        purple:"#a78bfa"
+        orange:"#fb923c",
+        pink:"#f472b6",
+        purple:"#a78bfa",
+        white:"#ffffff",
+        gray:"#94a3b8"
+      };
+
+      const highlights = {
+        yellow:"rgba(250,204,21,.32)",
+        orange:"rgba(251,146,60,.30)",
+        pink:"rgba(244,114,182,.30)",
+        blue:"rgba(96,165,250,.30)",
+        green:"rgba(52,211,153,.28)"
       };
 
       t = t.replace(/\[color=(.*?)\](.*?)\[\/color\]/gs, (m, c, content) => {
         const color = colors[c] || "#ffffff";
         return `<span style="color:${color}">${content}</span>`;
+      });
+
+      t = t.replace(/\[highlight=(.*?)\](.*?)\[\/highlight\]/gs, (m, c, content) => {
+        const color = highlights[c] || highlights.yellow;
+        return `<mark style="background:${color}; color:#ffffff; padding:1px 5px; border-radius:6px;">${content}</mark>`;
       });
 
       t = t.replace(/\n/g, "<br>");
@@ -1648,10 +1731,30 @@ body {
       }
     };
 
+    window.toggleColorMenu = (event) => {
+      event.stopPropagation();
+      document.getElementById("highlightPicker")?.classList.remove("open");
+      document.getElementById("textColorPicker")?.classList.toggle("open");
+    };
+
+    window.toggleHighlightMenu = (event) => {
+      event.stopPropagation();
+      document.getElementById("textColorPicker")?.classList.remove("open");
+      document.getElementById("highlightPicker")?.classList.toggle("open");
+    };
+
     window.applyColor = (color) => {
       const textarea = document.getElementById("teamDescriptionInput");
       if(!textarea) return;
       wrapText(textarea, `[color=${color}]`, `[/color]`);
+      document.getElementById("textColorPicker")?.classList.remove("open");
+    };
+
+    window.applyHighlight = (color) => {
+      const textarea = document.getElementById("teamDescriptionInput");
+      if(!textarea) return;
+      wrapText(textarea, `[highlight=${color}]`, `[/highlight]`);
+      document.getElementById("highlightPicker")?.classList.remove("open");
     };
 
     function buildDefaultDayData(dateObj){
@@ -1856,6 +1959,13 @@ body {
       });
 
       document.addEventListener("click", (e) => {
+        if(!e.target.closest(".color-picker")){
+          document.getElementById("textColorPicker")?.classList.remove("open");
+        }
+        if(!e.target.closest(".highlight-picker")){
+          document.getElementById("highlightPicker")?.classList.remove("open");
+        }
+
         const select = document.getElementById("roleSelect");
         if(select && !select.contains(e.target)){
           closeCustomSelect();
@@ -2389,6 +2499,50 @@ body {
       openModal(dateKey, slotIndex, allowedRoles);
     }
 
+
+    async function quickSignup(dateKey, slotIndex){
+      const profile = getMyProfile();
+      const name = String(profile.name || "").trim();
+      const role = String(profile.role || "").trim();
+
+      if(!name || !role){
+        alert("請先到『我的資料』儲存名字與常用職業。 ");
+        return;
+      }
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        alert("此隊伍已滿。 ");
+        return;
+      }
+
+      const allowedRoles = getAllowedRoles(slot.members);
+      if(!allowedRoles.includes(role)){
+        alert("你的常用職業目前不能加入這個隊伍，請使用『新增報名』手動選擇可用職業。 ");
+        return;
+      }
+
+      if(slot.members.some(m => String(m.name).trim() === name)){
+        alert("你已經在這個隊伍中。 ");
+        return;
+      }
+
+      slot.members.push({ name, role, tag:"", note:"" });
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+      }
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    }
+
     async function addCustomTime(dateKey){
       const input = prompt("請輸入新時間（例如 19:45）");
       if(input === null) return;
@@ -2462,7 +2616,6 @@ body {
             <div class="day-head">
               <h2 class="day-title">${displayDate(date)}</h2>
               <div class="day-sub">${weekdayText(date)}｜${modeText}</div>
-              ${dayData ? `<div class="selected-date-note">已顯示於 2 週內清單</div>` : ``}
               <div class="day-actions">
                 <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
               </div>
@@ -2483,6 +2636,14 @@ body {
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
             const isRecommended = !isWeekend(date) && slot.time === "19:45";
             const isMyTeam = !!savedName && members.some(m => String(m.name).trim() === savedName);
+            const quickProfile = getMyProfile();
+            const quickName = String(quickProfile.name || "").trim();
+            const quickRole = String(quickProfile.role || "").trim();
+            const canQuickSignup = !!quickName
+              && !!quickRole
+              && members.length < CONFIG.maxPeople
+              && allowedRoles.includes(quickRole)
+              && !members.some(m => String(m.name).trim() === quickName);
 
             const slotCardClass = members.length >= CONFIG.maxPeople
               ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
@@ -2598,6 +2759,9 @@ body {
                   <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
                     ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療位" : "＋ 新增報名"}
                   </button>
+                  <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
+                    ⚡ 快速報名
+                  </button>
                 </div>
               </div>
             `;
@@ -2658,6 +2822,11 @@ body {
 
       document.querySelectorAll('[data-action="add-member"]').forEach(btn => {
         btn.onclick = () => addMember(btn.dataset.date, Number(btn.dataset.slot));
+      });
+
+
+      document.querySelectorAll('[data-action="quick-signup"]').forEach(btn => {
+        btn.onclick = () => quickSignup(btn.dataset.date, Number(btn.dataset.slot));
       });
 
       document.querySelectorAll('[data-action="edit-team-type"]').forEach(btn => {
