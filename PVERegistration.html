@@ -299,6 +299,59 @@ body {
       transform:translateX(120%);
     }
 
+    .top-action-panel{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin:-4px 0 18px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+      box-shadow:0 14px 32px rgba(0,0,0,.18);
+      backdrop-filter:blur(14px);
+    }
+
+    .top-action-left,
+    .top-action-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .top-action-left{
+      flex:1 1 auto;
+    }
+
+    .top-action-right{
+      justify-content:flex-end;
+      flex:1 1 auto;
+    }
+
+    .btn-profile{
+      color:#fff;
+      background:linear-gradient(135deg, rgba(110,168,255,.24), rgba(139,92,246,.26));
+      border:1px solid rgba(180,200,255,.28);
+      box-shadow:0 8px 20px rgba(110,168,255,.12);
+    }
+
+    .btn-profile::before{
+      content:"👤";
+      margin-right:6px;
+    }
+
+    .btn-info-soft::before{
+      content:"ℹ️";
+      margin-right:6px;
+    }
+
+    .btn-refresh-soft::before{
+      content:"↻";
+      margin-right:6px;
+    }
+
     .days{
       display:flex;
       flex-direction:column;
@@ -816,13 +869,13 @@ body {
       display:flex;
       gap:8px;
       margin-top:10px;
-      flex-wrap:wrap;
+      flex-wrap:nowrap;
+      align-items:stretch;
     }
 
     .add-btn,
     .quick-signup-btn,
     .delete-slot-btn{
-      flex:1 1 100px;
       background:rgba(255,255,255,.06);
       color:var(--text);
       border:1px dashed rgba(255,255,255,.18);
@@ -830,17 +883,25 @@ body {
       border-radius:14px;
       font-size:13px;
       font-weight:700;
+      min-height:40px;
+    }
+
+    .add-btn{
+      flex:1 1 auto;
+      min-width:0;
     }
 
     .quick-signup-btn{
-      color:#ecfeff;
-      background:linear-gradient(135deg, rgba(20,184,166,.72), rgba(59,130,246,.72));
-      border:1px solid rgba(125,211,252,.38);
-      box-shadow:0 8px 18px rgba(14,165,233,.16);
+      flex:0 0 104px;
+      color:#f7f2ff;
+      background:linear-gradient(135deg, rgba(168,85,247,.88), rgba(99,102,241,.82));
+      border:1px solid rgba(196,181,253,.46);
+      box-shadow:0 8px 18px rgba(139,92,246,.20);
+      white-space:nowrap;
     }
 
     .quick-signup-btn:hover{
-      box-shadow:0 10px 24px rgba(14,165,233,.24);
+      box-shadow:0 10px 24px rgba(168,85,247,.30);
     }
 
     .delete-slot-btn{
@@ -1178,6 +1239,40 @@ body {
       .tag-pill{ font-size:10px; padding:4px 7px; }
       .signup-modal-box,
       .confirm-modal-box{ width:min(100%, 100%); }
+
+      .top-action-panel{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:10px;
+        padding:12px;
+      }
+
+      .top-action-left,
+      .top-action-right{
+        width:auto;
+        display:flex;
+        flex-wrap:wrap;
+        gap:8px;
+        justify-content:flex-start;
+      }
+
+      .top-action-panel button{
+        width:auto;
+        flex:0 0 auto;
+        padding:9px 12px;
+        font-size:12px;
+        white-space:nowrap;
+      }
+
+      .slot-actions{
+        gap:7px;
+      }
+
+      .quick-signup-btn{
+        flex-basis:104px;
+        padding-left:8px;
+        padding-right:8px;
+      }
     }
   </style>
 </head>
@@ -1196,16 +1291,8 @@ body {
     </div>
   </div>
 </nav>
-<section class="profile">
-  <div class="hero-top">
-    <button class="top-btn" id="myProfileBtn">我的資料</button>
-  </div>
-  </section>
-  
   <div class="container">
     <section class="hero">
-
-
       <h1 class="title">夢回花深處｜俠境報名清單</h1>
       <p class="subtitle">目前進行測試中</p>
 
@@ -1216,11 +1303,14 @@ body {
       </div>
     </section>
 
-    <div class="toolbar">
-      <div class="toolbar-actions">
-        <button class="btn-ghost" id="infoBtn">介紹</button>
+    <div class="top-action-panel">
+      <div class="top-action-left">
+        <button class="btn-ghost btn-profile" id="myProfileBtn">我的資料</button>
+        <button class="btn-ghost btn-info-soft" id="infoBtn">介紹</button>
+      </div>
+      <div class="top-action-right">
         <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">✨ 新增日期/時間</button>
-        <button class="btn-ghost" id="refreshBtn">整理日期</button>
+        <button class="btn-ghost btn-refresh-soft" id="refreshBtn">整理日期</button>
       </div>
     </div>
 
