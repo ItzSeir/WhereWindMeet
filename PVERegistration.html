@@ -864,6 +864,7 @@ body {
     }
 
     .add-btn,
+    .batch-signup-btn,
     .quick-signup-btn,
     .delete-slot-btn{
       background:rgba(255,255,255,.06);
@@ -879,6 +880,19 @@ body {
     .add-btn{
       flex:1 1 auto;
       min-width:0;
+    }
+
+    .batch-signup-btn{
+      flex:0 0 108px;
+      color:#fff7ed;
+      background:linear-gradient(135deg, rgba(245,158,11,.92), rgba(249,115,22,.86));
+      border:1px solid rgba(253,186,116,.44);
+      box-shadow:0 8px 18px rgba(249,115,22,.18);
+      white-space:nowrap;
+    }
+
+    .batch-signup-btn:hover{
+      box-shadow:0 10px 24px rgba(249,115,22,.28);
     }
 
     .quick-signup-btn{
@@ -901,6 +915,7 @@ body {
     }
 
     .add-btn:disabled,
+    .batch-signup-btn:disabled,
     .quick-signup-btn:disabled,
     .delete-slot-btn:disabled{
       opacity:.45;
@@ -1191,6 +1206,84 @@ body {
     }
 
 
+
+
+
+
+    .batch-player-list{
+      display:grid;
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .batch-player-row{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) 130px 38px;
+      gap:8px;
+      align-items:center;
+      padding:8px;
+      border-radius:14px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .batch-player-row .signup-input,
+    .batch-player-row .signup-select{
+      height:42px;
+      padding:9px 11px;
+      border-radius:11px;
+    }
+
+    .batch-remove-btn{
+      width:38px;
+      height:38px;
+      padding:0;
+      border-radius:12px;
+      color:#ffb4c1;
+      background:rgba(255,107,129,.10);
+      border:1px solid rgba(255,107,129,.24);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:17px;
+      font-weight:900;
+    }
+
+    .batch-add-row-btn{
+      width:100%;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      color:#dbe7ff;
+      background:rgba(139,92,246,.14);
+      border:1px dashed rgba(196,181,253,.34);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .batch-add-row-btn:hover{
+      background:rgba(139,92,246,.22);
+    }
+
+    .batch-example{
+      margin-top:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+      color:#b8c3df;
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    .batch-example code{
+      color:#ffffff;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      padding:1px 5px;
+      border-radius:6px;
+    }
+
     .date-limit-note{
       margin-top:8px;
       color:var(--muted);
@@ -1360,6 +1453,23 @@ body {
         padding-right:8px;
       }
 
+      .batch-player-row{
+        grid-template-columns:minmax(0, 1fr) 112px 36px;
+        gap:7px;
+        padding:7px;
+      }
+
+      .batch-player-row .signup-input,
+      .batch-player-row .signup-select{
+        height:40px;
+        font-size:13px;
+      }
+
+      .batch-remove-btn{
+        width:36px;
+        height:36px;
+      }
+
       .datetime-modal-box{
         padding:18px;
       }
@@ -1433,6 +1543,30 @@ body {
       <div class="signup-modal-actions">
         <button type="button" class="signup-confirm-btn" onclick="submitSignup()">確認</button>
         <button type="button" class="signup-cancel-btn" onclick="closeModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="batchSignupModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">批量報名</div>
+      <div id="batchSignupInfo" class="confirm-modal-text" style="margin-bottom:10px;">
+        一次加入多位玩家。
+      </div>
+
+      <label class="signup-label">報名名單</label>
+      <div id="batchPlayerList" class="batch-player-list"></div>
+      <button type="button" class="batch-add-row-btn" onclick="addBatchSignupRow()">＋ 新的玩家報名</button>
+
+      <div class="batch-example">
+        每一行填寫 <code>名字</code> 並選擇 <code>職業</code>。系統會自動檢查人數上限、重複名字與缺奶限制。
+      </div>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeBatchSignupModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveBatchSignup()">批量加入</button>
       </div>
     </div>
   </div>
@@ -1709,6 +1843,7 @@ body {
     let currentRoleEdit = null;
     let currentTeamTypeEdit = null;
     let currentDateTimeEdit = null;
+    let currentBatchSignup = null;
 
     function getMyProfile(){
       return {
@@ -2169,6 +2304,7 @@ body {
       const teamTypeModal = document.getElementById("teamTypeModal");
       const myProfileModal = document.getElementById("myProfileModal");
       const dateTimeModal = document.getElementById("dateTimeModal");
+      const batchSignupModal = document.getElementById("batchSignupModal");
 
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -2240,6 +2376,10 @@ body {
 
       dateTimeModal.addEventListener("click", (e) => {
         if(e.target.id === "dateTimeModal") closeDateTimeModal();
+      });
+
+      batchSignupModal.addEventListener("click", (e) => {
+        if(e.target.id === "batchSignupModal") closeBatchSignupModal();
       });
     }
 
@@ -2555,7 +2695,7 @@ body {
       return `**[highlight=orange]天賦團【説明(可更改)】[/highlight]**
 1. 請進入**[color=pink]DC語音頻道[/color]**以便快速溝通
 2. 若**[color=purple]無法準時到家[/color]**可提前到此取消報名~
-3. 天賦團可能會消耗[highlight=pink]**1-3小時**[/highlight]的時間，請確保您擁有足夠的時間~
+3. 天賦團可能會消耗[highlight=pink]**1-3小時**[/highlight]的時間，確保您擁有足夠的時間~
 
 [highlight=blue]其他要求[/highlight]`;
     }
@@ -2635,6 +2775,7 @@ body {
       const teamTypeModal = document.getElementById("teamTypeModal");
       const myProfileModal = document.getElementById("myProfileModal");
       const dateTimeModal = document.getElementById("dateTimeModal");
+      const batchSignupModal = document.getElementById("batchSignupModal");
 
       if(signupModal.classList.contains("show")){
         if(e.key === "Escape") closeModal();
@@ -2816,6 +2957,172 @@ body {
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
+
+
+    function createBatchSignupRow(name = "", role = "輸出"){
+      const row = document.createElement("div");
+      row.className = "batch-player-row";
+
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.className = "signup-input batch-name-input";
+      nameInput.placeholder = "名字";
+      nameInput.value = name;
+
+      const roleSelect = document.createElement("select");
+      roleSelect.className = "signup-select batch-role-select";
+      CONFIG.roles.forEach(roleName => {
+        const option = document.createElement("option");
+        option.value = roleName;
+        option.textContent = roleName;
+        roleSelect.appendChild(option);
+      });
+      roleSelect.value = CONFIG.roles.includes(role) ? role : "輸出";
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "batch-remove-btn";
+      removeBtn.textContent = "×";
+      removeBtn.title = "移除這位玩家";
+      removeBtn.onclick = () => {
+        const list = document.getElementById("batchPlayerList");
+        if(list && list.querySelectorAll(".batch-player-row").length > 1){
+          row.remove();
+        } else {
+          nameInput.value = "";
+          roleSelect.value = "輸出";
+          nameInput.focus();
+        }
+      };
+
+      row.appendChild(nameInput);
+      row.appendChild(roleSelect);
+      row.appendChild(removeBtn);
+      return row;
+    }
+
+    window.addBatchSignupRow = (name = "", role = "輸出") => {
+      const list = document.getElementById("batchPlayerList");
+      if(!list) return;
+      const row = createBatchSignupRow(name, role);
+      list.appendChild(row);
+      setTimeout(() => row.querySelector(".batch-name-input")?.focus(), 20);
+    };
+
+    function openBatchSignupModal(dateKey, slotIndex){
+      const dayData = globalData?.[dateKey];
+      const slot = dayData?.slots?.[slotIndex];
+      if(!dayData || !slot) return;
+
+      const members = Array.isArray(slot.members) ? slot.members : [];
+      if(members.length >= CONFIG.maxPeople){
+        alert("此隊伍已滿。");
+        return;
+      }
+
+      currentBatchSignup = { dateKey, slotIndex };
+      const remain = CONFIG.maxPeople - members.length;
+      document.getElementById("batchSignupInfo").innerHTML =
+        `目標隊伍：<strong style="color:var(--text);">${escapeHtml(dateKey)}｜${escapeHtml(slot.time)}｜第 ${slot.instance || 1} 隊</strong><br>目前還可加入 <strong style="color:var(--text);">${remain}</strong> 人。`;
+
+      const list = document.getElementById("batchPlayerList");
+      if(list){
+        list.innerHTML = "";
+        list.appendChild(createBatchSignupRow("", "輸出"));
+        list.appendChild(createBatchSignupRow("", "輸出"));
+      }
+
+      document.getElementById("batchSignupModal").classList.add("show");
+      setTimeout(() => document.querySelector("#batchPlayerList .batch-name-input")?.focus(), 30);
+    }
+
+    window.closeBatchSignupModal = () => {
+      currentBatchSignup = null;
+      document.getElementById("batchSignupModal").classList.remove("show");
+    };
+
+    window.saveBatchSignup = async () => {
+      if(!currentBatchSignup) return;
+
+      const rows = Array.from(document.querySelectorAll("#batchPlayerList .batch-player-row"));
+      const players = rows
+        .map(row => ({
+          name: (row.querySelector(".batch-name-input")?.value || "").trim(),
+          role: (row.querySelector(".batch-role-select")?.value || "").trim()
+        }))
+        .filter(player => player.name || player.role);
+
+      if(players.length === 0 || players.every(player => !player.name)){
+        alert("請至少輸入一位玩家名字。");
+        return;
+      }
+
+      const { dateKey, slotIndex } = currentBatchSignup;
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+
+      const slot = dayData.slots[slotIndex];
+      if(!slot) return;
+      slot.members = Array.isArray(slot.members) ? slot.members : [];
+
+      const errors = [];
+      const added = [];
+      const seenInInput = new Set();
+
+      for(const player of players){
+        if(!player.name){
+          errors.push("有一行沒有填名字。");
+          continue;
+        }
+
+        if(!CONFIG.roles.includes(player.role)){
+          errors.push(`職業錯誤：${player.name}`);
+          continue;
+        }
+
+        const nameKey = player.name.trim();
+        if(seenInInput.has(nameKey)){
+          errors.push(`名單內重複：${player.name}`);
+          continue;
+        }
+        seenInInput.add(nameKey);
+
+        if(slot.members.length >= CONFIG.maxPeople){
+          errors.push(`隊伍已滿，無法加入：${player.name}`);
+          continue;
+        }
+
+        if(slot.members.some(m => String(m.name).trim() === player.name)){
+          errors.push(`隊伍已有相同名字：${player.name}`);
+          continue;
+        }
+
+        const allowedRoles = getAllowedRoles(slot.members);
+        if(!allowedRoles.includes(player.role)){
+          errors.push(`目前不可加入此職業：${player.name}（${player.role}）`);
+          continue;
+        }
+
+        slot.members.push({ name:player.name, role:player.role, tag:"", note:"" });
+        added.push(player.name);
+      }
+
+      if(added.length === 0){
+        alert(`沒有成功加入任何玩家。\n\n${errors.slice(0, 8).join("\n")}`);
+        return;
+      }
+
+      if(slot.members.length >= CONFIG.maxPeople){
+        autoCreateNextSameTimeSlot(dayData, slot.time);
+      }
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeBatchSignupModal();
+
+      if(errors.length > 0){
+        alert(`已加入 ${added.length} 位：${added.join("、")}\n\n以下未加入：\n${errors.slice(0, 10).join("\n")}`);
+      }
+    };
 
     async function addCustomTime(dateKey){
       const input = prompt("請輸入新時間（例如 19:45）");
@@ -3033,6 +3340,9 @@ body {
                   <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
                     ${members.length >= CONFIG.maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療位" : "＋ 新增報名"}
                   </button>
+                  <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= CONFIG.maxPeople ? "disabled" : ""}>
+                    批量報名
+                  </button>
                   <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
                     快速報名
                   </button>
@@ -3098,6 +3408,10 @@ body {
         btn.onclick = () => addMember(btn.dataset.date, Number(btn.dataset.slot));
       });
 
+
+      document.querySelectorAll('[data-action="batch-signup"]').forEach(btn => {
+        btn.onclick = () => openBatchSignupModal(btn.dataset.date, Number(btn.dataset.slot));
+      });
 
       document.querySelectorAll('[data-action="quick-signup"]').forEach(btn => {
         btn.onclick = () => quickSignup(btn.dataset.date, Number(btn.dataset.slot));
