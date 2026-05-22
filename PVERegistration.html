@@ -1170,8 +1170,7 @@ body {
     }
 
     .signup-input,
-    .signup-textarea,
-    .signup-select{
+    .signup-textarea{
       width:100%;
       padding:12px 14px;
       border-radius:12px;
@@ -1180,6 +1179,31 @@ body {
       color:var(--text);
       font-size:14px;
       outline:none;
+    }
+
+    .signup-select{
+      width:100%;
+      padding:12px 46px 12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1.5 1.75L6 6.25L10.5 1.75' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") calc(100% - 20px) 50% / 12px 8px no-repeat,
+        rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      font-weight:700;
+      outline:none;
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      transition:.18s ease;
+    }
+
+    .signup-select:hover{
+      border-color:rgba(255,255,255,.16);
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1.5 1.75L6 6.25L10.5 1.75' stroke='%23e2e8f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") calc(100% - 20px) 50% / 12px 8px no-repeat,
+        rgba(255,255,255,.075);
     }
 
     .signup-select option{
@@ -3234,11 +3258,17 @@ body {
       const maxKey = formatDate(getTwoWeekEnd());
       const dateInput = document.getElementById("customDateInput");
       const limitText = document.getElementById("dateTimeLimitText");
+      const modalTitle = document.querySelector("#dateTimeModal .confirm-modal-title");
+      const helperText = document.querySelector("#dateTimeModal .datetime-helper");
 
+      currentDateTimeEdit = null;
       dateInput.value = todayKey;
       renderDateChoices(todayKey);
       selectQuickTime("19:45");
       limitText.textContent = `可選日期：${todayKey} 至 ${maxKey}`;
+
+      if(modalTitle) modalTitle.textContent = "新增日期 / 時間";
+      if(helperText) helperText.textContent = "玩家只能選擇今天起 2 週內的日期與時間。新增後會直接顯示在報名清單中。";
 
       document.getElementById("dateTimeModal").classList.add("show");
     }
@@ -3886,34 +3916,26 @@ body {
     };
 
     async function addCustomTime(dateKey){
-      const input = prompt("請輸入新時間（例如 19:45）");
-      if(input === null) return;
+      currentDateTimeEdit = dateKey;
 
-      const trimmed = input.trim();
-      if(!/^([01]\d|2[0-3]):([0-5]\d)$/.test(trimmed)){
-        alert("時間格式錯誤，請使用 HH:MM，例如 19:45");
-        return;
-      }
+      const dateInput = document.getElementById("customDateInput");
+      const timeInput = document.getElementById("customTimeInput");
+      const limitText = document.getElementById("dateTimeLimitText");
+      const modalTitle = document.querySelector("#dateTimeModal .confirm-modal-title");
+      const helperText = document.querySelector("#dateTimeModal .datetime-helper");
 
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
+      dateInput.value = dateKey;
+      renderDateChoices(dateKey);
+      selectQuickTime("19:45");
 
-      const sameTimeSlots = dayData.slots.filter(s => s.time === trimmed);
-      const nextInstance = sameTimeSlots.length
-        ? Math.max(...sameTimeSlots.map(s => s.instance || 1)) + 1
-        : 1;
+      const todayKey = formatDate(getTodayStart());
+      const maxKey = formatDate(getTwoWeekEnd());
+      limitText.textContent = `可選日期：${todayKey} 至 ${maxKey}`;
 
-      dayData.slots.push({
-        time: trimmed,
-        instance: nextInstance,
-        members: [],
-        isCustom: true,
-        teamType: "普通團",
-        description: ""
-      });
+      if(modalTitle) modalTitle.textContent = "新增時間";
+      if(helperText) helperText.textContent = "請選擇要新增的時間。新增後會直接顯示在該日期的報名清單中。";
 
-      sortSlots(dayData.slots);
-      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      document.getElementById("dateTimeModal").classList.add("show");
     }
 
     async function deleteCustomSlot(dateKey, slotIndex){
