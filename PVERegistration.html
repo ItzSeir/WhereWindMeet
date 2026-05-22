@@ -884,14 +884,14 @@ body {
     .quick-signup-btn{
       flex:0 0 104px;
       color:#ffffff;
-      background:linear-gradient(135deg, rgba(139,92,246,.92), rgba(99,102,241,.88));
+      background:linear-gradient(135deg, rgba(168,85,247,.95), rgba(124,58,237,.92));
       border:1px solid rgba(196,181,253,.46);
-      box-shadow:0 8px 18px rgba(139,92,246,.20);
+      box-shadow:0 8px 18px rgba(168,85,247,.22);
       white-space:nowrap;
     }
 
     .quick-signup-btn:hover{
-      box-shadow:0 10px 24px rgba(139,92,246,.30);
+      box-shadow:0 10px 24px rgba(168,85,247,.32);
     }
 
     .delete-slot-btn{
@@ -1576,13 +1576,17 @@ body {
           <button type="button" onclick="toggleColorMenu(event)">🎨 文字</button>
           <div class="color-menu">
             <span title="紅色" style="background:#ff6b81" onclick="applyColor('red')"></span>
-            <span title="藍色" style="background:#6ea8ff" onclick="applyColor('blue')"></span>
-            <span title="青色" style="background:#22d3ee" onclick="applyColor('cyan')"></span>
-            <span title="綠色" style="background:#34d399" onclick="applyColor('green')"></span>
-            <span title="黃色" style="background:#fbbf24" onclick="applyColor('yellow')"></span>
+            <span title="玫紅" style="background:#fb7185" onclick="applyColor('rose')"></span>
             <span title="橙色" style="background:#fb923c" onclick="applyColor('orange')"></span>
-            <span title="粉色" style="background:#f472b6" onclick="applyColor('pink')"></span>
+            <span title="黃色" style="background:#fbbf24" onclick="applyColor('yellow')"></span>
+            <span title="金色" style="background:#ffd76a" onclick="applyColor('gold')"></span>
+            <span title="綠色" style="background:#34d399" onclick="applyColor('green')"></span>
+            <span title="薄荷" style="background:#2dd4bf" onclick="applyColor('teal')"></span>
+            <span title="青色" style="background:#22d3ee" onclick="applyColor('cyan')"></span>
+            <span title="藍色" style="background:#6ea8ff" onclick="applyColor('blue')"></span>
+            <span title="靛藍" style="background:#818cf8" onclick="applyColor('indigo')"></span>
             <span title="紫色" style="background:#a78bfa" onclick="applyColor('purple')"></span>
+            <span title="粉色" style="background:#f472b6" onclick="applyColor('pink')"></span>
             <span title="白色" style="background:#ffffff" onclick="applyColor('white')"></span>
             <span title="灰色" style="background:#94a3b8" onclick="applyColor('gray')"></span>
           </div>
@@ -1591,11 +1595,19 @@ body {
         <div class="highlight-picker" id="highlightPicker">
           <button type="button" onclick="toggleHighlightMenu(event)">🖍 Highlight</button>
           <div class="highlight-menu">
-            <span title="黃底" style="background:#facc15" onclick="applyHighlight('yellow')"></span>
+            <span title="紅底" style="background:#ff6b81" onclick="applyHighlight('red')"></span>
+            <span title="玫紅底" style="background:#fb7185" onclick="applyHighlight('rose')"></span>
             <span title="橙底" style="background:#fb923c" onclick="applyHighlight('orange')"></span>
-            <span title="粉底" style="background:#f472b6" onclick="applyHighlight('pink')"></span>
-            <span title="藍底" style="background:#60a5fa" onclick="applyHighlight('blue')"></span>
+            <span title="黃底" style="background:#facc15" onclick="applyHighlight('yellow')"></span>
+            <span title="金底" style="background:#ffd76a" onclick="applyHighlight('gold')"></span>
             <span title="綠底" style="background:#34d399" onclick="applyHighlight('green')"></span>
+            <span title="薄荷底" style="background:#2dd4bf" onclick="applyHighlight('teal')"></span>
+            <span title="青底" style="background:#22d3ee" onclick="applyHighlight('cyan')"></span>
+            <span title="藍底" style="background:#60a5fa" onclick="applyHighlight('blue')"></span>
+            <span title="靛藍底" style="background:#818cf8" onclick="applyHighlight('indigo')"></span>
+            <span title="紫底" style="background:#a78bfa" onclick="applyHighlight('purple')"></span>
+            <span title="粉底" style="background:#f472b6" onclick="applyHighlight('pink')"></span>
+            <span title="灰底" style="background:#94a3b8" onclick="applyHighlight('gray')"></span>
           </div>
         </div>
       </div>
@@ -1603,11 +1615,11 @@ body {
       <textarea
         id="teamDescriptionInput"
         class="signup-textarea"
-        placeholder="例如：&#10;**優先給需要打天賦的人**&#10;[color=yellow]奶媽最多三位[/color]&#10;*只開一次*"
+        placeholder="例如：&#10;**[highlight=orange]天賦團【説明】[/highlight]**&#10;請進入 **[color=pink]DC語音頻道[/color]**&#10;[highlight=blue]其他要求[/highlight]"
       ></textarea>
 
       <div class="format-help">
-        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=blue]文字[/color]</code>、<code>[highlight=yellow]重點[/highlight]</code>
+        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=pink]文字[/color]</code>、<code>[highlight=orange]重點[/highlight]</code>。文字與 Highlight 已支援相同色系。
       </div>
 
       <div class="signup-modal-actions">
@@ -1870,23 +1882,35 @@ body {
 
       const colors = {
         red:"#ff6b81",
-        blue:"#6ea8ff",
-        cyan:"#22d3ee",
-        green:"#34d399",
-        yellow:"#fbbf24",
+        rose:"#fb7185",
         orange:"#fb923c",
-        pink:"#f472b6",
+        yellow:"#fbbf24",
+        gold:"#ffd76a",
+        green:"#34d399",
+        teal:"#2dd4bf",
+        cyan:"#22d3ee",
+        blue:"#6ea8ff",
+        indigo:"#818cf8",
         purple:"#a78bfa",
+        pink:"#f472b6",
         white:"#ffffff",
         gray:"#94a3b8"
       };
 
       const highlights = {
-        yellow:"rgba(250,204,21,.32)",
-        orange:"rgba(251,146,60,.30)",
-        pink:"rgba(244,114,182,.30)",
-        blue:"rgba(96,165,250,.30)",
-        green:"rgba(52,211,153,.28)"
+        red:"rgba(255,107,129,.30)",
+        rose:"rgba(251,113,133,.30)",
+        orange:"rgba(251,146,60,.32)",
+        yellow:"rgba(250,204,21,.34)",
+        gold:"rgba(255,215,106,.34)",
+        green:"rgba(52,211,153,.30)",
+        teal:"rgba(45,212,191,.30)",
+        cyan:"rgba(34,211,238,.30)",
+        blue:"rgba(96,165,250,.32)",
+        indigo:"rgba(129,140,248,.32)",
+        purple:"rgba(167,139,250,.32)",
+        pink:"rgba(244,114,182,.32)",
+        gray:"rgba(148,163,184,.30)"
       };
 
       t = t.replace(/\[color=(.*?)\](.*?)\[\/color\]/gs, (m, c, content) => {
@@ -2527,13 +2551,32 @@ body {
       closeEditRoleModal();
     };
 
+    function getDefaultTalentDescription(){
+      return `**[highlight=orange]天賦團【説明(可更改)】[/highlight]**
+1. 請進入**[color=pink]DC語音頻道[/color]**以便快速溝通
+2. 若**[color=purple]無法準時到家[/color]**可提前到此取消報名~
+3. 天賦團可能會消耗[highlight=pink]**1-3小時**[/highlight]的時間，確保您擁有足夠的時間~
+
+[highlight=blue]其他要求[/highlight]`;
+    }
+
     function openTeamTypeModal(dateKey, slotIndex){
       const slot = globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot) return;
 
       currentTeamTypeEdit = { dateKey, slotIndex };
-      document.getElementById("teamTypeSelect").value = slot.teamType || "普通團";
-      document.getElementById("teamDescriptionInput").value = slot.description || "";
+      const teamTypeSelect = document.getElementById("teamTypeSelect");
+      const descriptionInput = document.getElementById("teamDescriptionInput");
+      teamTypeSelect.value = slot.teamType || "普通團";
+      descriptionInput.value = slot.description || "";
+      if(teamTypeSelect.value === "天賦團" && !descriptionInput.value.trim()){
+        descriptionInput.value = getDefaultTalentDescription();
+      }
+      teamTypeSelect.onchange = () => {
+        if(teamTypeSelect.value === "天賦團" && !descriptionInput.value.trim()){
+          descriptionInput.value = getDefaultTalentDescription();
+        }
+      };
       document.getElementById("teamTypeModal").classList.add("show");
     }
 
@@ -2547,7 +2590,10 @@ body {
 
       const { dateKey, slotIndex } = currentTeamTypeEdit;
       const value = document.getElementById("teamTypeSelect").value;
-      const description = document.getElementById("teamDescriptionInput").value.trim();
+      let description = document.getElementById("teamDescriptionInput").value.trim();
+      if(value === "天賦團" && !description){
+        description = getDefaultTalentDescription();
+      }
 
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
