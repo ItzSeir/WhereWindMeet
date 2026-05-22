@@ -883,15 +883,15 @@ body {
 
     .quick-signup-btn{
       flex:0 0 104px;
-      color:#fff7ed;
-      background:linear-gradient(135deg, rgba(251,146,60,.90), rgba(244,63,94,.82));
-      border:1px solid rgba(253,186,116,.48);
-      box-shadow:0 8px 18px rgba(244,63,94,.18);
+      color:#ffffff;
+      background:linear-gradient(135deg, rgba(139,92,246,.92), rgba(99,102,241,.88));
+      border:1px solid rgba(196,181,253,.46);
+      box-shadow:0 8px 18px rgba(139,92,246,.20);
       white-space:nowrap;
     }
 
     .quick-signup-btn:hover{
-      box-shadow:0 10px 24px rgba(251,146,60,.28);
+      box-shadow:0 10px 24px rgba(139,92,246,.30);
     }
 
     .delete-slot-btn{
@@ -1198,6 +1198,102 @@ body {
       line-height:1.6;
     }
 
+    .datetime-modal-box{
+      width:min(620px, 100%);
+      padding:24px;
+      border-radius:24px;
+      background:
+        radial-gradient(circle at top right, rgba(139,92,246,.20), transparent 35%),
+        linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+    }
+
+    .datetime-helper{
+      margin:0 0 18px;
+      color:#b8c3df;
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .datetime-grid{
+      display:grid;
+      grid-template-columns:repeat(7, minmax(0, 1fr));
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .date-choice{
+      min-height:62px;
+      padding:8px 6px;
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color:#dbe7ff;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
+    }
+
+    .date-choice:hover{
+      background:rgba(110,168,255,.12);
+      border-color:rgba(110,168,255,.36);
+    }
+
+    .date-choice.active{
+      background:linear-gradient(135deg, rgba(110,168,255,.78), rgba(139,92,246,.82));
+      border-color:rgba(255,255,255,.30);
+      color:white;
+      box-shadow:0 10px 22px rgba(110,168,255,.20);
+    }
+
+    .date-choice .date-main{
+      font-size:16px;
+      font-weight:900;
+      line-height:1;
+    }
+
+    .date-choice .date-week{
+      font-size:11px;
+      color:inherit;
+      opacity:.78;
+      white-space:nowrap;
+    }
+
+    .time-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:center;
+    }
+
+    .time-preset-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .time-preset{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color:#dbe7ff;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .time-preset.active,
+    .time-preset:hover{
+      background:rgba(139,92,246,.24);
+      border-color:rgba(196,181,253,.42);
+    }
+
+    .datetime-modal-box .confirm-modal-actions{
+      margin-top:20px;
+    }
+
 
     @media (max-width:1100px){
       .day-card{
@@ -1262,6 +1358,18 @@ body {
         flex-basis:104px;
         padding-left:8px;
         padding-right:8px;
+      }
+
+      .datetime-modal-box{
+        padding:18px;
+      }
+
+      .datetime-grid{
+        grid-template-columns:repeat(4, minmax(0, 1fr));
+      }
+
+      .date-choice{
+        min-height:56px;
       }
     }
   </style>
@@ -1341,17 +1449,25 @@ body {
   </div>
 
   <div id="dateTimeModal" class="confirm-modal">
-    <div class="confirm-modal-box">
+    <div class="confirm-modal-box datetime-modal-box">
       <div class="confirm-modal-title">新增日期 / 時間</div>
-      <div class="confirm-modal-text" style="margin-bottom:10px;">
-        玩家只能選擇今天起 2 週內的日期與時間。新增後會直接顯示在報名清單中。
+      <p class="datetime-helper">玩家只能選擇今天起 2 週內的日期與時間。新增後會直接顯示在報名清單中。</p>
+
+      <label class="signup-label">日期</label>
+      <input id="customDateInput" type="hidden" />
+      <div id="customDateGrid" class="datetime-grid"></div>
+
+      <label class="signup-label" for="customTimeInput" style="margin-top:18px;">時間</label>
+      <div class="time-row">
+        <input id="customTimeInput" class="signup-input" type="time" step="300" />
       </div>
-
-      <label class="signup-label" for="customDateInput">日期</label>
-      <input id="customDateInput" class="signup-input" type="date" />
-
-      <label class="signup-label" for="customTimeInput">時間</label>
-      <input id="customTimeInput" class="signup-input" type="time" step="300" />
+      <div class="time-preset-list">
+        <button type="button" class="time-preset" onclick="selectQuickTime('16:00')">16:00</button>
+        <button type="button" class="time-preset" onclick="selectQuickTime('19:45')">19:45</button>
+        <button type="button" class="time-preset" onclick="selectQuickTime('20:30')">20:30</button>
+        <button type="button" class="time-preset" onclick="selectQuickTime('21:30')">21:30</button>
+        <button type="button" class="time-preset" onclick="selectQuickTime('22:00')">22:00</button>
+      </div>
 
       <div id="dateTimeLimitText" class="date-limit-note"></div>
 
@@ -2497,21 +2613,51 @@ body {
       }
     });
 
+    function renderDateChoices(selectedKey){
+      const grid = document.getElementById("customDateGrid");
+      const dateInput = document.getElementById("customDateInput");
+      if(!grid || !dateInput) return;
+
+      grid.innerHTML = "";
+      const today = getTodayStart();
+
+      for(let i = 0; i < 14; i++){
+        const date = addDays(today, i);
+        const dateKey = formatDate(date);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "date-choice" + (dateKey === selectedKey ? " active" : "");
+        button.innerHTML = `<span class="date-main">${date.getMonth()+1}/${date.getDate()}</span><span class="date-week">${i === 0 ? "今天" : weekdayText(date).replace("星期", "週")}</span>`;
+        button.onclick = () => selectCustomDate(dateKey);
+        grid.appendChild(button);
+      }
+    }
+
+    window.selectCustomDate = (dateKey) => {
+      document.getElementById("customDateInput").value = dateKey;
+      renderDateChoices(dateKey);
+    };
+
+    window.selectQuickTime = (time) => {
+      const timeInput = document.getElementById("customTimeInput");
+      if(timeInput) timeInput.value = time;
+      document.querySelectorAll(".time-preset").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent.trim() === time);
+      });
+    };
+
     function openDateTimeModal(){
       const todayKey = formatDate(getTodayStart());
       const maxKey = formatDate(getTwoWeekEnd());
       const dateInput = document.getElementById("customDateInput");
-      const timeInput = document.getElementById("customTimeInput");
       const limitText = document.getElementById("dateTimeLimitText");
 
-      dateInput.min = todayKey;
-      dateInput.max = maxKey;
       dateInput.value = todayKey;
-      timeInput.value = "19:45";
+      renderDateChoices(todayKey);
+      selectQuickTime("19:45");
       limitText.textContent = `可選日期：${todayKey} 至 ${maxKey}`;
 
       document.getElementById("dateTimeModal").classList.add("show");
-      setTimeout(() => dateInput.focus(), 30);
     }
 
     window.closeDateTimeModal = () => {
