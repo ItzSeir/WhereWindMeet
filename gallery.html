@@ -20,7 +20,6 @@
   --accent2:#8b5cf6;
   --gold:#ffd76a;
   --shadow:rgba(0,0,0,.45);
-  --success:#34d399;
 }
 
 *{ box-sizing:border-box; }
@@ -166,7 +165,7 @@ body::after{
   overflow:hidden;
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  justify-content:flex-start;
   gap:22px;
   background:
     radial-gradient(circle at 12% 20%, rgba(110,168,255,.22), transparent 32%),
@@ -200,8 +199,7 @@ body::after{
   pointer-events:none;
 }
 
-.header-left,
-.header-status{
+.header-left{
   position:relative;
   z-index:1;
 }
@@ -247,29 +245,6 @@ body::after{
   font-size:14px;
   letter-spacing:1px;
   text-transform:none;
-}
-
-.header-status{
-  flex-shrink:0;
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-  padding:12px 16px;
-  border-radius:999px;
-  color:#dbeafe;
-  background:rgba(255,255,255,.075);
-  border:1px solid rgba(255,255,255,.13);
-  font-size:13px;
-  font-weight:800;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
-}
-
-.status-dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:var(--success);
-  box-shadow:0 0 14px rgba(52,211,153,.85);
 }
 
 /* ===== filter ===== */
@@ -610,11 +585,6 @@ body::after{
     border-radius:24px;
   }
 
-  .header-status{
-    width:100%;
-    justify-content:center;
-  }
-
   .filter{
     position:relative;
     top:auto;
@@ -720,6 +690,7 @@ body::after{
       <h1 class="page-title">江湖回憶錄</h1>
       <p class="page-subtitle">幫會相簿・回憶紀錄・江湖日常</p>
     </div>
+  </div>
 
   <div class="filter">
     <button class="active" data-filter="all">全部回憶</button>
