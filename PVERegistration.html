@@ -882,19 +882,13 @@ body {
     .add-btn,
     .batch-signup-btn,
     .quick-signup-btn,
-
-
-    .btn-batch-preset-manage{
-      color:#fff7ed;
-      background:linear-gradient(135deg, rgba(245,158,11,.24), rgba(249,115,22,.22));
-      border:1px solid rgba(253,186,116,.30);
-      box-shadow:0 8px 20px rgba(249,115,22,.10);
+    .delete-slot-btn{
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight:700;
+      min-height:40px;
       white-space:nowrap;
-    }
-
-    .btn-batch-preset-manage:hover{
-      background:linear-gradient(135deg, rgba(245,158,11,.32), rgba(249,115,22,.30));
-      box-shadow:0 10px 24px rgba(249,115,22,.16);
     }
 
     .preset-manager-card{
@@ -992,30 +986,73 @@ body {
 
     .batch-signup-btn{
       flex:0 0 108px;
+      height:50px;
+      border-radius:16px;
+      border:1px solid rgba(253,186,116,.30);
+      background:
+        linear-gradient(135deg,
+          rgba(245,158,11,.34),
+          rgba(249,115,22,.30)
+        );
       color:#fff7ed;
-      background:linear-gradient(135deg, rgba(245,158,11,.92), rgba(249,115,22,.86));
-      border:1px solid rgba(253,186,116,.44);
-      box-shadow:0 8px 18px rgba(249,115,22,.18);
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.22s ease;
+      box-shadow:
+        0 8px 18px rgba(249,115,22,.08),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
       white-space:nowrap;
     }
-
+    
     .batch-signup-btn:hover{
-      box-shadow:0 10px 24px rgba(249,115,22,.28);
+      transform:translateY(-1px);
+      background:
+        linear-gradient(135deg,
+          rgba(245,158,11,.44),
+          rgba(249,115,22,.40)
+        );
+      box-shadow:
+        0 10px 24px rgba(249,115,22,.14),
+        inset 0 1px 0 rgba(255,255,255,.08);
     }
-
+    
     .quick-signup-btn{
       flex:0 0 104px;
-      color:#ffffff;
-      background:linear-gradient(135deg, rgba(168,85,247,.95), rgba(124,58,237,.92));
-      border:1px solid rgba(196,181,253,.46);
-      box-shadow:0 8px 18px rgba(168,85,247,.22);
+      height:50px;
+      border-radius:16px;
+      border:1px solid rgba(196,181,253,.30);
+      background:
+        linear-gradient(135deg,
+          rgba(168,85,247,.34),
+          rgba(124,58,237,.30)
+        );
+      color:#fff;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.22s ease;
+      box-shadow:
+        0 8px 18px rgba(168,85,247,.08),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
       white-space:nowrap;
     }
-
+    
     .quick-signup-btn:hover{
-      box-shadow:0 10px 24px rgba(168,85,247,.32);
+      transform:translateY(-1px);
+      background:
+        linear-gradient(135deg,
+          rgba(168,85,247,.44),
+          rgba(124,58,237,.40)
+        );
+      box-shadow:
+        0 10px 24px rgba(168,85,247,.14),
+        inset 0 1px 0 rgba(255,255,255,.08);
     }
-
 
 
     .btn-batch-preset-manage{
