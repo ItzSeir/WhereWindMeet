@@ -20,6 +20,7 @@
   --accent2:#8b5cf6;
   --gold:#ffd76a;
   --shadow:rgba(0,0,0,.45);
+  --success:#34d399;
 }
 
 *{ box-sizing:border-box; }
@@ -156,20 +157,23 @@ body::after{
   padding:38px 20px 80px;
 }
 
-/* ===== Hero ===== */
+/* ===== PVPRegistration style header ===== */
 .page-header{
   position:relative;
-  text-align:center;
-  margin-bottom:48px;
-  padding:48px 24px 38px;
-  border-radius:36px;
+  margin-bottom:34px;
+  padding:30px;
+  border-radius:28px;
   overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
   background:
-    radial-gradient(circle at 24% 20%, rgba(110,168,255,.22), transparent 36%),
-    radial-gradient(circle at 76% 72%, rgba(139,92,246,.22), transparent 38%),
-    linear-gradient(135deg, rgba(255,255,255,.105), rgba(255,255,255,.025));
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 30px 80px rgba(0,0,0,.35);
+    radial-gradient(circle at 12% 20%, rgba(110,168,255,.22), transparent 32%),
+    radial-gradient(circle at 88% 18%, rgba(139,92,246,.20), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,.105), rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 22px 60px rgba(0,0,0,.32);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
 }
@@ -177,70 +181,95 @@ body::after{
 .page-header::before{
   content:"";
   position:absolute;
-  inset:1px;
-  border-radius:35px;
+  inset:0;
   background:
-    linear-gradient(120deg, rgba(255,255,255,.08), transparent 28%),
-    linear-gradient(to bottom, rgba(255,255,255,.04), transparent 55%);
+    linear-gradient(120deg, rgba(255,255,255,.13), transparent 32%),
+    linear-gradient(to bottom, rgba(255,255,255,.04), transparent 62%);
   pointer-events:none;
 }
 
-/* Removed ugly blue glow line */
 .page-header::after{
-  display:none;
+  content:"";
+  position:absolute;
+  right:-70px;
+  bottom:-70px;
+  width:210px;
+  height:210px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(110,168,255,.18), transparent 68%);
+  pointer-events:none;
+}
+
+.header-left,
+.header-status{
+  position:relative;
+  z-index:1;
 }
 
 .kicker{
-  position:relative;
   display:inline-flex;
   align-items:center;
-  gap:10px;
-  padding:10px 18px;
-  margin-bottom:18px;
+  gap:8px;
+  padding:8px 14px;
+  margin-bottom:12px;
   border-radius:999px;
-  color:var(--gold);
-  background:rgba(255,215,106,.08);
-  border:1px solid rgba(255,215,106,.25);
-  box-shadow:0 4px 20px rgba(255,215,106,.13);
+  color:#fff;
+  background:linear-gradient(135deg, rgba(110,168,255,.24), rgba(139,92,246,.22));
+  border:1px solid rgba(255,255,255,.14);
   font-size:12px;
   font-weight:800;
-  letter-spacing:2px;
-  z-index:1;
+  letter-spacing:1.5px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
 }
 
-.kicker::before,
-.kicker::after{
+.kicker::before{
   content:"";
-  width:6px;
-  height:6px;
+  width:7px;
+  height:7px;
   border-radius:50%;
   background:var(--gold);
-  box-shadow:0 0 14px rgba(255,215,106,.8);
+  box-shadow:0 0 14px rgba(255,215,106,.75);
 }
 
 .page-title{
-  position:relative;
-  margin:18px 0 6px;
-  font-size:clamp(32px, 6vw, 64px);
+  margin:0;
+  font-size:clamp(30px, 5vw, 52px);
   line-height:1.08;
   font-weight:900;
-  letter-spacing:2px;
-  background:linear-gradient(120deg, #fff 0%, #dbeafe 35%, #a5b4fc 65%, #8b5cf6 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:0 12px 30px rgba(0,0,0,.3);
-  z-index:1;
+  letter-spacing:1.5px;
+  color:#fff;
+  text-shadow:0 10px 26px rgba(0,0,0,.35);
 }
 
 .page-subtitle{
-  position:relative;
+  margin:12px 0 0;
   color:var(--muted);
-  margin:12px auto 0;
   font-size:14px;
-  letter-spacing:5px;
-  text-transform:uppercase;
-  opacity:.9;
-  z-index:1;
+  letter-spacing:1px;
+  text-transform:none;
+}
+
+.header-status{
+  flex-shrink:0;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:12px 16px;
+  border-radius:999px;
+  color:#dbeafe;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.13);
+  font-size:13px;
+  font-weight:800;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.status-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--success);
+  box-shadow:0 0 14px rgba(52,211,153,.85);
 }
 
 /* ===== filter ===== */
@@ -512,7 +541,7 @@ body::after{
   }
 
   .page-subtitle{
-    letter-spacing:4px;
+    letter-spacing:.5px;
   }
 
   .arrow{
@@ -574,6 +603,18 @@ body::after{
     font-weight:700 !important;
   }
 
+  .page-header{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:26px 20px;
+    border-radius:24px;
+  }
+
+  .header-status{
+    width:100%;
+    justify-content:center;
+  }
+
   .filter{
     position:relative;
     top:auto;
@@ -599,8 +640,6 @@ body::after{
 
   .page-header{
     margin-bottom:30px;
-    padding:36px 16px 30px;
-    border-radius:28px;
   }
 
   .kicker{
@@ -615,8 +654,8 @@ body::after{
   }
 
   .page-subtitle{
-    letter-spacing:3px;
     font-size:12px;
+    line-height:1.7;
   }
 
   .item{
@@ -676,9 +715,16 @@ body::after{
 
 <div class="container">
   <div class="page-header">
-    <div class="kicker">夢回花深處</div>
-    <h1 class="page-title">江湖回憶錄</h1>
-    <p class="page-subtitle">MEMORY GALLERY</p>
+    <div class="header-left">
+      <div class="kicker">夢回花深處</div>
+      <h1 class="page-title">江湖回憶錄</h1>
+      <p class="page-subtitle">幫會相簿・回憶紀錄・江湖日常</p>
+    </div>
+
+    <div class="header-status">
+      <span class="status-dot"></span>
+      <span>Gallery System</span>
+    </div>
   </div>
 
   <div class="filter">
