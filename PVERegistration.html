@@ -2113,7 +2113,7 @@ body {
         <div id="presetManagePlayerList" class="batch-player-list"></div>
         <button type="button" class="batch-add-row-btn" onclick="addPresetManageRow()">＋ 新的玩家</button>
 
-        <div class="batch-limit-note">儲存後會出現在「批量報名」中的常用批量選單。</div>
+        <div class="batch-limit-note">儲存後會出現在「批量報名」中的常用批量選單（注：每個瀏覽器都需設置一次)。</div>
       </div>
 
       <div class="confirm-modal-actions batch-modal-actions">
@@ -2174,6 +2174,7 @@ body {
           <div><strong style="color:var(--text);">隊伍規則</strong><br>每隊最多 10 人，且至少需要 2 個治療位。</div>
           <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單可使用快速報名。</div>
+          <div><strong style="color:var(--text);">批量隊伍資料</strong><br>你可以儲存不同的常用組合來批量報名，已節省時間。</div>
           <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
           <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增2周内的時間來提前報名。</div>
 
@@ -2321,7 +2322,7 @@ body {
       <div class="confirm-modal-title">我的資料</div>
 
       <label class="signup-label" for="myProfileName">我的名字</label>
-      <input id="myProfileName" class="signup-input" type="text" placeholder="用來高亮顯示 (你)" />
+      <input id="myProfileName" class="signup-input" type="text" placeholder="用於快速報名（注：每個瀏覽器都需設置一次)" />
 
       <label class="signup-label" for="myProfileRole">我的常用職業</label>
       <select id="myProfileRole" class="signup-select">
