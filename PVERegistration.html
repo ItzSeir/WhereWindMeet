@@ -1831,6 +1831,155 @@ body {
         min-height:56px;
       }
     }
+
+    /* ===== 手機版介面修正 + 長名字檢視 ===== */
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    .name-view-btn{
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      color:#dbeafe;
+      background:rgba(96,165,250,.16);
+      border:1px solid rgba(96,165,250,.28);
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+
+    .name-view-btn:hover{
+      background:rgba(96,165,250,.24);
+    }
+
+    .name-modal-name{
+      padding:14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      font-size:18px;
+      font-weight:800;
+      line-height:1.6;
+      word-break:break-all;
+    }
+
+    @media (max-width:768px){
+      html,
+      body{
+        max-width:100%;
+        overflow-x:hidden;
+      }
+
+      body{
+        padding-left:10px !important;
+        padding-right:10px !important;
+      }
+
+      .container,
+      .days,
+      .day-card,
+      .slot-list,
+      .slot-card{
+        width:100%;
+        max-width:100%;
+        min-width:0;
+      }
+
+      .hero{
+        border-radius:22px;
+      }
+
+      .title{
+        font-size:24px;
+      }
+
+      .chips{
+        gap:8px;
+      }
+
+      .chip{
+        font-size:12px;
+        padding:7px 10px;
+      }
+
+      .top-action-panel{
+        width:100%;
+        max-width:100%;
+      }
+
+      .day-card{
+        grid-template-columns:1fr !important;
+        padding:12px;
+        border-radius:22px;
+      }
+
+      .day-head{
+        width:100%;
+      }
+
+      .slot-card{
+        padding:12px;
+        border-radius:18px;
+        overflow:hidden;
+      }
+
+      .slot-top{
+        align-items:flex-start;
+      }
+
+      .slot-top-right{
+        gap:5px;
+      }
+
+      .slot-actions{
+        display:grid;
+        grid-template-columns:1fr 1fr 1fr;
+        gap:7px;
+      }
+
+      .add-btn,
+      .batch-signup-btn,
+      .quick-signup-btn{
+        width:100%;
+        min-width:0;
+        flex:auto;
+        font-size:12px;
+        padding:9px 6px;
+      }
+
+      .member{
+        min-width:0;
+        width:100%;
+      }
+
+      .member-left{
+        min-width:0;
+        overflow:hidden;
+      }
+
+      .member-text{
+        min-width:0;
+        overflow:hidden;
+      }
+
+      .member-main-row{
+        min-width:0;
+      }
+
+      .member-name{
+        max-width:100%;
+      }
+
+      .name-view-btn{
+        padding:4px 7px;
+        font-size:10px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2185,6 +2334,18 @@ body {
       <div class="confirm-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeMyProfileModal()">取消</button>
         <button type="button" class="signup-confirm-btn" onclick="saveMyProfileModal()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="nameViewModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">完整名字</div>
+      <div id="nameViewText" class="name-modal-name"></div>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeNameViewModal()">關閉</button>
       </div>
     </div>
   </div>
@@ -2715,6 +2876,7 @@ body {
       const dateTimeModal = document.getElementById("dateTimeModal");
       const batchSignupModal = document.getElementById("batchSignupModal");
       const batchPresetManageModal = document.getElementById("batchPresetManageModal");
+      const nameViewModal = document.getElementById("nameViewModal");
 
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -2794,6 +2956,10 @@ body {
 
       batchPresetManageModal.addEventListener("click", (e) => {
         if(e.target.id === "batchPresetManageModal") closeBatchPresetManageModal();
+      });
+
+      nameViewModal.addEventListener("click", (e) => {
+        if(e.target.id === "nameViewModal") closeNameViewModal();
       });
     }
 
@@ -3179,6 +3345,23 @@ body {
       render();
     };
 
+
+    window.openNameViewModal = (name) => {
+      const textEl = document.getElementById("nameViewText");
+      const modal = document.getElementById("nameViewModal");
+      if(textEl) textEl.textContent = name || "";
+      if(modal) modal.classList.add("show");
+    };
+
+    window.closeNameViewModal = () => {
+      const modal = document.getElementById("nameViewModal");
+      if(modal) modal.classList.remove("show");
+    };
+
+    function shouldUseNameViewButton(name){
+      return String(name || "").trim().length > 6;
+    }
+
     document.addEventListener("keydown", (e) => {
       const signupModal = document.getElementById("signupModal");
       const confirmModal = document.getElementById("confirmModal");
@@ -3191,6 +3374,7 @@ body {
       const dateTimeModal = document.getElementById("dateTimeModal");
       const batchSignupModal = document.getElementById("batchSignupModal");
       const batchPresetManageModal = document.getElementById("batchPresetManageModal");
+      const nameViewModal = document.getElementById("nameViewModal");
 
       if(signupModal.classList.contains("show")){
         if(e.key === "Escape") closeModal();
@@ -4082,7 +4266,14 @@ body {
 
                       <div class="member-text">
                         <div class="member-main-row">
-                          <span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>
+                          ${
+                            shouldUseNameViewButton(member.name)
+                              ? `
+                                <span class="member-name">${escapeHtml(String(member.name || "").slice(0, 6))}...${isSelf ? "（你）" : ""}</span>
+                                <button type="button" class="name-view-btn" data-action="view-member-name" data-name="${escapeHtml(member.name)}">檢視名字</button>
+                              `
+                              : `<span class="member-name">${escapeHtml(member.name)}${isSelf ? "（你）" : ""}</span>`
+                          }
                           ${member.tag ? `<span class="tag-pill">${escapeHtml(member.tag)}</span>` : ``}
                         </div>
                         ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
@@ -4142,6 +4333,14 @@ body {
     }
 
     function bindActions(){
+
+      document.querySelectorAll('[data-action="view-member-name"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          openNameViewModal(btn.dataset.name || "");
+        };
+      });
+
       document.querySelectorAll('[data-action="toggle-member-menu"]').forEach(btn => {
         btn.onclick = (e) => {
           e.stopPropagation();
