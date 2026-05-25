@@ -2566,6 +2566,10 @@ body {
       return teamType === "天賦團" ? "team-type-talent" : "team-type-normal";
     }
 
+    function normalizeName(name){
+      return String(name || "").trim();
+    }
+
     function escapeHtml(str){
       return String(str)
         .replaceAll("&","&amp;")
@@ -3019,7 +3023,7 @@ body {
 
     window.submitSignup = async () => {
       const nameInput = document.getElementById("playerName");
-      const name = nameInput.value.trim();
+      const name = normalizeName(nameInput.value);
       const role = selectedRoleValue;
 
       if(!name){
@@ -3044,7 +3048,7 @@ body {
 
       slot.members = Array.isArray(slot.members) ? slot.members : [];
 
-      if(slot.members.some(m => String(m.name).trim() === name)){
+      if(slot.members.some(m => normalizeName(m.name) === name)){
         alert("此隊伍已存在相同名字。");
         return;
       }
@@ -3523,7 +3527,7 @@ body {
 
     async function quickSignup(dateKey, slotIndex){
       const profile = getMyProfile();
-      const name = String(profile.name || "").trim();
+      const name = normalizeName(profile.name);
       const role = String(profile.role || "").trim();
 
       if(!name || !role){
@@ -3550,7 +3554,7 @@ body {
         return;
       }
 
-      if(slot.members.some(m => String(m.name).trim() === name)){
+      if(slot.members.some(m => normalizeName(m.name) === name)){
         alert("你已經在這個隊伍中。 ");
         return;
       }
@@ -3737,7 +3741,7 @@ body {
       const rows = getCurrentBatchRows();
       const players = rows
         .map(row => ({
-          name: (row.querySelector(".batch-name-input")?.value || "").trim(),
+          name: normalizeName(row.querySelector(".batch-name-input")?.value),
           role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()
         }))
         .filter(player => player.name);
@@ -3935,7 +3939,7 @@ body {
       const rows = Array.from(document.querySelectorAll("#presetManagePlayerList .batch-player-row"));
       const players = rows
         .map(row => ({
-          name: (row.querySelector(".batch-name-input")?.value || "").trim(),
+          name: normalizeName(row.querySelector(".batch-name-input")?.value),
           role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()
         }))
         .filter(player => player.name);
@@ -4011,7 +4015,7 @@ body {
       const rows = Array.from(document.querySelectorAll("#batchPlayerList .batch-player-row"));
       const players = rows
         .map(row => ({
-          name: (row.querySelector(".batch-name-input")?.value || "").trim(),
+          name: normalizeName(row.querySelector(".batch-name-input")?.value),
           role: (row.querySelector(".batch-role-select")?.value || "").trim()
         }))
         .filter(player => player.name || player.role);
@@ -4051,7 +4055,7 @@ body {
           continue;
         }
 
-        const nameKey = player.name.trim();
+        const nameKey = normalizeName(player.name);
         if(seenInInput.has(nameKey)){
           errors.push(`名單內重複：${player.name}`);
           continue;
@@ -4063,7 +4067,7 @@ body {
           continue;
         }
 
-        if(slot.members.some(m => String(m.name).trim() === player.name)){
+        if(slot.members.some(m => normalizeName(m.name) === normalizeName(player.name))){
           errors.push(`隊伍已有相同名字：${player.name}`);
           continue;
         }
@@ -4179,15 +4183,15 @@ body {
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
             const isRecommended = !isWeekend(date) && slot.time === "19:45";
-            const isMyTeam = !!savedName && members.some(m => String(m.name).trim() === savedName);
+            const isMyTeam = !!savedName && members.some(m => normalizeName(m.name) === normalizeName(savedName));
             const quickProfile = getMyProfile();
-            const quickName = String(quickProfile.name || "").trim();
+            const quickName = normalizeName(quickProfile.name);
             const quickRole = String(quickProfile.role || "").trim();
             const canQuickSignup = !!quickName
               && !!quickRole
               && members.length < CONFIG.maxPeople
               && allowedRoles.includes(quickRole)
-              && !members.some(m => String(m.name).trim() === quickName);
+              && !members.some(m => normalizeName(m.name) === quickName);
 
             const slotCardClass = members.length >= CONFIG.maxPeople
               ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
@@ -4257,7 +4261,7 @@ body {
               html += `<div class="empty-note">尚未有人報名</div>`;
             } else {
               sortedMembers.forEach(member => {
-                const isSelf = !!savedName && String(member.name).trim() === savedName;
+                const isSelf = !!savedName && normalizeName(member.name) === normalizeName(savedName);
                 const hasTag = !!String(member.tag || "").trim();
 
                 html += `
