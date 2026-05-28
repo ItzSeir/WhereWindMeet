@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>夢回花深處｜俠境報名</title>
+  <title>夢回花深處｜團隊報名</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -2013,6 +2013,101 @@ body {
       }
     }
 
+
+    /* ===== 團隊分類篩選 ===== */
+    .activity-filter-panel{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:0 0 18px;
+      padding:12px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 12px 28px rgba(0,0,0,.14);
+      backdrop-filter:blur(12px);
+    }
+
+    .activity-filter-title{
+      color:#eef2ff;
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.02em;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+
+    .activity-filter-title::before{
+      content:"";
+      width:9px;
+      height:9px;
+      border-radius:999px;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow:0 0 0 5px rgba(110,168,255,.10);
+    }
+
+    .activity-filter-buttons{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .activity-filter-btn{
+      color:#dbe7ff;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:9px 13px;
+      font-size:12px;
+      font-weight:900;
+      box-shadow:none;
+    }
+
+    .activity-filter-btn.active{
+      color:#fff;
+      background:linear-gradient(135deg, rgba(110,168,255,.82), rgba(139,92,246,.88));
+      border-color:rgba(255,255,255,.24);
+      box-shadow:0 10px 22px rgba(110,168,255,.18);
+    }
+
+    .team-type-tower{
+      color:#d8f7ff;
+      background:rgba(34,211,238,.16);
+      border-color:rgba(34,211,238,.30);
+    }
+
+    .activity-empty-note{
+      grid-column:1 / -1;
+      padding:16px;
+      border-radius:16px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      background:rgba(255,255,255,.045);
+      border:1px dashed rgba(255,255,255,.14);
+    }
+
+    @media (max-width:768px){
+      .activity-filter-panel{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .activity-filter-buttons{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .activity-filter-btn{
+        flex:1 1 calc(50% - 8px);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2020,25 +2115,26 @@ body {
   <div class="topbar-content">
     <div class="brand-group">
       <span class="brand-badge">夢回花深處</span>
-      <span class="brand-badge sub">俠境報名</span>
+      <span class="brand-badge sub">團隊報名</span>
     </div>
 
     <div class="nav">
       <a href="index.html" class="home-btn">首頁</a>
-      <a href="PVERegistration.html" class="active">俠境報名</a>
+      <a href="PVERegistration.html" class="active">團隊報名</a>
       <a href="gallery.html">江湖回憶錄</a>
     </div>
   </div>
 </nav>
   <div class="container">
     <section class="hero">
-      <h1 class="title">夢回花深處｜俠境報名清單</h1>
-      <p class="subtitle">目前進行測試中</p>
+      <h1 class="title">夢回花深處｜團隊報名清單</h1>
+      <p class="subtitle">俠境與眾志凌霄 10 人爬塔報名集中管理，可用上方篩選切換顯示。</p>
 
       <div class="chips">
         <span class="chip">筱風製作</span>
         <span class="chip">一隊最多10人</span>
         <span class="chip">每隊至少2個治療</span>
+        <span class="chip">支援俠境 / 爬塔分類</span>
       </div>
     </section>
 
@@ -2051,6 +2147,15 @@ body {
       <div class="top-action-right">
         <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">新增日期/時間</button>
         <button class="btn-ghost btn-refresh-soft" id="refreshBtn">整理日期</button>
+      </div>
+    </div>
+
+    <div class="activity-filter-panel" aria-label="團隊分類篩選">
+      <div class="activity-filter-title">篩選團隊類型</div>
+      <div class="activity-filter-buttons">
+        <button type="button" class="activity-filter-btn active" data-filter="all">全部</button>
+        <button type="button" class="activity-filter-btn" data-filter="pve">俠境</button>
+        <button type="button" class="activity-filter-btn" data-filter="tower">爬塔</button>
       </div>
     </div>
 
@@ -2171,11 +2276,18 @@ body {
   <div id="dateTimeModal" class="confirm-modal">
     <div class="confirm-modal-box datetime-modal-box">
       <div class="confirm-modal-title">新增日期 / 時間</div>
-      <p class="datetime-helper">玩家只能選擇今天起 2 週內的日期與時間。新增後會直接顯示在報名清單中。</p>
+      <p class="datetime-helper">玩家只能選擇今天起 2 週內的日期、時間與團類型。新增後會直接顯示在報名清單中。</p>
 
       <label class="signup-label">日期</label>
       <input id="customDateInput" type="hidden" />
       <div id="customDateGrid" class="datetime-grid"></div>
+
+      <label class="signup-label" for="dateTimeTeamTypeSelect" style="margin-top:18px;">團類型</label>
+      <select id="dateTimeTeamTypeSelect" class="signup-select">
+        <option value="普通團">俠境｜普通團</option>
+        <option value="天賦團">俠境｜天賦團</option>
+        <option value="爬塔">眾志凌霄｜10人爬塔</option>
+      </select>
 
       <label class="signup-label" for="customTimeInput" style="margin-top:18px;">時間</label>
       <div class="time-row">
@@ -2200,16 +2312,16 @@ body {
 
   <div id="infoModal" class="confirm-modal">
     <div class="confirm-modal-box">
-      <div class="confirm-modal-title">俠境報名說明</div>
+      <div class="confirm-modal-title">團隊報名說明</div>
       <div class="confirm-modal-text" style="margin-bottom:0;">
         <div style="display:grid; gap:12px;">
           <div><strong style="color:var(--text);">報名前請注意</strong><br>請先確認自己可出席的時間，再進行報名。若無法參加可回到這刪除自己的名字。</div>
-          <div><strong style="color:var(--text);">隊伍規則</strong><br>每隊最多 10 人，且至少需要 2 個治療位。</div>
+          <div><strong style="color:var(--text);">隊伍規則</strong><br>俠境與爬塔皆為每隊最多 10 人，且至少需要 2 個治療位。</div>
           <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
           <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單可使用快速報名。</div>
           <div><strong style="color:var(--text);">批量隊伍資料</strong><br>你可以儲存不同的常用組合來批量報名，已節省時間。</div>
           <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
-          <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增2周内的時間來提前報名。</div>
+          <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增2周內的時間來提前報名。隊伍類型可設定為「俠境｜普通團」、「俠境｜天賦團」或「眾志凌霄｜爬塔」。</div>
 
         </div>
       </div>
@@ -2283,8 +2395,9 @@ body {
 
       <label class="signup-label" for="teamTypeSelect">團類型</label>
       <select id="teamTypeSelect" class="signup-select">
-        <option value="普通團">普通團</option>
-        <option value="天賦團">天賦團</option>
+        <option value="普通團">俠境｜普通團</option>
+        <option value="天賦團">俠境｜天賦團</option>
+        <option value="爬塔">眾志凌霄｜10人爬塔</option>
       </select>
 
       <label class="signup-label" for="teamDescriptionInput">隊伍說明</label>
@@ -2448,6 +2561,8 @@ body {
     let currentDateTimeEdit = null;
     let currentBatchSignup = null;
     let editingBatchPresetIndex = -1;
+    let currentActivityFilter = localStorage.getItem("registration_activity_filter") || "all";
+    if(!["all","pve","tower"].includes(currentActivityFilter)) currentActivityFilter = "all";
 
     function getMyProfile(){
       return {
@@ -2596,7 +2711,51 @@ body {
     }
 
     function teamTypeClass(teamType){
-      return teamType === "天賦團" ? "team-type-talent" : "team-type-normal";
+      if(teamType === "天賦團") return "team-type-talent";
+      if(teamType === "爬塔") return "team-type-tower";
+      return "team-type-normal";
+    }
+
+    function teamTypeLabel(teamType){
+      if(teamType === "天賦團") return "俠境｜天賦團";
+      if(teamType === "爬塔") return "眾志凌霄｜爬塔";
+      return "俠境｜普通團";
+    }
+
+    function teamTypeMatchesFilter(teamType){
+      const t = teamType || "普通團";
+      if(currentActivityFilter === "tower") return t === "爬塔";
+      if(currentActivityFilter === "pve") return t !== "爬塔";
+      return true;
+    }
+
+    function setDateTimeTeamTypeDefault(){
+      const select = document.getElementById("dateTimeTeamTypeSelect");
+      if(!select) return;
+      select.value = currentActivityFilter === "tower" ? "爬塔" : "普通團";
+    }
+
+    function syncFilterAfterNewSlot(teamType){
+      const targetFilter = teamType === "爬塔" ? "tower" : "pve";
+      if(currentActivityFilter !== "all" && currentActivityFilter !== targetFilter){
+        currentActivityFilter = targetFilter;
+        localStorage.setItem("registration_activity_filter", currentActivityFilter);
+        document.querySelectorAll(".activity-filter-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.filter === currentActivityFilter);
+        });
+      }
+    }
+
+    function bindActivityFilterButtons(){
+      document.querySelectorAll(".activity-filter-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.filter === currentActivityFilter);
+        btn.onclick = () => {
+          currentActivityFilter = btn.dataset.filter || "all";
+          localStorage.setItem("registration_activity_filter", currentActivityFilter);
+          document.querySelectorAll(".activity-filter-btn").forEach(b => b.classList.toggle("active", b === btn));
+          render();
+        };
+      });
     }
 
     function normalizeName(name){
@@ -3494,10 +3653,11 @@ body {
       dateInput.value = todayKey;
       renderDateChoices(todayKey);
       selectQuickTime("19:45");
+      setDateTimeTeamTypeDefault();
       limitText.textContent = `可選日期：${todayKey} 至 ${maxKey}`;
 
       if(modalTitle) modalTitle.textContent = "新增日期 / 時間";
-      if(helperText) helperText.textContent = "玩家只能選擇今天起 2 週內的日期與時間。新增後會直接顯示在報名清單中。";
+      if(helperText) helperText.textContent = "玩家只能選擇今天起 2 週內的日期、時間與團類型。新增後會直接顯示在報名清單中。";
 
       document.getElementById("dateTimeModal").classList.add("show");
     }
@@ -3510,6 +3670,7 @@ body {
     window.saveDateTimeSlot = async () => {
       const dateKey = document.getElementById("customDateInput").value;
       const time = document.getElementById("customTimeInput").value;
+      const teamType = document.getElementById("dateTimeTeamTypeSelect")?.value || "普通團";
       const selectedDate = parseDateKey(dateKey);
       const today = getTodayStart();
       const twoWeekEnd = getTwoWeekEnd();
@@ -3542,12 +3703,13 @@ body {
         instance: nextInstance,
         members: [],
         isCustom: true,
-        teamType: "普通團",
-        description: ""
+        teamType,
+        description: teamType === "爬塔" ? "眾志凌霄 10 人爬塔" : ""
       });
 
       sortSlots(dayData.slots);
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      syncFilterAfterNewSlot(teamType);
       closeDateTimeModal();
     };
 
@@ -4156,6 +4318,7 @@ body {
       dateInput.value = dateKey;
       renderDateChoices(dateKey);
       selectQuickTime("19:45");
+      setDateTimeTeamTypeDefault();
 
       const todayKey = formatDate(getTodayStart());
       const maxKey = formatDate(getTwoWeekEnd());
@@ -4217,7 +4380,15 @@ body {
         `;
 
         if(dayData && Array.isArray(dayData.slots)){
-          dayData.slots.forEach((slot, slotIndex) => {
+          const filteredSlots = dayData.slots
+            .map((slot, slotIndex) => ({ slot, slotIndex }))
+            .filter(item => teamTypeMatchesFilter(item.slot.teamType || "普通團"));
+
+          if(filteredSlots.length === 0){
+            html += `<div class="activity-empty-note">目前這一天沒有符合篩選的團隊。</div>`;
+          }
+
+          filteredSlots.forEach(({ slot, slotIndex }) => {
             const members = Array.isArray(slot.members) ? slot.members : [];
             const sortedMembers = getSortedMembersForDisplay(members);
             const dpsCount = countRole(members, "輸出");
@@ -4258,7 +4429,7 @@ body {
                     </div>
                     <div class="slot-meta-pills">
                       <span class="team-type-pill ${teamTypeClass(slot.teamType || "普通團")}">
-                        ${slot.teamType || "普通團"}
+                        ${teamTypeLabel(slot.teamType || "普通團")}
                       </span>
                     </div>
                   </div>
