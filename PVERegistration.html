@@ -6936,6 +6936,440 @@ body {
       border:1px solid rgba(255,255,255,.12) !important;
     }
 
+  
+
+    /* ===== v23：隊員卡緊湊化 + 標籤說明 Tooltip 風格 ===== */
+    .member-list{
+      gap:8px !important;
+    }
+
+    .member{
+      min-height:42px !important;
+      padding:8px 10px !important;
+      align-items:center !important;
+      border-radius:13px !important;
+    }
+
+    .member-left{
+      min-width:0 !important;
+      overflow:hidden !important;
+    }
+
+    .member-inline-row{
+      display:flex !important;
+      align-items:center !important;
+      gap:8px !important;
+      min-width:0 !important;
+      width:100% !important;
+    }
+
+    .member-inline-row .role-badge{
+      flex:0 0 auto !important;
+      margin:0 !important;
+    }
+
+    .member-inline-row .member-name{
+      display:block !important;
+      flex:1 1 auto !important;
+      min-width:0 !important;
+      max-width:100% !important;
+      color:#ffffff !important;
+      font-size:14px !important;
+      font-weight:900 !important;
+      line-height:1.2 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    .member-self .member-inline-row .member-name{
+      color:#ffe8a6 !important;
+    }
+
+    .member-top-line,
+    .member-text,
+    .member-main-row,
+    .member-note,
+    .member .tag-pill{
+      display:none !important;
+    }
+
+    .slot-tag-strip{
+      display:flex !important;
+      flex-wrap:wrap !important;
+      align-items:center !important;
+      gap:8px !important;
+      padding:10px 12px !important;
+      border-radius:16px !important;
+      background:rgba(255,255,255,.045) !important;
+      border:1px solid rgba(255,255,255,.075) !important;
+    }
+
+    .slot-tag-strip::before{
+      content:"隊伍標籤（點擊查看說明）" !important;
+      width:100% !important;
+      flex:0 0 100% !important;
+      margin:0 0 1px !important;
+      color:#9fb0d3 !important;
+      font-size:11px !important;
+      font-weight:950 !important;
+      letter-spacing:.04em !important;
+    }
+
+    .slot-tag-chip{
+      min-height:30px !important;
+      padding:7px 12px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:950 !important;
+    }
+
+    .slot-tag-chip::before{
+      display:none !important;
+    }
+
+    .slot-no-tag-note{
+      color:#7f8cab !important;
+      font-size:12px !important;
+      font-weight:800 !important;
+    }
+
+    #tagInfoModal .confirm-modal-box{
+      width:min(500px, 100%) !important;
+      border-radius:22px !important;
+      padding:18px !important;
+      background:
+        linear-gradient(180deg, rgba(28,38,60,.98), rgba(15,23,39,.98)) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 24px 60px rgba(0,0,0,.48) !important;
+    }
+
+    #tagInfoModal .confirm-modal-title{
+      margin:0 0 12px !important;
+      font-size:20px !important;
+      font-weight:950 !important;
+    }
+
+    #tagInfoModal .confirm-modal-title::before,
+    .tag-info-player::before,
+    .tag-info-name::before{
+      display:none !important;
+      content:none !important;
+    }
+
+    .tag-info-item{
+      padding:0 !important;
+      border-radius:18px !important;
+      overflow:hidden !important;
+      background:rgba(255,255,255,.055) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+      box-shadow:none !important;
+    }
+
+    .tag-info-name{
+      display:block !important;
+      margin:0 !important;
+      padding:14px 16px 10px !important;
+      border-radius:0 !important;
+      color:#ffffff !important;
+      background:transparent !important;
+      border:none !important;
+      font-size:18px !important;
+      font-weight:950 !important;
+    }
+
+    .tag-info-note{
+      margin:0 16px 14px !important;
+      padding:12px 13px !important;
+      border-radius:14px !important;
+      color:#dbe7ff !important;
+      background:rgba(15,23,42,.38) !important;
+      border:1px solid rgba(255,255,255,.08) !important;
+      font-size:13px !important;
+      line-height:1.65 !important;
+      font-weight:750 !important;
+    }
+
+    .tag-info-list{
+      margin:0 !important;
+      padding:13px 16px 15px !important;
+      border-top:1px solid rgba(255,255,255,.09) !important;
+      display:flex !important;
+      flex-wrap:wrap !important;
+      gap:8px !important;
+      background:rgba(255,255,255,.025) !important;
+    }
+
+    .tag-info-list::before{
+      content:"使用玩家" !important;
+      width:100% !important;
+      color:#9fb0d3 !important;
+      font-size:12px !important;
+      font-weight:950 !important;
+      letter-spacing:.03em !important;
+    }
+
+    .tag-info-player{
+      margin:0 !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      padding:7px 10px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      color:#eef2ff !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+    }
+
+    @media (max-width:768px){
+      .member{
+        min-height:40px !important;
+        padding:8px 9px !important;
+      }
+      .member-inline-row .member-name{
+        font-size:13px !important;
+      }
+      .slot-tag-strip{
+        padding:9px 10px !important;
+      }
+    }
+
+  
+
+    /* ===== v24：隊員卡微調、按鈕縮小、右下角新增縮小、名字旁標籤回歸 ===== */
+    .member{
+      min-height:48px !important;
+      padding:9px 10px !important;
+    }
+
+    .member-inline-row{
+      gap:8px !important;
+      min-height:28px !important;
+    }
+
+    .member-inline-row .member-name{
+      font-size:14.5px !important;
+      line-height:1.35 !important;
+    }
+
+    .member-tag-inline{
+      flex:0 0 auto !important;
+      max-width:92px !important;
+      height:24px !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      padding:3px 8px !important;
+      border-radius:999px !important;
+      color:#dbeafe !important;
+      background:rgba(110,168,255,.14) !important;
+      border:1px solid rgba(110,168,255,.26) !important;
+      font-size:11px !important;
+      font-weight:900 !important;
+      line-height:1 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      cursor:pointer !important;
+    }
+
+    .member-tag-inline:hover{
+      color:#fff !important;
+      background:rgba(110,168,255,.24) !important;
+      border-color:rgba(147,197,253,.40) !important;
+      transform:none !important;
+    }
+
+    .slot-actions{
+      grid-template-columns:minmax(0, 1.4fr) minmax(98px, .72fr) minmax(98px, .72fr) !important;
+      gap:8px !important;
+      margin-top:10px !important;
+    }
+
+    .add-btn,
+    .batch-signup-btn,
+    .quick-signup-btn{
+      min-height:40px !important;
+      padding:8px 10px !important;
+      border-radius:13px !important;
+      font-size:13px !important;
+    }
+
+    .fab-add-team{
+      width:50px !important;
+      height:50px !important;
+      right:18px !important;
+      bottom:18px !important;
+      font-size:25px !important;
+      box-shadow:0 14px 34px rgba(110,168,255,.24), 0 0 0 5px rgba(110,168,255,.09) !important;
+    }
+
+    .fab-add-team:hover{
+      transform:translateY(-2px) scale(1.02) !important;
+    }
+
+    @media (max-width:768px){
+      .member{ min-height:48px !important; padding:9px 9px !important; }
+      .member-inline-row .member-name{ font-size:13.8px !important; }
+      .member-tag-inline{ max-width:72px !important; height:23px !important; font-size:10px !important; padding:3px 7px !important; }
+      .slot-actions{ grid-template-columns:1fr 1fr 1fr !important; gap:7px !important; }
+      .add-btn,.batch-signup-btn,.quick-signup-btn{ min-height:38px !important; font-size:12px !important; padding:8px 6px !important; }
+      .fab-add-team{ width:46px !important; height:46px !important; right:14px !important; bottom:14px !important; font-size:23px !important; }
+    }
+
+
+    /* ===== v25：修正名字旁標籤卡住/貼到選單問題 ===== */
+    .member{
+      gap:10px !important;
+      overflow:visible !important;
+    }
+
+    .member-left{
+      flex:1 1 auto !important;
+      min-width:0 !important;
+      max-width:calc(100% - 46px) !important;
+      overflow:hidden !important;
+    }
+
+    .member-inline-row{
+      width:100% !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:flex-start !important;
+      gap:7px !important;
+      overflow:hidden !important;
+    }
+
+    .member-inline-row .role-badge{
+      flex:0 0 auto !important;
+    }
+
+    .member-inline-row .member-name{
+      flex:0 1 auto !important;
+      min-width:24px !important;
+      max-width:calc(100% - 92px) !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      white-space:nowrap !important;
+    }
+
+    .member-tag-inline{
+      position:static !important;
+      flex:0 1 auto !important;
+      max-width:72px !important;
+      min-width:0 !important;
+      margin-left:0 !important;
+      margin-right:2px !important;
+      z-index:1 !important;
+      transform:none !important;
+    }
+
+    .member-menu{
+      flex:0 0 34px !important;
+      width:34px !important;
+      display:flex !important;
+      justify-content:flex-end !important;
+      z-index:5 !important;
+    }
+
+    .menu-trigger{
+      width:32px !important;
+      height:32px !important;
+      padding:0 !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+
+    @media (max-width:768px){
+      .member-left{ max-width:calc(100% - 42px) !important; }
+      .member-inline-row{ gap:6px !important; }
+      .member-inline-row .member-name{ max-width:calc(100% - 78px) !important; }
+      .member-tag-inline{ max-width:58px !important; }
+      .member-menu{ flex-basis:32px !important; width:32px !important; }
+      .menu-trigger{ width:30px !important; height:30px !important; }
+    }
+
+
+    /* ===== v26：長名字才顯示「全名」按鈕 ===== */
+    .member-inline-row .member-name{
+      flex:1 1 auto !important;
+      min-width:0 !important;
+      max-width:none !important;
+    }
+
+    .name-view-btn{
+      flex:0 0 auto !important;
+      height:24px !important;
+      min-height:0 !important;
+      padding:3px 8px !important;
+      margin:0 !important;
+      border-radius:999px !important;
+      font-size:10.5px !important;
+      line-height:1 !important;
+      font-weight:950 !important;
+      color:#dbeafe !important;
+      background:rgba(96,165,250,.16) !important;
+      border:1px solid rgba(147,197,253,.28) !important;
+      white-space:nowrap !important;
+      align-items:center !important;
+      justify-content:center !important;
+      transform:none !important;
+    }
+
+    .name-view-btn:hover{
+      color:#fff !important;
+      background:rgba(96,165,250,.26) !important;
+      border-color:rgba(147,197,253,.45) !important;
+      transform:none !important;
+    }
+
+    .member-tag-inline{
+      max-width:62px !important;
+    }
+
+    .member-menu{
+      flex:0 0 32px !important;
+      width:32px !important;
+    }
+
+    #nameViewModal .confirm-modal-box{
+      width:min(420px, 100%) !important;
+      border-radius:22px !important;
+      padding:18px !important;
+      background:linear-gradient(180deg, rgba(28,38,60,.98), rgba(15,23,39,.98)) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 24px 60px rgba(0,0,0,.48) !important;
+    }
+
+    #nameViewModal .confirm-modal-title{
+      margin-bottom:12px !important;
+      font-size:20px !important;
+      font-weight:950 !important;
+    }
+
+    #nameViewModal .name-modal-name{
+      padding:14px 15px !important;
+      border-radius:16px !important;
+      font-size:17px !important;
+      font-weight:900 !important;
+      line-height:1.55 !important;
+      color:#fff !important;
+      background:rgba(255,255,255,.065) !important;
+      border:1px solid rgba(255,255,255,.11) !important;
+      word-break:break-word !important;
+    }
+
+    @media (max-width:768px){
+      .name-view-btn{
+        height:23px !important;
+        padding:3px 7px !important;
+        font-size:10px !important;
+      }
+      .member-tag-inline{ max-width:54px !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -8947,16 +9381,18 @@ body {
 
     function adjustNameViewButtons(){
       document.querySelectorAll(".member-name").forEach(nameEl => {
-        const row = nameEl.closest(".member-main-row");
+        const row = nameEl.closest(".member-inline-row") || nameEl.closest(".member-main-row");
         const btn = row?.querySelector(".name-view-btn");
         if(!btn) return;
 
+        const fullName = (nameEl.dataset.fullName || nameEl.textContent || "").trim();
+        nameEl.setAttribute("title", fullName);
         btn.style.display = "none";
-        nameEl.style.maxWidth = "";
 
         requestAnimationFrame(() => {
           const isOverflow = nameEl.scrollWidth > nameEl.clientWidth + 2;
-          btn.style.display = isOverflow ? "inline-flex" : "none";
+          const isLongName = Array.from(fullName.replace(/（你）$/g, "")).length > 8;
+          btn.style.display = (isOverflow || isLongName) ? "inline-flex" : "none";
         });
       });
     }
@@ -9900,25 +10336,23 @@ body {
             if(sortedMembers.length === 0){
               html += `<div class="empty-note">尚未有人報名</div>`;
             } else {
+              const slotTagSummaryMap = new Map(getSlotTagSummary(sortedMembers).map(item => [String(item.tag || "").trim(), item]));
               sortedMembers.forEach(member => {
                 const isSelf = !!savedName && normalizeName(member.name) === normalizeName(savedName);
-                const hasTag = !!String(member.tag || "").trim();
+                const memberTagText = String(member.tag || "").trim();
+                const hasTag = !!memberTagText;
+                const memberTagPayload = hasTag ? encodeURIComponent(JSON.stringify(slotTagSummaryMap.get(memberTagText) || { tag: memberTagText, note: String(member.note || "").trim(), players:[{ name:String(member.name || "").trim(), role:String(member.role || "").trim() }] })) : "";
 
                 html += `
                   <div class="member${isSelf ? " member-self" : ""}${hasTag ? " member-tagged" : ""}">
                     <div class="member-left">
-                      <div class="member-top-line">
+                      <div class="member-inline-row">
                         <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
-                        ${member.tag ? `<span class="tag-pill" title="${escapeHtml(member.tag)}">${escapeHtml(member.tag)}</span>` : ``}
-                      </div>
-
-                      <div class="member-text">
-                        <div class="member-main-row">
-                          <span class="member-name" data-full-name="${escapeHtml(member.name)}">
-                            ${escapeHtml(member.name)}${isSelf ? "（你）" : ""}
-                          </span>
-                          <button type="button" class="name-view-btn" style="display:none;" data-action="view-member-name" data-name="${escapeHtml(member.name)}">檢視名字</button>
-                        </div>
+                        <span class="member-name" title="${escapeHtml(member.name)}" data-full-name="${escapeHtml(member.name)}">
+                          ${escapeHtml(member.name)}${isSelf ? "（你）" : ""}
+                        </span>
+                        ${hasTag ? `<button type="button" class="member-tag-inline" title="點擊查看標籤說明" data-action="view-member-tag" data-tag-payload="${memberTagPayload}">${escapeHtml(memberTagText)}</button>` : ``}
+                        <button type="button" class="name-view-btn" style="display:none;" data-action="view-member-name" data-name="${escapeHtml(member.name)}">全名</button>
                       </div>
                     </div>
 
@@ -9985,7 +10419,7 @@ body {
         };
       });
 
-      document.querySelectorAll('[data-action="view-slot-tag"], [data-action="view-all-slot-tags"]').forEach(btn => {
+      document.querySelectorAll('[data-action="view-slot-tag"], [data-action="view-all-slot-tags"], [data-action="view-member-tag"]').forEach(btn => {
         btn.onclick = (e) => {
           e.stopPropagation();
           openTagInfoModal(btn.dataset.tagPayload || "", btn.dataset.action === "view-all-slot-tags");
