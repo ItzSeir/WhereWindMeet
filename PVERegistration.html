@@ -4966,7 +4966,7 @@ body {
     }
 
     .slot-tag-strip::before{
-      content:"標籤";
+      content:"標籤（點擊查看說明）";
       flex:0 0 auto;
       color:#91a1c3;
       font-size:12px;
@@ -6744,6 +6744,198 @@ body {
       }
     }
 
+  
+
+    /* ===== v22：標籤區與標籤說明美化 ===== */
+    .slot-tag-strip{
+      display:flex !important;
+      flex-wrap:wrap !important;
+      align-items:flex-start !important;
+      gap:8px !important;
+      padding-top:2px !important;
+    }
+
+    .slot-tag-strip::before{
+      content:"標籤說明｜點擊標籤查看" !important;
+      width:100% !important;
+      flex:0 0 100% !important;
+      margin:0 0 2px !important;
+      color:#9fb0d3 !important;
+      font-size:11px !important;
+      font-weight:950 !important;
+      letter-spacing:.04em !important;
+      opacity:.92 !important;
+    }
+
+    .slot-tag-chip{
+      position:relative !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:6px !important;
+      max-width:150px !important;
+      min-height:32px !important;
+      padding:7px 12px !important;
+      border-radius:999px !important;
+      color:#eef2ff !important;
+      background:linear-gradient(135deg, rgba(129,140,248,.23), rgba(99,102,241,.14)) !important;
+      border:1px solid rgba(165,180,252,.34) !important;
+      box-shadow:0 8px 18px rgba(99,102,241,.08), inset 0 1px 0 rgba(255,255,255,.08) !important;
+    }
+
+    .slot-tag-chip::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:#a5b4fc;
+      box-shadow:0 0 0 4px rgba(165,180,252,.12);
+      flex:0 0 auto;
+    }
+
+    .slot-tag-chip:hover{
+      background:linear-gradient(135deg, rgba(129,140,248,.34), rgba(99,102,241,.22)) !important;
+      border-color:rgba(199,210,254,.46) !important;
+      box-shadow:0 10px 22px rgba(99,102,241,.14), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    }
+
+    .slot-tag-chip.more{
+      color:#f5e8ff !important;
+      background:linear-gradient(135deg, rgba(168,85,247,.24), rgba(124,58,237,.14)) !important;
+      border-color:rgba(196,181,253,.34) !important;
+    }
+
+    #tagInfoModal .confirm-modal-box{
+      width:min(520px, 100%) !important;
+      border-radius:24px !important;
+      padding:20px !important;
+      background:
+        radial-gradient(circle at top right, rgba(139,92,246,.20), transparent 38%),
+        radial-gradient(circle at top left, rgba(110,168,255,.16), transparent 36%),
+        linear-gradient(180deg, rgba(24,34,56,.98), rgba(14,22,38,.98)) !important;
+      border:1px solid rgba(255,255,255,.13) !important;
+      box-shadow:0 28px 70px rgba(0,0,0,.50) !important;
+    }
+
+    #tagInfoModal .confirm-modal-title{
+      margin:0 0 14px !important;
+      font-size:22px !important;
+      font-weight:950 !important;
+      letter-spacing:.02em !important;
+      display:flex !important;
+      align-items:center !important;
+      gap:10px !important;
+    }
+
+    #tagInfoModal .confirm-modal-title::before{
+      content:"i";
+      width:28px;
+      height:28px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:#dbeafe;
+      font-size:14px;
+      font-weight:950;
+      background:linear-gradient(135deg, rgba(110,168,255,.36), rgba(139,92,246,.30));
+      border:1px solid rgba(191,219,254,.26);
+      box-shadow:0 8px 18px rgba(110,168,255,.14);
+    }
+
+    .tag-info-item{
+      padding:16px !important;
+      border-radius:20px !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045)) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05) !important;
+    }
+
+    .tag-info-name{
+      display:inline-flex !important;
+      align-items:center !important;
+      gap:8px !important;
+      margin:0 0 12px !important;
+      padding:8px 12px !important;
+      border-radius:999px !important;
+      font-size:15px !important;
+      font-weight:950 !important;
+      color:#e0f2fe !important;
+      background:rgba(56,189,248,.13) !important;
+      border:1px solid rgba(125,211,252,.26) !important;
+    }
+
+    .tag-info-name::before{
+      content:"標籤";
+      color:#bae6fd;
+      font-size:11px;
+      font-weight:950;
+      opacity:.82;
+    }
+
+    .tag-info-note{
+      padding:13px 14px !important;
+      border-radius:16px !important;
+      color:#eef2ff !important;
+      background:rgba(15,23,42,.35) !important;
+      border:1px solid rgba(255,255,255,.08) !important;
+      font-size:14px !important;
+      line-height:1.7 !important;
+      font-weight:750 !important;
+      white-space:pre-wrap !important;
+      word-break:break-word !important;
+    }
+
+    .tag-info-list{
+      display:flex !important;
+      flex-wrap:wrap !important;
+      gap:8px !important;
+      margin-top:13px !important;
+      padding-top:13px !important;
+      border-top:1px solid rgba(255,255,255,.09) !important;
+    }
+
+    .tag-info-list::before{
+      content:"使用玩家";
+      width:100%;
+      color:#9fb0d3;
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:.03em;
+    }
+
+    .tag-info-player{
+      margin:0 !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      gap:6px !important;
+      padding:7px 10px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      color:#fff !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+    }
+
+    .tag-info-player::before{
+      content:"•";
+      color:#a5b4fc;
+      font-size:18px;
+      line-height:1;
+    }
+
+    #tagInfoModal .confirm-modal-actions{
+      margin-top:14px !important;
+    }
+
+    #tagInfoModal .confirm-cancel-btn{
+      min-height:44px !important;
+      border-radius:16px !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+    }
+
   </style>
 </head>
 <body>
@@ -7032,8 +7224,8 @@ body {
       <label class="signup-label" for="tagInput">標籤</label>
       <input id="tagInput" class="signup-input" type="text" placeholder="例如：拿旗 / 麻刀兵 / 補位" />
 
-      <label class="signup-label" for="noteInput">備註</label>
-      <textarea id="noteInput" class="signup-textarea" placeholder="例如：1號位、引球、先手開怪"></textarea>
+      <label class="signup-label" for="noteInput">說明（同標籤自動同步）</label>
+      <textarea id="noteInput" class="signup-textarea" placeholder="例如：1號位、引球、先手開怪；相同標籤會共用這段說明"></textarea>
 
       <div class="confirm-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeTagModal()">取消</button>
@@ -8387,8 +8579,14 @@ body {
       if(!member) return;
 
       currentTagEdit = { dateKey, slotIndex, memberIndex };
-      document.getElementById("tagInput").value = member.tag || "";
-      document.getElementById("noteInput").value = member.note || "";
+      const currentTag = String(member.tag || "").trim();
+      const sameTagMember = currentTag
+        ? (globalData?.[dateKey]?.slots?.[slotIndex]?.members || []).find(m =>
+            String(m.tag || "").trim() === currentTag && String(m.note || "").trim()
+          )
+        : null;
+      document.getElementById("tagInput").value = currentTag;
+      document.getElementById("noteInput").value = sameTagMember?.note || member.note || "";
       document.getElementById("tagModal").classList.add("show");
     }
 
@@ -8412,6 +8610,15 @@ body {
 
       member.tag = tag;
       member.note = note;
+
+      // 相同標籤共用同一段說明，避免同一個標籤點開後出現多個不同說明。
+      if(tag){
+        (dayData.slots[slotIndex].members || []).forEach(m => {
+          if(String(m.tag || "").trim() === tag){
+            m.note = note;
+          }
+        });
+      }
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       closeTagModal();
@@ -8658,14 +8865,16 @@ body {
       (members || []).forEach(member => {
         const tag = String(member.tag || "").trim();
         if(!tag) return;
-        if(!map.has(tag)) map.set(tag, []);
-        map.get(tag).push({
+        if(!map.has(tag)) map.set(tag, { tag, note:"", players:[] });
+        const item = map.get(tag);
+        const note = String(member.note || "").trim();
+        if(!item.note && note) item.note = note;
+        item.players.push({
           name: String(member.name || "").trim(),
-          role: String(member.role || "").trim(),
-          note: String(member.note || "").trim()
+          role: String(member.role || "").trim()
         });
       });
-      return Array.from(map.entries()).map(([tag, players]) => ({ tag, players }));
+      return Array.from(map.values());
     }
 
     function renderSlotTagStrip(members){
@@ -8676,7 +8885,7 @@ body {
 
       const shown = tags.slice(0, 3).map(item => {
         const payload = encodeURIComponent(JSON.stringify(item));
-        return `<button type="button" class="slot-tag-chip" data-action="view-slot-tag" data-tag-payload="${payload}">${escapeHtml(item.tag)}</button>`;
+        return `<button type="button" class="slot-tag-chip" title="點擊查看說明" data-action="view-slot-tag" data-tag-payload="${payload}">${escapeHtml(item.tag)}</button>`;
       }).join("");
 
       const more = tags.length > 3
@@ -8708,12 +8917,10 @@ body {
       content.innerHTML = list.map(item => `
         <div class="tag-info-item">
           <div class="tag-info-name">${escapeHtml(item.tag || "標籤")}</div>
+          <div class="tag-info-note">${item.note ? escapeHtml(item.note) : "尚未填寫說明。"}</div>
           <div class="tag-info-list">
             ${(item.players || []).map(player => `
-              <div class="tag-info-item">
-                <div class="tag-info-player">${escapeHtml(player.name || "未命名")}｜${escapeHtml(player.role || "")}</div>
-                <div class="tag-info-note">${player.note ? escapeHtml(player.note) : "尚未填寫說明。"}</div>
-              </div>
+              <div class="tag-info-player">${escapeHtml(player.name || "未命名")}｜${escapeHtml(player.role || "")}</div>
             `).join("")}
           </div>
         </div>
@@ -9712,7 +9919,6 @@ body {
                           </span>
                           <button type="button" class="name-view-btn" style="display:none;" data-action="view-member-name" data-name="${escapeHtml(member.name)}">檢視名字</button>
                         </div>
-                        ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
                       </div>
                     </div>
 
