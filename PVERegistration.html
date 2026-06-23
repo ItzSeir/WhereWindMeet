@@ -2113,6 +2113,35 @@ body {
       align-items:end;
     }
 
+
+
+    .tower-option-panel{
+      display:none;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      background:linear-gradient(135deg, rgba(34,211,238,.10), rgba(139,92,246,.08));
+      border:1px solid rgba(34,211,238,.18);
+    }
+
+    .tower-option-panel.show{
+      display:grid;
+    }
+
+    .tower-meta-pill{
+      color:#d8f7ff;
+      background:rgba(34,211,238,.14);
+      border-color:rgba(34,211,238,.30);
+    }
+
+    @media (max-width:768px){
+      .tower-option-panel{
+        grid-template-columns:1fr;
+      }
+    }
+
     .team-type-five{
       color:#dcfce7;
       background:rgba(52,211,153,.14);
@@ -2178,6 +2207,4543 @@ body {
       }
     }
 
+
+    /* ===== UI/UX 強化：統計列、搜尋、Sticky 篩選、FAB、缺職提示 ===== */
+    .dashboard-panel{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin:0 0 16px;
+    }
+
+    .dashboard-card{
+      position:relative;
+      overflow:hidden;
+      padding:14px 15px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
+      border:1px solid rgba(255,255,255,.11);
+      box-shadow:0 12px 28px rgba(0,0,0,.14);
+      backdrop-filter:blur(12px);
+    }
+
+    .dashboard-card::after{
+      content:"";
+      position:absolute;
+      right:-28px;
+      top:-28px;
+      width:76px;
+      height:76px;
+      border-radius:999px;
+      background:rgba(110,168,255,.12);
+      pointer-events:none;
+    }
+
+    .dashboard-label{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.03em;
+    }
+
+    .dashboard-value{
+      margin-top:6px;
+      color:#fff;
+      font-size:28px;
+      line-height:1;
+      font-weight:900;
+    }
+
+    .dashboard-sub{
+      margin-top:7px;
+      color:#b8c3df;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .quick-search-panel{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:0 0 16px;
+      padding:10px 12px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(110,168,255,.09), rgba(139,92,246,.07));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 12px 28px rgba(0,0,0,.12);
+      backdrop-filter:blur(12px);
+    }
+
+    .quick-search-icon{
+      width:36px;
+      height:36px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      flex:0 0 auto;
+    }
+
+    .quick-search-input{
+      flex:1 1 auto;
+      min-width:0;
+      height:42px;
+      border:none;
+      outline:none;
+      color:#fff;
+      background:transparent;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .quick-search-input::placeholder{
+      color:#94a3b8;
+      font-weight:700;
+    }
+
+    .quick-search-clear{
+      flex:0 0 auto;
+      padding:8px 12px;
+      border-radius:999px;
+      color:#dbe7ff;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .activity-filter-panel{
+      position:sticky;
+      top:90px;
+      z-index:900;
+    }
+
+    .fab-add-team{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      width:64px;
+      height:64px;
+      border-radius:999px;
+      z-index:9998;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:32px;
+      line-height:1;
+      font-weight:900;
+      background:linear-gradient(135deg, #6ea8ff, #8b5cf6, #ec4899);
+      border:1px solid rgba(255,255,255,.24);
+      box-shadow:0 18px 42px rgba(110,168,255,.30), 0 0 0 6px rgba(110,168,255,.10);
+    }
+
+    .fab-add-team:hover{
+      transform:translateY(-3px) scale(1.03);
+      box-shadow:0 22px 52px rgba(139,92,246,.36), 0 0 0 8px rgba(139,92,246,.11);
+    }
+
+    .missing-role-hint{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin:0 0 10px;
+    }
+
+    .missing-role-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      border-radius:999px;
+      padding:6px 9px;
+      font-size:12px;
+      font-weight:900;
+      color:#ffe4e6;
+      background:rgba(255,107,129,.13);
+      border:1px solid rgba(255,107,129,.25);
+    }
+
+    .missing-role-pill.good{
+      color:#dcfce7;
+      background:rgba(52,211,153,.12);
+      border-color:rgba(52,211,153,.25);
+    }
+
+    .slot-card.quick-fill{
+      border-color:rgba(255,215,106,.34);
+      box-shadow:0 12px 28px rgba(255,215,106,.10);
+    }
+
+    @media (max-width:768px){
+      .dashboard-panel{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+        gap:9px;
+      }
+
+      .dashboard-card{
+        padding:12px;
+        border-radius:17px;
+      }
+
+      .dashboard-value{
+        font-size:23px;
+      }
+
+      .quick-search-panel{
+        padding:8px 10px;
+        border-radius:18px;
+      }
+
+      .activity-filter-panel{
+        top:130px;
+      }
+
+      .fab-add-team{
+        right:16px;
+        bottom:16px;
+        width:56px;
+        height:56px;
+        font-size:28px;
+      }
+    }
+
+
+    /* ===== UI/UX 二次優化：手機篩選區修正、減少空白、移除承傷缺口 ===== */
+    .dashboard-card.heal-card::after{
+      background:rgba(52,211,153,.13);
+    }
+
+    .activity-filter-panel{
+      overflow:visible;
+    }
+
+    .activity-filter-group{
+      flex-basis:auto;
+    }
+
+    .activity-filter-btn{
+      min-height:38px;
+    }
+
+    @media (max-width:768px){
+      body{ padding-top:126px !important; }
+
+      .hero{
+        padding:14px;
+        margin-bottom:12px;
+      }
+
+      .subtitle,
+      .chips{
+        display:none;
+      }
+
+      .dashboard-panel{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:7px;
+        margin-bottom:10px;
+      }
+
+      .dashboard-card{
+        padding:10px 8px;
+        border-radius:15px;
+        text-align:center;
+      }
+
+      .dashboard-card::after{
+        display:none;
+      }
+
+      .dashboard-label{
+        font-size:11px;
+      }
+
+      .dashboard-value{
+        font-size:20px;
+        margin-top:5px;
+      }
+
+      .dashboard-sub{
+        display:none;
+      }
+
+      .quick-search-panel{
+        margin-bottom:10px;
+        padding:7px 9px;
+      }
+
+      .quick-search-icon{
+        width:32px;
+        height:32px;
+        border-radius:12px;
+      }
+
+      .quick-search-input{
+        height:36px;
+        font-size:13px;
+      }
+
+      .quick-search-clear{
+        padding:7px 9px;
+        font-size:11px;
+      }
+
+      .top-action-panel{
+        margin-bottom:10px;
+      }
+
+      .activity-filter-panel{
+        position:sticky;
+        top:118px;
+        gap:8px;
+        padding:9px;
+        margin-bottom:12px;
+        border-radius:18px;
+      }
+
+      .activity-filter-group{
+        flex:0 0 auto !important;
+        min-height:0 !important;
+      }
+
+      .activity-filter-title{
+        font-size:12px;
+      }
+
+      .activity-filter-buttons{
+        grid-template-columns:repeat(4, minmax(0, 1fr));
+      }
+
+      .activity-filter-group:nth-child(2) .activity-filter-buttons{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+      }
+
+      .activity-filter-btn{
+        min-height:34px;
+        padding:7px 6px;
+        font-size:11px;
+      }
+    }
+
+
+
+    /* ===== UI/UX v3：移除統計列，重排日期/隊伍卡片 ===== */
+    .container{
+      max-width:1480px;
+      padding:0 14px;
+    }
+
+    .hero{
+      padding:20px 22px;
+      margin-bottom:14px;
+    }
+
+    .top-action-panel{
+      margin-bottom:12px;
+    }
+
+    .quick-search-panel{
+      margin-bottom:12px;
+      border-radius:18px;
+    }
+
+    .activity-filter-panel{
+      margin-bottom:14px;
+      border-radius:18px;
+    }
+
+    .days{
+      gap:16px;
+    }
+
+    .day-card{
+      display:block;
+      padding:18px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(20,29,50,.88), rgba(16,24,42,.82));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 18px 44px rgba(0,0,0,.24);
+    }
+
+    .day-head{
+      position:static;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:0 0 14px;
+      margin-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,.09);
+    }
+
+    .day-title{
+      font-size:30px;
+      letter-spacing:.01em;
+    }
+
+    .day-sub{
+      margin-top:5px;
+      font-size:13px;
+    }
+
+    .day-actions{
+      margin-top:0;
+      flex:0 0 auto;
+    }
+
+    .day-actions .btn-ghost{
+      min-height:42px;
+      padding:10px 15px;
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.12);
+    }
+
+    .slot-list{
+      grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));
+      gap:14px;
+    }
+
+    .slot-card{
+      position:relative;
+      padding:15px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.035));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 10px 26px rgba(0,0,0,.14);
+    }
+
+    .slot-card.has-members{
+      background:linear-gradient(180deg, rgba(80,122,190,.18), rgba(255,255,255,.04));
+      border-color:rgba(110,168,255,.24);
+    }
+
+    .slot-card.full-team{
+      background:linear-gradient(180deg, rgba(255,107,129,.20), rgba(255,255,255,.045));
+      border-color:rgba(255,107,129,.32);
+    }
+
+    .slot-top{
+      margin-bottom:10px;
+      padding-bottom:10px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+
+    .slot-time{
+      font-size:21px;
+    }
+
+    .slot-instance{
+      margin-top:5px;
+    }
+
+    .slot-meta-pills{
+      margin-top:8px;
+    }
+
+    .summary{
+      margin-bottom:10px;
+    }
+
+    .summary-pill{
+      padding:6px 10px;
+      background:rgba(255,255,255,.07);
+    }
+
+    .missing-role-hint{
+      margin-bottom:10px;
+    }
+
+    .member-list{
+      grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+      gap:9px;
+    }
+
+    .member{
+      min-height:50px;
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.055));
+    }
+
+    .slot-actions{
+      display:grid;
+      grid-template-columns:1.4fr 1fr 1fr;
+      gap:9px;
+      margin-top:12px;
+    }
+
+    .add-btn,
+    .batch-signup-btn,
+    .quick-signup-btn{
+      width:100%;
+      flex:auto;
+      min-width:0;
+      min-height:42px;
+      border-radius:14px;
+    }
+
+    .add-btn{
+      color:#fff;
+      background:linear-gradient(135deg, rgba(110,168,255,.30), rgba(139,92,246,.28));
+      border:1px solid rgba(180,200,255,.28);
+      border-style:solid;
+    }
+
+    .batch-signup-btn{
+      flex:auto;
+    }
+
+    .quick-signup-btn{
+      flex:auto;
+    }
+
+    .activity-empty-note{
+      min-height:96px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    @media (min-width:1280px){
+      .slot-list{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width:768px){
+      body{ padding-top:124px !important; }
+
+      .container{
+        padding:0;
+      }
+
+      .hero{
+        padding:13px 14px;
+        border-radius:20px;
+        margin-bottom:10px;
+      }
+
+      .title{
+        font-size:22px;
+      }
+
+      .top-action-panel{
+        margin-bottom:9px;
+      }
+
+      .quick-search-panel{
+        margin-bottom:9px;
+        padding:8px 10px;
+      }
+
+      .activity-filter-panel{
+        top:116px;
+        padding:9px;
+        margin-bottom:10px;
+        max-height:none;
+        overflow:visible;
+      }
+
+      .activity-filter-group{
+        min-height:auto !important;
+      }
+
+      .day-card{
+        padding:12px;
+        border-radius:20px;
+      }
+
+      .day-head{
+        align-items:flex-start;
+        padding-bottom:10px;
+        margin-bottom:10px;
+      }
+
+      .day-title{
+        font-size:26px;
+      }
+
+      .day-actions .btn-ghost{
+        min-height:38px;
+        padding:8px 11px;
+        font-size:12px;
+      }
+
+      .slot-list{
+        grid-template-columns:1fr;
+        gap:11px;
+      }
+
+      .slot-card{
+        padding:12px;
+        border-radius:18px;
+      }
+
+      .slot-time{
+        font-size:20px;
+      }
+
+      .member-list{
+        grid-template-columns:1fr;
+      }
+
+      .slot-actions{
+        grid-template-columns:1fr 1fr 1fr;
+        gap:7px;
+      }
+
+      .add-btn,
+      .batch-signup-btn,
+      .quick-signup-btn{
+        min-height:40px;
+        font-size:12px;
+        padding:9px 6px;
+      }
+    }
+
+  
+
+    /* ===== UI/UX v4：隊伍區塊完全重設計（日期保留左側、隊伍更易讀） ===== */
+    .container{
+      max-width:1520px;
+      padding:0 18px;
+    }
+
+    .days{
+      gap:18px;
+    }
+
+    .day-card{
+      display:grid !important;
+      grid-template-columns:250px minmax(0, 1fr) !important;
+      gap:18px !important;
+      align-items:start;
+      padding:18px !important;
+      border-radius:26px !important;
+      background:
+        radial-gradient(circle at top left, rgba(110,168,255,.13), transparent 34%),
+        linear-gradient(180deg, rgba(20,29,50,.90), rgba(14,22,40,.86)) !important;
+      border:1px solid rgba(255,255,255,.11) !important;
+      box-shadow:0 20px 48px rgba(0,0,0,.26) !important;
+    }
+
+    .day-head{
+      position:sticky !important;
+      top:116px !important;
+      display:block !important;
+      padding:4px 10px 0 0 !important;
+      margin:0 !important;
+      border-bottom:none !important;
+    }
+
+    .day-title{
+      font-size:34px !important;
+      font-weight:950 !important;
+      line-height:1 !important;
+      letter-spacing:.01em;
+    }
+
+    .day-sub{
+      margin-top:12px !important;
+      color:#aebbd8 !important;
+      font-size:14px !important;
+      font-weight:800;
+    }
+
+    .day-actions{
+      margin-top:18px !important;
+    }
+
+    .day-actions .btn-ghost{
+      width:auto;
+      min-height:44px;
+      padding:11px 16px !important;
+      border-radius:16px !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+    }
+
+    .slot-list{
+      grid-template-columns:repeat(auto-fit, minmax(390px, 1fr)) !important;
+      gap:16px !important;
+      align-items:stretch;
+    }
+
+    .slot-card{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-height:360px;
+      padding:0 !important;
+      overflow:hidden;
+      border-radius:24px !important;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+      box-shadow:0 14px 34px rgba(0,0,0,.20) !important;
+    }
+
+    .slot-card::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg, rgba(110,168,255,.95), rgba(139,92,246,.92));
+      opacity:.85;
+    }
+
+    .slot-card.has-members{
+      background:
+        radial-gradient(circle at top right, rgba(110,168,255,.15), transparent 38%),
+        linear-gradient(180deg, rgba(47,65,100,.70), rgba(28,39,62,.64)) !important;
+      border-color:rgba(110,168,255,.24) !important;
+    }
+
+    .slot-card.full-team{
+      background:
+        radial-gradient(circle at top right, rgba(255,107,129,.20), transparent 40%),
+        linear-gradient(180deg, rgba(83,42,63,.80), rgba(42,32,48,.68)) !important;
+      border-color:rgba(255,107,129,.34) !important;
+    }
+
+    .slot-card.my-team{
+      outline:none !important;
+      border-color:rgba(255,215,106,.50) !important;
+      box-shadow:0 0 0 2px rgba(255,215,106,.12), 0 18px 42px rgba(255,215,106,.12) !important;
+    }
+
+    .slot-top{
+      position:relative;
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:14px;
+      align-items:start;
+      margin:0 !important;
+      padding:18px 18px 14px !important;
+      border-bottom:1px solid rgba(255,255,255,.09) !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0));
+    }
+
+    .slot-time-wrap{
+      gap:10px !important;
+    }
+
+    .slot-time{
+      font-size:30px !important;
+      font-weight:950 !important;
+      letter-spacing:.01em;
+      line-height:1 !important;
+    }
+
+    .recommend-badge{
+      padding:6px 10px !important;
+      font-size:12px !important;
+      color:#ffe9a6 !important;
+      background:linear-gradient(135deg, rgba(255,215,106,.28), rgba(245,158,11,.14)) !important;
+      border-color:rgba(255,215,106,.42) !important;
+      box-shadow:0 8px 18px rgba(255,215,106,.10);
+    }
+
+    .slot-instance{
+      margin-top:9px !important;
+      color:#bac7e3 !important;
+      font-size:13px !important;
+      font-weight:800;
+    }
+
+    .slot-meta-pills{
+      margin-top:10px !important;
+    }
+
+    .team-type-pill{
+      min-height:28px;
+      padding:7px 12px !important;
+      font-size:12px !important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .slot-top-right{
+      gap:9px !important;
+    }
+
+    .slot-badges{
+      align-items:flex-end;
+      flex-direction:column;
+      gap:7px !important;
+    }
+
+    .slot-badges .badge:first-child{
+      color:#fff;
+      background:rgba(255,255,255,.10);
+      border-color:rgba(255,255,255,.18);
+      font-size:13px;
+      font-weight:950;
+      padding:7px 10px;
+    }
+
+    .slot-badges .badge:nth-child(2){
+      font-weight:950;
+      padding:7px 10px;
+    }
+
+    .summary{
+      display:grid !important;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:10px !important;
+      margin:0 !important;
+      padding:14px 18px 0 !important;
+    }
+
+    .summary-pill{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      min-height:38px;
+      padding:8px 10px !important;
+      border-radius:14px !important;
+      color:#cbd5e1 !important;
+      font-size:12px !important;
+      font-weight:900;
+      background:rgba(255,255,255,.065) !important;
+      border:1px solid rgba(255,255,255,.105) !important;
+    }
+
+    .summary-pill strong{
+      font-size:16px;
+      color:#fff !important;
+    }
+
+    .missing-role-hint{
+      margin:12px 18px 0 !important;
+    }
+
+    .missing-role-pill{
+      width:100%;
+      justify-content:center;
+      min-height:38px;
+      border-radius:15px !important;
+      font-size:13px !important;
+      letter-spacing:.01em;
+      color:#ffdce3 !important;
+      background:linear-gradient(135deg, rgba(255,107,129,.19), rgba(236,72,153,.11)) !important;
+      border-color:rgba(255,107,129,.34) !important;
+    }
+
+    .missing-role-pill.good{
+      color:#d9ffe9 !important;
+      background:linear-gradient(135deg, rgba(52,211,153,.16), rgba(34,197,94,.09)) !important;
+      border-color:rgba(52,211,153,.30) !important;
+    }
+
+    .slot-description{
+      margin:12px 18px 0 !important;
+      border-radius:16px !important;
+      background:rgba(255,255,255,.055) !important;
+    }
+
+    .member-list{
+      display:grid !important;
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:10px !important;
+      min-height:66px !important;
+      padding:14px 18px 0 !important;
+      margin:0 !important;
+    }
+
+    .empty-note{
+      grid-column:1 / -1;
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:16px;
+      color:#aebbd8 !important;
+      font-size:13px !important;
+      font-weight:800;
+      background:rgba(255,255,255,.04);
+      border:1px dashed rgba(255,255,255,.15);
+    }
+
+    .member{
+      position:relative;
+      display:block !important;
+      min-height:76px !important;
+      padding:10px 38px 10px 12px !important;
+      border-radius:16px !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.055)) !important;
+      border:1px solid rgba(255,255,255,.105) !important;
+    }
+
+    .member.member-self{
+      background:linear-gradient(180deg, rgba(255,215,106,.17), rgba(255,255,255,.06)) !important;
+      border-color:rgba(255,215,106,.36) !important;
+    }
+
+    .member-left{
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:flex-start !important;
+      gap:8px !important;
+      min-width:0 !important;
+      overflow:visible !important;
+    }
+
+    .role-badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:24px;
+      padding:5px 9px !important;
+      font-size:11px !important;
+      line-height:1 !important;
+    }
+
+    .member-text{
+      width:100%;
+      min-width:0 !important;
+      gap:4px !important;
+      overflow:visible !important;
+    }
+
+    .member-main-row{
+      display:block !important;
+      min-width:0 !important;
+      width:100%;
+    }
+
+    .member-name{
+      display:-webkit-box !important;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      max-width:100%;
+      white-space:normal !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      word-break:break-word;
+      color:#f8fbff;
+      font-size:14px !important;
+      line-height:1.32 !important;
+      font-weight:850;
+    }
+
+    .member-self .member-name{
+      color:#ffe8a6 !important;
+    }
+
+    .member-note{
+      display:block;
+      margin-top:3px;
+      font-size:11px !important;
+    }
+
+    .tag-pill{
+      margin-top:5px;
+      max-width:100%;
+    }
+
+    .name-view-btn{
+      margin-top:6px;
+    }
+
+    .member-menu{
+      position:absolute !important;
+      right:8px;
+      top:8px;
+      z-index:30;
+    }
+
+    .member-menu-dropdown{
+      z-index:99999 !important;
+    }
+
+    .slot-menu-dropdown{
+      z-index:99999 !important;
+    }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:1fr 1fr !important;
+      gap:10px !important;
+      margin-top:auto !important;
+      padding:16px 18px 18px !important;
+    }
+
+    .add-btn{
+      grid-column:1 / -1;
+      min-height:46px !important;
+      border-radius:16px !important;
+      font-size:14px !important;
+      background:linear-gradient(135deg, rgba(110,168,255,.82), rgba(139,92,246,.82)) !important;
+      border:1px solid rgba(255,255,255,.22) !important;
+      box-shadow:0 12px 24px rgba(110,168,255,.16) !important;
+    }
+
+    .batch-signup-btn,
+    .quick-signup-btn{
+      min-height:42px !important;
+      border-radius:15px !important;
+      font-size:13px !important;
+    }
+
+    .activity-empty-note{
+      grid-column:1 / -1;
+      min-height:180px;
+      border-radius:22px;
+    }
+
+    @media (min-width:1280px){
+      .slot-list{
+        grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (min-width:1600px){
+      .slot-list{
+        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (max-width:980px){
+      .day-card{
+        grid-template-columns:1fr !important;
+        gap:12px !important;
+      }
+
+      .day-head{
+        position:static !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+        gap:10px !important;
+        padding:0 0 10px !important;
+        border-bottom:1px solid rgba(255,255,255,.09) !important;
+      }
+
+      .day-actions{
+        margin-top:0 !important;
+      }
+    }
+
+    @media (max-width:768px){
+      .container{
+        padding:0 8px !important;
+      }
+
+      .day-card{
+        padding:12px !important;
+        border-radius:22px !important;
+      }
+
+      .day-title{
+        font-size:28px !important;
+      }
+
+      .day-sub{
+        margin-top:7px !important;
+        font-size:12px !important;
+      }
+
+      .slot-list{
+        grid-template-columns:1fr !important;
+        gap:12px !important;
+      }
+
+      .slot-card{
+        min-height:0;
+        border-radius:22px !important;
+      }
+
+      .slot-top{
+        padding:16px 14px 12px !important;
+        gap:10px !important;
+      }
+
+      .slot-time{
+        font-size:28px !important;
+      }
+
+      .slot-badges .badge:first-child,
+      .slot-badges .badge:nth-child(2){
+        padding:6px 8px;
+        font-size:12px;
+      }
+
+      .summary{
+        padding:12px 14px 0 !important;
+        gap:7px !important;
+      }
+
+      .summary-pill{
+        min-height:34px;
+        padding:7px 6px !important;
+        font-size:11px !important;
+      }
+
+      .summary-pill strong{
+        font-size:14px;
+      }
+
+      .missing-role-hint{
+        margin:10px 14px 0 !important;
+      }
+
+      .slot-description{
+        margin:10px 14px 0 !important;
+      }
+
+      .member-list{
+        grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+        padding:12px 14px 0 !important;
+        gap:8px !important;
+      }
+
+      .member{
+        min-height:78px !important;
+        padding:9px 32px 9px 10px !important;
+        border-radius:15px !important;
+      }
+
+      .role-badge{
+        font-size:10px !important;
+        padding:5px 8px !important;
+      }
+
+      .member-name{
+        font-size:13px !important;
+        line-height:1.32 !important;
+      }
+
+      .member-menu{
+        right:5px;
+        top:6px;
+      }
+
+      .menu-trigger{
+        padding:2px 5px !important;
+      }
+
+      .slot-actions{
+        padding:13px 14px 14px !important;
+        gap:8px !important;
+      }
+
+      .add-btn{
+        min-height:44px !important;
+      }
+
+      .batch-signup-btn,
+      .quick-signup-btn{
+        min-height:40px !important;
+        font-size:12px !important;
+      }
+    }
+
+    @media (max-width:420px){
+      .slot-top{
+        grid-template-columns:1fr;
+      }
+
+      .slot-top-right{
+        position:absolute;
+        right:12px;
+        top:14px;
+      }
+
+      .slot-time-wrap{
+        padding-right:90px;
+      }
+
+      .slot-meta-pills{
+        padding-right:90px;
+      }
+    }
+
+
+    /* ===== v5 Compact Team Card Redesign: smaller, cleaner, no icon-heavy layout ===== */
+    .day-card{
+      grid-template-columns:240px minmax(0, 1fr) !important;
+      gap:14px !important;
+      padding:16px !important;
+      overflow:visible !important;
+    }
+
+    .day-head{
+      position:sticky !important;
+      top:106px !important;
+      align-self:start !important;
+      padding:2px 4px 0 0 !important;
+      border-bottom:none !important;
+    }
+
+    .day-title{
+      font-size:28px !important;
+      line-height:1 !important;
+      margin-bottom:6px !important;
+    }
+
+    .day-sub{
+      font-size:13px !important;
+      margin-top:6px !important;
+    }
+
+    .day-actions{
+      margin-top:14px !important;
+    }
+
+    .day-actions .btn-ghost{
+      min-height:38px !important;
+      padding:9px 13px !important;
+      border-radius:14px !important;
+      font-size:13px !important;
+    }
+
+    .slot-list{
+      grid-template-columns:repeat(auto-fit, minmax(330px, 1fr)) !important;
+      gap:12px !important;
+      overflow:visible !important;
+      align-items:start !important;
+    }
+
+    .slot-card{
+      min-height:0 !important;
+      padding:13px !important;
+      border-radius:18px !important;
+      overflow:visible !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.068), rgba(255,255,255,.034)) !important;
+      border:1px solid rgba(255,255,255,.115) !important;
+      box-shadow:0 10px 24px rgba(0,0,0,.18) !important;
+    }
+
+    .slot-card::before{ display:none !important; }
+
+    .slot-card.has-members{
+      background:linear-gradient(180deg, rgba(51,65,96,.62), rgba(28,38,58,.58)) !important;
+      border-color:rgba(110,168,255,.20) !important;
+    }
+
+    .slot-card.full-team{
+      background:linear-gradient(180deg, rgba(78,45,64,.70), rgba(41,33,48,.60)) !important;
+      border-color:rgba(255,107,129,.28) !important;
+    }
+
+    .slot-card.my-team{
+      border-color:rgba(255,215,106,.45) !important;
+      box-shadow:0 0 0 2px rgba(255,215,106,.10), 0 12px 28px rgba(0,0,0,.20) !important;
+    }
+
+    .slot-top{
+      padding:0 0 10px !important;
+      margin:0 !important;
+      display:grid !important;
+      grid-template-columns:minmax(0, 1fr) auto !important;
+      gap:10px !important;
+      border-bottom:1px solid rgba(255,255,255,.085) !important;
+      background:transparent !important;
+    }
+
+    .slot-time-wrap{
+      display:flex !important;
+      align-items:center !important;
+      gap:8px !important;
+      flex-wrap:wrap !important;
+    }
+
+    .slot-time{
+      font-size:24px !important;
+      line-height:1 !important;
+      font-weight:900 !important;
+      letter-spacing:0 !important;
+    }
+
+    .recommend-badge{
+      padding:4px 8px !important;
+      border-radius:999px !important;
+      font-size:11px !important;
+      font-weight:900 !important;
+      color:#ffe6a8 !important;
+      background:rgba(245,158,11,.18) !important;
+      border:1px solid rgba(245,158,11,.30) !important;
+      box-shadow:none !important;
+    }
+
+    .slot-instance{
+      margin-top:6px !important;
+      font-size:12px !important;
+      font-weight:750 !important;
+      color:#aebbd8 !important;
+    }
+
+    .slot-meta-pills{
+      margin-top:7px !important;
+      gap:6px !important;
+    }
+
+    .team-type-pill{
+      min-height:24px !important;
+      padding:5px 9px !important;
+      font-size:11px !important;
+      border-radius:999px !important;
+    }
+
+    .slot-top-right{
+      align-items:flex-start !important;
+      gap:6px !important;
+    }
+
+    .slot-badges{
+      display:flex !important;
+      flex-direction:row !important;
+      align-items:center !important;
+      gap:6px !important;
+      justify-content:flex-end !important;
+    }
+
+    .slot-badges .badge:first-child,
+    .slot-badges .badge:nth-child(2){
+      padding:5px 8px !important;
+      font-size:11px !important;
+      font-weight:850 !important;
+      border-radius:999px !important;
+      background:rgba(255,255,255,.075) !important;
+      border-color:rgba(255,255,255,.12) !important;
+    }
+
+    .slot-menu-trigger,
+    .menu-trigger{
+      padding:2px 6px !important;
+      font-size:15px !important;
+      background:rgba(255,255,255,.04) !important;
+    }
+
+    .summary{
+      display:grid !important;
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      gap:6px !important;
+      padding:10px 0 0 !important;
+      margin:0 !important;
+    }
+
+    .summary-pill{
+      min-height:30px !important;
+      padding:6px 6px !important;
+      border-radius:12px !important;
+      font-size:11px !important;
+      font-weight:850 !important;
+      background:rgba(255,255,255,.055) !important;
+      border:1px solid rgba(255,255,255,.09) !important;
+    }
+
+    .summary-pill strong{
+      font-size:13px !important;
+      margin-left:3px !important;
+    }
+
+    .missing-role-hint{
+      margin:8px 0 0 !important;
+    }
+
+    .missing-role-pill{
+      width:auto !important;
+      min-height:30px !important;
+      padding:6px 10px !important;
+      justify-content:flex-start !important;
+      font-size:12px !important;
+      border-radius:12px !important;
+      background:rgba(255,107,129,.13) !important;
+      border:1px solid rgba(255,107,129,.26) !important;
+    }
+
+    .missing-role-pill.good{
+      background:rgba(52,211,153,.11) !important;
+      border-color:rgba(52,211,153,.22) !important;
+    }
+
+    .slot-description{
+      margin:9px 0 0 !important;
+      padding:9px 11px !important;
+      border-radius:13px !important;
+      font-size:12px !important;
+      line-height:1.55 !important;
+    }
+
+    .slot-description::before{ display:none !important; }
+
+    .slot-description-title{
+      margin-bottom:5px !important;
+      font-size:10px !important;
+    }
+
+    .member-list{
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:7px !important;
+      padding:10px 0 0 !important;
+      min-height:0 !important;
+    }
+
+    .empty-note{
+      min-height:54px !important;
+      border-radius:13px !important;
+      font-size:12px !important;
+    }
+
+    .member{
+      min-height:58px !important;
+      padding:8px 30px 8px 9px !important;
+      border-radius:13px !important;
+      background:rgba(255,255,255,.07) !important;
+      border:1px solid rgba(255,255,255,.09) !important;
+      box-shadow:none !important;
+    }
+
+    .member-left{
+      gap:5px !important;
+    }
+
+    .role-badge{
+      min-height:20px !important;
+      padding:4px 7px !important;
+      font-size:10px !important;
+      border-radius:999px !important;
+    }
+
+    .member-name{
+      font-size:12.5px !important;
+      line-height:1.25 !important;
+      font-weight:800 !important;
+      -webkit-line-clamp:2 !important;
+      white-space:normal !important;
+      word-break:break-word !important;
+    }
+
+    .member-note{
+      font-size:10.5px !important;
+      margin-top:2px !important;
+    }
+
+    .tag-pill,
+    .name-view-btn{
+      font-size:9.5px !important;
+      padding:3px 6px !important;
+    }
+
+    .member-menu{
+      right:5px !important;
+      top:5px !important;
+    }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:1fr 1fr !important;
+      gap:7px !important;
+      padding:10px 0 0 !important;
+      margin-top:0 !important;
+    }
+
+    .add-btn{
+      grid-column:1 / -1 !important;
+      min-height:38px !important;
+      border-radius:13px !important;
+      font-size:13px !important;
+      background:linear-gradient(135deg, rgba(110,168,255,.70), rgba(139,92,246,.74)) !important;
+      border:1px solid rgba(255,255,255,.18) !important;
+      box-shadow:none !important;
+    }
+
+    .batch-signup-btn,
+    .quick-signup-btn{
+      min-height:36px !important;
+      border-radius:12px !important;
+      font-size:12px !important;
+      box-shadow:none !important;
+    }
+
+    /* prevent dropdown / sticky / scroll layout conflicts */
+    .days,
+    .day-card,
+    .slot-list,
+    .slot-card,
+    .member-list,
+    .member{
+      overflow:visible !important;
+    }
+
+    .slot-menu.open,
+    .member-menu.open,
+    .slot-card:has(.slot-menu.open),
+    .slot-card:has(.member-menu.open),
+    .day-card:has(.slot-menu.open),
+    .day-card:has(.member-menu.open){
+      z-index:99999 !important;
+    }
+
+    @media (min-width:1280px){
+      .slot-list{
+        grid-template-columns:repeat(2, minmax(330px, 1fr)) !important;
+      }
+    }
+
+    @media (min-width:1600px){
+      .slot-list{
+        grid-template-columns:repeat(3, minmax(320px, 1fr)) !important;
+      }
+    }
+
+    @media (max-width:1100px){
+      .day-card{
+        grid-template-columns:1fr !important;
+      }
+
+      .day-head{
+        position:static !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+        gap:10px !important;
+        padding-bottom:10px !important;
+        border-bottom:1px solid rgba(255,255,255,.08) !important;
+      }
+
+      .day-actions{
+        margin-top:0 !important;
+      }
+    }
+
+    @media (max-width:768px){
+      .day-card{
+        padding:10px !important;
+        gap:10px !important;
+      }
+
+      .day-title{
+        font-size:24px !important;
+      }
+
+      .slot-list{
+        grid-template-columns:1fr !important;
+        gap:10px !important;
+      }
+
+      .slot-card{
+        padding:11px !important;
+        border-radius:16px !important;
+      }
+
+      .slot-top{
+        gap:8px !important;
+      }
+
+      .slot-time{
+        font-size:22px !important;
+      }
+
+      .summary{
+        gap:5px !important;
+      }
+
+      .summary-pill{
+        font-size:10.5px !important;
+        min-height:28px !important;
+        padding:5px 4px !important;
+      }
+
+      .member-list{
+        grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+        gap:6px !important;
+      }
+
+      .member{
+        min-height:56px !important;
+        padding:7px 27px 7px 8px !important;
+      }
+
+      .member-name{
+        font-size:12px !important;
+      }
+
+      .slot-actions{
+        gap:6px !important;
+      }
+    }
+
+    @media (max-width:420px){
+      .slot-top{
+        grid-template-columns:minmax(0, 1fr) auto !important;
+      }
+
+      .slot-top-right{
+        position:static !important;
+      }
+
+      .slot-time-wrap,
+      .slot-meta-pills{
+        padding-right:0 !important;
+      }
+
+      .slot-badges{
+        flex-direction:column !important;
+        gap:4px !important;
+      }
+    }
+
+
+    /* ===== v6 隊伍卡片細修：三按鈕一排 + 更緊湊清楚 ===== */
+    .slot-card{
+      padding:12px !important;
+      border-radius:16px !important;
+    }
+
+    .slot-top{
+      padding-bottom:8px !important;
+      gap:8px !important;
+    }
+
+    .slot-time{
+      font-size:22px !important;
+    }
+
+    .recommend-badge{
+      padding:3px 7px !important;
+      font-size:10.5px !important;
+    }
+
+    .slot-instance{
+      margin-top:5px !important;
+      font-size:11.5px !important;
+    }
+
+    .team-type-pill{
+      min-height:22px !important;
+      padding:4px 8px !important;
+      font-size:10.5px !important;
+    }
+
+    .slot-badges .badge:first-child,
+    .slot-badges .badge:nth-child(2){
+      padding:4px 7px !important;
+      font-size:10.5px !important;
+    }
+
+    .summary{
+      padding-top:8px !important;
+      gap:5px !important;
+    }
+
+    .summary-pill{
+      min-height:28px !important;
+      padding:5px 5px !important;
+      border-radius:11px !important;
+      font-size:10.5px !important;
+    }
+
+    .summary-pill strong{
+      font-size:12px !important;
+    }
+
+    .missing-role-hint{
+      margin-top:7px !important;
+    }
+
+    .missing-role-pill{
+      min-height:28px !important;
+      padding:5px 9px !important;
+      font-size:11.5px !important;
+      border-radius:11px !important;
+    }
+
+    .member-list{
+      padding-top:9px !important;
+      gap:6px !important;
+    }
+
+    .member{
+      min-height:52px !important;
+      padding:7px 28px 7px 8px !important;
+      border-radius:12px !important;
+    }
+
+    .role-badge{
+      min-height:19px !important;
+      padding:3px 7px !important;
+      font-size:9.8px !important;
+    }
+
+    .member-name{
+      font-size:12px !important;
+      line-height:1.22 !important;
+      display:-webkit-box !important;
+      -webkit-box-orient:vertical !important;
+      -webkit-line-clamp:2 !important;
+      overflow:hidden !important;
+      white-space:normal !important;
+      word-break:break-word !important;
+    }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, .9fr) !important;
+      gap:6px !important;
+      padding-top:9px !important;
+      margin-top:0 !important;
+      align-items:stretch !important;
+    }
+
+    .add-btn,
+    .batch-signup-btn,
+    .quick-signup-btn{
+      grid-column:auto !important;
+      width:100% !important;
+      min-width:0 !important;
+      flex:0 1 auto !important;
+      min-height:36px !important;
+      height:36px !important;
+      padding:7px 6px !important;
+      border-radius:12px !important;
+      font-size:12px !important;
+      line-height:1.1 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      box-shadow:none !important;
+    }
+
+    .add-btn{
+      background:linear-gradient(135deg, rgba(110,168,255,.72), rgba(139,92,246,.75)) !important;
+      border:1px solid rgba(255,255,255,.17) !important;
+    }
+
+    .batch-signup-btn{
+      background:linear-gradient(135deg, rgba(245,158,11,.34), rgba(249,115,22,.28)) !important;
+      border:1px solid rgba(253,186,116,.26) !important;
+    }
+
+    .quick-signup-btn{
+      background:rgba(139,92,246,.18) !important;
+      border:1px solid rgba(196,181,253,.22) !important;
+    }
+
+    .slot-card.full-team .slot-actions{
+      grid-template-columns:1fr !important;
+    }
+
+    .slot-card.full-team .add-btn,
+    .slot-card.full-team .batch-signup-btn,
+    .slot-card.full-team .quick-signup-btn{
+      height:36px !important;
+    }
+
+    @media (max-width:768px){
+      .slot-card{ padding:10px !important; }
+      .slot-time{ font-size:21px !important; }
+      .member-list{ grid-template-columns:repeat(2, minmax(0, 1fr)) !important; }
+      .member{ min-height:50px !important; padding:7px 26px 7px 8px !important; }
+      .slot-actions{
+        grid-template-columns:minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, .9fr) !important;
+        gap:5px !important;
+      }
+      .add-btn,
+      .batch-signup-btn,
+      .quick-signup-btn{
+        height:34px !important;
+        min-height:34px !important;
+        padding:6px 4px !important;
+        font-size:11.2px !important;
+      }
+    }
+
+    @media (max-width:380px){
+      .slot-actions{
+        grid-template-columns:1fr 1fr 1fr !important;
+      }
+      .add-btn,
+      .batch-signup-btn,
+      .quick-signup-btn{
+        font-size:10.5px !important;
+      }
+    }
+
+  
+
+    /* ===== v7 Readable Team Board Redesign：不再壓縮、修正滑動遮擋、隊伍資訊更清楚 ===== */
+    .container{
+      max-width:1500px !important;
+      padding:0 22px !important;
+    }
+
+    .activity-filter-panel{
+      position:static !important;
+      top:auto !important;
+      z-index:auto !important;
+      margin:0 0 18px !important;
+      padding:12px 14px !important;
+      border-radius:20px !important;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.04)) !important;
+      backdrop-filter:blur(14px);
+    }
+
+    .activity-filter-title{ font-size:13px !important; }
+    .activity-filter-btn{
+      min-height:38px !important;
+      padding:9px 15px !important;
+      font-size:13px !important;
+    }
+
+    .days{ gap:18px !important; }
+
+    .day-card{
+      display:grid !important;
+      grid-template-columns:230px minmax(0, 1fr) !important;
+      gap:18px !important;
+      padding:18px !important;
+      border-radius:26px !important;
+      overflow:visible !important;
+    }
+
+    .day-head{
+      position:sticky !important;
+      top:94px !important;
+      align-self:start !important;
+      padding:4px 8px 0 0 !important;
+      border-bottom:none !important;
+      background:transparent !important;
+    }
+
+    .day-title{
+      font-size:32px !important;
+      font-weight:950 !important;
+      line-height:1 !important;
+    }
+
+    .day-sub{
+      margin-top:10px !important;
+      font-size:14px !important;
+      font-weight:750 !important;
+    }
+
+    .day-actions{ margin-top:16px !important; }
+    .day-actions .btn-ghost{
+      min-height:42px !important;
+      padding:10px 15px !important;
+      font-size:14px !important;
+      border-radius:15px !important;
+    }
+
+    .slot-list{
+      grid-template-columns:repeat(auto-fit, minmax(430px, 1fr)) !important;
+      gap:16px !important;
+      overflow:visible !important;
+      align-items:start !important;
+    }
+
+    @media (min-width:1280px){
+      .slot-list{ grid-template-columns:repeat(2, minmax(430px, 1fr)) !important; }
+    }
+
+    @media (min-width:1760px){
+      .slot-list{ grid-template-columns:repeat(3, minmax(420px, 1fr)) !important; }
+    }
+
+    .slot-card{
+      display:block !important;
+      padding:16px !important;
+      min-height:0 !important;
+      border-radius:22px !important;
+      overflow:visible !important;
+      background:linear-gradient(180deg, rgba(35,48,76,.88), rgba(24,34,55,.82)) !important;
+      border:1px solid rgba(124,158,210,.22) !important;
+      box-shadow:0 14px 34px rgba(0,0,0,.20) !important;
+    }
+
+    .slot-card.has-members{
+      background:linear-gradient(180deg, rgba(39,58,92,.92), rgba(25,38,62,.86)) !important;
+      border-color:rgba(110,168,255,.30) !important;
+    }
+
+    .slot-card.full-team{
+      background:linear-gradient(180deg, rgba(72,42,61,.92), rgba(41,32,49,.86)) !important;
+      border-color:rgba(255,107,129,.32) !important;
+    }
+
+    .slot-card.my-team{
+      outline:none !important;
+      border-color:rgba(255,215,106,.55) !important;
+      box-shadow:0 0 0 2px rgba(255,215,106,.12), 0 16px 36px rgba(0,0,0,.22) !important;
+    }
+
+    .slot-top{
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) auto !important;
+      gap:12px !important;
+      margin:0 !important;
+      padding:0 0 13px !important;
+      border-bottom:1px solid rgba(255,255,255,.105) !important;
+      background:transparent !important;
+    }
+
+    .slot-time-wrap{
+      display:flex !important;
+      align-items:center !important;
+      gap:9px !important;
+      flex-wrap:wrap !important;
+    }
+
+    .slot-time{
+      font-size:28px !important;
+      font-weight:950 !important;
+      line-height:1 !important;
+      letter-spacing:0 !important;
+    }
+
+    .recommend-badge{
+      min-height:24px !important;
+      padding:4px 9px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      color:#ffe7aa !important;
+      background:rgba(245,158,11,.20) !important;
+      border:1px solid rgba(245,158,11,.35) !important;
+      box-shadow:none !important;
+    }
+
+    .slot-instance{
+      margin-top:8px !important;
+      color:#c2cee8 !important;
+      font-size:13px !important;
+      font-weight:800 !important;
+    }
+
+    .slot-meta-pills{
+      margin-top:9px !important;
+      gap:7px !important;
+    }
+
+    .team-type-pill{
+      min-height:28px !important;
+      padding:6px 11px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      border-radius:999px !important;
+    }
+
+    .slot-top-right{
+      align-items:flex-start !important;
+      gap:7px !important;
+    }
+
+    .slot-badges{
+      display:flex !important;
+      flex-direction:row !important;
+      align-items:center !important;
+      justify-content:flex-end !important;
+      gap:7px !important;
+    }
+
+    .slot-badges .badge:first-child,
+    .slot-badges .badge:nth-child(2){
+      padding:6px 9px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      border-radius:999px !important;
+      background:rgba(255,255,255,.09) !important;
+      border-color:rgba(255,255,255,.16) !important;
+    }
+
+    .slot-menu-trigger,
+    .menu-trigger{
+      min-width:30px !important;
+      min-height:28px !important;
+      padding:3px 7px !important;
+      font-size:16px !important;
+      background:rgba(255,255,255,.065) !important;
+    }
+
+    .summary{
+      display:grid !important;
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      gap:8px !important;
+      padding:13px 0 0 !important;
+      margin:0 !important;
+    }
+
+    .summary-pill{
+      min-height:38px !important;
+      padding:8px 10px !important;
+      border-radius:14px !important;
+      font-size:13px !important;
+      font-weight:850 !important;
+      color:#d8e2f7 !important;
+      background:rgba(255,255,255,.07) !important;
+      border:1px solid rgba(255,255,255,.115) !important;
+    }
+
+    .summary-pill strong{
+      margin-left:5px !important;
+      font-size:15px !important;
+      font-weight:950 !important;
+      color:#fff !important;
+    }
+
+    .missing-role-hint{
+      margin:10px 0 0 !important;
+      gap:8px !important;
+    }
+
+    .missing-role-pill{
+      width:auto !important;
+      min-height:34px !important;
+      padding:7px 12px !important;
+      justify-content:flex-start !important;
+      border-radius:13px !important;
+      font-size:13px !important;
+      font-weight:900 !important;
+      background:rgba(255,107,129,.15) !important;
+      border:1px solid rgba(255,107,129,.30) !important;
+    }
+
+    .missing-role-pill.good{
+      background:rgba(52,211,153,.12) !important;
+      border-color:rgba(52,211,153,.24) !important;
+    }
+
+    .slot-description{
+      margin:11px 0 0 !important;
+      padding:11px 13px !important;
+      border-radius:14px !important;
+      font-size:13px !important;
+      line-height:1.65 !important;
+    }
+
+    .slot-description::before{ display:none !important; }
+    .slot-description-title{ font-size:11px !important; margin-bottom:6px !important; }
+
+    .member-list{
+      display:grid !important;
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:9px !important;
+      padding:12px 0 0 !important;
+      min-height:0 !important;
+      margin:0 !important;
+    }
+
+    .empty-note{
+      min-height:64px !important;
+      border-radius:15px !important;
+      font-size:13px !important;
+      font-weight:800 !important;
+    }
+
+    .member{
+      position:relative !important;
+      display:block !important;
+      min-height:70px !important;
+      padding:10px 38px 10px 12px !important;
+      border-radius:15px !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.11) !important;
+      box-shadow:none !important;
+    }
+
+    .member-left{
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:flex-start !important;
+      gap:7px !important;
+      min-width:0 !important;
+      overflow:visible !important;
+    }
+
+    .role-badge{
+      display:inline-flex !important;
+      align-items:center !important;
+      min-height:23px !important;
+      padding:5px 9px !important;
+      border-radius:999px !important;
+      font-size:11px !important;
+      font-weight:900 !important;
+      line-height:1 !important;
+    }
+
+    .member-text,
+    .member-main-row{
+      display:block !important;
+      width:100% !important;
+      min-width:0 !important;
+      overflow:visible !important;
+    }
+
+    .member-name{
+      display:-webkit-box !important;
+      -webkit-box-orient:vertical !important;
+      -webkit-line-clamp:2 !important;
+      white-space:normal !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      word-break:break-word !important;
+      color:#f8fbff !important;
+      font-size:14px !important;
+      line-height:1.32 !important;
+      font-weight:850 !important;
+    }
+
+    .member-self .member-name{ color:#ffe8a6 !important; }
+    .member-note{ margin-top:3px !important; font-size:11.5px !important; }
+    .tag-pill,
+    .name-view-btn{ margin-top:5px !important; font-size:10.5px !important; padding:4px 7px !important; }
+
+    .member-menu{
+      position:absolute !important;
+      right:8px !important;
+      top:8px !important;
+      z-index:40 !important;
+    }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1.12fr) minmax(0, .95fr) minmax(0, .95fr) !important;
+      gap:9px !important;
+      padding:13px 0 0 !important;
+      margin:0 !important;
+      align-items:stretch !important;
+    }
+
+    .add-btn,
+    .batch-signup-btn,
+    .quick-signup-btn{
+      grid-column:auto !important;
+      width:100% !important;
+      min-width:0 !important;
+      height:42px !important;
+      min-height:42px !important;
+      padding:9px 8px !important;
+      border-radius:14px !important;
+      font-size:13px !important;
+      font-weight:900 !important;
+      line-height:1.1 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      box-shadow:none !important;
+    }
+
+    .add-btn{
+      background:linear-gradient(135deg, rgba(110,168,255,.76), rgba(139,92,246,.78)) !important;
+      border:1px solid rgba(255,255,255,.20) !important;
+    }
+
+    .batch-signup-btn{
+      background:linear-gradient(135deg, rgba(245,158,11,.36), rgba(249,115,22,.30)) !important;
+      border:1px solid rgba(253,186,116,.28) !important;
+    }
+
+    .quick-signup-btn{
+      background:rgba(139,92,246,.18) !important;
+      border:1px solid rgba(196,181,253,.24) !important;
+    }
+
+    .slot-card.full-team .slot-actions{
+      grid-template-columns:minmax(0, 1.12fr) minmax(0, .95fr) minmax(0, .95fr) !important;
+    }
+
+    .slot-card:has(.slot-menu.open),
+    .slot-card:has(.member-menu.open),
+    .day-card:has(.slot-menu.open),
+    .day-card:has(.member-menu.open){
+      position:relative !important;
+      z-index:99999 !important;
+    }
+
+    .slot-menu-dropdown,
+    .member-menu-dropdown{ z-index:100000 !important; }
+
+    @media (max-width:1100px){
+      .day-card{
+        grid-template-columns:1fr !important;
+        gap:13px !important;
+      }
+      .day-head{
+        position:static !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+        gap:12px !important;
+        padding:0 0 12px !important;
+        border-bottom:1px solid rgba(255,255,255,.09) !important;
+      }
+      .day-actions{ margin-top:0 !important; }
+    }
+
+    @media (max-width:768px){
+      body{ padding-top:130px !important; }
+      .container{ padding:0 10px !important; }
+      .activity-filter-panel{ position:static !important; margin-bottom:12px !important; }
+      .activity-filter-buttons{ grid-template-columns:repeat(4, minmax(0, 1fr)) !important; }
+      .activity-filter-group:nth-child(2) .activity-filter-buttons{ grid-template-columns:repeat(3, minmax(0, 1fr)) !important; }
+      .activity-filter-btn{ font-size:12px !important; padding:8px 6px !important; }
+      .day-card{ padding:12px !important; border-radius:22px !important; }
+      .day-title{ font-size:28px !important; }
+      .slot-list{ grid-template-columns:1fr !important; gap:12px !important; }
+      .slot-card{ padding:14px !important; border-radius:20px !important; }
+      .slot-time{ font-size:26px !important; }
+      .summary-pill{ min-height:35px !important; font-size:12px !important; padding:7px 5px !important; }
+      .summary-pill strong{ font-size:14px !important; }
+      .member-list{ grid-template-columns:repeat(2, minmax(0, 1fr)) !important; gap:8px !important; }
+      .member{ min-height:66px !important; padding:9px 34px 9px 10px !important; }
+      .role-badge{ font-size:10.5px !important; padding:5px 8px !important; }
+      .member-name{ font-size:13px !important; line-height:1.3 !important; }
+      .slot-actions{ grid-template-columns:1fr 1fr 1fr !important; gap:7px !important; }
+      .add-btn,
+      .batch-signup-btn,
+      .quick-signup-btn{
+        height:40px !important;
+        min-height:40px !important;
+        font-size:12px !important;
+        padding:8px 5px !important;
+      }
+    }
+
+    @media (max-width:390px){
+      .slot-top{ grid-template-columns:1fr !important; }
+      .slot-top-right{ justify-content:space-between !important; width:100% !important; }
+      .member-list{ grid-template-columns:1fr !important; }
+      .member{ min-height:62px !important; }
+    }
+
+
+    /* ===== v8 重新優化：隊伍卡片、標籤與缺治療說明 ===== */
+    .slot-list{
+      grid-template-columns:repeat(auto-fit, minmax(430px, 1fr)) !important;
+      gap:18px !important;
+      align-items:start !important;
+      overflow:visible !important;
+    }
+
+    .slot-card{
+      display:flex !important;
+      flex-direction:column !important;
+      min-height:auto !important;
+      padding:0 !important;
+      border-radius:22px !important;
+      overflow:visible !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.082), rgba(255,255,255,.045)) !important;
+    }
+
+    .slot-top{
+      padding:18px 18px 14px !important;
+      margin:0 !important;
+      border-bottom:1px solid rgba(255,255,255,.085);
+      align-items:flex-start !important;
+    }
+
+    .slot-time-wrap{ gap:10px !important; }
+    .slot-time{ font-size:25px !important; letter-spacing:-.02em; }
+    .slot-instance{ margin-top:6px !important; font-size:13px !important; font-weight:750; color:#b9c5df !important; }
+
+    .recommend-badge{
+      padding:5px 10px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      color:#ffe08a !important;
+      background:rgba(255,215,106,.14) !important;
+      border-color:rgba(255,215,106,.34) !important;
+    }
+
+    .team-type-pill{
+      min-height:28px !important;
+      padding:7px 11px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+    }
+
+    .slot-badges .badge:first-child{
+      min-width:54px;
+      text-align:center;
+      font-size:13px !important;
+    }
+
+    .summary{
+      padding:12px 18px 0 !important;
+      gap:8px !important;
+    }
+
+    .summary-pill{
+      min-height:36px !important;
+      border-radius:13px !important;
+      font-size:12.5px !important;
+    }
+
+    .summary-pill strong{ font-size:16px !important; }
+
+    .slot-alert-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:12px 18px 0 !important;
+      min-height:38px;
+    }
+
+    .missing-role-hint{
+      margin:0 !important;
+      flex:0 0 auto;
+    }
+
+    .missing-role-pill{
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      width:auto !important;
+      min-height:34px !important;
+      padding:8px 13px !important;
+      border-radius:999px !important;
+      font-size:13px !important;
+      font-weight:950 !important;
+      white-space:nowrap;
+    }
+
+    .slot-tag-strip{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      flex:1 1 auto;
+      min-width:0;
+      flex-wrap:wrap;
+    }
+
+    .slot-tag-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      max-width:150px;
+      min-height:32px;
+      padding:7px 11px;
+      border-radius:999px;
+      color:#dbeafe;
+      background:rgba(110,168,255,.13);
+      border:1px solid rgba(110,168,255,.27);
+      font-size:12px;
+      font-weight:900;
+      line-height:1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      cursor:pointer;
+    }
+
+    .slot-tag-chip:hover{
+      background:rgba(110,168,255,.22);
+      transform:translateY(-1px);
+    }
+
+    .slot-tag-chip.more{
+      color:#e9d5ff;
+      background:rgba(168,85,247,.12);
+      border-color:rgba(168,85,247,.25);
+    }
+
+    .slot-no-tag-note{
+      color:#8fa0c3;
+      font-size:12px;
+      font-weight:750;
+    }
+
+    .member-list{
+      gap:10px !important;
+      padding:14px 18px 0 !important;
+    }
+
+    .member{
+      min-height:70px !important;
+      padding:10px 40px 10px 12px !important;
+      border-radius:15px !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.052)) !important;
+    }
+
+    .member-left{ gap:7px !important; }
+
+    .member-top-line{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      max-width:100%;
+      min-width:0;
+      flex-wrap:wrap;
+    }
+
+    .role-badge{
+      min-height:24px !important;
+      padding:5px 9px !important;
+      font-size:11px !important;
+      border-radius:999px !important;
+    }
+
+    .tag-pill{
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      max-width:130px !important;
+      min-height:24px !important;
+      margin:0 !important;
+      padding:5px 9px !important;
+      border-radius:999px !important;
+      color:#e0e7ff !important;
+      background:rgba(129,140,248,.14) !important;
+      border:1px solid rgba(129,140,248,.26) !important;
+      font-size:11px !important;
+      font-weight:900 !important;
+      line-height:1 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    .member-name{
+      font-size:15px !important;
+      line-height:1.35 !important;
+      font-weight:900 !important;
+      margin-top:0 !important;
+    }
+
+    .member-note{
+      margin-top:5px !important;
+      padding:7px 9px;
+      border-radius:10px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.075);
+      color:#b9c5df !important;
+      font-size:12px !important;
+      line-height:1.45 !important;
+    }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:1fr 1fr 1fr !important;
+      gap:9px !important;
+      padding:14px 18px 18px !important;
+      margin-top:0 !important;
+    }
+
+    .add-btn{
+      grid-column:auto !important;
+      min-height:44px !important;
+      font-size:14px !important;
+    }
+
+    .batch-signup-btn,
+    .quick-signup-btn{
+      min-height:44px !important;
+      font-size:13px !important;
+    }
+
+    .tag-info-name{
+      font-size:24px;
+      font-weight:950;
+      color:#fff;
+      margin-bottom:10px;
+    }
+
+    .tag-info-list{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .tag-info-item{
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.065);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .tag-info-player{
+      font-size:14px;
+      font-weight:900;
+      color:#fff;
+      margin-bottom:5px;
+    }
+
+    .tag-info-note{
+      color:#b8c3df;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    @media (max-width:768px){
+      .slot-list{ grid-template-columns:1fr !important; gap:14px !important; }
+      .slot-top{ padding:15px 14px 12px !important; }
+      .slot-time{ font-size:22px !important; }
+      .summary{ padding:10px 14px 0 !important; }
+      .slot-alert-row{ margin:10px 14px 0 !important; }
+      .member-list{ padding:12px 14px 0 !important; gap:8px !important; }
+      .member{ min-height:68px !important; padding-right:38px !important; }
+      .member-name{ font-size:14.5px !important; }
+      .slot-actions{ padding:12px 14px 14px !important; grid-template-columns:1fr 1fr 1fr !important; gap:7px !important; }
+      .add-btn,.batch-signup-btn,.quick-signup-btn{ min-height:42px !important; font-size:12.5px !important; padding-left:5px !important; padding-right:5px !important; }
+      .slot-tag-chip{ max-width:118px; }
+    }
+
+
+    /* ===== v9 完全重設隊伍區：清楚、寬鬆、不與篩選/狀態衝突 ===== */
+    :root{
+      --cardA: rgba(39,54,86,.78);
+      --cardB: rgba(28,39,63,.88);
+      --cardLine: rgba(164,184,230,.16);
+      --softPanel: rgba(255,255,255,.055);
+    }
+
+    .container{
+      max-width:1500px !important;
+      padding:0 22px !important;
+    }
+
+    .activity-filter-panel{
+      position:sticky !important;
+      top:88px !important;
+      z-index:700 !important;
+      margin:0 auto 20px !important;
+      max-width:1450px !important;
+      border-radius:24px !important;
+      padding:12px 14px !important;
+      background:rgba(24,33,55,.66) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+      box-shadow:0 18px 45px rgba(0,0,0,.24) !important;
+      backdrop-filter:blur(18px) saturate(140%) !important;
+    }
+
+    .activity-filter-title{
+      font-size:14px !important;
+      opacity:.95;
+    }
+
+    .activity-filter-btn{
+      min-height:38px !important;
+      padding:9px 16px !important;
+      border-radius:999px !important;
+      font-size:13px !important;
+      background:rgba(255,255,255,.07) !important;
+    }
+
+    .activity-filter-btn.active{
+      background:linear-gradient(135deg, rgba(115,155,255,.94), rgba(137,93,246,.92)) !important;
+      box-shadow:0 10px 24px rgba(120,120,255,.22) !important;
+    }
+
+    .day-card{
+      grid-template-columns:180px minmax(0,1fr) !important;
+      gap:22px !important;
+      padding:18px !important;
+      border-radius:28px !important;
+      background:linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.028)) !important;
+      border:1px solid rgba(160,180,230,.14) !important;
+      box-shadow:0 22px 50px rgba(0,0,0,.22) !important;
+      overflow:visible !important;
+    }
+
+    .day-head{
+      top:164px !important;
+      padding:4px 0 0 !important;
+    }
+
+    .day-title{
+      font-size:34px !important;
+      letter-spacing:-.04em !important;
+      line-height:1 !important;
+    }
+
+    .day-sub{
+      margin-top:8px !important;
+      font-size:14px !important;
+      font-weight:750 !important;
+      color:#aebbd6 !important;
+    }
+
+    .day-actions .btn-ghost{
+      min-height:44px !important;
+      padding:11px 16px !important;
+      border-radius:16px !important;
+      font-size:14px !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.13) !important;
+    }
+
+    .slot-list{
+      grid-template-columns:repeat(auto-fit, minmax(480px, 1fr)) !important;
+      gap:18px !important;
+      align-items:start !important;
+      overflow:visible !important;
+    }
+
+    .slot-card{
+      position:relative !important;
+      padding:0 !important;
+      border-radius:24px !important;
+      overflow:visible !important;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)),
+        linear-gradient(135deg, rgba(75,106,165,.22), rgba(33,45,72,.70)) !important;
+      border:1px solid rgba(155,180,230,.18) !important;
+      box-shadow:0 18px 42px rgba(0,0,0,.20) !important;
+    }
+
+    .slot-card.has-members{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)),
+        linear-gradient(135deg, rgba(65,98,155,.38), rgba(31,43,70,.76)) !important;
+      border-color:rgba(100,145,230,.30) !important;
+    }
+
+    .slot-card.full-team{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.072), rgba(255,255,255,.035)),
+        linear-gradient(135deg, rgba(122,48,82,.40), rgba(55,36,70,.78)) !important;
+      border-color:rgba(255,107,129,.30) !important;
+    }
+
+    .slot-card.my-team{
+      outline:2px solid rgba(255,215,106,.58) !important;
+      box-shadow:0 0 0 5px rgba(255,215,106,.10), 0 20px 42px rgba(0,0,0,.22) !important;
+    }
+
+    .slot-top{
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) auto !important;
+      gap:14px !important;
+      padding:18px 18px 14px !important;
+      border-bottom:1px solid rgba(255,255,255,.09) !important;
+      margin:0 !important;
+      align-items:start !important;
+    }
+
+    .slot-time-wrap{
+      gap:10px !important;
+      align-items:center !important;
+    }
+
+    .slot-time{
+      font-size:28px !important;
+      line-height:1 !important;
+      letter-spacing:-.04em !important;
+      font-weight:950 !important;
+    }
+
+    .recommend-badge{
+      transform:none !important;
+      padding:5px 9px !important;
+      font-size:12px !important;
+      border-radius:999px !important;
+      color:#ffe39a !important;
+      background:rgba(245,180,65,.18) !important;
+      border:1px solid rgba(245,180,65,.34) !important;
+    }
+
+    .slot-instance{
+      margin-top:7px !important;
+      font-size:13px !important;
+      font-weight:800 !important;
+      color:#b7c4de !important;
+    }
+
+    .slot-meta-pills{
+      margin-top:10px !important;
+    }
+
+    .team-type-pill{
+      min-height:28px !important;
+      padding:7px 12px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:950 !important;
+    }
+
+    .slot-top-right{
+      display:flex !important;
+      align-items:flex-start !important;
+      gap:8px !important;
+      justify-content:flex-end !important;
+      min-width:126px !important;
+    }
+
+    .slot-badges{
+      display:flex !important;
+      flex-wrap:nowrap !important;
+      gap:6px !important;
+      justify-content:flex-end !important;
+    }
+
+    .badge{
+      min-height:28px !important;
+      padding:6px 9px !important;
+      border-radius:999px !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.13) !important;
+    }
+
+    .slot-menu-trigger,
+    .menu-trigger{
+      width:34px !important;
+      height:34px !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      padding:0 !important;
+      border-radius:12px !important;
+      background:rgba(255,255,255,.075) !important;
+      border:1px solid rgba(255,255,255,.075) !important;
+    }
+
+    .summary{
+      display:grid !important;
+      grid-template-columns:repeat(3, minmax(0,1fr)) !important;
+      gap:8px !important;
+      padding:12px 18px 0 !important;
+      margin:0 !important;
+    }
+
+    .summary-pill{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:8px !important;
+      min-height:38px !important;
+      border-radius:14px !important;
+      font-size:13px !important;
+      font-weight:850 !important;
+      color:#dbe7ff !important;
+      background:rgba(255,255,255,.07) !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+    }
+
+    .summary-pill strong{
+      font-size:17px !important;
+      line-height:1 !important;
+    }
+
+    .slot-alert-row{
+      display:grid !important;
+      grid-template-columns:auto minmax(0,1fr) !important;
+      align-items:center !important;
+      gap:10px !important;
+      min-height:0 !important;
+      margin:12px 18px 0 !important;
+      padding:10px !important;
+      border-radius:16px !important;
+      background:rgba(5,10,25,.18) !important;
+      border:1px solid rgba(255,255,255,.08) !important;
+    }
+
+    .missing-role-hint{ margin:0 !important; min-width:0 !important; }
+
+    .missing-role-pill{
+      min-height:34px !important;
+      padding:8px 13px !important;
+      border-radius:999px !important;
+      font-size:13px !important;
+      font-weight:950 !important;
+      color:#ffdce5 !important;
+      background:rgba(255,107,129,.16) !important;
+      border:1px solid rgba(255,107,129,.34) !important;
+      white-space:nowrap !important;
+    }
+
+    .missing-role-pill.good{
+      color:#c8f7df !important;
+      background:rgba(52,211,153,.13) !important;
+      border-color:rgba(52,211,153,.26) !important;
+    }
+
+    .slot-tag-strip{
+      position:relative !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:flex-start !important;
+      gap:7px !important;
+      min-width:0 !important;
+      flex-wrap:wrap !important;
+    }
+
+    .slot-tag-strip::before{
+      content:"標籤";
+      flex:0 0 auto;
+      color:#91a1c3;
+      font-size:12px;
+      font-weight:900;
+      margin-right:1px;
+    }
+
+    .slot-tag-chip{
+      max-width:138px !important;
+      min-height:30px !important;
+      padding:7px 10px !important;
+      border-radius:999px !important;
+      color:#e6ecff !important;
+      background:rgba(129,140,248,.14) !important;
+      border:1px solid rgba(129,140,248,.26) !important;
+      font-size:12px !important;
+      font-weight:950 !important;
+      cursor:pointer !important;
+      box-shadow:none !important;
+    }
+
+    .slot-tag-chip:hover{
+      background:rgba(129,140,248,.23) !important;
+      border-color:rgba(165,180,252,.38) !important;
+      transform:translateY(-1px) !important;
+    }
+
+    .slot-tag-chip.more{
+      color:#f0ddff !important;
+      background:rgba(168,85,247,.16) !important;
+      border-color:rgba(168,85,247,.30) !important;
+    }
+
+    .slot-no-tag-note{
+      color:#8fa0c2 !important;
+      font-size:12px !important;
+      font-weight:800 !important;
+    }
+
+    .slot-description{
+      margin:12px 18px 0 !important;
+      padding:12px 14px !important;
+      border-radius:16px !important;
+      background:rgba(255,255,255,.052) !important;
+    }
+
+    .member-list{
+      display:grid !important;
+      grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+      gap:10px !important;
+      padding:14px 18px 0 !important;
+      margin:0 !important;
+      min-height:0 !important;
+    }
+
+    .empty-note{
+      grid-column:1 / -1 !important;
+      min-height:52px !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      border-radius:16px !important;
+      border:1px dashed rgba(255,255,255,.14) !important;
+      background:rgba(255,255,255,.035) !important;
+      color:#aab7d3 !important;
+      font-size:13px !important;
+      font-weight:850 !important;
+    }
+
+    .member{
+      position:relative !important;
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) auto !important;
+      align-items:center !important;
+      min-height:68px !important;
+      padding:10px 10px 10px 12px !important;
+      border-radius:16px !important;
+      background:rgba(255,255,255,.065) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+      gap:8px !important;
+    }
+
+    .member:hover{
+      background:rgba(255,255,255,.085) !important;
+      border-color:rgba(255,255,255,.15) !important;
+    }
+
+    .member-left{
+      min-width:0 !important;
+      overflow:hidden !important;
+      display:block !important;
+    }
+
+    .member-top-line{
+      display:flex !important;
+      align-items:center !important;
+      gap:7px !important;
+      min-width:0 !important;
+      margin-bottom:7px !important;
+      flex-wrap:wrap !important;
+    }
+
+    .role-badge{
+      min-height:24px !important;
+      padding:5px 9px !important;
+      font-size:11px !important;
+      font-weight:950 !important;
+      border-radius:999px !important;
+    }
+
+    .tag-pill{
+      max-width:120px !important;
+      min-height:24px !important;
+      padding:5px 9px !important;
+      border-radius:999px !important;
+      color:#dfe6ff !important;
+      background:rgba(129,140,248,.13) !important;
+      border:1px solid rgba(129,140,248,.24) !important;
+      font-size:11px !important;
+      font-weight:900 !important;
+      line-height:1 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    .member-text,
+    .member-main-row{
+      min-width:0 !important;
+      display:block !important;
+    }
+
+    .member-name{
+      display:-webkit-box !important;
+      -webkit-line-clamp:2 !important;
+      -webkit-box-orient:vertical !important;
+      white-space:normal !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      word-break:break-word !important;
+      font-size:15px !important;
+      line-height:1.32 !important;
+      font-weight:950 !important;
+      color:#f8fbff !important;
+    }
+
+    .member-note{
+      display:block !important;
+      margin-top:7px !important;
+      padding:7px 9px !important;
+      border-radius:10px !important;
+      background:rgba(255,255,255,.048) !important;
+      border:1px solid rgba(255,255,255,.07) !important;
+      color:#b8c4de !important;
+      font-size:12px !important;
+      line-height:1.45 !important;
+    }
+
+    .member-menu{ align-self:start !important; margin-top:0 !important; }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:1.2fr .95fr .95fr !important;
+      gap:10px !important;
+      padding:14px 18px 18px !important;
+      margin:0 !important;
+    }
+
+    .add-btn,
+    .batch-signup-btn,
+    .quick-signup-btn{
+      min-height:46px !important;
+      border-radius:15px !important;
+      font-size:14px !important;
+      font-weight:950 !important;
+      padding:10px 12px !important;
+      white-space:nowrap !important;
+    }
+
+    .add-btn{
+      background:linear-gradient(135deg, #6ea8ff, #7c5bf0) !important;
+      border:1px solid rgba(255,255,255,.18) !important;
+      color:#fff !important;
+    }
+
+    .batch-signup-btn{
+      background:linear-gradient(135deg, rgba(186,124,45,.70), rgba(119,72,38,.74)) !important;
+      border:1px solid rgba(253,186,116,.22) !important;
+      color:#fff7ed !important;
+    }
+
+    .quick-signup-btn{
+      background:rgba(139,92,246,.16) !important;
+      border:1px solid rgba(196,181,253,.18) !important;
+      color:#dcd7ff !important;
+    }
+
+    .add-btn:disabled,
+    .batch-signup-btn:disabled,
+    .quick-signup-btn:disabled{
+      opacity:.50 !important;
+      filter:saturate(.5) !important;
+    }
+
+    .slot-menu-dropdown,
+    .member-menu-dropdown{
+      z-index:999999 !important;
+    }
+
+    @media (max-width:1100px){
+      .day-card{
+        grid-template-columns:1fr !important;
+      }
+      .day-head{
+        position:static !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+        gap:12px !important;
+      }
+      .day-actions{ margin-top:0 !important; }
+      .slot-list{ grid-template-columns:1fr !important; }
+    }
+
+    @media (max-width:768px){
+      body{ padding-top:138px !important; }
+      .container{ padding:0 10px !important; }
+      .activity-filter-panel{
+        top:126px !important;
+        border-radius:20px !important;
+        padding:10px !important;
+      }
+      .activity-filter-buttons{
+        grid-template-columns:repeat(4, minmax(0,1fr)) !important;
+      }
+      .activity-filter-btn{
+        min-height:36px !important;
+        padding:8px 6px !important;
+        font-size:12px !important;
+      }
+      .day-card{
+        padding:14px !important;
+        border-radius:24px !important;
+        gap:14px !important;
+      }
+      .day-head{
+        display:grid !important;
+        grid-template-columns:minmax(0,1fr) auto !important;
+        align-items:center !important;
+      }
+      .day-title{ font-size:30px !important; }
+      .day-sub{ font-size:12.5px !important; }
+      .day-actions .btn-ghost{ min-height:40px !important; padding:9px 12px !important; font-size:12px !important; }
+      .slot-card{ border-radius:21px !important; }
+      .slot-top{
+        grid-template-columns:1fr !important;
+        gap:10px !important;
+        padding:15px 14px 12px !important;
+      }
+      .slot-top-right{
+        width:100% !important;
+        min-width:0 !important;
+        justify-content:space-between !important;
+      }
+      .slot-time{ font-size:26px !important; }
+      .summary{ padding:10px 14px 0 !important; gap:7px !important; }
+      .summary-pill{ min-height:36px !important; font-size:12px !important; }
+      .summary-pill strong{ font-size:16px !important; }
+      .slot-alert-row{
+        grid-template-columns:1fr !important;
+        align-items:start !important;
+        margin:10px 14px 0 !important;
+        gap:8px !important;
+      }
+      .slot-tag-strip::before{ width:100%; margin-bottom:1px; }
+      .member-list{
+        grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+        gap:8px !important;
+        padding:12px 14px 0 !important;
+      }
+      .member{
+        min-height:74px !important;
+        grid-template-columns:minmax(0,1fr) 30px !important;
+        padding:9px 8px 9px 10px !important;
+        border-radius:15px !important;
+      }
+      .member-name{ font-size:13.8px !important; line-height:1.32 !important; }
+      .role-badge,.tag-pill{ font-size:10px !important; padding:4px 7px !important; }
+      .slot-actions{
+        grid-template-columns:1fr 1fr 1fr !important;
+        gap:7px !important;
+        padding:12px 14px 14px !important;
+      }
+      .add-btn,.batch-signup-btn,.quick-signup-btn{
+        min-height:42px !important;
+        font-size:12px !important;
+        padding:8px 5px !important;
+      }
+      .slot-menu-trigger,.menu-trigger{ width:30px !important; height:30px !important; border-radius:10px !important; }
+    }
+
+    @media (max-width:430px){
+      .member-list{ grid-template-columns:1fr !important; }
+      .activity-filter-buttons{ grid-template-columns:repeat(2, minmax(0,1fr)) !important; }
+    }
+
+
+
+    /* ===== v10：滑動後篩選列變右上角下拉 + 隊伍固定 2 Grid ===== */
+    .slot-list{
+      grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+      gap:16px !important;
+      align-items:start !important;
+    }
+
+    @media (min-width:1760px){
+      .slot-list{ grid-template-columns:repeat(2, minmax(0, 1fr)) !important; }
+    }
+
+    .filter-dropdown-toggle{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:9px 14px;
+      border-radius:999px;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(110,168,255,.88), rgba(139,92,246,.90));
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 12px 28px rgba(110,168,255,.18);
+      font-size:13px;
+      font-weight:950;
+      white-space:nowrap;
+    }
+
+    .filter-dropdown-toggle::after{
+      content:"⌄";
+      font-size:14px;
+      line-height:1;
+      opacity:.9;
+      transition:transform .18s ease;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .filter-dropdown-toggle::after{
+      transform:rotate(180deg);
+    }
+
+    .activity-filter-panel.filter-compact{
+      position:fixed !important;
+      top:86px !important;
+      right:34px !important;
+      left:auto !important;
+      width:auto !important;
+      max-width:calc(100vw - 68px) !important;
+      margin:0 !important;
+      padding:0 !important;
+      border:none !important;
+      background:transparent !important;
+      box-shadow:none !important;
+      backdrop-filter:none !important;
+      z-index:9997 !important;
+      display:block !important;
+    }
+
+    .activity-filter-panel.filter-compact .filter-dropdown-toggle{
+      display:flex !important;
+    }
+
+    .activity-filter-panel.filter-compact .activity-filter-group{
+      display:none !important;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open{
+      padding:10px !important;
+      border-radius:22px !important;
+      background:rgba(17,24,43,.82) !important;
+      border:1px solid rgba(255,255,255,.13) !important;
+      box-shadow:0 20px 48px rgba(0,0,0,.35) !important;
+      backdrop-filter:blur(18px) saturate(145%) !important;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .filter-dropdown-toggle{
+      width:100%;
+      margin-bottom:9px;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .activity-filter-group{
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:stretch !important;
+      gap:8px !important;
+      min-width:280px !important;
+      margin-top:8px !important;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .activity-filter-title{
+      font-size:12px !important;
+      color:#cbd5e1 !important;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .activity-filter-buttons{
+      display:grid !important;
+      grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      gap:7px !important;
+      width:100% !important;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .activity-filter-group:nth-of-type(3) .activity-filter-buttons{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .activity-filter-panel.filter-compact.filter-open .activity-filter-btn{
+      min-height:36px !important;
+      padding:8px 8px !important;
+      font-size:12px !important;
+    }
+
+    @media (max-width:1100px){
+      .slot-list{ grid-template-columns:repeat(2, minmax(0, 1fr)) !important; }
+    }
+
+    @media (max-width:768px){
+      .activity-filter-panel.filter-compact{
+        top:118px !important;
+        right:14px !important;
+        max-width:calc(100vw - 28px) !important;
+      }
+
+      .activity-filter-panel.filter-compact.filter-open .activity-filter-group{
+        min-width:min(330px, calc(100vw - 48px)) !important;
+      }
+
+      .slot-list{ grid-template-columns:1fr !important; }
+    }
+
+
+    /* ===== v11：導航列右側篩選下拉 + 角色統計併入隊伍標籤 ===== */
+    .nav{
+      align-items:center !important;
+    }
+
+    .nav-filter-toggle{
+      display:inline-flex !important;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      min-height:34px;
+      padding:7px 13px !important;
+      border-radius:999px !important;
+      color:#ffffff;
+      background:linear-gradient(135deg, rgba(110,168,255,.92), rgba(139,92,246,.92));
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 8px 22px rgba(110,168,255,.24);
+      font-size:12px !important;
+      font-weight:900 !important;
+      white-space:nowrap;
+    }
+
+    .nav-filter-toggle::after{
+      content:"⌄";
+      font-size:13px;
+      line-height:1;
+      opacity:.9;
+      transition:transform .18s ease;
+    }
+
+    .nav-filter-toggle[aria-expanded="true"]::after{
+      transform:rotate(180deg);
+    }
+
+    .activity-filter-panel{
+      display:none !important;
+      position:fixed !important;
+      left:auto !important;
+      width:min(420px, calc(100vw - 24px)) !important;
+      max-width:calc(100vw - 24px) !important;
+      margin:0 !important;
+      padding:12px !important;
+      border-radius:22px !important;
+      background:rgba(17,24,43,.90) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 22px 54px rgba(0,0,0,.42) !important;
+      backdrop-filter:blur(20px) saturate(145%) !important;
+      z-index:9998 !important;
+    }
+
+    .activity-filter-panel.filter-open{
+      display:grid !important;
+      grid-template-columns:1fr !important;
+      gap:12px !important;
+    }
+
+    .activity-filter-panel .activity-filter-group{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:86px minmax(0, 1fr) !important;
+      align-items:center !important;
+      gap:10px !important;
+      flex:none !important;
+    }
+
+    .activity-filter-panel .activity-filter-buttons{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      gap:7px !important;
+    }
+
+    .activity-filter-panel .activity-filter-group:nth-child(2) .activity-filter-buttons{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .activity-filter-panel .activity-filter-title{
+      font-size:12px !important;
+      color:#cbd5e1 !important;
+    }
+
+    .activity-filter-panel .activity-filter-btn{
+      min-height:36px !important;
+      padding:8px 7px !important;
+      font-size:12px !important;
+    }
+
+    .slot-meta-pills{
+      align-items:center !important;
+      gap:6px !important;
+    }
+
+    .compact-role-pill{
+      min-height:26px !important;
+      padding:5px 9px !important;
+      font-size:11px !important;
+      border-radius:999px !important;
+      flex:0 0 auto !important;
+      background:rgba(255,255,255,.075) !important;
+      border-color:rgba(255,255,255,.12) !important;
+    }
+
+    .compact-role-pill strong{
+      font-size:13px !important;
+      margin-left:4px !important;
+    }
+
+    .summary{
+      display:none !important;
+    }
+
+    .slot-alert-row{
+      align-items:center !important;
+      gap:8px !important;
+    }
+
+    .missing-role-hint{
+      margin:0 0 8px !important;
+    }
+
+    .slot-badges .status-warn{
+      color:#fbbf24 !important;
+    }
+
+    @media (max-width:768px){
+      .nav-filter-toggle{
+        min-height:30px;
+        padding:6px 10px !important;
+        font-size:11px !important;
+      }
+
+      .activity-filter-panel{
+        width:calc(100vw - 20px) !important;
+        right:10px !important;
+      }
+
+      .activity-filter-panel .activity-filter-group{
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+        gap:8px !important;
+      }
+
+      .activity-filter-panel .activity-filter-buttons{
+        grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      }
+
+      .activity-filter-panel .activity-filter-group:nth-child(2) .activity-filter-buttons{
+        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      }
+    }
+
+
+    /* ===== v12：搜尋同排篩選 + 右上角浮動下拉，不佔導航列 ===== */
+    .nav-filter-toggle{ display:none !important; }
+
+    .search-filter-row{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1fr) auto !important;
+      gap:12px !important;
+      align-items:stretch !important;
+      margin:0 0 12px !important;
+    }
+
+    .search-filter-row .quick-search-panel{
+      margin:0 !important;
+      min-height:62px !important;
+    }
+
+    .search-filter-row .activity-filter-panel{
+      display:flex !important;
+      position:static !important;
+      width:auto !important;
+      max-width:none !important;
+      min-width:520px !important;
+      margin:0 !important;
+      padding:10px 12px !important;
+      border-radius:20px !important;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.04)) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+      box-shadow:0 12px 28px rgba(0,0,0,.14) !important;
+      backdrop-filter:blur(12px) !important;
+      z-index:1 !important;
+      gap:14px !important;
+      align-items:center !important;
+      justify-content:flex-end !important;
+    }
+
+    .search-filter-row .activity-filter-panel .activity-filter-group{
+      display:flex !important;
+      grid-template-columns:none !important;
+      width:auto !important;
+      gap:9px !important;
+      align-items:center !important;
+      flex:none !important;
+    }
+
+    .search-filter-row .activity-filter-panel .activity-filter-buttons{
+      display:flex !important;
+      grid-template-columns:none !important;
+      width:auto !important;
+      gap:7px !important;
+    }
+
+    .search-filter-row .activity-filter-panel .activity-filter-title{
+      font-size:12px !important;
+      color:#eef2ff !important;
+      white-space:nowrap !important;
+    }
+
+    .search-filter-row .activity-filter-panel .activity-filter-btn{
+      min-height:34px !important;
+      padding:7px 11px !important;
+      font-size:12px !important;
+    }
+
+    .floating-filter-toggle{
+      position:fixed;
+      top:28px;
+      right:24px;
+      z-index:10001;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      min-height:38px;
+      padding:8px 15px;
+      border-radius:999px;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(110,168,255,.95), rgba(139,92,246,.95));
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 12px 28px rgba(110,168,255,.24);
+      font-size:13px;
+      font-weight:950;
+      white-space:nowrap;
+    }
+
+    .floating-filter-toggle::after{
+      content:"⌄";
+      font-size:13px;
+      transition:transform .18s ease;
+    }
+
+    .floating-filter-toggle[aria-expanded="true"]::after{ transform:rotate(180deg); }
+    .floating-filter-toggle.show{ display:inline-flex !important; }
+
+    .activity-filter-panel.floating-open{
+      display:grid !important;
+      position:fixed !important;
+      top:76px !important;
+      right:24px !important;
+      left:auto !important;
+      width:min(420px, calc(100vw - 32px)) !important;
+      min-width:0 !important;
+      max-width:calc(100vw - 32px) !important;
+      padding:12px !important;
+      border-radius:22px !important;
+      background:rgba(17,24,43,.92) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 22px 54px rgba(0,0,0,.42) !important;
+      backdrop-filter:blur(20px) saturate(145%) !important;
+      z-index:10000 !important;
+      gap:12px !important;
+    }
+
+    .activity-filter-panel.floating-open .activity-filter-group{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:86px minmax(0, 1fr) !important;
+      align-items:center !important;
+      gap:10px !important;
+    }
+
+    .activity-filter-panel.floating-open .activity-filter-buttons{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      gap:7px !important;
+    }
+
+    .activity-filter-panel.floating-open .activity-filter-group:nth-child(2) .activity-filter-buttons{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .activity-filter-panel.floating-open .activity-filter-btn{
+      min-height:36px !important;
+      padding:8px 7px !important;
+      font-size:12px !important;
+    }
+
+    .slot-meta-pills{
+      display:flex !important;
+      align-items:center !important;
+      flex-wrap:wrap !important;
+      gap:6px !important;
+    }
+
+    .compact-role-pill{
+      min-width:58px !important;
+      min-height:24px !important;
+      padding:4px 8px !important;
+      font-size:10px !important;
+      line-height:1 !important;
+      border-radius:999px !important;
+      flex:0 0 auto !important;
+      background:rgba(255,255,255,.07) !important;
+      border:1px solid rgba(255,255,255,.11) !important;
+      color:#cbd5e1 !important;
+    }
+
+    .compact-role-pill strong{
+      font-size:12px !important;
+      margin-left:3px !important;
+      color:#fff !important;
+    }
+
+    .slot-badges{ align-items:flex-start !important; }
+    .slot-badges .badge.status-warn{ display:none !important; }
+
+    .slot-alert-row{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:8px !important;
+      margin-bottom:8px !important;
+    }
+
+    .missing-role-hint{ margin:0 !important; }
+    .missing-role-pill{ white-space:nowrap !important; }
+
+    @media (max-width:1180px){
+      .search-filter-row{ grid-template-columns:1fr !important; }
+      .search-filter-row .activity-filter-panel{ min-width:0 !important; width:100% !important; justify-content:space-between !important; }
+    }
+
+    @media (max-width:768px){
+      .search-filter-row .activity-filter-panel{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        gap:9px !important;
+      }
+      .search-filter-row .activity-filter-panel .activity-filter-group{
+        width:100% !important;
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+      }
+      .search-filter-row .activity-filter-panel .activity-filter-buttons{
+        display:grid !important;
+        grid-template-columns:repeat(4, minmax(0,1fr)) !important;
+        width:100% !important;
+      }
+      .search-filter-row .activity-filter-panel .activity-filter-group:nth-child(2) .activity-filter-buttons{
+        grid-template-columns:repeat(3, minmax(0,1fr)) !important;
+      }
+      .floating-filter-toggle{
+        top:92px;
+        right:12px;
+        min-height:34px;
+        padding:7px 12px;
+        font-size:12px;
+      }
+      .activity-filter-panel.floating-open{
+        top:134px !important;
+        right:10px !important;
+        width:calc(100vw - 20px) !important;
+        max-width:calc(100vw - 20px) !important;
+      }
+      .activity-filter-panel.floating-open .activity-filter-group{
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+      }
+    }
+
+
+    /* ===== v13：漂亮右上篩選 + 空隊伍日期預設折疊 ===== */
+    .floating-filter-toggle{
+      top:86px !important;
+      right:22px !important;
+      min-height:42px !important;
+      padding:6px 9px 6px 7px !important;
+      gap:8px !important;
+      border-radius:999px !important;
+      background:linear-gradient(135deg, rgba(20,30,56,.88), rgba(30,24,62,.82)) !important;
+      border:1px solid rgba(170,190,255,.22) !important;
+      box-shadow:0 14px 36px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.09) !important;
+      backdrop-filter:blur(18px) saturate(145%) !important;
+      color:#eef2ff !important;
+    }
+
+    .floating-filter-toggle:hover{
+      transform:translateY(-1px) !important;
+      border-color:rgba(190,205,255,.34) !important;
+      box-shadow:0 18px 44px rgba(0,0,0,.38), 0 0 0 4px rgba(139,92,246,.10) !important;
+    }
+
+    .floating-filter-toggle::after{
+      content:"" !important;
+      width:7px;
+      height:7px;
+      border-right:2px solid rgba(226,232,240,.88);
+      border-bottom:2px solid rgba(226,232,240,.88);
+      transform:translateY(-2px) rotate(45deg);
+      margin-left:2px;
+    }
+
+    .floating-filter-toggle[aria-expanded="true"]::after{
+      transform:translateY(2px) rotate(-135deg) !important;
+    }
+
+    .filter-toggle-icon{
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(110,168,255,.95), rgba(139,92,246,.95));
+      box-shadow:0 8px 18px rgba(110,168,255,.22);
+      font-size:12px;
+      font-weight:950;
+      line-height:1;
+      color:white;
+    }
+
+    .filter-toggle-text{
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:.01em;
+      white-space:nowrap;
+    }
+
+    .activity-filter-panel.floating-open{
+      top:134px !important;
+      right:22px !important;
+    }
+
+    .day-card.day-collapsed{
+      padding-bottom:18px !important;
+    }
+
+    .day-card.day-collapsed .slot-list{
+      display:none !important;
+    }
+
+    .day-empty-summary{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:8px 12px;
+      border-radius:999px;
+      color:#cbd5e1;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .day-collapse-btn{
+      padding:8px 12px !important;
+      min-height:36px;
+      border-radius:999px !important;
+      font-size:12px !important;
+      color:#dbeafe !important;
+      background:rgba(110,168,255,.10) !important;
+      border:1px solid rgba(110,168,255,.22) !important;
+    }
+
+    .day-collapse-btn:hover{
+      background:rgba(110,168,255,.18) !important;
+    }
+
+    @media (max-width:768px){
+      .floating-filter-toggle{
+        top:100px !important;
+        right:12px !important;
+        min-height:38px !important;
+      }
+      .filter-toggle-icon{ width:27px; height:27px; font-size:11px; }
+      .filter-toggle-text{ font-size:11px; }
+      .activity-filter-panel.floating-open{
+        top:144px !important;
+        right:12px !important;
+      }
+      .day-empty-summary{
+        width:100%;
+        justify-content:center;
+      }
+    }
+
+
+    /* ===== v14：篩選跟導航列平行 + 無折疊 + 預設全部/全部 ===== */
+    .topbar{
+      max-width:1220px !important;
+    }
+
+    .topbar-content{
+      gap:12px !important;
+    }
+
+    .nav-inline-filter.floating-filter-toggle{
+      position:static !important;
+      display:inline-flex !important;
+      min-height:36px !important;
+      padding:6px 12px 6px 7px !important;
+      margin-left:4px !important;
+      transform:none !important;
+      background:linear-gradient(135deg, rgba(110,168,255,.22), rgba(139,92,246,.25)) !important;
+      border:1px solid rgba(185,205,255,.24) !important;
+      box-shadow:0 10px 24px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.08) !important;
+      color:#eef2ff !important;
+      flex:0 0 auto !important;
+    }
+
+    .nav-inline-filter .filter-toggle-icon{
+      width:26px !important;
+      height:26px !important;
+      font-size:11px !important;
+      background:linear-gradient(135deg, rgba(110,168,255,.95), rgba(139,92,246,.95)) !important;
+    }
+
+    .nav-inline-filter .filter-toggle-text{
+      font-size:12px !important;
+    }
+
+    .activity-filter-panel.floating-open{
+      top:92px !important;
+      right:max(24px, calc((100vw - 1220px) / 2 + 18px)) !important;
+    }
+
+    .day-card.day-collapsed .slot-list{
+      display:grid !important;
+    }
+
+    .day-empty-summary,
+    .day-collapse-btn{
+      display:none !important;
+    }
+
+    @media (max-width:768px){
+      .topbar-content{
+        gap:8px !important;
+      }
+
+      .nav-inline-filter.floating-filter-toggle{
+        width:100% !important;
+        justify-content:center !important;
+        min-height:34px !important;
+        margin-left:0 !important;
+      }
+
+      .activity-filter-panel.floating-open{
+        top:154px !important;
+        right:10px !important;
+        width:calc(100vw - 20px) !important;
+      }
+    }
+
+
+    /* ===== v15：導航列不動，篩選獨立在頁面右上角 + 報名按鈕復原 ===== */
+    .topbar{
+      max-width:1100px !important;
+      width:calc(100% - 40px) !important;
+    }
+
+    .topbar-content{
+      gap:0 !important;
+    }
+
+    .nav-inline-filter{
+      display:none !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle{
+      position:fixed !important;
+      top:28px !important;
+      right:24px !important;
+      z-index:10002 !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:8px !important;
+      min-height:40px !important;
+      padding:7px 14px 7px 8px !important;
+      border-radius:999px !important;
+      color:#eef2ff !important;
+      background:linear-gradient(135deg, rgba(18,27,49,.90), rgba(28,24,58,.88)) !important;
+      border:1px solid rgba(190,205,255,.24) !important;
+      box-shadow:0 14px 34px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08) !important;
+      backdrop-filter:blur(18px) saturate(145%) !important;
+      font-size:12px !important;
+      font-weight:950 !important;
+      white-space:nowrap !important;
+      transform:none !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle:hover{
+      transform:translateY(-1px) !important;
+      border-color:rgba(205,220,255,.36) !important;
+      box-shadow:0 18px 42px rgba(0,0,0,.40), 0 0 0 4px rgba(139,92,246,.10) !important;
+    }
+
+    #filterDropdownToggle .filter-toggle-icon{
+      width:28px !important;
+      height:28px !important;
+      border-radius:999px !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      background:linear-gradient(135deg, rgba(110,168,255,.95), rgba(139,92,246,.95)) !important;
+      box-shadow:0 8px 18px rgba(110,168,255,.22) !important;
+      font-size:11px !important;
+      font-weight:950 !important;
+      line-height:1 !important;
+      color:#fff !important;
+    }
+
+    #filterDropdownToggle .filter-toggle-text{
+      font-size:12px !important;
+      font-weight:950 !important;
+      letter-spacing:.01em !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle::after{
+      content:"" !important;
+      width:7px !important;
+      height:7px !important;
+      border-right:2px solid rgba(226,232,240,.88) !important;
+      border-bottom:2px solid rgba(226,232,240,.88) !important;
+      transform:translateY(-2px) rotate(45deg) !important;
+      margin-left:2px !important;
+      transition:transform .18s ease !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle[aria-expanded="true"]::after{
+      transform:translateY(2px) rotate(-135deg) !important;
+    }
+
+    .search-filter-row{
+      display:block !important;
+    }
+
+    .search-filter-row .quick-search-panel{
+      margin:0 0 12px !important;
+      width:100% !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel{
+      display:none !important;
+      position:fixed !important;
+      top:78px !important;
+      right:24px !important;
+      left:auto !important;
+      width:min(420px, calc(100vw - 32px)) !important;
+      min-width:0 !important;
+      max-width:calc(100vw - 32px) !important;
+      margin:0 !important;
+      padding:12px !important;
+      border-radius:22px !important;
+      background:rgba(17,24,43,.94) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 22px 54px rgba(0,0,0,.42) !important;
+      backdrop-filter:blur(20px) saturate(145%) !important;
+      z-index:10001 !important;
+      gap:12px !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open,
+    #activityFilterPanel.activity-filter-panel.filter-open{
+      display:grid !important;
+      grid-template-columns:1fr !important;
+    }
+
+    #activityFilterPanel .activity-filter-group{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:86px minmax(0, 1fr) !important;
+      align-items:center !important;
+      gap:10px !important;
+      flex:none !important;
+    }
+
+    #activityFilterPanel .activity-filter-buttons{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      gap:7px !important;
+    }
+
+    #activityFilterPanel .activity-filter-group:nth-child(2) .activity-filter-buttons{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    #activityFilterPanel .activity-filter-btn{
+      min-height:36px !important;
+      padding:8px 7px !important;
+      font-size:12px !important;
+      border-radius:999px !important;
+    }
+
+    .slot-actions{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1.55fr) minmax(112px, .82fr) minmax(112px, .82fr) !important;
+      gap:10px !important;
+      margin-top:12px !important;
+      align-items:stretch !important;
+    }
+
+    .add-btn,
+    .batch-signup-btn,
+    .quick-signup-btn{
+      width:100% !important;
+      min-height:46px !important;
+      border-radius:14px !important;
+      padding:10px 12px !important;
+      font-size:14px !important;
+      font-weight:900 !important;
+      white-space:nowrap !important;
+      box-shadow:none !important;
+    }
+
+    .add-btn{
+      color:#eef2ff !important;
+      background:rgba(255,255,255,.045) !important;
+      border:1px dashed rgba(255,255,255,.22) !important;
+    }
+
+    .add-btn:hover{
+      background:rgba(255,255,255,.075) !important;
+      border-color:rgba(255,255,255,.34) !important;
+    }
+
+    .batch-signup-btn{
+      color:#fff7ed !important;
+      background:linear-gradient(135deg, rgba(164,105,45,.92), rgba(126,78,38,.92)) !important;
+      border:1px solid rgba(253,186,116,.28) !important;
+      box-shadow:0 10px 22px rgba(180,103,45,.14) !important;
+    }
+
+    .batch-signup-btn:hover{
+      background:linear-gradient(135deg, rgba(185,120,52,.95), rgba(142,86,42,.95)) !important;
+    }
+
+    .quick-signup-btn{
+      color:#f5f3ff !important;
+      background:linear-gradient(135deg, rgba(92,66,170,.94), rgba(75,52,139,.94)) !important;
+      border:1px solid rgba(196,181,253,.24) !important;
+      box-shadow:0 10px 22px rgba(124,58,237,.14) !important;
+    }
+
+    .quick-signup-btn:hover{
+      background:linear-gradient(135deg, rgba(108,80,196,.96), rgba(88,61,162,.96)) !important;
+    }
+
+    @media (max-width:768px){
+      #filterDropdownToggle.floating-filter-toggle{
+        top:102px !important;
+        right:12px !important;
+        min-height:38px !important;
+        padding:6px 12px 6px 7px !important;
+      }
+
+      #activityFilterPanel.activity-filter-panel{
+        top:146px !important;
+        right:10px !important;
+        width:calc(100vw - 20px) !important;
+        max-width:calc(100vw - 20px) !important;
+      }
+
+      #activityFilterPanel .activity-filter-group{
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+      }
+
+      .slot-actions{
+        grid-template-columns:1fr 1fr 1fr !important;
+        gap:7px !important;
+      }
+
+      .add-btn,
+      .batch-signup-btn,
+      .quick-signup-btn{
+        min-height:42px !important;
+        padding:9px 6px !important;
+        font-size:12px !important;
+      }
+    }
+
+
+    /* ===== v16：保留搜尋列右側篩選；滑出畫面後才顯示右上角浮動篩選 ===== */
+    .search-filter-row{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1fr) minmax(480px, auto) !important;
+      align-items:center !important;
+      gap:12px !important;
+      margin:0 0 12px !important;
+    }
+
+    .search-filter-row .quick-search-panel{
+      margin:0 !important;
+      width:100% !important;
+      min-width:0 !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel{
+      display:flex !important;
+      position:static !important;
+      top:auto !important;
+      right:auto !important;
+      left:auto !important;
+      width:auto !important;
+      min-width:480px !important;
+      max-width:none !important;
+      margin:0 !important;
+      padding:12px !important;
+      border-radius:20px !important;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.04)) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+      box-shadow:0 12px 28px rgba(0,0,0,.14) !important;
+      backdrop-filter:blur(12px) !important;
+      z-index:1 !important;
+      gap:12px !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+    }
+
+    #activityFilterPanel .activity-filter-group{
+      display:flex !important;
+      grid-template-columns:none !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:10px !important;
+      flex:1 1 auto !important;
+      width:auto !important;
+    }
+
+    #activityFilterPanel .activity-filter-buttons{
+      display:flex !important;
+      grid-template-columns:none !important;
+      flex-wrap:nowrap !important;
+      gap:8px !important;
+      width:auto !important;
+    }
+
+    #activityFilterPanel .activity-filter-btn{
+      min-height:34px !important;
+      padding:7px 11px !important;
+      font-size:12px !important;
+      border-radius:999px !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle{
+      position:fixed !important;
+      top:24px !important;
+      right:max(24px, calc((100vw - 1220px) / 2 + 18px)) !important;
+      display:none !important;
+      z-index:10001 !important;
+      min-height:42px !important;
+      padding:6px 12px 6px 7px !important;
+      border-radius:999px !important;
+      background:linear-gradient(135deg, rgba(20,30,56,.88), rgba(30,24,62,.82)) !important;
+      border:1px solid rgba(170,190,255,.22) !important;
+      box-shadow:0 14px 36px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.09) !important;
+      backdrop-filter:blur(18px) saturate(145%) !important;
+      color:#eef2ff !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle.show{
+      display:inline-flex !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open,
+    #activityFilterPanel.activity-filter-panel.filter-open{
+      display:grid !important;
+      position:fixed !important;
+      top:76px !important;
+      right:max(24px, calc((100vw - 1220px) / 2 + 18px)) !important;
+      left:auto !important;
+      width:min(420px, calc(100vw - 32px)) !important;
+      min-width:0 !important;
+      max-width:calc(100vw - 32px) !important;
+      margin:0 !important;
+      padding:12px !important;
+      border-radius:22px !important;
+      background:rgba(17,24,43,.94) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 22px 54px rgba(0,0,0,.42) !important;
+      backdrop-filter:blur(20px) saturate(145%) !important;
+      z-index:10000 !important;
+      gap:12px !important;
+      grid-template-columns:1fr !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-group,
+    #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-group{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:86px minmax(0, 1fr) !important;
+      align-items:center !important;
+      gap:10px !important;
+      flex:none !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-buttons,
+    #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-buttons{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      gap:7px !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-group:nth-child(2) .activity-filter-buttons,
+    #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-group:nth-child(2) .activity-filter-buttons{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    @media (max-width:1180px){
+      .search-filter-row{
+        grid-template-columns:1fr !important;
+      }
+      #activityFilterPanel.activity-filter-panel{
+        width:100% !important;
+        min-width:0 !important;
+      }
+    }
+
+    @media (max-width:768px){
+      #filterDropdownToggle.floating-filter-toggle{
+        top:100px !important;
+        right:12px !important;
+      }
+      #activityFilterPanel.activity-filter-panel.floating-open,
+      #activityFilterPanel.activity-filter-panel.filter-open{
+        top:144px !important;
+        right:10px !important;
+        width:calc(100vw - 20px) !important;
+        max-width:calc(100vw - 20px) !important;
+      }
+      #activityFilterPanel.activity-filter-panel{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+      }
+      #activityFilterPanel .activity-filter-group{
+        width:100% !important;
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+      }
+      #activityFilterPanel .activity-filter-buttons{
+        display:grid !important;
+        grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+        width:100% !important;
+      }
+      #activityFilterPanel .activity-filter-group:nth-child(2) .activity-filter-buttons{
+        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      }
+    }
+
+
+    /* ===== v17：修正浮動篩選位置；不改導航列；保留搜尋列右側篩選 ===== */
+    .topbar{
+      max-width:1100px !important;
+      width:calc(100% - 40px) !important;
+      z-index:1000 !important;
+    }
+
+    .topbar-content{
+      gap:0 !important;
+    }
+
+    .nav-inline-filter,
+    .nav .nav-filter-toggle{
+      display:none !important;
+    }
+
+    .search-filter-row{
+      display:grid !important;
+      grid-template-columns:minmax(0, 1fr) minmax(520px, auto) !important;
+      align-items:stretch !important;
+      gap:12px !important;
+      margin:0 0 12px !important;
+    }
+
+    .search-filter-row .quick-search-panel{
+      margin:0 !important;
+      width:100% !important;
+      min-width:0 !important;
+      min-height:62px !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+      display:flex !important;
+      position:static !important;
+      width:auto !important;
+      min-width:520px !important;
+      max-width:none !important;
+      margin:0 !important;
+      padding:12px !important;
+      border-radius:20px !important;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.04)) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+      box-shadow:0 12px 28px rgba(0,0,0,.14) !important;
+      backdrop-filter:blur(12px) !important;
+      z-index:1 !important;
+      gap:12px !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-group{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:10px !important;
+      flex:1 1 auto !important;
+      width:auto !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-buttons{
+      display:flex !important;
+      flex-wrap:nowrap !important;
+      gap:8px !important;
+      width:auto !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-btn{
+      min-height:34px !important;
+      padding:7px 11px !important;
+      font-size:12px !important;
+      border-radius:999px !important;
+    }
+
+    /* 浮動按鈕：只在原本搜尋/篩選列離開畫面後，由 JS 加 .show 才顯示。位置在 navbar 外側右邊，同高度。 */
+    #filterDropdownToggle.floating-filter-toggle{
+      position:fixed !important;
+      top:32px !important;
+      right:24px !important;
+      display:none !important;
+      z-index:1002 !important;
+      min-height:40px !important;
+      padding:6px 12px 6px 7px !important;
+      border-radius:999px !important;
+      background:linear-gradient(135deg, rgba(20,30,56,.92), rgba(30,24,62,.88)) !important;
+      border:1px solid rgba(170,190,255,.24) !important;
+      box-shadow:0 14px 36px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.09) !important;
+      backdrop-filter:blur(18px) saturate(145%) !important;
+      color:#eef2ff !important;
+      transform:none !important;
+    }
+
+    #filterDropdownToggle.floating-filter-toggle.show{
+      display:inline-flex !important;
+    }
+
+    #filterDropdownToggle .filter-toggle-icon{
+      width:28px !important;
+      height:28px !important;
+      font-size:11px !important;
+      flex:0 0 auto !important;
+    }
+
+    #filterDropdownToggle .filter-toggle-text{
+      max-width:86px !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      white-space:nowrap !important;
+      font-size:12px !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open,
+    #activityFilterPanel.activity-filter-panel.filter-open{
+      display:grid !important;
+      position:fixed !important;
+      top:82px !important;
+      right:24px !important;
+      left:auto !important;
+      width:min(420px, calc(100vw - 32px)) !important;
+      min-width:0 !important;
+      max-width:calc(100vw - 32px) !important;
+      margin:0 !important;
+      padding:12px !important;
+      border-radius:22px !important;
+      background:rgba(17,24,43,.94) !important;
+      border:1px solid rgba(255,255,255,.14) !important;
+      box-shadow:0 22px 54px rgba(0,0,0,.42) !important;
+      backdrop-filter:blur(20px) saturate(145%) !important;
+      z-index:1001 !important;
+      gap:12px !important;
+      grid-template-columns:1fr !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-group,
+    #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-group{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:86px minmax(0, 1fr) !important;
+      align-items:center !important;
+      gap:10px !important;
+      flex:none !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-buttons,
+    #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-buttons{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+      gap:7px !important;
+    }
+
+    #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-group:nth-child(2) .activity-filter-buttons,
+    #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-group:nth-child(2) .activity-filter-buttons{
+      grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    @media (max-width:1360px){
+      /* 右側空間不足時，浮動篩選稍微縮短，避免壓到 navbar */
+      #filterDropdownToggle .filter-toggle-text{
+        max-width:64px !important;
+      }
+    }
+
+    @media (max-width:1180px){
+      .search-filter-row{
+        grid-template-columns:1fr !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+        width:100% !important;
+        min-width:0 !important;
+      }
+      #filterDropdownToggle.floating-filter-toggle{
+        top:100px !important;
+        right:14px !important;
+      }
+      #activityFilterPanel.activity-filter-panel.floating-open,
+      #activityFilterPanel.activity-filter-panel.filter-open{
+        top:146px !important;
+        right:10px !important;
+        width:calc(100vw - 20px) !important;
+        max-width:calc(100vw - 20px) !important;
+      }
+    }
+
+    @media (max-width:768px){
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+        display:grid !important;
+        grid-template-columns:1fr !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-group{
+        width:100% !important;
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-buttons{
+        display:grid !important;
+        grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+        width:100% !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-group:nth-child(2) .activity-filter-buttons{
+        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      }
+      #activityFilterPanel.activity-filter-panel.floating-open .activity-filter-group,
+      #activityFilterPanel.activity-filter-panel.filter-open .activity-filter-group{
+        grid-template-columns:1fr !important;
+        align-items:stretch !important;
+      }
+    }
+
+
+
+    /* ===== v18：搜尋列 + 篩選列固定同一排；浮動篩選只在原篩選離開畫面才出現 ===== */
+    .search-filter-row{
+      width:100% !important;
+      display:grid !important;
+      grid-template-columns:minmax(360px, 1fr) minmax(500px, 560px) !important;
+      align-items:stretch !important;
+      gap:12px !important;
+      margin:0 0 12px !important;
+    }
+
+    .search-filter-row .quick-search-panel{
+      width:100% !important;
+      min-width:0 !important;
+      margin:0 !important;
+      min-height:62px !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+      width:100% !important;
+      min-width:0 !important;
+      max-width:560px !important;
+      height:62px !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      flex-wrap:nowrap !important;
+      gap:10px !important;
+      margin:0 !important;
+      padding:10px 12px !important;
+      position:static !important;
+      border-radius:20px !important;
+      background:linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.04)) !important;
+      border:1px solid rgba(255,255,255,.10) !important;
+      box-shadow:0 12px 28px rgba(0,0,0,.14) !important;
+      backdrop-filter:blur(12px) !important;
+      z-index:1 !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-group{
+      width:auto !important;
+      min-width:0 !important;
+      flex:0 1 auto !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:flex-start !important;
+      gap:8px !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-title{
+      flex:0 0 auto !important;
+      font-size:12px !important;
+      white-space:nowrap !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-buttons{
+      width:auto !important;
+      display:flex !important;
+      flex-wrap:nowrap !important;
+      gap:7px !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-btn{
+      flex:0 0 auto !important;
+      min-height:34px !important;
+      padding:7px 11px !important;
+      font-size:12px !important;
+      border-radius:999px !important;
+      white-space:nowrap !important;
+    }
+
+    @media (max-width:980px){
+      .search-filter-row{
+        grid-template-columns:1fr !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+        max-width:none !important;
+        height:auto !important;
+        flex-wrap:wrap !important;
+      }
+    }
+
+    @media (max-width:640px){
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        gap:10px !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-group{
+        width:100% !important;
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        gap:7px !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-buttons{
+        display:grid !important;
+        grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+        width:100% !important;
+      }
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open) .activity-filter-group:nth-child(2) .activity-filter-buttons{
+        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+      }
+    }
+
+
+    /* ===== v20 修正：搜尋與篩選同排、爬塔層數分開顯示 ===== */
+    .search-filter-row{
+      display:flex !important;
+      align-items:stretch !important;
+      gap:14px !important;
+      flex-wrap:nowrap !important;
+      margin-bottom:12px !important;
+    }
+
+    .search-filter-row .quick-search-panel{
+      flex:1 1 auto !important;
+      min-width:360px !important;
+      margin:0 !important;
+    }
+
+    .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+      flex:0 0 auto !important;
+      width:auto !important;
+      min-width:520px !important;
+      margin:0 !important;
+      align-self:stretch !important;
+    }
+
+    .slot-meta-pills{
+      align-items:center !important;
+      gap:6px !important;
+    }
+
+    .tower-meta-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      line-height:1;
+      color:#d8f7ff;
+      background:rgba(34,211,238,.14);
+      border:1px solid rgba(34,211,238,.28);
+      white-space:nowrap;
+    }
+
+    .tower-difficulty-pill{
+      color:#fff1c7;
+      background:rgba(245,158,11,.15);
+      border-color:rgba(245,158,11,.28);
+    }
+
+    .tower-range-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    @media (max-width:1100px){
+      .search-filter-row{
+        flex-direction:column !important;
+      }
+      .search-filter-row .quick-search-panel,
+      .search-filter-row #activityFilterPanel.activity-filter-panel:not(.floating-open):not(.filter-open){
+        min-width:0 !important;
+        width:100% !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2193,8 +6759,10 @@ body {
       <a href="PVERegistration.html" class="active">團隊報名</a>
       <a href="gallery.html">江湖回憶錄</a>
     </div>
+
   </div>
 </nav>
+<button type="button" class="floating-filter-toggle" id="filterDropdownToggle" aria-expanded="false"><span class="filter-toggle-icon">篩</span><span class="filter-toggle-text">全部 / 全部</span></button>
   <div class="container">
     <section class="hero">
       <h1 class="title">夢回花深處｜團隊報名清單</h1>
@@ -2208,19 +6776,14 @@ body {
       </div>
     </section>
 
-    <div class="top-action-panel">
-      <div class="top-action-left">
-        <button class="btn-ghost btn-profile" id="myProfileBtn">我的資料</button>
-        <button class="btn-ghost btn-batch-preset-manage" id="batchPresetManageBtn">常用批量隊伍資料</button>
-        <button class="btn-ghost btn-info-soft" id="infoBtn">介紹</button>
-      </div>
-      <div class="top-action-right">
-        <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">新增日期/時間</button>
-        <button class="btn-ghost btn-refresh-soft" id="refreshBtn">整理日期</button>
-      </div>
+    <div class="search-filter-row">
+    <div class="quick-search-panel" aria-label="搜尋玩家">
+      <div class="quick-search-icon">🔍</div>
+      <input id="memberSearchInput" class="quick-search-input" type="search" placeholder="搜尋玩家名字，快速找到所在隊伍" autocomplete="off" />
+      <button type="button" id="memberSearchClearBtn" class="quick-search-clear">清除</button>
     </div>
 
-    <div class="activity-filter-panel" aria-label="團隊分類篩選">
+    <div class="activity-filter-panel" id="activityFilterPanel" aria-label="團隊分類篩選">
       <div class="activity-filter-group">
         <div class="activity-filter-title">團隊類型</div>
         <div class="activity-filter-buttons">
@@ -2239,9 +6802,27 @@ body {
         </div>
       </div>
     </div>
+    </div>
+
+
+    <div class="top-action-panel">
+      <div class="top-action-left">
+        <button class="btn-ghost btn-profile" id="myProfileBtn">我的資料</button>
+        <button class="btn-ghost btn-batch-preset-manage" id="batchPresetManageBtn">常用批量隊伍資料</button>
+        <button class="btn-ghost btn-info-soft" id="infoBtn">介紹</button>
+      </div>
+      <div class="top-action-right">
+        <button class="btn-ghost btn-date-primary" id="addDateTimeBtn">新增日期/時間</button>
+        <button class="btn-ghost btn-refresh-soft" id="refreshBtn">整理日期</button>
+      </div>
+    </div>
+
+
 
     <div class="days" id="days"></div>
   </div>
+
+  <button type="button" class="fab-add-team" id="fabAddTeamBtn" aria-label="新增日期或時間">＋</button>
 
   <div id="signupModal" class="signup-modal">
     <div class="signup-modal-box">
@@ -2381,6 +6962,27 @@ body {
         </div>
       </div>
 
+      <div id="dateTimeTowerOptions" class="tower-option-panel">
+        <div class="tower-range-grid">
+          <div>
+            <label class="signup-label" for="dateTimeTowerStartSelect" style="margin-top:0;">起始層</label>
+            <select id="dateTimeTowerStartSelect" class="signup-select"></select>
+          </div>
+          <div>
+            <label class="signup-label" for="dateTimeTowerEndSelect" style="margin-top:0;">結束層</label>
+            <select id="dateTimeTowerEndSelect" class="signup-select"></select>
+          </div>
+        </div>
+        <div>
+          <label class="signup-label" for="dateTimeTowerDifficultySelect" style="margin-top:0;">爬塔難度</label>
+          <select id="dateTimeTowerDifficultySelect" class="signup-select">
+            <option value="普通">普通</option>
+            <option value="困難">困難</option>
+            <option value="鬼神愁">鬼神愁</option>
+          </select>
+        </div>
+      </div>
+
       <label class="signup-label" for="customTimeInput" style="margin-top:18px;">時間</label>
       <div class="time-row">
         <input id="customTimeInput" class="signup-input" type="time" step="300" />
@@ -2503,6 +7105,27 @@ body {
         </div>
       </div>
 
+      <div id="teamTowerOptions" class="tower-option-panel">
+        <div class="tower-range-grid">
+          <div>
+            <label class="signup-label" for="teamTowerStartSelect" style="margin-top:0;">起始層</label>
+            <select id="teamTowerStartSelect" class="signup-select"></select>
+          </div>
+          <div>
+            <label class="signup-label" for="teamTowerEndSelect" style="margin-top:0;">結束層</label>
+            <select id="teamTowerEndSelect" class="signup-select"></select>
+          </div>
+        </div>
+        <div>
+          <label class="signup-label" for="teamTowerDifficultySelect" style="margin-top:0;">爬塔難度</label>
+          <select id="teamTowerDifficultySelect" class="signup-select">
+            <option value="普通">普通</option>
+            <option value="困難">困難</option>
+            <option value="鬼神愁">鬼神愁</option>
+          </select>
+        </div>
+      </div>
+
       <label class="signup-label" for="teamDescriptionInput">隊伍說明</label>
 
       <div class="editor-toolbar">
@@ -2600,6 +7223,17 @@ body {
     </div>
   </div>
 
+  <div id="tagInfoModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">標籤說明</div>
+      <div id="tagInfoContent"></div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeTagInfoModal()">關閉</button>
+      </div>
+    </div>
+  </div>
+
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
@@ -2666,15 +7300,12 @@ body {
     let currentDateTimeEdit = null;
     let currentBatchSignup = null;
     let editingBatchPresetIndex = -1;
-    let currentTypeFilter = localStorage.getItem("registration_type_filter") || "all";
-    let currentSizeFilter = localStorage.getItem("registration_size_filter") || "all";
-    const legacyActivityFilter = localStorage.getItem("registration_activity_filter") || "";
-    if(legacyActivityFilter === "pve") currentTypeFilter = "normal";
-    if(legacyActivityFilter === "tower") currentTypeFilter = "tower";
-    if(legacyActivityFilter === "five") currentSizeFilter = "5";
-    if(legacyActivityFilter === "ten") currentSizeFilter = "10";
-    if(!["all","normal","talent","tower"].includes(currentTypeFilter)) currentTypeFilter = "all";
-    if(!["all","5","10"].includes(currentSizeFilter)) currentSizeFilter = "all";
+    let currentSearchQuery = "";
+    let currentTypeFilter = "all";
+    let currentSizeFilter = "all";
+    localStorage.setItem("registration_type_filter", "all");
+    localStorage.setItem("registration_size_filter", "all");
+    localStorage.removeItem("registration_activity_filter");
 
     function getMyProfile(){
       return {
@@ -2809,6 +7440,105 @@ body {
       return Number(teamSize) === 5 ? CONFIG.minHealer5 : CONFIG.minHealer10;
     }
 
+    const TOWER_DIFFICULTIES = ["普通", "困難", "鬼神愁"];
+
+    function getTowerMaxFloor(teamSize){
+      return Number(teamSize) === 5 ? 20 : 10;
+    }
+
+    function normalizeTowerSlot(slot){
+      const data = normalizeSlot(slot);
+      const maxFloor = getTowerMaxFloor(data.teamSize);
+      const rawStart = Number(slot?.towerFloorStart ?? slot?.towerStart ?? slot?.towerFloor ?? 1);
+      const rawEnd = Number(slot?.towerFloorEnd ?? slot?.towerEnd ?? slot?.towerFloor ?? rawStart);
+      const safeStart = Math.min(Math.max(Number.isFinite(rawStart) ? rawStart : 1, 1), maxFloor);
+      const safeEndRaw = Math.min(Math.max(Number.isFinite(rawEnd) ? rawEnd : safeStart, 1), maxFloor);
+      const towerFloorStart = Math.min(safeStart, safeEndRaw);
+      const towerFloorEnd = Math.max(safeStart, safeEndRaw);
+      const towerFloor = towerFloorStart;
+      const towerDifficulty = TOWER_DIFFICULTIES.includes(slot?.towerDifficulty) ? slot.towerDifficulty : "普通";
+      return { ...data, towerFloor, towerFloorStart, towerFloorEnd, towerDifficulty };
+    }
+
+    function getTowerFloorLabel(slot){
+      const data = normalizeTowerSlot(slot);
+      if(data.teamType !== "爬塔") return "";
+      return data.towerFloorStart === data.towerFloorEnd
+        ? `${data.towerFloorStart}層`
+        : `${data.towerFloorStart}-${data.towerFloorEnd}層`;
+    }
+
+    function getTowerLabel(slot){
+      const data = normalizeTowerSlot(slot);
+      if(data.teamType !== "爬塔") return "";
+      return `${getTowerFloorLabel(slot)}｜${data.towerDifficulty}`;
+    }
+
+    function populateTowerFloorSelect(selectEl, teamSize, selectedFloor = 1){
+      if(!selectEl) return;
+      const maxFloor = getTowerMaxFloor(teamSize);
+      const safeSelected = Math.min(Math.max(Number(selectedFloor) || 1, 1), maxFloor);
+      selectEl.innerHTML = Array.from({ length:maxFloor }, (_, i) => {
+        const floor = i + 1;
+        return `<option value="${floor}"${floor === safeSelected ? " selected" : ""}>${floor}層</option>`;
+      }).join("");
+      selectEl.value = String(safeSelected);
+    }
+
+    function syncTowerOptions(prefix, slot = {}){
+      const sizeSelect = document.getElementById(prefix + "TeamSizeSelect") || document.getElementById(prefix + "SizeSelect");
+      const typeSelect = document.getElementById(prefix + "TeamTypeSelect") || document.getElementById(prefix + "TypeSelect");
+      const panel = document.getElementById(prefix + "TowerOptions") || document.getElementById(prefix + "TypeTowerOptions");
+      const startSelect = document.getElementById(prefix + "TowerStartSelect") || document.getElementById(prefix + "TowerFloorSelect");
+      const endSelect = document.getElementById(prefix + "TowerEndSelect");
+      const difficultySelect = document.getElementById(prefix + "TowerDifficultySelect");
+      if(!sizeSelect || !typeSelect || !panel || !startSelect || !difficultySelect) return;
+
+      const teamSize = Number(sizeSelect.value) === 5 ? 5 : 10;
+      const isTower = typeSelect.value === "爬塔";
+      const normalized = normalizeTowerSlot({ ...slot, teamSize });
+      const currentStart = Number(startSelect.value || normalized.towerFloorStart || normalized.towerFloor || 1);
+      const currentEnd = Number(endSelect?.value || normalized.towerFloorEnd || currentStart);
+      const maxFloor = getTowerMaxFloor(teamSize);
+      const safeStart = Math.min(Math.max(currentStart || 1, 1), maxFloor);
+      const safeEnd = Math.min(Math.max(currentEnd || safeStart, safeStart), maxFloor);
+
+      populateTowerFloorSelect(startSelect, teamSize, safeStart);
+      if(endSelect){
+        populateTowerFloorSelect(endSelect, teamSize, safeEnd);
+        startSelect.onchange = () => {
+          const start = Number(startSelect.value) || 1;
+          if(Number(endSelect.value) < start) endSelect.value = String(start);
+        };
+        endSelect.onchange = () => {
+          const start = Number(startSelect.value) || 1;
+          if(Number(endSelect.value) < start) endSelect.value = String(start);
+        };
+      }
+
+      difficultySelect.value = TOWER_DIFFICULTIES.includes(slot.towerDifficulty)
+        ? slot.towerDifficulty
+        : (TOWER_DIFFICULTIES.includes(difficultySelect.value) ? difficultySelect.value : "普通");
+      panel.classList.toggle("show", isTower);
+    }
+
+    function getTowerFormData(prefix){
+      const sizeSelect = document.getElementById(prefix + "TeamSizeSelect") || document.getElementById(prefix + "SizeSelect");
+      const typeSelect = document.getElementById(prefix + "TeamTypeSelect") || document.getElementById(prefix + "TypeSelect");
+      const startSelect = document.getElementById(prefix + "TowerStartSelect") || document.getElementById(prefix + "TowerFloorSelect");
+      const endSelect = document.getElementById(prefix + "TowerEndSelect");
+      const difficultySelect = document.getElementById(prefix + "TowerDifficultySelect");
+      const teamSize = Number(sizeSelect?.value) === 5 ? 5 : 10;
+      const teamType = typeSelect?.value || "普通團";
+      if(teamType !== "爬塔") return { towerFloor:null, towerFloorStart:null, towerFloorEnd:null, towerDifficulty:"" };
+      const maxFloor = getTowerMaxFloor(teamSize);
+      const start = Math.min(Math.max(Number(startSelect?.value || 1), 1), maxFloor);
+      const rawEnd = endSelect ? Number(endSelect.value || start) : start;
+      const end = Math.min(Math.max(rawEnd, start), maxFloor);
+      const difficulty = TOWER_DIFFICULTIES.includes(difficultySelect?.value) ? difficultySelect.value : "普通";
+      return { towerFloor:start, towerFloorStart:start, towerFloorEnd:end, towerDifficulty:difficulty };
+    }
+
     function getSlotMaxPeople(slot){
       return getTeamMaxPeople(normalizeSlot(slot).teamSize);
     }
@@ -2834,7 +7564,7 @@ body {
         return { text:"已滿", cls:"status-full" };
       }
       if(countRole(members, "治療") < getSlotMinHealer(slot)){
-        return { text:"缺奶", cls:"status-warn" };
+        return { text:"招募中", cls:"status-warn" };
       }
       return { text:"達標", cls:"status-ok" };
     }
@@ -2860,7 +7590,8 @@ body {
       const data = typeof slotOrTeamType === "object"
         ? normalizeSlot(slotOrTeamType)
         : normalizeSlot({ teamType:slotOrTeamType, teamSize:10 });
-      return `${data.teamSize}人｜${data.teamType.replace("團", "")}`;
+      const base = `${data.teamSize}人｜${data.teamType.replace("團", "")}`;
+      return base;
     }
 
     function teamTypeMatchesFilter(slot){
@@ -2882,6 +7613,7 @@ body {
         : currentTypeFilter === "tower"
           ? "爬塔"
           : "普通團";
+      syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
     }
 
     function syncFilterAfterNewSlot(teamType, teamSize){
@@ -2905,6 +7637,7 @@ body {
       document.querySelectorAll("[data-size-filter]").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.sizeFilter === currentSizeFilter);
       });
+      updateFilterDropdownLabel();
     }
 
     function bindActivityFilterButtons(){
@@ -2913,6 +7646,7 @@ body {
           currentTypeFilter = btn.dataset.typeFilter || "all";
           localStorage.setItem("registration_type_filter", currentTypeFilter);
           syncFilterButtonStates();
+          closeCompactFilter();
           render();
         };
       });
@@ -2921,10 +7655,165 @@ body {
           currentSizeFilter = btn.dataset.sizeFilter || "all";
           localStorage.setItem("registration_size_filter", currentSizeFilter);
           syncFilterButtonStates();
+          closeCompactFilter();
           render();
         };
       });
       syncFilterButtonStates();
+    }
+
+
+    function getFilterDisplayText(){
+      const typeMap = { all:"全部", normal:"普通", talent:"天賦", tower:"爬塔" };
+      const sizeMap = { all:"全部", "5":"5人", "10":"10人" };
+      return `${typeMap[currentTypeFilter] || "全部"} / ${sizeMap[currentSizeFilter] || "全部"}`;
+    }
+
+    function updateFilterDropdownLabel(){
+      const toggle = document.getElementById("filterDropdownToggle");
+      const text = toggle ? toggle.querySelector(".filter-toggle-text") : null;
+      if(text) text.textContent = getFilterDisplayText();
+      else if(toggle) toggle.textContent = getFilterDisplayText();
+    }
+
+    function closeCompactFilter(){
+      const panel = document.getElementById("activityFilterPanel");
+      const toggle = document.getElementById("filterDropdownToggle");
+      if(panel) panel.classList.remove("filter-open", "floating-open");
+      if(toggle) toggle.setAttribute("aria-expanded", "false");
+    }
+
+    function setupScrollFilterDropdown(){
+      const panel = document.getElementById("activityFilterPanel");
+      const toggle = document.getElementById("filterDropdownToggle");
+      if(!panel || !toggle) return;
+
+      // 原本搜尋列右邊的篩選列保留；只有當它滑出畫面後，右上角才顯示浮動篩選。
+      let anchor = document.getElementById("activityFilterAnchor");
+      if(!anchor){
+        anchor = document.createElement("span");
+        anchor.id = "activityFilterAnchor";
+        anchor.style.cssText = "display:block;width:1px;height:1px;pointer-events:none;";
+        panel.parentNode.insertBefore(anchor, panel);
+      }
+
+      const shouldShowFloatingToggle = () => {
+        if(panel.classList.contains("floating-open")) return true;
+        const target = anchor.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        const nav = document.getElementById("floatingNav");
+        const navBottom = nav ? nav.getBoundingClientRect().bottom + 8 : 88;
+        const rect = panelRect.width > 0 && panelRect.height > 0 ? panelRect : target;
+        return rect.bottom < navBottom || rect.top > window.innerHeight;
+      };
+
+      const syncFloatingState = () => {
+        const showFloating = shouldShowFloatingToggle();
+        toggle.classList.toggle("show", showFloating);
+        if(!showFloating){
+          closeCompactFilter();
+        }
+      };
+
+      toggle.onclick = (e) => {
+        e.stopPropagation();
+        const isOpen = !panel.classList.contains("floating-open");
+        panel.classList.toggle("floating-open", isOpen);
+        panel.classList.toggle("filter-open", isOpen);
+        toggle.setAttribute("aria-expanded", String(isOpen));
+        updateFilterDropdownLabel();
+      };
+
+      document.addEventListener("click", (e) => {
+        if(!panel.contains(e.target) && !toggle.contains(e.target)) closeCompactFilter();
+      });
+
+      window.addEventListener("scroll", syncFloatingState, { passive:true });
+      window.addEventListener("resize", syncFloatingState, { passive:true });
+
+      updateFilterDropdownLabel();
+      requestAnimationFrame(syncFloatingState);
+    }
+
+
+    function getSlotMissingInfo(slot){
+      const members = Array.isArray(slot?.members) ? slot.members : [];
+      const maxPeople = getSlotMaxPeople(slot);
+      const isFull = members.length >= maxPeople;
+      const healCount = countRole(members, "治療");
+      const missingHeal = !isFull ? Math.max(getSlotMinHealer(slot) - healCount, 0) : 0;
+      return { missingTank: 0, missingHeal, isFull };
+    }
+
+    function memberMatchesSearch(slot){
+      const q = normalizeName(currentSearchQuery).toLowerCase();
+      if(!q) return true;
+      const members = Array.isArray(slot?.members) ? slot.members : [];
+      return members.some(m => normalizeName(m.name).toLowerCase().includes(q));
+    }
+
+    function getSlotUiPriority(slot, date){
+      const members = Array.isArray(slot?.members) ? slot.members : [];
+      const maxPeople = getSlotMaxPeople(slot);
+      const missing = getSlotMissingInfo(slot);
+      const ratio = maxPeople ? members.length / maxPeople : 0;
+      let score = 0;
+      if(!missing.isFull) score += 100;
+      if(ratio >= .7 && !missing.isFull) score += 35;
+      if(missing.missingHeal > 0) score += 20;
+      if(!isWeekend(date) && slot.time === "19:45") score += 8;
+      score += ratio * 10;
+      return score;
+    }
+
+    function updateDashboardStats(){
+      const dates = getDatesToShow();
+      let teamCount = 0;
+      let playerCount = 0;
+      let healMissing = 0;
+
+      dates.forEach(date => {
+        const dateKey = formatDate(date);
+        const dayData = globalData[dateKey];
+        if(!dayData || !Array.isArray(dayData.slots)) return;
+        dayData.slots.forEach(slot => {
+          if(!teamTypeMatchesFilter(slot)) return;
+          teamCount += 1;
+          const members = Array.isArray(slot.members) ? slot.members : [];
+          playerCount += members.length;
+          const missing = getSlotMissingInfo(slot);
+          healMissing += missing.missingHeal;
+        });
+      });
+
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = value;
+      };
+      setText("statTeamCount", teamCount);
+      setText("statPlayerCount", playerCount);
+      setText("statHealMissing", healMissing);
+    }
+
+    function bindMemberSearch(){
+      const input = document.getElementById("memberSearchInput");
+      const clearBtn = document.getElementById("memberSearchClearBtn");
+      if(!input) return;
+
+      input.value = currentSearchQuery;
+      input.oninput = () => {
+        currentSearchQuery = input.value || "";
+        render();
+      };
+
+      if(clearBtn){
+        clearBtn.onclick = () => {
+          currentSearchQuery = "";
+          input.value = "";
+          render();
+          input.focus();
+        };
+      }
     }
 
     function normalizeName(name){
@@ -3084,28 +7973,6 @@ body {
           teamSize:10,
           description:""
         });
-      } else if(day >= 2 && day <= 5){
-        slots.push({
-          time:"19:45",
-          instance:1,
-          members:[],
-          isCustom:false,
-          teamType:"普通團",
-          teamSize:10,
-          description:""
-        });
-      } else {
-        CONFIG.weekendTimes.forEach(time => {
-          slots.push({
-            time,
-            instance:1,
-            members:[],
-            isCustom:false,
-            teamType:"普通團",
-            teamSize:10,
-            description:""
-          });
-        });
       }
 
       sortSlots(slots);
@@ -3132,6 +7999,10 @@ body {
               teamType: slot.teamType || "普通團",
               teamSize: Number(slot.teamSize) === 5 ? 5 : 10,
               description: slot.description || "",
+              towerFloor: slot.teamType === "爬塔" ? normalizeTowerSlot(slot).towerFloor : null,
+              towerFloorStart: slot.teamType === "爬塔" ? normalizeTowerSlot(slot).towerFloorStart : null,
+              towerFloorEnd: slot.teamType === "爬塔" ? normalizeTowerSlot(slot).towerFloorEnd : null,
+              towerDifficulty: slot.teamType === "爬塔" ? normalizeTowerSlot(slot).towerDifficulty : "",
               members: Array.isArray(slot.members)
                 ? slot.members.map(member => ({
                     ...member,
@@ -3146,6 +8017,7 @@ body {
               !slot.teamType ||
               !slot.teamSize ||
               typeof slot.description === "undefined" ||
+              (slot.teamType === "爬塔" && (typeof slot.towerFloor === "undefined" || typeof slot.towerDifficulty === "undefined" || typeof slot.towerFloorStart === "undefined" || typeof slot.towerFloorEnd === "undefined")) ||
               (Array.isArray(slot.members) && slot.members.some(member => typeof member.tag === "undefined" || typeof member.note === "undefined"))
             ){
               changed = true;
@@ -3173,7 +8045,12 @@ body {
       const time = sourceSlot?.time;
       const sameTimeSlots = dayData.slots.filter(s => {
         const data = normalizeSlot(s);
-        return s.time === time && data.teamType === source.teamType && data.teamSize === source.teamSize;
+        const sameBase = s.time === time && data.teamType === source.teamType && data.teamSize === source.teamSize;
+        if(!sameBase) return false;
+        if(source.teamType !== "爬塔") return true;
+        const a = normalizeTowerSlot(s);
+        const b = normalizeTowerSlot(sourceSlot);
+        return a.towerFloorStart === b.towerFloorStart && a.towerFloorEnd === b.towerFloorEnd && a.towerDifficulty === b.towerDifficulty;
       });
       const hasOpenSlot = sameTimeSlots.some(s => (s.members || []).length < getSlotMaxPeople(s));
 
@@ -3186,6 +8063,10 @@ body {
           isCustom:true,
           teamType:source.teamType,
           teamSize:source.teamSize,
+          towerFloor:source.teamType === "爬塔" ? normalizeTowerSlot(sourceSlot).towerFloor : null,
+          towerFloorStart:source.teamType === "爬塔" ? normalizeTowerSlot(sourceSlot).towerFloorStart : null,
+          towerFloorEnd:source.teamType === "爬塔" ? normalizeTowerSlot(sourceSlot).towerFloorEnd : null,
+          towerDifficulty:source.teamType === "爬塔" ? normalizeTowerSlot(sourceSlot).towerDifficulty : "",
           description:""
         });
         sortSlots(dayData.slots);
@@ -3256,6 +8137,7 @@ body {
       const batchSignupModal = document.getElementById("batchSignupModal");
       const batchPresetManageModal = document.getElementById("batchPresetManageModal");
       const nameViewModal = document.getElementById("nameViewModal");
+      const tagInfoModal = document.getElementById("tagInfoModal");
 
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -3339,6 +8221,10 @@ body {
 
       nameViewModal.addEventListener("click", (e) => {
         if(e.target.id === "nameViewModal") closeNameViewModal();
+      });
+
+      tagInfoModal.addEventListener("click", (e) => {
+        if(e.target.id === "tagInfoModal") closeTagInfoModal();
       });
     }
 
@@ -3686,15 +8572,21 @@ body {
       const normalized = normalizeSlot(slot);
       teamSizeSelect.value = String(normalized.teamSize);
       teamTypeSelect.value = normalized.teamType;
+      const towerData = normalizeTowerSlot(slot);
+      document.getElementById("teamTowerDifficultySelect").value = towerData.towerDifficulty;
+      syncTowerOptions("team", towerData);
       descriptionInput.value = slot.description || "";
       if(teamTypeSelect.value === "天賦團" && !descriptionInput.value.trim()){
         descriptionInput.value = getDefaultTalentDescription();
       }
-      teamTypeSelect.onchange = () => {
+      const handleTeamTypeChange = () => {
+        syncTowerOptions("team", normalizeTowerSlot(slot));
         if(teamTypeSelect.value === "天賦團" && !descriptionInput.value.trim()){
           descriptionInput.value = getDefaultTalentDescription();
         }
       };
+      teamTypeSelect.onchange = handleTeamTypeChange;
+      teamSizeSelect.onchange = () => syncTowerOptions("team", normalizeTowerSlot(slot));
       document.getElementById("teamTypeModal").classList.add("show");
     }
 
@@ -3709,6 +8601,7 @@ body {
       const { dateKey, slotIndex } = currentTeamTypeEdit;
       const teamSize = Number(document.getElementById("teamSizeSelect").value) === 5 ? 5 : 10;
       const value = document.getElementById("teamTypeSelect").value;
+      const towerData = getTowerFormData("team");
       let description = document.getElementById("teamDescriptionInput").value.trim();
       if(value === "天賦團" && !description){
         description = getDefaultTalentDescription();
@@ -3728,6 +8621,10 @@ body {
 
       dayData.slots[slotIndex].teamType = value;
       dayData.slots[slotIndex].teamSize = teamSize;
+      dayData.slots[slotIndex].towerFloor = value === "爬塔" ? towerData.towerFloor : null;
+      dayData.slots[slotIndex].towerFloorStart = value === "爬塔" ? towerData.towerFloorStart : null;
+      dayData.slots[slotIndex].towerFloorEnd = value === "爬塔" ? towerData.towerFloorEnd : null;
+      dayData.slots[slotIndex].towerDifficulty = value === "爬塔" ? towerData.towerDifficulty : "";
       dayData.slots[slotIndex].description = description;
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
@@ -3753,6 +8650,81 @@ body {
       render();
     };
 
+
+
+
+    function getSlotTagSummary(members){
+      const map = new Map();
+      (members || []).forEach(member => {
+        const tag = String(member.tag || "").trim();
+        if(!tag) return;
+        if(!map.has(tag)) map.set(tag, []);
+        map.get(tag).push({
+          name: String(member.name || "").trim(),
+          role: String(member.role || "").trim(),
+          note: String(member.note || "").trim()
+        });
+      });
+      return Array.from(map.entries()).map(([tag, players]) => ({ tag, players }));
+    }
+
+    function renderSlotTagStrip(members){
+      const tags = getSlotTagSummary(members);
+      if(tags.length === 0){
+        return `<span class="slot-no-tag-note">無標籤</span>`;
+      }
+
+      const shown = tags.slice(0, 3).map(item => {
+        const payload = encodeURIComponent(JSON.stringify(item));
+        return `<button type="button" class="slot-tag-chip" data-action="view-slot-tag" data-tag-payload="${payload}">${escapeHtml(item.tag)}</button>`;
+      }).join("");
+
+      const more = tags.length > 3
+        ? `<button type="button" class="slot-tag-chip more" data-action="view-all-slot-tags" data-tag-payload="${encodeURIComponent(JSON.stringify(tags))}">+${tags.length - 3}</button>`
+        : "";
+
+      return shown + more;
+    }
+
+    window.openTagInfoModal = (payload, isAll = false) => {
+      const content = document.getElementById("tagInfoContent");
+      const modal = document.getElementById("tagInfoModal");
+      if(!content || !modal) return;
+
+      let data;
+      try{
+        data = JSON.parse(decodeURIComponent(payload || ""));
+      }catch(e){
+        data = null;
+      }
+
+      if(!data){
+        content.innerHTML = `<div class="confirm-modal-text">沒有可顯示的標籤說明。</div>`;
+        modal.classList.add("show");
+        return;
+      }
+
+      const list = Array.isArray(data) ? data : [data];
+      content.innerHTML = list.map(item => `
+        <div class="tag-info-item">
+          <div class="tag-info-name">${escapeHtml(item.tag || "標籤")}</div>
+          <div class="tag-info-list">
+            ${(item.players || []).map(player => `
+              <div class="tag-info-item">
+                <div class="tag-info-player">${escapeHtml(player.name || "未命名")}｜${escapeHtml(player.role || "")}</div>
+                <div class="tag-info-note">${player.note ? escapeHtml(player.note) : "尚未填寫說明。"}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `).join("");
+      modal.classList.add("show");
+    };
+
+    window.closeTagInfoModal = () => {
+      const modal = document.getElementById("tagInfoModal");
+      if(modal) modal.classList.remove("show");
+    };
 
     window.openNameViewModal = (name) => {
       const textEl = document.getElementById("nameViewText");
@@ -3865,6 +8837,8 @@ body {
       renderDateChoices(todayKey);
       selectQuickTime("19:45");
       setDateTimeTeamTypeDefault();
+      document.getElementById("dateTimeTeamSizeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
+      document.getElementById("dateTimeTeamTypeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
       limitText.textContent = `可選日期：${todayKey} 至 ${maxKey}`;
 
       if(modalTitle) modalTitle.textContent = "新增日期 / 時間";
@@ -3883,6 +8857,7 @@ body {
       const time = document.getElementById("customTimeInput").value;
       const teamSize = Number(document.getElementById("dateTimeTeamSizeSelect")?.value) === 5 ? 5 : 10;
       const teamType = document.getElementById("dateTimeTeamTypeSelect")?.value || "普通團";
+      const towerData = getTowerFormData("dateTime");
       const selectedDate = parseDateKey(dateKey);
       const today = getTodayStart();
       const twoWeekEnd = getTwoWeekEnd();
@@ -3907,7 +8882,11 @@ body {
 
       const sameTimeSlots = dayData.slots.filter(s => {
         const data = normalizeSlot(s);
-        return s.time === time && data.teamSize === teamSize && data.teamType === teamType;
+        const sameBase = s.time === time && data.teamSize === teamSize && data.teamType === teamType;
+        if(!sameBase) return false;
+        if(teamType !== "爬塔") return true;
+        const tower = normalizeTowerSlot(s);
+        return tower.towerFloorStart === towerData.towerFloorStart && tower.towerFloorEnd === towerData.towerFloorEnd && tower.towerDifficulty === towerData.towerDifficulty;
       });
       const nextInstance = sameTimeSlots.length
         ? Math.max(...sameTimeSlots.map(s => s.instance || 1)) + 1
@@ -3920,7 +8899,11 @@ body {
         isCustom: true,
         teamType,
         teamSize,
-        description: teamType === "爬塔" ? `${teamSize}人｜爬塔` : ""
+        towerFloor: teamType === "爬塔" ? towerData.towerFloor : null,
+        towerFloorStart: teamType === "爬塔" ? towerData.towerFloorStart : null,
+        towerFloorEnd: teamType === "爬塔" ? towerData.towerFloorEnd : null,
+        towerDifficulty: teamType === "爬塔" ? towerData.towerDifficulty : "",
+        description: teamType === "爬塔" ? `${towerData.towerFloorStart === towerData.towerFloorEnd ? towerData.towerFloorStart + "層" : towerData.towerFloorStart + "-" + towerData.towerFloorEnd + "層"}｜${towerData.towerDifficulty}` : ""
       });
 
       sortSlots(dayData.slots);
@@ -4537,6 +9520,8 @@ body {
       renderDateChoices(dateKey);
       selectQuickTime("19:45");
       setDateTimeTeamTypeDefault();
+      document.getElementById("dateTimeTeamSizeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
+      document.getElementById("dateTimeTeamTypeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
 
       const todayKey = formatDate(getTodayStart());
       const maxKey = formatDate(getTwoWeekEnd());
@@ -4584,12 +9569,16 @@ body {
         const dateKey = formatDate(date);
         const dayData = globalData[dateKey];
         const modeText = isWeekend(date) ? "週末時間表" : "平日時間表";
+        const daySlots = dayData && Array.isArray(dayData.slots) ? dayData.slots : [];
+        const dayMemberCount = daySlots.reduce((total, slot) => total + (Array.isArray(slot.members) ? slot.members.length : 0), 0);
 
         html += `
-          <section class="day-card">
+          <section class="day-card" data-date-card="${dateKey}">
             <div class="day-head">
-              <h2 class="day-title">${displayDate(date)}</h2>
-              <div class="day-sub">${weekdayText(date)}｜${modeText}</div>
+              <div>
+                <h2 class="day-title">${displayDate(date)}</h2>
+                <div class="day-sub">${weekdayText(date)}｜${modeText}</div>
+              </div>
               <div class="day-actions">
                 <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
               </div>
@@ -4600,10 +9589,12 @@ body {
         if(dayData && Array.isArray(dayData.slots)){
           const filteredSlots = dayData.slots
             .map((slot, slotIndex) => ({ slot, slotIndex }))
-            .filter(item => teamTypeMatchesFilter(item.slot));
+            .filter(item => teamTypeMatchesFilter(item.slot))
+            .filter(item => memberMatchesSearch(item.slot))
+            .sort((a,b) => getSlotUiPriority(b.slot, date) - getSlotUiPriority(a.slot, date));
 
           if(filteredSlots.length === 0){
-            html += `<div class="activity-empty-note">目前這一天沒有符合篩選的團隊。</div>`;
+            html += `<div class="activity-empty-note">${currentSearchQuery ? "目前這一天沒有找到符合搜尋的玩家。" : "目前這一天沒有符合篩選的團隊。"}</div>`;
           }
 
           filteredSlots.forEach(({ slot, slotIndex }) => {
@@ -4613,6 +9604,12 @@ body {
             const dpsCount = countRole(members, "輸出");
             const tankCount = countRole(members, "承傷");
             const healCount = countRole(members, "治療");
+            const missingInfo = getSlotMissingInfo(slot);
+            const missingRoleHtml = missingInfo.isFull
+              ? `<div class="slot-alert-row"><div class="missing-role-hint"><span class="missing-role-pill good">隊伍已滿</span></div><div class="slot-tag-strip">${renderSlotTagStrip(members)}</div></div>`
+              : (missingInfo.missingHeal > 0)
+                ? `<div class="slot-alert-row"><div class="missing-role-hint"><span class="missing-role-pill">缺治療 x${missingInfo.missingHeal}</span></div><div class="slot-tag-strip">${renderSlotTagStrip(members)}</div></div>`
+                : `<div class="slot-alert-row"><div class="missing-role-hint"><span class="missing-role-pill good">配置已達標</span></div><div class="slot-tag-strip">${renderSlotTagStrip(members)}</div></div>`;
             const status = getStatus(members, slot);
             const allowedRoles = getAllowedRoles(members, slot);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
@@ -4628,10 +9625,11 @@ body {
               && allowedRoles.includes(quickRole)
               && !members.some(m => normalizeName(m.name) === quickName);
 
+            const quickFillClass = members.length > 0 && members.length < maxPeople && (members.length / maxPeople) >= .7 ? " quick-fill" : "";
             const slotCardClass = members.length >= maxPeople
               ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
               : members.length > 0
-                ? `slot-card has-members${isMyTeam ? " my-team" : ""}`
+                ? `slot-card has-members${quickFillClass}${isMyTeam ? " my-team" : ""}`
                 : `slot-card${isMyTeam ? " my-team" : ""}`;
 
             html += `
@@ -4640,7 +9638,7 @@ body {
                   <div>
                     <div class="slot-time-wrap">
                       <div class="slot-time">${slot.time}</div>
-                      ${isRecommended ? `<span class="recommend-badge">★ 推薦</span>` : ``}
+                      ${isRecommended ? `<span class="recommend-badge">推薦</span>` : ``}
                     </div>
                     <div class="slot-instance">
                       第 ${slot.instance || 1} 隊
@@ -4650,6 +9648,10 @@ body {
                       <span class="team-type-pill ${teamTypeClass(slot)}">
                         ${teamTypeLabel(slot)}
                       </span>
+                      ${normalizeSlot(slot).teamType === "爬塔" ? `<span class="tower-meta-pill">${getTowerFloorLabel(slot)}</span><span class="tower-meta-pill tower-difficulty-pill">${normalizeTowerSlot(slot).towerDifficulty}</span>` : ``}
+                      <span class="summary-pill compact-role-pill">輸出 <strong>${dpsCount}</strong></span>
+                      <span class="summary-pill compact-role-pill">承傷 <strong>${tankCount}</strong></span>
+                      <span class="summary-pill compact-role-pill">治療 <strong>${healCount}</strong></span>
                     </div>
                   </div>
 
@@ -4678,11 +9680,7 @@ body {
                   </div>
                 </div>
 
-                <div class="summary">
-                  <span class="summary-pill">輸出 <strong>${dpsCount}</strong></span>
-                  <span class="summary-pill">承傷 <strong>${tankCount}</strong></span>
-                  <span class="summary-pill">治療 <strong>${healCount}</strong></span>
-                </div>
+                ${missingRoleHtml}
 
                 ${slot.description && slot.description.trim()
                   ? `<div class="slot-description"><div class="slot-description-title">隊伍說明</div><div class="slot-description-body">${formatDescription(slot.description)}</div></div>`
@@ -4702,7 +9700,10 @@ body {
                 html += `
                   <div class="member${isSelf ? " member-self" : ""}${hasTag ? " member-tagged" : ""}">
                     <div class="member-left">
-                      <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+                      <div class="member-top-line">
+                        <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+                        ${member.tag ? `<span class="tag-pill" title="${escapeHtml(member.tag)}">${escapeHtml(member.tag)}</span>` : ``}
+                      </div>
 
                       <div class="member-text">
                         <div class="member-main-row">
@@ -4710,7 +9711,6 @@ body {
                             ${escapeHtml(member.name)}${isSelf ? "（你）" : ""}
                           </span>
                           <button type="button" class="name-view-btn" style="display:none;" data-action="view-member-name" data-name="${escapeHtml(member.name)}">檢視名字</button>
-                          ${member.tag ? `<span class="tag-pill">${escapeHtml(member.tag)}</span>` : ``}
                         </div>
                         ${member.note ? `<span class="member-note">${escapeHtml(member.note)}</span>` : ``}
                       </div>
@@ -4743,7 +9743,7 @@ body {
 
                 <div class="slot-actions">
                   <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= maxPeople ? "disabled" : ""}>
-                    ${members.length >= maxPeople ? "此隊已滿" : forceHeal ? "＋ 僅限新增治療位" : "＋ 新增報名"}
+                    ${members.length >= maxPeople ? "此隊已滿" : forceHeal ? "僅限治療報名" : "立即報名"}
                   </button>
                   <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= maxPeople ? "disabled" : ""}>
                     批量報名
@@ -4764,6 +9764,7 @@ body {
       });
 
       daysEl.innerHTML = html;
+      updateDashboardStats();
       bindActions();
       adjustNameViewButtons();
       isRendering = false;
@@ -4775,6 +9776,13 @@ body {
         btn.onclick = (e) => {
           e.stopPropagation();
           openNameViewModal(btn.dataset.name || "");
+        };
+      });
+
+      document.querySelectorAll('[data-action="view-slot-tag"], [data-action="view-all-slot-tags"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          openTagInfoModal(btn.dataset.tagPayload || "", btn.dataset.action === "view-all-slot-tags");
         };
       });
 
@@ -4876,6 +9884,7 @@ body {
 
     document.getElementById("infoBtn").onclick = () => openInfoModal();
     document.getElementById("addDateTimeBtn").onclick = () => openDateTimeModal();
+    document.getElementById("fabAddTeamBtn").onclick = () => openDateTimeModal();
     document.getElementById("myProfileBtn").onclick = () => openMyProfileModal();
     document.getElementById("batchPresetManageBtn").onclick = () => openBatchPresetManageModal();
 
@@ -4915,6 +9924,8 @@ body {
     await initializeVisibleDates();
     bindCustomSelect();
     bindActivityFilterButtons();
+    setupScrollFilterDropdown();
+    bindMemberSearch();
     /* Navbar 捲動效果切換 */
 const nav = document.getElementById('floatingNav');
 window.addEventListener('scroll', () => {
