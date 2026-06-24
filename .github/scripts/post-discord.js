@@ -228,7 +228,7 @@ async function main() {
   await sendDiscord({
     embeds: [
       {
-        title: "副本招募清單",
+        title: "副本招募清單（測試中）",
         description,
         color: 13326982,
         fields: [
