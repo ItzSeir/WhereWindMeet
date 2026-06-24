@@ -15,22 +15,6 @@ const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration.html";
 
 const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
-function readValue(slot, members, keys) {
-  const firstMember = Array.isArray(members) ? members[0] : null;
-
-  for (const key of keys) {
-    if (slot && slot[key] !== undefined && slot[key] !== null && slot[key] !== "") {
-      return slot[key];
-    }
-
-    if (firstMember && firstMember[key] !== undefined && firstMember[key] !== null && firstMember[key] !== "") {
-      return firstMember[key];
-    }
-  }
-
-  return null;
-}
-
 function getMalaysiaDateId() {
   const now = new Date();
   const malaysia = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" }));
@@ -45,25 +29,33 @@ function formatDateTitle(dateId) {
 
 function formatTime(time = "") {
   if (!time) return "未設定時間";
+
   const [hourStr, minuteStr = "00"] = String(time).split(":");
   let hour = Number(hourStr);
+  const minute = minuteStr.padStart(2, "0");
   const suffix = hour >= 12 ? "PM" : "AM";
+
   hour = hour % 12;
   if (hour === 0) hour = 12;
-  return `${String(hour).padStart(2, "0")}:${minuteStr.padStart(2, "0")}${suffix}`;
+
+  return `${String(hour).padStart(2, "0")}:${minute}${suffix}`;
 }
 
 function cleanType(rawType = "普通") {
-  return String(rawType).replace(/團$/g, "");
+  return String(rawType || "普通").replace(/團$/g, "");
 }
 
-function getTeamType(slot, members = []) {
-  return cleanType(readValue(slot, members, ["teamType", "type", "activityType"]) || "普通");
+function getTeamType(slot) {
+  return cleanType(slot.teamType || slot.type || slot.activityType || "普通");
 }
 
 function getTeamSize(slot, members = []) {
-  const size = Number(readValue(slot, members, ["teamSize", "size", "teamSizeValue"]));
-  if (Number.isFinite(size) && size > 0) return size;
+  const size = Number(slot.teamSize || slot.size || slot.teamSizeValue);
+
+  if (Number.isFinite(size) && size > 0) {
+    return size;
+  }
+
   return members.length > 5 ? 10 : 10;
 }
 
@@ -79,64 +71,48 @@ function getLeaderName(members = []) {
   return members[0]?.name || "隊長";
 }
 
-function getTowerDifficulty(slot, members = []) {
-  return readValue(slot, members, [
-    "towerDifficulty",
-    "difficulty",
-    "towerMode",
-    "towerLevelDifficulty",
-  ]) || "未設定難度";
+function getTowerDifficulty(slot) {
+  return (
+    slot.towerDifficulty ??
+    slot.difficulty ??
+    slot.towerMode ??
+    slot.towerLevelDifficulty ??
+    "未設定難度"
+  );
 }
 
 function getTowerFloor(slot, members = []) {
-  const start = readValue(slot, members, [
-    "towerFloorStart",
-    "towerStartFloor",
-    "startTowerFloor",
-    "floorStart",
-    "startFloor",
-    "towerStart",
-    "fromFloor",
-    "floorFrom",
-  ]);
+  const type = getTeamType(slot);
+  if (type !== "爬塔") return "";
 
-  const end = readValue(slot, members, [
-    "towerFloorEnd",
-    "towerEndFloor",
-    "endTowerFloor",
-    "floorEnd",
-    "endFloor",
-    "towerEnd",
-    "toFloor",
-    "floorTo",
-  ]);
+  const start = slot.towerFloorStart;
+  const end = slot.towerFloorEnd;
+  const single = slot.towerFloor;
 
-  if (start !== null && end !== null) {
-    if (String(start) === String(end)) return `${start}層`;
+  if (start !== null && start !== undefined && end !== null && end !== undefined) {
+    if (String(start) === String(end)) {
+      return `${start}層`;
+    }
+
     return `${start}-${end}層`;
   }
 
-  const single = readValue(slot, members, [
-    "towerFloor",
-    "selectedTowerFloor",
-    "floor",
-    "level",
-  ]);
-
-  if (single !== null) return `${single}層`;
+  if (single !== null && single !== undefined) {
+    return `${single}層`;
+  }
 
   const size = getTeamSize(slot, members);
-  if (size === 5) return "1-5層";
-  if (size === 10) return "1-10層";
-
-  return "未設定層數";
+  return size === 5 ? "1-5層" : "1-10層";
 }
 
 function getTeamLabel(slot, members = []) {
   const size = getTeamSize(slot, members);
-  const type = getTeamType(slot, members);
+  const type = getTeamType(slot);
 
-  if (type === "爬塔") return `${size}人｜爬塔`;
+  if (type === "爬塔") {
+    return `${size}人｜爬塔`;
+  }
+
   return `${size}人｜${type}團`;
 }
 
@@ -147,15 +123,14 @@ function getSlotText(team) {
   const max = getTeamSize(slot, members);
   const role = getRoleCount(members);
   const leader = getLeaderName(members);
-  const type = getTeamType(slot, members);
-  const time = readValue(slot, members, ["time"]) || "";
+  const type = getTeamType(slot);
 
   const lines = [
-    `> **${formatTime(time)}｜${getTeamLabel(slot, members)}**`,
+    `> **${formatTime(slot.time)}｜${getTeamLabel(slot, members)}**`,
   ];
 
   if (type === "爬塔") {
-    lines.push(`> 難度：**${getTowerDifficulty(slot, members)}**`);
+    lines.push(`> 難度：**${getTowerDifficulty(slot)}**`);
     lines.push(`> 層數：**${getTowerFloor(slot, members)}**`);
   }
 
@@ -168,7 +143,9 @@ function getSlotText(team) {
 async function sendDiscord(payload) {
   const res = await fetch(WEBHOOK, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(payload),
   });
 
@@ -195,24 +172,34 @@ async function main() {
 
     slots.forEach((slot) => {
       const members = Array.isArray(slot.members) ? slot.members : [];
+
       if (members.length === 0) return;
-      allTeams.push({ dateId, slot, members });
+
+      allTeams.push({
+        dateId,
+        slot,
+        members,
+      });
     });
   });
 
   allTeams.sort((a, b) => {
     const dateCompare = a.dateId.localeCompare(b.dateId);
-    if (dateCompare !== 0) return dateCompare;
 
-    const timeA = readValue(a.slot, a.members, ["time"]) || "";
-    const timeB = readValue(b.slot, b.members, ["time"]) || "";
-    return String(timeA).localeCompare(String(timeB));
+    if (dateCompare !== 0) {
+      return dateCompare;
+    }
+
+    return String(a.slot.time || "").localeCompare(String(b.slot.time || ""));
   });
 
   const groupedByDate = {};
 
   allTeams.forEach((team) => {
-    if (!groupedByDate[team.dateId]) groupedByDate[team.dateId] = [];
+    if (!groupedByDate[team.dateId]) {
+      groupedByDate[team.dateId] = [];
+    }
+
     groupedByDate[team.dateId].push(team);
   });
 
@@ -221,17 +208,21 @@ async function main() {
   if (allTeams.length === 0) {
     description = "今天暫時沒有已報名的未來隊伍。";
   } else {
-    Object.keys(groupedByDate).sort().forEach((dateId) => {
-      const teamsText = groupedByDate[dateId]
-        .map((team) => getSlotText(team))
-        .join("\n\n");
+    Object.keys(groupedByDate)
+      .sort()
+      .forEach((dateId) => {
+        const teamsText = groupedByDate[dateId]
+          .map((team) => getSlotText(team))
+          .join("\n\n");
 
-      description += `## ${formatDateTitle(dateId)}\n\n${teamsText}\n\n`;
-    });
+        description += `## ${formatDateTitle(dateId)}\n\n${teamsText}\n\n`;
+      });
   }
 
   if (description.length > 3800) {
-    description = description.slice(0, 3600) + "\n\n隊伍太多，請到報名頁查看完整列表。";
+    description =
+      description.slice(0, 3600) +
+      "\n\n隊伍太多，請到報名頁查看完整列表。";
   }
 
   await sendDiscord({
