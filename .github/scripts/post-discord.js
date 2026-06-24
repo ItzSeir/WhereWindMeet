@@ -11,7 +11,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const WEBHOOK = process.env.DISCORD_WEBHOOK;
-const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration";
+const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration.html";
 
 const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
@@ -32,15 +32,12 @@ function formatDateTitle(dateId) {
 
 function formatTime(time = "") {
   if (!time) return "未設定時間";
-
   const [hourStr, minuteStr = "00"] = String(time).split(":");
   let hour = Number(hourStr);
   const minute = minuteStr.padStart(2, "0");
   const suffix = hour >= 12 ? "PM" : "AM";
-
   hour = hour % 12;
   if (hour === 0) hour = 12;
-
   return `${String(hour).padStart(2, "0")}:${minute}${suffix}`;
 }
 
@@ -86,22 +83,12 @@ function getTowerFloor(slot) {
   return slot.floorText || slot.towerText || slot.towerLevel || slot.floor || slot.level || "未設定層數";
 }
 
-function getTeamIcon(type) {
-  if (type === "天賦") return "✨";
-  if (type === "爬塔") return "🗼";
-  return "⚔";
-}
-
 function getTeamLabel(slot, members = []) {
   const size = getTeamSize(slot, members);
   const type = getTeamType(slot);
 
   if (type === "爬塔") return `${size}人｜爬塔`;
   return `${size}人｜${type}團`;
-}
-
-function getStatusText(count, max) {
-  return count >= max ? "已滿員" : "招募中";
 }
 
 function getSlotText(team) {
@@ -112,22 +99,18 @@ function getSlotText(team) {
   const role = getRoleCount(members);
   const leader = getLeaderName(members);
   const type = getTeamType(slot);
-  const icon = getTeamIcon(type);
-  const status = getStatusText(count, max);
 
-  const lines = [
-    `${icon} **${getTeamLabel(slot, members)}**`,
-    `👑 __${leader} 開團__`,
-    `🕒 ${formatTime(slot.time)}　｜　${status}`,
-    `👥 **${count}/${max}**`,
-    `輸出 **${role.dps}**｜承傷 **${role.tank}**｜治療 **${role.heal}**`,
-  ];
+  let text =
+`**${formatTime(slot.time)}｜${getTeamLabel(slot, members)}**
+開團：${leader}
+人數：${count}/${max}
+職業：輸出 ${role.dps}｜承傷 ${role.tank}｜治療 ${role.heal}`;
 
   if (type === "爬塔") {
-    lines.splice(2, 0, `難度：**${getTowerDifficulty(slot)}**｜層數：**${getTowerFloor(slot)}**`);
+    text += `\n爬塔：${getTowerDifficulty(slot)}｜${getTowerFloor(slot)}`;
   }
 
-  return lines.join("\n");
+  return text;
 }
 
 async function sendDiscord(payload) {
@@ -161,7 +144,6 @@ async function main() {
     slots.forEach(slot => {
       const members = Array.isArray(slot.members) ? slot.members : [];
       if (members.length === 0) return;
-
       allTeams.push({ dateId, slot, members });
     });
   });
@@ -174,10 +156,22 @@ async function main() {
 
   if (allTeams.length === 0) {
     await sendDiscord({
-      content:
-        `# 📢 夢回花深處｜副本招募公告\n\n` +
-        `目前沒有任何已報名的未來隊伍。\n\n` +
-        `🔗 **副本報名：**\n${SITE_URL}`,
+      embeds: [
+        {
+          title: "今日副本招募",
+          description: ">>> 今天暫時沒有已報名的隊伍。",
+          color: 7248127,
+          fields: [
+            {
+              name: "報名連結",
+              value: `[點此進入報名頁](${SITE_URL})`,
+            },
+          ],
+          footer: {
+            text: "夢回花深處｜每日自動公告",
+          },
+        },
+      ],
     });
     return;
   }
@@ -188,33 +182,42 @@ async function main() {
     groupedByDate[team.dateId].push(team);
   });
 
-  let content = "# 📢 夢回花深處｜副本招募公告\n\n";
+  let description = "";
 
   Object.keys(groupedByDate)
     .sort()
     .forEach(dateId => {
-      content += `## 📅 ${formatDateTitle(dateId)}\n\n`;
+      const teamsText = groupedByDate[dateId]
+        .map(team => getSlotText(team))
+        .join("\n\n");
 
-      groupedByDate[dateId].forEach((team, index) => {
-        content += getSlotText(team);
-
-        if (index !== groupedByDate[dateId].length - 1) {
-          content += "\n\n━━━━━━━━━━━━━━━━\n\n";
-        } else {
-          content += "\n\n";
-        }
-      });
+      description += `**${formatDateTitle(dateId)}**\n>>> ${teamsText}\n\n`;
     });
 
-  content += `━━━━━━━━━━━━━━━━\n\n🔗 **副本報名：**\n${SITE_URL}`;
-
-  if (content.length > 1900) {
-    content =
-      content.slice(0, 1750) +
-      `\n\n……請到報名頁面報名和查看完整名單。\n\n🔗 ${SITE_URL}`;
+  if (description.length > 3800) {
+    description =
+      description.slice(0, 3600) +
+      "\n\n>>> 隊伍太多，請到報名頁查看完整列表。";
   }
 
-  await sendDiscord({ content });
+  await sendDiscord({
+    embeds: [
+      {
+        title: "今日副本招募",
+        description,
+        color: 7248127,
+        fields: [
+          {
+            name: "報名連結",
+            value: `[點此進入報名頁](${SITE_URL})`,
+          },
+        ],
+        footer: {
+          text: "夢回花深處｜每日自動公告",
+        },
+      },
+    ],
+  });
 }
 
 main().catch(error => {
