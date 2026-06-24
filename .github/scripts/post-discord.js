@@ -289,7 +289,7 @@ async function main() {
           },
         ],
         footer: {
-          text: "夢回花深處｜每日自動公告",
+          text: "夢回花深處｜副本組隊公告",
         },
         timestamp: new Date().toISOString(),
       },
