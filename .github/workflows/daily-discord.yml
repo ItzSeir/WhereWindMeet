@@ -2,8 +2,8 @@ name: Daily Recruitment Summary
 
 on:
   schedule:
-    - cron: "00 3 * * *"
-    - cron: "00 15 * * *"
+    - cron: "30 3 * * *"
+    - cron: "30 15 * * *"
   workflow_dispatch: # Keeps your manual button working
 
 jobs:
