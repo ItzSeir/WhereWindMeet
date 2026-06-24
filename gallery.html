@@ -1,383 +1,1581 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>夢回花深處｜江湖回憶錄</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#070b18;--bg2:#111a32;--text:#eef2ff;--muted:#a8b3cf;--accent:#6ea8ff;--accent2:#8b5cf6;--gold:#ffd76a;--shadow:0 22px 60px rgba(0,0,0,.35)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;padding-top:100px;background:radial-gradient(circle at 12% 8%,rgba(110,168,255,.22),transparent 28%),radial-gradient(circle at 88% 6%,rgba(139,92,246,.23),transparent 28%),radial-gradient(circle at 45% 76%,rgba(255,215,106,.07),transparent 33%),linear-gradient(180deg,var(--bg),var(--bg2))}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:50px 50px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 78%)}body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(to bottom,transparent,rgba(7,11,24,.5))}
-.topbar{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:1100px;height:64px;z-index:1000;display:flex;align-items:center;padding:0 12px;border-radius:999px;background:rgba(15,22,42,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.3);transition:.28s ease}.topbar.scrolled{top:10px;background:rgba(10,15,30,.88)}.topbar-content{width:100%;display:flex;justify-content:space-between;align-items:center}.brand-group,.nav{display:flex;gap:8px;align-items:center}.brand-badge{padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:12px;font-weight:800;color:var(--text);white-space:nowrap}.brand-badge.sub{color:var(--muted)}.nav a{text-decoration:none;color:var(--muted);padding:8px 18px;border-radius:999px;font-size:13px;font-weight:700;transition:.22s ease;white-space:nowrap}.nav a:hover{color:#fff;background:rgba(255,255,255,.08)}.nav a.home-btn{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 15px rgba(110,168,255,.38)}.nav a.active:not(.home-btn){color:#fff;background:rgba(255,255,255,.13)}
-.container{max-width:1280px;margin:auto;padding:34px 20px 80px}.page-header{position:relative;margin-bottom:18px;padding:26px;border-radius:30px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end;background:radial-gradient(circle at 10% 20%,rgba(110,168,255,.24),transparent 34%),radial-gradient(circle at 92% 18%,rgba(139,92,246,.22),transparent 35%),linear-gradient(135deg,rgba(255,255,255,.11),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.13);box-shadow:var(--shadow);backdrop-filter:blur(18px)}.page-header::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.14),transparent 34%);pointer-events:none;opacity:.8}.header-left,.header-stats{position:relative;z-index:1}.kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;margin-bottom:12px;border-radius:999px;color:#fff;background:linear-gradient(135deg,rgba(110,168,255,.24),rgba(139,92,246,.22));border:1px solid rgba(255,255,255,.14);font-size:12px;font-weight:900;letter-spacing:1.2px}.kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px rgba(255,215,106,.75)}.page-title{margin:0;font-size:clamp(30px,4.6vw,50px);line-height:1.08;font-weight:900;letter-spacing:1.5px;color:#fff;text-shadow:0 10px 26px rgba(0,0,0,.35)}.page-subtitle{margin:10px 0 0;color:var(--muted);font-size:14px;letter-spacing:.8px}.header-stats{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.stat-card{min-width:96px;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}.stat-label{font-size:11px;color:var(--muted);font-weight:800}.stat-value{margin-top:4px;font-size:22px;font-weight:900;color:#fff;line-height:1}
-.gallery-toolbar{position:sticky;top:92px;z-index:450;margin:0 0 28px;padding:10px;border-radius:24px;background:rgba(12,18,36,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.11);box-shadow:0 16px 42px rgba(0,0,0,.22);display:grid;grid-template-columns:minmax(280px,1fr) auto;gap:10px;align-items:center}.search-wrap{position:relative;height:50px;display:flex;align-items:center;gap:10px;padding:0 76px 0 14px;border-radius:18px;background:linear-gradient(135deg,rgba(110,168,255,.12),rgba(139,92,246,.08));border:1px solid rgba(255,255,255,.1)}.search-icon{width:30px;height:30px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.08);font-size:14px;flex:0 0 auto}#searchInput{width:100%;min-width:0;height:100%;border:none;outline:none;background:transparent;color:#fff;font-size:14px;font-weight:800}#searchInput::placeholder{color:#93a0bf;font-weight:800}.clear-search{position:absolute;right:10px;top:50%;transform:translateY(-50%);height:34px;padding:0 13px;border:none;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);color:#e6edff;border-radius:999px;font-size:12px;font-weight:900;cursor:pointer;line-height:1;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}.clear-search:hover{background:rgba(255,255,255,.14);color:#fff}.filter{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.filter button{padding:12px 18px;border:1px solid rgba(255,255,255,.11);border-radius:999px;cursor:pointer;background:rgba(255,255,255,.055);color:var(--muted);font-size:13px;font-weight:900;transition:.22s ease;white-space:nowrap}.filter button:hover{color:#fff;transform:translateY(-1px);background:rgba(255,255,255,.1)}.filter .active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:rgba(255,255,255,.18);box-shadow:0 10px 22px rgba(110,168,255,.26)}.gallery-result{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 16px;color:var(--muted);font-size:13px;font-weight:800}.result-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#dbe7ff}.result-dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 12px rgba(110,168,255,.5)}
-.grid{position:relative;width:100%;margin-top:8px;transition:height .55s ease}.item{position:absolute;width:calc(33.333% - 14px);border-radius:24px;overflow:hidden;cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 46px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .35s ease,filter .35s ease,box-shadow .3s ease}.item::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.18),transparent 30%),linear-gradient(to top,rgba(5,8,18,.78),transparent 56%);opacity:.34;transition:.3s ease}.item::after{content:"查看";position:absolute;top:14px;right:14px;z-index:4;padding:7px 10px;border-radius:999px;color:#fff;font-size:12px;font-weight:900;background:rgba(15,23,42,.64);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);opacity:0;transform:translateY(-5px);transition:.25s ease}.item:hover{box-shadow:0 28px 70px rgba(0,0,0,.42),0 0 0 1px rgba(110,168,255,.22)}.item:hover::before{opacity:.52}.item:hover::after{opacity:1;transform:translateY(0)}.item.hide{opacity:0;transform:scale(.86) translateY(40px)!important;pointer-events:none;filter:blur(5px)}.gallery-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:rgba(255,255,255,.06);transition:transform .85s cubic-bezier(.2,.8,.2,1),filter .45s ease}.item.shape-wide .gallery-img{aspect-ratio:16/10}.item.shape-square .gallery-img{aspect-ratio:1/1}.item.shape-tall .gallery-img{aspect-ratio:4/5}.item.shape-long .gallery-img{aspect-ratio:3/4}.item:hover .gallery-img{transform:scale(1.06);filter:saturate(1.1) contrast(1.04)}.gallery-info{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:52px 18px 18px;background:linear-gradient(to top,rgba(6,9,20,.96) 0%,rgba(6,9,20,.64) 48%,transparent 100%);opacity:1;transform:none;transition:.3s ease}.gallery-info .date{display:inline-flex;font-size:11px;color:var(--gold);margin-bottom:7px;font-weight:900;letter-spacing:.9px}.gallery-info .title{display:block;font-size:17px;font-weight:900;color:#fff;letter-spacing:.4px;line-height:1.35}.gallery-desc-preview{margin-top:6px;color:#c6d1ea;font-size:12px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.category-pill{position:absolute;left:14px;top:14px;z-index:4;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;color:#dbeafe;background:rgba(96,165,250,.16);border:1px solid rgba(96,165,250,.28);backdrop-filter:blur(12px)}.category-pill.daily{color:#fef3c7;background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.28)}.empty-state{display:none;margin:28px 0;padding:34px;border-radius:24px;text-align:center;color:var(--muted);background:rgba(255,255,255,.055);border:1px dashed rgba(255,255,255,.16);font-weight:800}.empty-state.show{display:block}
-.lightbox{position:fixed;inset:0;background:rgba(4,7,16,.94);display:none;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:24px}.lightbox.show{display:flex;animation:fadeIn .25s ease}.lightbox-inner{max-width:1180px;width:94%;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:stretch}.lightbox-image-panel{min-height:0;display:flex;align-items:center;justify-content:center;border-radius:24px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.46)}.lightbox img{max-width:100%;max-height:80vh;object-fit:contain;display:block}.lb-meta{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));padding:22px;border-radius:24px;border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 50px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:space-between;gap:18px}.lb-top{display:grid;gap:8px}.lb-category{width:max-content;padding:7px 11px;border-radius:999px;background:rgba(110,168,255,.15);border:1px solid rgba(110,168,255,.28);color:#dbeafe;font-size:12px;font-weight:900}.lb-date{color:var(--gold);font-size:12px;font-weight:900;letter-spacing:1px}.lb-title{font-size:25px;font-weight:900;margin:0;line-height:1.35}.lb-desc{color:var(--muted);font-size:14px;line-height:1.8}.lb-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#c8d3ee;font-size:12px;font-weight:900}.lb-counter{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}.close-btn{position:fixed;top:22px;right:22px;z-index:10001;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center}.arrow{position:fixed;top:50%;width:52px;height:52px;display:grid;place-items:center;font-size:46px;line-height:1;color:rgba(255,255,255,.62);cursor:pointer;transform:translateY(-50%);border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);transition:.22s ease;user-select:none;z-index:10000}.arrow:hover{color:#fff;background:linear-gradient(135deg,rgba(110,168,255,.28),rgba(139,92,246,.24));box-shadow:0 12px 34px rgba(0,0,0,.28)}.left{left:22px}.right{right:22px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>夢回花深處｜江湖回憶錄</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-.upload-btn{padding:12px 18px;border:1px solid rgba(255,255,255,.14);border-radius:999px;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:900;white-space:nowrap;box-shadow:0 10px 22px rgba(110,168,255,.22)}
-.upload-modal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;background:rgba(4,7,16,.76);backdrop-filter:blur(16px);padding:18px}.upload-modal.show{display:flex}.upload-card{width:min(520px,100%);border-radius:26px;padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.14);box-shadow:0 25px 80px rgba(0,0,0,.45)}.upload-card h2{margin:0 0 14px;font-size:24px}.upload-grid{display:grid;gap:12px}.upload-grid label{font-size:12px;font-weight:900;color:var(--muted)}.upload-grid input,.upload-grid select,.upload-grid textarea{width:100%;margin-top:6px;border-radius:16px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.08);color:#fff;padding:12px 13px;outline:none;font-family:inherit;font-weight:800}.upload-grid select option{color:#111}.upload-grid textarea{min-height:90px;resize:vertical}.upload-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}.upload-actions button{border:none;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer}.upload-cancel{background:rgba(255,255,255,.1);color:#dbe7ff;border:1px solid rgba(255,255,255,.14)!important}.upload-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.upload-status{margin-top:12px;color:var(--gold);font-size:13px;font-weight:900}
-@media(max-width:768px){.upload-btn{padding:10px 8px;font-size:12px;text-align:center}.filter{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes riseIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}.page-header,.gallery-toolbar,.gallery-result,.grid{animation:riseIn .65s ease both}.gallery-toolbar{animation-delay:.05s}.grid{animation-delay:.12s}
-@media(max-width:980px){.page-header{grid-template-columns:1fr}.header-stats{justify-content:flex-start}.gallery-toolbar{grid-template-columns:1fr}.filter{justify-content:flex-start}.lightbox-inner{grid-template-columns:1fr;width:100%;max-width:920px}.lb-meta{padding:18px}}
-@media(max-width:800px){.item{width:calc(50% - 10px)}.arrow{width:46px;height:46px;font-size:42px}.left{left:10px}.right{right:10px}}
-@media(max-width:768px){body{padding-top:150px!important}.topbar{top:10px;height:auto;padding:10px 16px;width:calc(100% - 20px);border-radius:24px;z-index:9999}.topbar-content{flex-direction:column;gap:8px}.brand-group{justify-content:center}.nav{width:100%;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:5px 0;gap:4px}.nav::-webkit-scrollbar{display:none}.nav a{padding:6px 12px!important;font-size:11px!important;font-weight:700!important}.container{padding:24px 14px 70px}.page-header{padding:22px 18px;border-radius:24px}.gallery-toolbar{position:relative;top:auto;border-radius:22px;margin-bottom:18px}.filter{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.filter button{padding:10px 8px;font-size:12px}.stat-card{min-width:86px;padding:10px 12px}}
-@media(max-width:560px){.page-title{font-size:34px}.page-subtitle{font-size:12px;line-height:1.7}.item{width:100%;border-radius:20px}.gallery-info{padding:50px 16px 16px}.lightbox{padding:12px}.lightbox img{max-height:62vh}.arrow{top:auto;bottom:18px;transform:none}.left{left:18px}.right{right:18px}.close-btn{top:14px;right:14px}}
-</style>
+  <style>
+    :root {
+      --bg: #070b18;
+      --bg2: #111a32;
+      --text: #eef2ff;
+      --muted: #a8b3cf;
+      --accent: #6ea8ff;
+      --accent2: #8b5cf6;
+      --gold: #ffd76a;
+      --shadow: 0 22px 60px rgba(0, 0, 0, .35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding-top: 100px;
+      overflow-x: hidden;
+      font-family: "Noto Sans TC", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(110, 168, 255, .22), transparent 28%),
+        radial-gradient(circle at 88% 6%, rgba(139, 92, 246, .23), transparent 28%),
+        radial-gradient(circle at 45% 76%, rgba(255, 215, 106, .07), transparent 33%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 78%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: linear-gradient(to bottom, transparent, rgba(7,11,24,.5));
+    }
+
+    .topbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      z-index: 1000;
+      width: calc(100% - 40px);
+      max-width: 1100px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      background: rgba(15, 22, 42, .62);
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: .28s ease;
+    }
+
+    .topbar.scrolled {
+      top: 10px;
+      background: rgba(10, 15, 30, .88);
+    }
+
+    .topbar-content {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group,
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-badge.sub { color: var(--muted); }
+
+    .nav a {
+      padding: 8px 18px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: .22s ease;
+    }
+
+    .nav a:hover {
+      color: #fff;
+      background: rgba(255,255,255,.08);
+    }
+
+    .nav a.home-btn {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 4px 15px rgba(110,168,255,.38);
+    }
+
+    .nav a.active:not(.home-btn) {
+      color: #fff;
+      background: rgba(255,255,255,.13);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: auto;
+      padding: 34px 20px 80px;
+    }
+
+    .page-header {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 18px;
+      padding: 26px;
+      overflow: hidden;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(110,168,255,.24), transparent 34%),
+        radial-gradient(circle at 92% 18%, rgba(139,92,246,.22), transparent 35%),
+        linear-gradient(135deg, rgba(255,255,255,.11), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .page-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .8;
+      background: linear-gradient(120deg, rgba(255,255,255,.14), transparent 34%);
+    }
+
+    .header-left,
+    .header-stats {
+      position: relative;
+      z-index: 1;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(110,168,255,.24), rgba(139,92,246,.22));
+      border: 1px solid rgba(255,255,255,.14);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 14px rgba(255,215,106,.75);
+    }
+
+    .page-title {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(30px, 4.6vw, 50px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-shadow: 0 10px 26px rgba(0,0,0,.35);
+    }
+
+    .page-subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: .8px;
+    }
+
+    .header-stats {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stat-card {
+      min-width: 96px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.075);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .stat-value {
+      margin-top: 4px;
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .gallery-toolbar {
+      position: sticky;
+      top: 92px;
+      z-index: 450;
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 28px;
+      padding: 10px;
+      border-radius: 24px;
+      background: rgba(12,18,36,.72);
+      border: 1px solid rgba(255,255,255,.11);
+      box-shadow: 0 16px 42px rgba(0,0,0,.22);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .search-wrap {
+      position: relative;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 76px 0 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(110,168,255,.12), rgba(139,92,246,.08));
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .search-icon {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(255,255,255,.08);
+      font-size: 14px;
+    }
+
+    #searchInput {
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    #searchInput::placeholder {
+      color: #93a0bf;
+      font-weight: 800;
+    }
+
+    .clear-search {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 13px;
+      transform: translateY(-50%);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      background: rgba(255,255,255,.09);
+      color: #e6edff;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .clear-search:hover {
+      background: rgba(255,255,255,.14);
+      color: #fff;
+    }
+
+    .filter {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-select-wrap {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 999px;
+      background: rgba(255,255,255,.055);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .filter-select-label {
+      font-size: 12px;
+      font-weight: 900;
+      color: #cfd8f4;
+    }
+
+    .filter-select {
+      min-width: 130px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .filter-select option {
+      color: #111827;
+      font-weight: 800;
+    }
+
+    .upload-btn {
+      padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 999px;
+      cursor: pointer;
+      background: rgba(255,255,255,.055);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      transition: .22s ease;
+    }
+
+    .upload-btn:hover {
+      color: #fff;
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.1);
+    }
+
+    .upload-btn {
+      color: #fff;
+      border-color: rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+    }
+
+    .gallery-result {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 2px 16px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      color: #dbe7ff;
+    }
+
+    .result-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 12px rgba(110,168,255,.5);
+    }
+
+    .grid {
+      position: relative;
+      width: 100%;
+      margin-top: 8px;
+      transition: height .55s ease;
+    }
+
+    .item {
+      position: absolute;
+      width: calc(33.333% - 14px);
+      overflow: hidden;
+      border-radius: 24px;
+      cursor: pointer;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.045));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 20px 46px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08);
+      transition:
+        transform .55s cubic-bezier(.4, 0, .2, 1),
+        opacity .35s ease,
+        filter .35s ease,
+        box-shadow .3s ease;
+    }
+
+    .item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: .34;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.18), transparent 30%),
+        linear-gradient(to top, rgba(5,8,18,.78), transparent 56%);
+      transition: .3s ease;
+    }
+
+    .item::after {
+      content: "查看";
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+      padding: 7px 10px;
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(-5px);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      background: rgba(15,23,42,.64);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(12px);
+      transition: .25s ease;
+    }
+
+    .item:hover {
+      box-shadow: 0 28px 70px rgba(0,0,0,.42), 0 0 0 1px rgba(110,168,255,.22);
+    }
+
+    .item:hover::before { opacity: .52; }
+    .item:hover::after { opacity: 1; transform: translateY(0); }
+
+    .item.hide {
+      display: none !important;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: rgba(255,255,255,.06);
+      transition: transform .85s cubic-bezier(.2,.8,.2,1), filter .45s ease;
+    }
+
+    .item.shape-wide .gallery-img { aspect-ratio: 16 / 10; }
+    .item.shape-square .gallery-img { aspect-ratio: 1 / 1; }
+    .item.shape-tall .gallery-img { aspect-ratio: 4 / 5; }
+    .item.shape-long .gallery-img { aspect-ratio: 3 / 4; }
+
+    .item:hover .gallery-img {
+      transform: scale(1.06);
+      filter: saturate(1.1) contrast(1.04);
+    }
+
+    .gallery-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      padding: 52px 18px 18px;
+      background: linear-gradient(to top, rgba(6,9,20,.96) 0%, rgba(6,9,20,.64) 48%, transparent 100%);
+    }
+
+    .gallery-info .date {
+      display: inline-flex;
+      margin-bottom: 7px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .9px;
+    }
+
+    .gallery-info .title {
+      display: block;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.35;
+      letter-spacing: .4px;
+    }
+
+    .gallery-desc-preview {
+      margin-top: 6px;
+      color: #c6d1ea;
+      font-size: 12px;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .category-pill {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 4;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #dbeafe;
+      font-size: 12px;
+      font-weight: 900;
+      background: rgba(96,165,250,.16);
+      border: 1px solid rgba(96,165,250,.28);
+      backdrop-filter: blur(12px);
+    }
+
+    .empty-state {
+      display: none;
+      margin: 28px 0;
+      padding: 34px;
+      border-radius: 24px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,.055);
+      border: 1px dashed rgba(255,255,255,.16);
+      font-weight: 800;
+    }
+
+    .empty-state.show { display: block; }
+
+    .upload-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10050;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(4,7,16,.76);
+      backdrop-filter: blur(16px);
+    }
+
+    .upload-modal.show { display: flex; }
+
+    .upload-card {
+      width: min(540px, 100%);
+      padding: 22px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 25px 80px rgba(0,0,0,.45);
+    }
+
+    .upload-card h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+
+    .upload-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .upload-grid label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .upload-grid input,
+    .upload-grid select,
+    .upload-grid textarea {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.13);
+      outline: none;
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 800;
+    }
+
+    .upload-grid select option { color: #111; }
+    .upload-grid textarea { min-height: 90px; resize: vertical; }
+
+    .custom-category-wrap {
+      display: none;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .custom-category-wrap.show { display: grid; }
+
+    .use-list-btn {
+      margin-top: 6px;
+      padding: 0 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      color: #dbe7ff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .upload-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .upload-actions button {
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .upload-cancel {
+      color: #dbe7ff;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .upload-submit {
+      color: #fff;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+
+    .upload-status {
+      margin-top: 12px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(4,7,16,.94);
+      backdrop-filter: blur(18px);
+    }
+
+    .lightbox.show {
+      display: flex;
+      animation: fadeIn .25s ease;
+    }
+
+    .lightbox-inner {
+      width: 94%;
+      max-width: 1180px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .lightbox-image-panel {
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 24px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: 0 25px 80px rgba(0,0,0,.46);
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lb-meta {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.055));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    }
+
+    .lb-top { display: grid; gap: 8px; }
+
+    .lb-category {
+      width: max-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(110,168,255,.15);
+      border: 1px solid rgba(110,168,255,.28);
+      color: #dbeafe;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .lb-date {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .lb-title {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .lb-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .lb-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #c8d3ee;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .lb-counter {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .close-btn,
+    .arrow {
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      position: fixed;
+      top: 22px;
+      right: 22px;
+      z-index: 10001;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      font-size: 22px;
+    }
+
+    .arrow {
+      position: fixed;
+      top: 50%;
+      z-index: 10000;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,.62);
+      font-size: 46px;
+      line-height: 1;
+      user-select: none;
+      transition: .22s ease;
+    }
+
+    .arrow:hover {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(110,168,255,.28), rgba(139,92,246,.24));
+      box-shadow: 0 12px 34px rgba(0,0,0,.28);
+    }
+
+    .left { left: 22px; }
+    .right { right: 22px; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header,
+    .gallery-toolbar,
+    .gallery-result,
+    .grid {
+      animation: riseIn .65s ease both;
+    }
+
+    .gallery-toolbar { animation-delay: .05s; }
+    .grid { animation-delay: .12s; }
+
+    @media (max-width: 980px) {
+      .page-header { grid-template-columns: 1fr; }
+      .header-stats { justify-content: flex-start; }
+      .gallery-toolbar { grid-template-columns: 1fr; }
+      .filter { justify-content: flex-start; }
+      .lightbox-inner { grid-template-columns: 1fr; width: 100%; max-width: 920px; }
+      .lb-meta { padding: 18px; }
+    }
+
+    @media (max-width: 800px) {
+      .item { width: calc(50% - 10px); }
+      .arrow { width: 46px; height: 46px; font-size: 42px; }
+      .left { left: 10px; }
+      .right { right: 10px; }
+    }
+
+    @media (max-width: 768px) {
+      body { padding-top: 150px !important; }
+      .topbar { top: 10px; height: auto; width: calc(100% - 20px); padding: 10px 16px; border-radius: 24px; }
+      .topbar-content { flex-direction: column; gap: 8px; }
+      .brand-group { justify-content: center; }
+      .nav { width: 100%; justify-content: flex-start; overflow-x: auto; padding: 5px 0; gap: 4px; }
+      .nav::-webkit-scrollbar { display: none; }
+      .nav a { padding: 6px 12px !important; font-size: 11px !important; }
+      .container { padding: 24px 14px 70px; }
+      .page-header { padding: 22px 18px; border-radius: 24px; }
+      .gallery-toolbar { position: relative; top: auto; border-radius: 22px; margin-bottom: 18px; }
+      .filter { display: grid; grid-template-columns: minmax(0, 1fr) auto; width: 100%; }
+      .filter-select-wrap { width: 100%; height: 46px; }
+      .filter-select { width: 100%; min-width: 0; }
+      .upload-btn { padding: 10px 12px; font-size: 12px; text-align: center; }
+      .stat-card { min-width: 86px; padding: 10px 12px; }
+    }
+
+    @media (max-width: 560px) {
+      .page-title { font-size: 34px; }
+      .page-subtitle { font-size: 12px; line-height: 1.7; }
+      .item { width: 100%; border-radius: 20px; }
+      .gallery-info { padding: 50px 16px 16px; }
+      .lightbox { padding: 12px; }
+      .lightbox img { max-height: 62vh; }
+      .arrow { top: auto; bottom: 18px; transform: none; }
+      .left { left: 18px; }
+      .right { right: 18px; }
+      .close-btn { top: 14px; right: 14px; }
+    }
+  </style>
 </head>
+
 <body>
-<nav class="topbar" id="floatingNav"><div class="topbar-content"><div class="brand-group"><span class="brand-badge">夢回花深處</span><span class="brand-badge sub">江湖回憶錄</span></div><div class="nav"><a href="index" class="home-btn">首頁</a><a href="PVERegistration">俠境報名</a><a href="gallery" class="active">江湖回憶錄</a></div></div></nav>
-<div class="container"><section class="page-header"><div class="header-left"><div class="kicker">夢回花深處</div><h1 class="page-title">江湖回憶錄</h1><p class="page-subtitle">幫會相簿・回憶紀錄・江湖日常</p></div><div class="header-stats"><div class="stat-card"><div class="stat-label">總回憶</div><div class="stat-value" id="totalCount">0</div></div><div class="stat-card"><div class="stat-label">同門合照</div><div class="stat-value" id="groupCount">0</div></div><div class="stat-card"><div class="stat-label">江湖日常</div><div class="stat-value" id="dailyCount">0</div></div></div></section>
-<section class="gallery-toolbar"><div class="search-wrap"><span class="search-icon">🔍</span><input id="searchInput" type="text" placeholder="搜尋標題、日期或描述..."><button class="clear-search" id="clearSearch" type="button" aria-label="清除搜尋">清除</button></div><div class="filter"><button class="active" data-filter="all">全部回憶</button><button data-filter="group">同門合照</button><button data-filter="daily">江湖日常</button><button class="upload-btn" id="openUpload" type="button">📷 上傳</button></div></section>
-<div class="gallery-result"><div class="result-left"><span class="result-pill"><span class="result-dot"></span><span id="resultText">顯示全部回憶</span></span></div><span id="activeFilterLabel">全部回憶</span></div>
-<div class="grid" id="grid"></div>
-<div class="empty-state" id="emptyState">目前沒有符合條件的回憶。</div></div>
+  <nav class="topbar" id="floatingNav">
+    <div class="topbar-content">
+      <div class="brand-group">
+        <span class="brand-badge">夢回花深處</span>
+        <span class="brand-badge sub">江湖回憶錄</span>
+      </div>
 
-<div class="upload-modal" id="uploadModal"><div class="upload-card"><h2>上傳江湖回憶</h2><div class="upload-grid"><label>圖片<input id="uploadFile" type="file" accept="image/*"></label><label>標題<input id="uploadTitle" type="text" placeholder="例如：幫會合照"></label><label>日期<input id="uploadDate" type="date"></label><label>分類標籤<input id="uploadCategory" type="text" list="categoryList" placeholder="例如：同門合照、江湖日常、副本紀錄"><datalist id="categoryList"></datalist></label><label>描述<textarea id="uploadDesc" placeholder="寫一點回憶描述..."></textarea></label></div><div class="upload-actions"><button class="upload-cancel" id="closeUpload" type="button">取消</button><button class="upload-submit" id="submitUpload" type="button">上傳</button></div><div class="upload-status" id="uploadStatus"></div></div></div>
-<div class="lightbox" id="lightbox"><button class="close-btn" id="closeLightbox" type="button">×</button><div class="arrow left" id="prev">‹</div><div class="lightbox-inner"><div class="lightbox-image-panel"><img id="light-img" alt=""></div><aside class="lb-meta"><div class="lb-top"><div class="lb-category" id="lb-category"></div><div class="lb-date" id="lb-date"></div><h2 class="lb-title" id="lb-title"></h2><div class="lb-desc" id="lb-desc"></div></div><div class="lb-actions"><span class="lb-counter" id="lb-counter">1 / 1</span><span>ESC 關閉・左右鍵切換</span></div></aside></div><div class="arrow right" id="next">›</div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-/* =========================
-   SUPABASE CONFIG
-   Replace these 2 values
-========================= */
-const SUPABASE_URL = "https://ugipvbqcbrroiuhqqzjd.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnaXB2YnFjYnJyb2l1aHFxempkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDE1MTUsImV4cCI6MjA5Nzg3NzUxNX0.1TPfk4OJfJDGkkowgbMG3ojS4unGt8dGfMucrzW0sr8";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const BUCKET_NAME = "gallery-images";
-
-const nav=document.getElementById('floatingNav');
-window.addEventListener('scroll',()=>{window.scrollY>50?nav.classList.add('scrolled'):nav.classList.remove('scrolled')},{passive:true});
-
-const grid=document.getElementById('grid');
-let items=Array.from(document.querySelectorAll('.item'));
-const searchInput=document.getElementById('searchInput');
-const clearSearch=document.getElementById('clearSearch');
-const resultText=document.getElementById('resultText');
-const activeFilterLabel=document.getElementById('activeFilterLabel');
-const emptyState=document.getElementById('emptyState');
-const labels={all:'全部回憶'};
-const defaultCategories=['同門合照','江湖日常','副本紀錄','活動紀錄','幫會活動','風景打卡','趣味截圖'];
-function categoryLabel(cat){return labels[cat]||cat||'江湖日常';}
-let currentFilter='all';
-let currentIdx=0;
-
-function formatDateForDisplay(dateValue){
-  if(!dateValue)return '';
-  return String(dateValue).replaceAll('-','.');
-}
-
-function escapeHTML(value){
-  return String(value ?? '').replace(/[&<>'"]/g, ch=>({
-    '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;'
-  }[ch]));
-}
-
-
-function applyImageShape(item, img){
-  if(!item || !img)return;
-  item.classList.remove('shape-wide','shape-square','shape-tall','shape-long');
-  const w=img.naturalWidth || 1;
-  const h=img.naturalHeight || 1;
-  const ratio=w/h;
-  if(ratio>=1.55)item.classList.add('shape-wide');
-  else if(ratio<=0.72)item.classList.add('shape-long');
-  else if(ratio<=0.9)item.classList.add('shape-tall');
-  else item.classList.add('shape-square');
-}
-
-function createGalleryItem(photo){
-  const item=document.createElement('div');
-  item.className='item';
-  item.dataset.category=(photo.category==='group'?'同門合照':photo.category==='daily'?'江湖日常':(photo.category || '江湖日常'));
-  item.dataset.title=photo.title || '未命名回憶';
-  item.dataset.date=formatDateForDisplay(photo.photo_date || photo.date || new Date().toISOString().slice(0,10));
-  item.dataset.desc=photo.description || '這一刻，留給江湖慢慢回味。';
-
-  item.innerHTML=`
-    <img src="${escapeHTML(photo.image_url)}" class="gallery-img" alt="${escapeHTML(item.dataset.title)}" loading="lazy" decoding="async">
-    <div class="gallery-info">
-      <span class="date">${escapeHTML(item.dataset.date)}</span>
-      <span class="title">${escapeHTML(item.dataset.title)}</span>
+      <div class="nav">
+        <a href="index" class="home-btn">首頁</a>
+        <a href="PVERegistration">副本報名</a>
+        <a href="gallery" class="active">江湖回憶錄</a>
+      </div>
     </div>
-  `;
+  </nav>
 
-  grid.appendChild(item);
-  prepareItem(item);
-  return item;
-}
+  <main class="container">
+    <section class="page-header">
+      <div class="header-left">
+        <div class="kicker">夢回花深處</div>
+        <h1 class="page-title">江湖回憶錄</h1>
+        <p class="page-subtitle">幫會相簿・回憶紀錄・江湖日常</p>
+      </div>
 
-function prepareItem(item){
-  const oldPill=item.querySelector('.category-pill');
-  if(oldPill)oldPill.remove();
-  const cat=item.dataset.category;
-  const pill=document.createElement('span');
-  pill.className='category-pill';
-  pill.textContent=categoryLabel(cat);
-  item.appendChild(pill);
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-label">總回憶</div>
+          <div class="stat-value" id="totalCount">0</div>
+        </div>
 
-  const info=item.querySelector('.gallery-info');
-  if(info&&!info.querySelector('.gallery-desc-preview')){
-    const desc=document.createElement('div');
-    desc.className='gallery-desc-preview';
-    desc.textContent=item.dataset.desc||'這一刻，留給江湖慢慢回味。';
-    info.appendChild(desc);
-  }
+        <div class="stat-card">
+          <div class="stat-label">同門合照</div>
+          <div class="stat-value" id="groupCount">0</div>
+        </div>
 
-  item.addEventListener('click',()=>{
-    const list=visibleItems();
-    currentIdx=list.indexOf(item);
-    showLightbox(currentIdx);
-    lightbox.classList.add('show');
-    document.body.style.overflow='hidden';
-  });
+        <div class="stat-card">
+          <div class="stat-label">江湖日常</div>
+          <div class="stat-value" id="dailyCount">0</div>
+        </div>
+      </div>
+    </section>
 
-  const img=item.querySelector('img');
-  if(img){
-    const onReady=()=>{applyImageShape(item,img);layout();};
-    if(img.complete)onReady();
-    else img.addEventListener('load',onReady,{once:true});
-    img.addEventListener('error',layout,{once:true});
-  }
-}
+    <section class="gallery-toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="searchInput" type="text" placeholder="搜尋標題、日期或描述..." />
+        <button class="clear-search" id="clearSearch" type="button" aria-label="清除搜尋">清除</button>
+      </div>
 
-function refreshItems(){
-  items=Array.from(document.querySelectorAll('.item'));
-  document.getElementById('totalCount').textContent=items.length;
-  document.getElementById('groupCount').textContent=items.filter(i=>i.dataset.category==='同門合照'||i.dataset.category==='group').length;
-  document.getElementById('dailyCount').textContent=items.filter(i=>i.dataset.category==='江湖日常'||i.dataset.category==='daily').length;
-}
+      <div class="filter" id="filterBar">
+        <label class="filter-select-wrap" for="filterSelect">
+          <span class="filter-select-label">分類</span>
+          <select id="filterSelect" class="filter-select">
+            <option value="all">全部回憶</option>
+          </select>
+        </label>
+        <button class="upload-btn" id="openUpload" type="button">📷 上傳</button>
+      </div>
+    </section>
 
-function updateCategoryButtons(){
-  const filterBox=document.querySelector('.filter');
-  const uploadBtn=document.getElementById('openUpload');
-  const allBtn=filterBox.querySelector('button[data-filter="all"]');
-  const categories=[...new Set([...defaultCategories, ...items.map(i=>i.dataset.category).filter(Boolean)])];
+    <div class="gallery-result">
+      <div class="result-left">
+        <span class="result-pill">
+          <span class="result-dot"></span>
+          <span id="resultText">顯示全部回憶</span>
+        </span>
+      </div>
+      <span id="activeFilterLabel">全部回憶</span>
+    </div>
 
-  filterBox.querySelectorAll('button[data-filter]:not([data-filter="all"])').forEach(btn=>btn.remove());
+    <div class="grid" id="grid"></div>
+    <div class="empty-state" id="emptyState">目前沒有符合條件的回憶。</div>
+  </main>
 
-  categories.forEach(cat=>{
-    const btn=document.createElement('button');
-    btn.dataset.filter=cat;
-    btn.textContent=categoryLabel(cat);
-    if(currentFilter===cat)btn.classList.add('active');
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.filter button[data-filter]').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter=cat;
+  <div class="upload-modal" id="uploadModal">
+    <div class="upload-card">
+      <h2>上傳江湖回憶</h2>
+
+      <div class="upload-grid">
+        <label>
+          圖片
+          <input id="uploadFile" type="file" accept="image/*" />
+        </label>
+
+        <label>
+          標題
+          <input id="uploadTitle" type="text" placeholder="例如：幫會合照" />
+        </label>
+
+        <label>
+          日期
+          <input id="uploadDate" type="date" />
+        </label>
+
+        <label>
+          分類標籤
+          <select id="uploadCategorySelect"></select>
+
+          <div class="custom-category-wrap" id="customCategoryWrap">
+            <input id="uploadCategoryCustom" type="text" placeholder="輸入新標籤，例如：師徒活動" />
+            <button class="use-list-btn" id="useCategoryList" type="button">使用清單</button>
+          </div>
+        </label>
+
+        <label>
+          描述
+          <textarea id="uploadDesc" placeholder="寫一點回憶描述..."></textarea>
+        </label>
+      </div>
+
+      <div class="upload-actions">
+        <button class="upload-cancel" id="closeUpload" type="button">取消</button>
+        <button class="upload-submit" id="submitUpload" type="button">上傳</button>
+      </div>
+
+      <div class="upload-status" id="uploadStatus"></div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close-btn" id="closeLightbox" type="button">×</button>
+    <div class="arrow left" id="prev">‹</div>
+
+    <div class="lightbox-inner">
+      <div class="lightbox-image-panel">
+        <img id="light-img" alt="" />
+      </div>
+
+      <aside class="lb-meta">
+        <div class="lb-top">
+          <div class="lb-category" id="lb-category"></div>
+          <div class="lb-date" id="lb-date"></div>
+          <h2 class="lb-title" id="lb-title"></h2>
+          <div class="lb-desc" id="lb-desc"></div>
+        </div>
+
+        <div class="lb-actions">
+          <span class="lb-counter" id="lb-counter">1 / 1</span>
+          <span>ESC 關閉・左右鍵切換</span>
+        </div>
+      </aside>
+    </div>
+
+    <div class="arrow right" id="next">›</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://ugipvbqcbrroiuhqqzjd.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnaXB2YnFjYnJyb2l1aHFxempkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDE1MTUsImV4cCI6MjA5Nzg3NzUxNX0.1TPfk4OJfJDGkkowgbMG3ojS4unGt8dGfMucrzW0sr8";
+    const BUCKET_NAME = "gallery-images";
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const defaultCategories = [
+      "同門合照",
+      "江湖日常",
+      "副本紀錄",
+      "活動紀錄",
+      "幫會活動",
+      "風景打卡",
+      "趣味截圖"
+    ];
+
+    const categoryAliases = {
+      group: "同門合照",
+      daily: "江湖日常"
+    };
+
+    const nav = document.getElementById("floatingNav");
+    const grid = document.getElementById("grid");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearch = document.getElementById("clearSearch");
+    const resultText = document.getElementById("resultText");
+    const activeFilterLabel = document.getElementById("activeFilterLabel");
+    const emptyState = document.getElementById("emptyState");
+    const filterBar = document.getElementById("filterBar");
+    const filterSelect = document.getElementById("filterSelect");
+    const uploadBtn = document.getElementById("openUpload");
+
+    const uploadModal = document.getElementById("uploadModal");
+    const closeUpload = document.getElementById("closeUpload");
+    const submitUpload = document.getElementById("submitUpload");
+    const uploadStatus = document.getElementById("uploadStatus");
+    const uploadCategorySelect = document.getElementById("uploadCategorySelect");
+    const customCategoryWrap = document.getElementById("customCategoryWrap");
+    const uploadCategoryCustom = document.getElementById("uploadCategoryCustom");
+    const useCategoryList = document.getElementById("useCategoryList");
+
+    const lightbox = document.getElementById("lightbox");
+    const lightImg = document.getElementById("light-img");
+    const lbTitle = document.getElementById("lb-title");
+    const lbDate = document.getElementById("lb-date");
+    const lbDesc = document.getElementById("lb-desc");
+    const lbCategory = document.getElementById("lb-category");
+    const lbCounter = document.getElementById("lb-counter");
+
+    let items = [];
+    let currentFilter = "all";
+    let currentIdx = 0;
+    let categorySelectReady = false;
+
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 50);
+    }, { passive: true });
+
+    function normalizeCategory(category) {
+      return categoryAliases[category] || category || "江湖日常";
+    }
+
+    function formatDateForDisplay(dateValue) {
+      if (!dateValue) return "";
+      return String(dateValue).replaceAll("-", ".");
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getAllCategories() {
+      const fromItems = items.map(item => item.dataset.category).filter(Boolean);
+      return [...new Set([...defaultCategories, ...fromItems].map(normalizeCategory))];
+    }
+
+    function updateCategorySelect() {
+      const selected = uploadCategorySelect.value;
+      const categories = getAllCategories();
+
+      uploadCategorySelect.innerHTML = "";
+
+      categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        uploadCategorySelect.appendChild(option);
+      });
+
+      const newOption = document.createElement("option");
+      newOption.value = "__new__";
+      newOption.textContent = "＋新增標籤";
+      uploadCategorySelect.appendChild(newOption);
+
+      if (selected && categories.includes(selected)) {
+        uploadCategorySelect.value = selected;
+      } else if (!categorySelectReady) {
+        uploadCategorySelect.value = "江湖日常";
+        categorySelectReady = true;
+      }
+    }
+
+    function updateCategoryFilterSelect() {
+      const categories = getAllCategories();
+      const previousValue = filterSelect.value || currentFilter;
+
+      filterSelect.innerHTML = "";
+
+      const allOption = document.createElement("option");
+      allOption.value = "all";
+      allOption.textContent = "全部回憶";
+      filterSelect.appendChild(allOption);
+
+      categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        filterSelect.appendChild(option);
+      });
+
+      const allowedValues = ["all", ...categories];
+      if (allowedValues.includes(previousValue)) {
+        filterSelect.value = previousValue;
+        currentFilter = previousValue;
+      } else {
+        filterSelect.value = "all";
+        currentFilter = "all";
+      }
+    }
+
+    function refreshItems() {
+      items = Array.from(document.querySelectorAll(".item"));
+
+      document.getElementById("totalCount").textContent = items.length;
+      document.getElementById("groupCount").textContent = items.filter(item => item.dataset.category === "同門合照").length;
+      document.getElementById("dailyCount").textContent = items.filter(item => item.dataset.category === "江湖日常").length;
+
+      updateCategoryFilterSelect();
+      updateCategorySelect();
+    }
+
+    function setImageShape(item, img) {
+      const ratio = img.naturalWidth / Math.max(img.naturalHeight, 1);
+
+      item.classList.remove("shape-wide", "shape-square", "shape-tall", "shape-long");
+
+      if (ratio >= 1.45) {
+        item.classList.add("shape-wide");
+      } else if (ratio >= .9) {
+        item.classList.add("shape-square");
+      } else if (ratio >= .68) {
+        item.classList.add("shape-tall");
+      } else {
+        item.classList.add("shape-long");
+      }
+    }
+
+    function createGalleryItem(photo) {
+      const category = normalizeCategory(photo.category);
+      const title = photo.title || "未命名回憶";
+      const date = formatDateForDisplay(photo.photo_date || photo.date || new Date().toISOString().slice(0, 10));
+      const description = photo.description || "這一刻，留給江湖慢慢回味。";
+
+      const item = document.createElement("div");
+      item.className = "item shape-square";
+      item.dataset.category = category;
+      item.dataset.title = title;
+      item.dataset.date = date;
+      item.dataset.desc = description;
+
+      item.innerHTML = `
+        <img
+          src="${escapeHtml(photo.image_url)}"
+          class="gallery-img"
+          alt="${escapeHtml(title)}"
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="gallery-info">
+          <span class="date">${escapeHtml(date)}</span>
+          <span class="title">${escapeHtml(title)}</span>
+        </div>
+      `;
+
+      grid.appendChild(item);
+      prepareItem(item);
+      return item;
+    }
+
+    function prepareItem(item) {
+      const oldPill = item.querySelector(".category-pill");
+      if (oldPill) oldPill.remove();
+
+      const pill = document.createElement("span");
+      pill.className = "category-pill";
+      pill.textContent = item.dataset.category;
+      item.appendChild(pill);
+
+      const info = item.querySelector(".gallery-info");
+      if (info && !info.querySelector(".gallery-desc-preview")) {
+        const desc = document.createElement("div");
+        desc.className = "gallery-desc-preview";
+        desc.textContent = item.dataset.desc || "這一刻，留給江湖慢慢回味。";
+        info.appendChild(desc);
+      }
+
+      item.addEventListener("click", () => {
+        const list = visibleItems();
+        currentIdx = list.indexOf(item);
+        showLightbox(currentIdx);
+        lightbox.classList.add("show");
+        document.body.style.overflow = "hidden";
+      });
+
+      const img = item.querySelector("img");
+      if (!img) return;
+
+      if (img.complete && img.naturalWidth) {
+        setImageShape(item, img);
+        layout();
+      } else {
+        img.addEventListener("load", () => {
+          setImageShape(item, img);
+          layout();
+        });
+      }
+    }
+
+    async function loadSupabaseGallery() {
+      const { data, error } = await supabaseClient
+        .from("gallery")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        refreshItems();
+        applyFilters();
+        layout();
+        return;
+      }
+
+      grid.innerHTML = "";
+
+      if (data && data.length) {
+        data.reverse().forEach(photo => createGalleryItem(photo));
+      }
+
+      refreshItems();
+      applyFilters();
+      layout();
+    }
+
+    function getColumnCount() {
+      if (window.innerWidth <= 560) return 1;
+      if (window.innerWidth <= 800) return 2;
+      return 3;
+    }
+
+    function layout() {
+      const visible = items.filter(item => !item.classList.contains("hide"));
+      const containerWidth = grid.offsetWidth;
+      const cols = getColumnCount();
+      const gutter = window.innerWidth <= 560 ? 16 : 20;
+      const colWidth = (containerWidth - (gutter * (cols - 1))) / cols;
+      const heights = Array(cols).fill(0);
+
+      visible.forEach(item => {
+        item.style.opacity = "1";
+        item.style.width = `${colWidth}px`;
+
+        const col = heights.indexOf(Math.min(...heights));
+        const x = col * (colWidth + gutter);
+        const y = heights[col];
+
+        item.style.transform = `translate(${x}px, ${y}px)`;
+        heights[col] += item.offsetHeight + gutter;
+      });
+
+      grid.style.height = visible.length ? `${Math.max(...heights)}px` : "0px";
+    }
+
+    function applyFilters() {
+      const q = searchInput.value.trim().toLowerCase();
+      let shown = 0;
+
+      items.forEach(item => {
+        const catOK = currentFilter === "all" || item.dataset.category === currentFilter;
+        const text = `${item.dataset.title || ""} ${item.dataset.date || ""} ${item.dataset.desc || ""}`.toLowerCase();
+        const searchOK = !q || text.includes(q);
+        const show = catOK && searchOK;
+
+        item.classList.toggle("hide", !show);
+        if (show) shown++;
+      });
+
+      activeFilterLabel.textContent = currentFilter === "all" ? "全部回憶" : currentFilter;
+      resultText.textContent = q ? `找到 ${shown} 個回憶` : `顯示 ${shown} 個回憶`;
+      emptyState.classList.toggle("show", shown === 0);
+
+      let timer = setInterval(layout, 45);
+      setTimeout(() => clearInterval(timer), 620);
+    }
+
+    function visibleItems() {
+      return items.filter(item => !item.classList.contains("hide"));
+    }
+
+    function showLightbox(idx) {
+      const list = visibleItems();
+      const target = list[idx];
+      if (!target) return;
+
+      const img = target.querySelector("img");
+
+      lightImg.src = img.src;
+      lightImg.alt = target.dataset.title || "";
+      lbTitle.textContent = target.dataset.title || "";
+      lbDate.textContent = target.dataset.date || "";
+      lbDesc.textContent = target.dataset.desc || "這一刻，留給江湖慢慢回味。";
+      lbCategory.textContent = target.dataset.category || "";
+      lbCounter.textContent = `${idx + 1} / ${list.length}`;
+    }
+
+    function nextPhoto() {
+      const list = visibleItems();
+      if (!list.length) return;
+      currentIdx = (currentIdx + 1) % list.length;
+      showLightbox(currentIdx);
+    }
+
+    function prevPhoto() {
+      const list = visibleItems();
+      if (!list.length) return;
+      currentIdx = (currentIdx - 1 + list.length) % list.length;
+      showLightbox(currentIdx);
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    function getUploadCategory() {
+      if (uploadCategorySelect.value === "__new__") {
+        return uploadCategoryCustom.value.trim();
+      }
+      return uploadCategorySelect.value;
+    }
+
+    filterSelect.addEventListener("change", () => {
+      currentFilter = filterSelect.value;
       applyFilters();
     });
-    filterBox.insertBefore(btn, uploadBtn);
-  });
 
-  if(currentFilter!=='all' && !categories.includes(currentFilter)){
-    currentFilter='all';
-    allBtn.classList.add('active');
-  }
+    searchInput.addEventListener("input", applyFilters);
 
-  const datalist=document.getElementById('categoryList');
-  if(datalist){
-    datalist.innerHTML=categories.map(cat=>`<option value="${escapeHTML(categoryLabel(cat))}"></option>`).join('');
-  }
-}
+    clearSearch.addEventListener("click", () => {
+      searchInput.value = "";
+      applyFilters();
+      searchInput.focus();
+    });
 
+    uploadBtn.addEventListener("click", () => {
+      uploadModal.classList.add("show");
+      uploadStatus.textContent = "";
+      updateCategorySelect();
+    });
 
-async function loadSupabaseGallery(){
-  if(SUPABASE_URL.includes('YOUR_PROJECT_ID') || SUPABASE_ANON_KEY.includes('YOUR_ANON_PUBLIC_KEY')){
-    refreshItems();
-    items.forEach(prepareItem);
-    updateCategoryButtons();
-    applyFilters();
-    layout();
-    return;
-  }
+    closeUpload.addEventListener("click", () => uploadModal.classList.remove("show"));
 
-  const { data, error } = await supabaseClient
-    .from('gallery')
-    .select('*')
-    .order('created_at', { ascending:false });
+    uploadModal.addEventListener("click", event => {
+      if (event.target === uploadModal) uploadModal.classList.remove("show");
+    });
 
-  if(error){
-    console.error(error);
-    refreshItems();
-    items.forEach(prepareItem);
-    updateCategoryButtons();
-    applyFilters();
-    layout();
-    return;
-  }
+    uploadCategorySelect.addEventListener("change", () => {
+      const isNew = uploadCategorySelect.value === "__new__";
+      customCategoryWrap.classList.toggle("show", isNew);
+      if (isNew) uploadCategoryCustom.focus();
+    });
 
-  if(data && data.length){
-    data.reverse().forEach(photo=>createGalleryItem(photo));
-  }
+    useCategoryList.addEventListener("click", () => {
+      uploadCategoryCustom.value = "";
+      uploadCategorySelect.value = "江湖日常";
+      customCategoryWrap.classList.remove("show");
+    });
 
-  refreshItems();
-  updateCategoryButtons();
-  applyFilters();
-  layout();
-}
+    document.getElementById("uploadDate").value = new Date().toISOString().slice(0, 10);
 
-function getColumnCount(){if(window.innerWidth<=560)return 1;if(window.innerWidth<=800)return 2;return 3;}
-function layout(){
-  refreshItems();
-  const visible=items.filter(item=>!item.classList.contains('hide'));
-  const containerWidth=grid.offsetWidth;
-  const cols=getColumnCount();
-  const gutter=window.innerWidth<=560?16:20;
-  const colWidth=(containerWidth-(gutter*(cols-1)))/cols;
-  const heights=Array(cols).fill(0);
-  visible.forEach(item=>{
-    item.style.opacity='1';
-    item.style.width=`${colWidth}px`;
-    const col=heights.indexOf(Math.min(...heights));
-    const x=col*(colWidth+gutter);
-    const y=heights[col];
-    item.style.transform=`translate(${x}px, ${y}px)`;
-    heights[col]+=item.offsetHeight+gutter;
-  });
-  grid.style.height=visible.length?Math.max(...heights)+'px':'0px';
-}
+    submitUpload.addEventListener("click", async () => {
+      const file = document.getElementById("uploadFile").files[0];
+      const title = document.getElementById("uploadTitle").value.trim();
+      const photoDate = document.getElementById("uploadDate").value;
+      const category = getUploadCategory();
+      const description = document.getElementById("uploadDesc").value.trim();
 
-function applyFilters(){
-  refreshItems();
-  const q=searchInput.value.trim().toLowerCase();
-  let shown=0;
-  items.forEach(item=>{
-    const catOK=currentFilter==='all'||item.dataset.category===currentFilter;
-    const text=`${item.dataset.title||''} ${item.dataset.date||''} ${item.dataset.desc||''}`.toLowerCase();
-    const searchOK=!q||text.includes(q);
-    const show=catOK&&searchOK;
-    item.classList.toggle('hide',!show);
-    if(show)shown++;
-  });
-  activeFilterLabel.textContent=currentFilter==='all'?'全部回憶':categoryLabel(currentFilter);
-  resultText.textContent=q?`找到 ${shown} 個回憶`:`顯示 ${shown} 個回憶`;
-  emptyState.classList.toggle('show',shown===0);
-  let timer=setInterval(layout,45);
-  setTimeout(()=>clearInterval(timer),620);
-}
+      if (!file) {
+        uploadStatus.textContent = "請先選擇圖片。";
+        return;
+      }
 
-document.querySelectorAll('.filter button[data-filter]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.filter button[data-filter]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter=btn.dataset.filter;
-    applyFilters();
-  });
-});
-searchInput.addEventListener('input',applyFilters);
-clearSearch.addEventListener('click',()=>{searchInput.value='';applyFilters();searchInput.focus();});
+      if (!title) {
+        uploadStatus.textContent = "請填寫標題。";
+        return;
+      }
 
-const lightbox=document.getElementById('lightbox'),lightImg=document.getElementById('light-img'),lbTitle=document.getElementById('lb-title'),lbDate=document.getElementById('lb-date'),lbDesc=document.getElementById('lb-desc'),lbCategory=document.getElementById('lb-category'),lbCounter=document.getElementById('lb-counter');
-function visibleItems(){return items.filter(item=>!item.classList.contains('hide'));}
-function showLightbox(idx){
-  const list=visibleItems();
-  const target=list[idx];
-  if(!target)return;
-  const img=target.querySelector('img');
-  lightImg.src=img.src;
-  lightImg.alt=target.dataset.title||'';
-  lbTitle.textContent=target.dataset.title||'';
-  lbDate.textContent=target.dataset.date||'';
-  lbDesc.textContent=target.dataset.desc||'這一刻，留給江湖慢慢回味。';
-  lbCategory.textContent=categoryLabel(target.dataset.category);
-  lbCounter.textContent=`${idx+1} / ${list.length}`;
-}
-function nextPhoto(){const list=visibleItems();if(!list.length)return;currentIdx=(currentIdx+1)%list.length;showLightbox(currentIdx);}
-function prevPhoto(){const list=visibleItems();if(!list.length)return;currentIdx=(currentIdx-1+list.length)%list.length;showLightbox(currentIdx);}
-document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();nextPhoto();});
-document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();prevPhoto();});
-function closeLightbox(){lightbox.classList.remove('show');document.body.style.overflow='';}
-document.getElementById('closeLightbox').addEventListener('click',closeLightbox);
-lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox();});
-document.addEventListener('keydown',e=>{if(!lightbox.classList.contains('show'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')nextPhoto();if(e.key==='ArrowLeft')prevPhoto();});
+      if (!category) {
+        uploadStatus.textContent = "請選擇或新增分類標籤。";
+        return;
+      }
 
-/* Upload modal */
-const uploadModal=document.getElementById('uploadModal');
-const openUpload=document.getElementById('openUpload');
-const closeUpload=document.getElementById('closeUpload');
-const submitUpload=document.getElementById('submitUpload');
-const uploadStatus=document.getElementById('uploadStatus');
-openUpload.addEventListener('click',()=>{uploadModal.classList.add('show');uploadStatus.textContent='';});
-closeUpload.addEventListener('click',()=>uploadModal.classList.remove('show'));
-uploadModal.addEventListener('click',e=>{if(e.target===uploadModal)uploadModal.classList.remove('show');});
+      submitUpload.disabled = true;
+      uploadStatus.textContent = "上傳中...";
 
-document.getElementById('uploadDate').value=new Date().toISOString().slice(0,10);
+      const ext = file.name.split(".").pop();
+      const safeName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const filePath = `uploads/${safeName}`;
 
-submitUpload.addEventListener('click',async()=>{
-  const file=document.getElementById('uploadFile').files[0];
-  const title=document.getElementById('uploadTitle').value.trim();
-  const photoDate=document.getElementById('uploadDate').value;
-  const category=document.getElementById('uploadCategory').value.trim() || '江湖日常';
-  const description=document.getElementById('uploadDesc').value.trim();
+      const { error: uploadError } = await supabaseClient.storage
+        .from(BUCKET_NAME)
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
 
-  if(SUPABASE_URL.includes('YOUR_PROJECT_ID') || SUPABASE_ANON_KEY.includes('YOUR_ANON_PUBLIC_KEY')){
-    uploadStatus.textContent='請先填入 Supabase URL 和 anon key。';
-    return;
-  }
-  if(!file){uploadStatus.textContent='請先選擇圖片。';return;}
-  if(!title){uploadStatus.textContent='請填寫標題。';return;}
+      if (uploadError) {
+        console.error(uploadError);
+        uploadStatus.textContent = "圖片上傳失敗：" + uploadError.message;
+        submitUpload.disabled = false;
+        return;
+      }
 
-  submitUpload.disabled=true;
-  uploadStatus.textContent='上傳中...';
+      const { data: publicData } = supabaseClient.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(filePath);
 
-  const ext=file.name.split('.').pop();
-  const safeName=`${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const filePath=`uploads/${safeName}`;
+      const imageUrl = publicData.publicUrl;
 
-  const { error: uploadError } = await supabaseClient.storage
-    .from(BUCKET_NAME)
-    .upload(filePath, file, { cacheControl:'3600', upsert:false });
+      const { data: inserted, error: dbError } = await supabaseClient
+        .from("gallery")
+        .insert({
+          title,
+          category,
+          description,
+          image_url: imageUrl,
+          image_path: filePath,
+          photo_date: photoDate
+        })
+        .select()
+        .single();
 
-  if(uploadError){
-    console.error(uploadError);
-    uploadStatus.textContent='圖片上傳失敗：' + uploadError.message;
-    submitUpload.disabled=false;
-    return;
-  }
+      if (dbError) {
+        console.error(dbError);
+        uploadStatus.textContent = "資料儲存失敗：" + dbError.message;
+        submitUpload.disabled = false;
+        return;
+      }
 
-  const { data: publicData } = supabaseClient.storage
-    .from(BUCKET_NAME)
-    .getPublicUrl(filePath);
+      createGalleryItem(inserted);
+      refreshItems();
+      applyFilters();
 
-  const imageUrl=publicData.publicUrl;
+      uploadStatus.textContent = "上傳成功！";
+      document.getElementById("uploadFile").value = "";
+      document.getElementById("uploadTitle").value = "";
+      document.getElementById("uploadDesc").value = "";
+      uploadCategoryCustom.value = "";
+      uploadCategorySelect.value = category;
+      customCategoryWrap.classList.remove("show");
+      submitUpload.disabled = false;
 
-  const { data: inserted, error: dbError } = await supabaseClient
-    .from('gallery')
-    .insert({
-      title:title,
-      category:category,
-      description:description,
-      image_url:imageUrl,
-      image_path:filePath,
-      photo_date:photoDate
-    })
-    .select()
-    .single();
+      setTimeout(() => uploadModal.classList.remove("show"), 700);
+    });
 
-  if(dbError){
-    console.error(dbError);
-    uploadStatus.textContent='資料儲存失敗：' + dbError.message;
-    submitUpload.disabled=false;
-    return;
-  }
+    document.getElementById("next").addEventListener("click", event => {
+      event.stopPropagation();
+      nextPhoto();
+    });
 
-  createGalleryItem(inserted);
-  refreshItems();
-  updateCategoryButtons();
-  applyFilters();
-  uploadStatus.textContent='上傳成功！';
-  document.getElementById('uploadFile').value='';
-  document.getElementById('uploadTitle').value='';
-  document.getElementById('uploadDesc').value='';
-  submitUpload.disabled=false;
-  setTimeout(()=>uploadModal.classList.remove('show'),700);
-});
+    document.getElementById("prev").addEventListener("click", event => {
+      event.stopPropagation();
+      prevPhoto();
+    });
 
-window.addEventListener('load',loadSupabaseGallery);
-window.addEventListener('resize',()=>{clearTimeout(window.__layoutTimer);window.__layoutTimer=setTimeout(layout,120);});
-</script>
+    document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!lightbox.classList.contains("show")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowRight") nextPhoto();
+      if (event.key === "ArrowLeft") prevPhoto();
+    });
+
+    window.addEventListener("load", loadSupabaseGallery);
+
+    window.addEventListener("resize", () => {
+      clearTimeout(window.__layoutTimer);
+      window.__layoutTimer = setTimeout(layout, 120);
+    });
+  </script>
 </body>
 </html>
