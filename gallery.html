@@ -4,701 +4,33 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>夢回花深處｜江湖回憶錄</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
 <style>
-:root{
-  --bg:#060914;
-  --bg2:#101a33;
-  --panel:rgba(255,255,255,.085);
-  --panel2:rgba(255,255,255,.13);
-  --line:rgba(255,255,255,.14);
-  --text:#eef2ff;
-  --muted:#a8b3cf;
-  --accent:#6ea8ff;
-  --accent2:#8b5cf6;
-  --gold:#ffd76a;
-  --shadow:rgba(0,0,0,.45);
-}
-
-*{ box-sizing:border-box; }
-
-html{ scroll-behavior:smooth; }
-
-body{
-  margin:0;
-  font-family:"Noto Sans TC", sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 15% 10%, rgba(110,168,255,.22), transparent 28%),
-    radial-gradient(circle at 85% 8%, rgba(139,92,246,.22), transparent 26%),
-    radial-gradient(circle at 50% 70%, rgba(255,215,106,.08), transparent 32%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  padding-top:100px;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background-image:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size:48px 48px;
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 75%);
-  z-index:-1;
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:linear-gradient(to bottom, transparent, rgba(6,9,20,.45));
-  z-index:-1;
-}
-
-/* ===== Navbar ===== */
-.topbar{
-  position:fixed;
-  top:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:calc(100% - 40px);
-  max-width:1100px;
-  height:64px;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  padding:0 12px;
-  border-radius:999px;
-  background:rgba(15,22,42,.6);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-  transition:.3s;
-}
-
-.topbar.scrolled{
-  top:10px;
-  background:rgba(10,15,30,.85);
-}
-
-.topbar-content{
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.brand-group{
-  display:flex;
-  gap:8px;
-}
-
-.brand-badge{
-  padding:6px 14px;
-  border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  font-size:12px;
-  font-weight:700;
-  color:var(--text);
-  white-space:nowrap;
-}
-
-.brand-badge.sub{
-  color:var(--muted);
-}
-
-.nav{
-  display:flex;
-  gap:8px;
-}
-
-.nav a{
-  text-decoration:none;
-  color:var(--muted);
-  padding:8px 18px;
-  border-radius:999px;
-  font-size:13px;
-  font-weight:600;
-  transition:.25s ease;
-  white-space:nowrap;
-}
-
-.nav a:hover{
-  color:var(--text);
-  background:rgba(255,255,255,.08);
-}
-
-.nav a.home-btn{
-  color:#fff;
-  background:linear-gradient(135deg, var(--accent), var(--accent2));
-  box-shadow:0 4px 15px rgba(110,168,255,.4);
-  font-weight:700;
-}
-
-.nav a.active:not(.home-btn){
-  color:#fff;
-  background:rgba(255,255,255,.12);
-}
-
-/* ===== container ===== */
-.container{
-  max-width:1220px;
-  margin:auto;
-  padding:38px 20px 80px;
-}
-
-/* ===== PVPRegistration style header ===== */
-.page-header{
-  position:relative;
-  margin-bottom:34px;
-  padding:30px;
-  border-radius:28px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  gap:22px;
-  background:
-    radial-gradient(circle at 12% 20%, rgba(110,168,255,.22), transparent 32%),
-    radial-gradient(circle at 88% 18%, rgba(139,92,246,.20), transparent 34%),
-    linear-gradient(135deg, rgba(255,255,255,.105), rgba(255,255,255,.035));
-  border:1px solid rgba(255,255,255,.13);
-  box-shadow:0 22px 60px rgba(0,0,0,.32);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-}
-
-.page-header::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(120deg, rgba(255,255,255,.13), transparent 32%),
-    linear-gradient(to bottom, rgba(255,255,255,.04), transparent 62%);
-  pointer-events:none;
-}
-
-.page-header::after{
-  content:"";
-  position:absolute;
-  right:-70px;
-  bottom:-70px;
-  width:210px;
-  height:210px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(110,168,255,.18), transparent 68%);
-  pointer-events:none;
-}
-
-.header-left{
-  position:relative;
-  z-index:1;
-}
-
-.kicker{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 14px;
-  margin-bottom:12px;
-  border-radius:999px;
-  color:#fff;
-  background:linear-gradient(135deg, rgba(110,168,255,.24), rgba(139,92,246,.22));
-  border:1px solid rgba(255,255,255,.14);
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:1.5px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
-}
-
-.kicker::before{
-  content:"";
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 14px rgba(255,215,106,.75);
-}
-
-.page-title{
-  margin:0;
-  font-size:clamp(30px, 5vw, 52px);
-  line-height:1.08;
-  font-weight:900;
-  letter-spacing:1.5px;
-  color:#fff;
-  text-shadow:0 10px 26px rgba(0,0,0,.35);
-}
-
-.page-subtitle{
-  margin:12px 0 0;
-  color:var(--muted);
-  font-size:14px;
-  letter-spacing:1px;
-  text-transform:none;
-}
-
-/* ===== filter ===== */
-.filter{
-  position:sticky;
-  top:104px;
-  z-index:500;
-  margin:0 auto 44px;
-  padding:10px;
-  width:max-content;
-  max-width:100%;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  border-radius:999px;
-  background:rgba(7,11,25,.54);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 16px 42px rgba(0,0,0,.22);
-}
-
-.filter button{
-  padding:12px 26px;
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:999px;
-  cursor:pointer;
-  background:rgba(255,255,255,.045);
-  color:var(--muted);
-  font-size:14px;
-  font-weight:800;
-  transition:.32s cubic-bezier(.2,.8,.2,1);
-}
-
-.filter button:hover{
-  color:#fff;
-  transform:translateY(-2px);
-  background:rgba(255,255,255,.1);
-}
-
-.filter .active{
-  background:linear-gradient(135deg, var(--accent), var(--accent2));
-  color:#fff;
-  border-color:transparent;
-  box-shadow:0 10px 26px rgba(110,168,255,.32);
-}
-
-/* ===== masonry grid ===== */
-.grid{
-  position:relative;
-  width:100%;
-  margin-top:20px;
-  transition:height .6s ease;
-}
-
-.item{
-  position:absolute;
-  width:calc(33.333% - 14px);
-  border-radius:24px;
-  overflow:hidden;
-  cursor:pointer;
-  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.045));
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 20px 46px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08);
-  transition:transform .6s cubic-bezier(.4,0,.2,1), opacity .45s ease, filter .45s ease, box-shadow .35s ease;
-}
-
-.item::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:2;
-  pointer-events:none;
-  background:
-    linear-gradient(120deg, rgba(255,255,255,.18), transparent 30%),
-    linear-gradient(to top, rgba(5,8,18,.7), transparent 50%);
-  opacity:.25;
-  transition:.35s ease;
-}
-
-.item:hover{
-  box-shadow:0 28px 70px rgba(0,0,0,.42), 0 0 0 1px rgba(110,168,255,.18);
-}
-
-.item:hover::before{
-  opacity:.45;
-}
-
-.item.hide{
-  opacity:0;
-  transform:scale(.82) translateY(40px) !important;
-  pointer-events:none;
-  filter:blur(5px);
-}
-
-.gallery-img{
-  width:100%;
-  height:auto;
-  display:block;
-  transition:transform .9s cubic-bezier(.2,.8,.2,1), filter .5s ease;
-}
-
-.item:hover .gallery-img{
-  transform:scale(1.065);
-  filter:saturate(1.08) contrast(1.04);
-}
-
-.gallery-info{
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:3;
-  padding:44px 20px 22px;
-  background:linear-gradient(to top, rgba(6,9,20,.94) 0%, rgba(6,9,20,.55) 48%, transparent 100%);
-  opacity:0;
-  transform:translateY(16px);
-  transition:.35s ease;
-}
-
-.item:hover .gallery-info{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.gallery-info .date{
-  display:inline-flex;
-  font-size:11px;
-  color:var(--gold);
-  margin-bottom:7px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.gallery-info .title{
-  display:block;
-  font-size:17px;
-  font-weight:900;
-  color:#fff;
-  letter-spacing:.5px;
-}
-
-/* ===== lightbox ===== */
-.lightbox{
-  position:fixed;
-  inset:0;
-  background:rgba(4,7,16,.94);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  padding:24px;
-}
-
-.lightbox.show{
-  display:flex;
-  animation:fadeIn .25s ease;
-}
-
-.lightbox-inner{
-  max-width:1060px;
-  width:92%;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-
-.lightbox img{
-  max-width:100%;
-  max-height:74vh;
-  margin:auto;
-  object-fit:contain;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow:0 25px 80px rgba(0,0,0,.5);
-}
-
-.lb-meta{
-  background:linear-gradient(135deg, rgba(255,255,255,.11), rgba(255,255,255,.045));
-  padding:24px;
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 18px 50px rgba(0,0,0,.25);
-}
-
-.lb-date{
-  color:var(--gold);
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.lb-title{
-  font-size:24px;
-  font-weight:900;
-  margin:6px 0 8px;
-}
-
-.lb-desc{
-  color:var(--muted);
-  font-size:15px;
-  line-height:1.8;
-}
-
-.arrow{
-  position:absolute;
-  top:50%;
-  width:58px;
-  height:58px;
-  display:grid;
-  place-items:center;
-  font-size:54px;
-  line-height:1;
-  color:rgba(255,255,255,.52);
-  cursor:pointer;
-  transform:translateY(-50%);
-  border-radius:50%;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  transition:.25s ease;
-  user-select:none;
-}
-
-.arrow:hover{
-  color:#fff;
-  background:linear-gradient(135deg, rgba(110,168,255,.28), rgba(139,92,246,.24));
-  box-shadow:0 12px 34px rgba(0,0,0,.28);
-}
-
-.left{ left:24px; }
-.right{ right:24px; }
-
-.close-tip{
-  position:fixed;
-  bottom:24px;
-  left:50%;
-  transform:translateX(-50%);
-  color:rgba(255,255,255,.45);
-  font-size:12px;
-  letter-spacing:1px;
-}
-
-/* ===== animations ===== */
-@keyframes fadeIn{
-  from{ opacity:0; }
-  to{ opacity:1; }
-}
-
-@keyframes riseIn{
-  from{ opacity:0; transform:translateY(20px); }
-  to{ opacity:1; transform:translateY(0); }
-}
-
-.page-header,
-.filter,
-.grid{
-  animation:riseIn .7s ease both;
-}
-
-.filter{ animation-delay:.08s; }
-.grid{ animation-delay:.14s; }
-
-/* ===== responsive ===== */
-@media (max-width:800px){
-  .item{
-    width:calc(50% - 10px);
-  }
-
-  .page-subtitle{
-    letter-spacing:.5px;
-  }
-
-  .arrow{
-    width:48px;
-    height:48px;
-    font-size:44px;
-  }
-
-  .left{ left:10px; }
-  .right{ right:10px; }
-}
-
-@media (max-width:768px){
-  body{
-    padding-top:150px !important;
-  }
-
-  .topbar{
-    top:10px;
-    height:auto;
-    padding:10px 16px;
-    width:calc(100% - 20px);
-    border-radius:24px;
-    z-index:9999;
-  }
-
-  .topbar-content{
-    flex-direction:column;
-    gap:8px;
-  }
-
-  .brand-group{
-    justify-content:center;
-    transform:none !important;
-  }
-
-  .nav{
-    width:100%;
-    justify-content:flex-start;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    padding:5px 0;
-    gap:4px;
-  }
-
-  .nav::-webkit-scrollbar{
-    display:none;
-  }
-
-  .nav a{
-    padding:6px 12px !important;
-    font-size:11px !important;
-    font-weight:700 !important;
-    white-space:nowrap;
-  }
-
-  .nav a.home-btn{
-    box-shadow:0 2px 8px rgba(110,168,255,.3);
-    font-weight:700 !important;
-  }
-
-  .page-header{
-    flex-direction:column;
-    align-items:flex-start;
-    padding:26px 20px;
-    border-radius:24px;
-  }
-
-  .filter{
-    position:relative;
-    top:auto;
-    width:100%;
-    border-radius:22px;
-    flex-wrap:wrap;
-    margin-bottom:30px;
-  }
-
-  .filter button{
-    flex:1;
-    min-width:96px;
-    padding:11px 12px;
-    font-size:13px;
-  }
-}
-
-@media (max-width:560px){
-  .container{
-    padding-left:14px;
-    padding-right:14px;
-  }
-
-  .page-header{
-    margin-bottom:30px;
-  }
-
-  .kicker{
-    padding:8px 14px;
-    font-size:11px;
-    letter-spacing:1px;
-  }
-
-  .page-title{
-    font-size:34px;
-    letter-spacing:1px;
-  }
-
-  .page-subtitle{
-    font-size:12px;
-    line-height:1.7;
-  }
-
-  .item{
-    width:100%;
-    border-radius:20px;
-  }
-
-  .gallery-info{
-    opacity:1;
-    transform:none;
-  }
-
-  .lightbox{
-    padding:14px;
-  }
-
-  .lightbox-inner{
-    width:100%;
-  }
-
-  .lightbox img{
-    max-height:65vh;
-  }
-
-  .lb-meta{
-    padding:18px;
-  }
-
-  .arrow{
-    top:50%;
-    bottom:auto;
-    transform:translateY(-50%);
-  }
-
-  .left{ left:10px; }
-  .right{ right:10px; }
-}
+:root{--bg:#070b18;--bg2:#111a32;--text:#eef2ff;--muted:#a8b3cf;--accent:#6ea8ff;--accent2:#8b5cf6;--gold:#ffd76a;--shadow:0 22px 60px rgba(0,0,0,.35)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans TC",system-ui,sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;padding-top:100px;background:radial-gradient(circle at 12% 8%,rgba(110,168,255,.22),transparent 28%),radial-gradient(circle at 88% 6%,rgba(139,92,246,.23),transparent 28%),radial-gradient(circle at 45% 76%,rgba(255,215,106,.07),transparent 33%),linear-gradient(180deg,var(--bg),var(--bg2))}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:50px 50px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 78%)}body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(to bottom,transparent,rgba(7,11,24,.5))}
+.topbar{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:1100px;height:64px;z-index:1000;display:flex;align-items:center;padding:0 12px;border-radius:999px;background:rgba(15,22,42,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.3);transition:.28s ease}.topbar.scrolled{top:10px;background:rgba(10,15,30,.88)}.topbar-content{width:100%;display:flex;justify-content:space-between;align-items:center}.brand-group,.nav{display:flex;gap:8px;align-items:center}.brand-badge{padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:12px;font-weight:800;color:var(--text);white-space:nowrap}.brand-badge.sub{color:var(--muted)}.nav a{text-decoration:none;color:var(--muted);padding:8px 18px;border-radius:999px;font-size:13px;font-weight:700;transition:.22s ease;white-space:nowrap}.nav a:hover{color:#fff;background:rgba(255,255,255,.08)}.nav a.home-btn{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 15px rgba(110,168,255,.38)}.nav a.active:not(.home-btn){color:#fff;background:rgba(255,255,255,.13)}
+.container{max-width:1280px;margin:auto;padding:34px 20px 80px}.page-header{position:relative;margin-bottom:18px;padding:26px;border-radius:30px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end;background:radial-gradient(circle at 10% 20%,rgba(110,168,255,.24),transparent 34%),radial-gradient(circle at 92% 18%,rgba(139,92,246,.22),transparent 35%),linear-gradient(135deg,rgba(255,255,255,.11),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.13);box-shadow:var(--shadow);backdrop-filter:blur(18px)}.page-header::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.14),transparent 34%);pointer-events:none;opacity:.8}.header-left,.header-stats{position:relative;z-index:1}.kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;margin-bottom:12px;border-radius:999px;color:#fff;background:linear-gradient(135deg,rgba(110,168,255,.24),rgba(139,92,246,.22));border:1px solid rgba(255,255,255,.14);font-size:12px;font-weight:900;letter-spacing:1.2px}.kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px rgba(255,215,106,.75)}.page-title{margin:0;font-size:clamp(30px,4.6vw,50px);line-height:1.08;font-weight:900;letter-spacing:1.5px;color:#fff;text-shadow:0 10px 26px rgba(0,0,0,.35)}.page-subtitle{margin:10px 0 0;color:var(--muted);font-size:14px;letter-spacing:.8px}.header-stats{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.stat-card{min-width:96px;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}.stat-label{font-size:11px;color:var(--muted);font-weight:800}.stat-value{margin-top:4px;font-size:22px;font-weight:900;color:#fff;line-height:1}
+.gallery-toolbar{position:sticky;top:92px;z-index:450;margin:0 0 28px;padding:10px;border-radius:24px;background:rgba(12,18,36,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.11);box-shadow:0 16px 42px rgba(0,0,0,.22);display:grid;grid-template-columns:minmax(280px,1fr) auto;gap:10px;align-items:center}.search-wrap{height:50px;display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:18px;background:linear-gradient(135deg,rgba(110,168,255,.12),rgba(139,92,246,.08));border:1px solid rgba(255,255,255,.1)}.search-icon{width:30px;height:30px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.08);font-size:14px;flex:0 0 auto}#searchInput{width:100%;height:100%;border:none;outline:none;background:transparent;color:#fff;font-size:14px;font-weight:800}#searchInput::placeholder{color:#93a0bf;font-weight:800}.clear-search{border:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#dbe7ff;border-radius:999px;padding:8px 12px;font-weight:900;cursor:pointer}.filter{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.filter button{padding:12px 18px;border:1px solid rgba(255,255,255,.11);border-radius:999px;cursor:pointer;background:rgba(255,255,255,.055);color:var(--muted);font-size:13px;font-weight:900;transition:.22s ease;white-space:nowrap}.filter button:hover{color:#fff;transform:translateY(-1px);background:rgba(255,255,255,.1)}.filter .active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:rgba(255,255,255,.18);box-shadow:0 10px 22px rgba(110,168,255,.26)}.gallery-result{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 16px;color:var(--muted);font-size:13px;font-weight:800}.result-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#dbe7ff}.result-dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 12px rgba(110,168,255,.5)}
+.grid{position:relative;width:100%;margin-top:8px;transition:height .55s ease}.item{position:absolute;width:calc(33.333% - 14px);border-radius:24px;overflow:hidden;cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 46px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .35s ease,filter .35s ease,box-shadow .3s ease}.item::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.18),transparent 30%),linear-gradient(to top,rgba(5,8,18,.78),transparent 56%);opacity:.34;transition:.3s ease}.item::after{content:"查看";position:absolute;top:14px;right:14px;z-index:4;padding:7px 10px;border-radius:999px;color:#fff;font-size:12px;font-weight:900;background:rgba(15,23,42,.64);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);opacity:0;transform:translateY(-5px);transition:.25s ease}.item:hover{box-shadow:0 28px 70px rgba(0,0,0,.42),0 0 0 1px rgba(110,168,255,.22)}.item:hover::before{opacity:.52}.item:hover::after{opacity:1;transform:translateY(0)}.item.hide{opacity:0;transform:scale(.86) translateY(40px)!important;pointer-events:none;filter:blur(5px)}.gallery-img{width:100%;height:auto;display:block;transition:transform .85s cubic-bezier(.2,.8,.2,1),filter .45s ease}.item:hover .gallery-img{transform:scale(1.06);filter:saturate(1.1) contrast(1.04)}.gallery-info{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:52px 18px 18px;background:linear-gradient(to top,rgba(6,9,20,.96) 0%,rgba(6,9,20,.64) 48%,transparent 100%);opacity:1;transform:none;transition:.3s ease}.gallery-info .date{display:inline-flex;font-size:11px;color:var(--gold);margin-bottom:7px;font-weight:900;letter-spacing:.9px}.gallery-info .title{display:block;font-size:17px;font-weight:900;color:#fff;letter-spacing:.4px;line-height:1.35}.gallery-desc-preview{margin-top:6px;color:#c6d1ea;font-size:12px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.category-pill{position:absolute;left:14px;top:14px;z-index:4;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;color:#dbeafe;background:rgba(96,165,250,.16);border:1px solid rgba(96,165,250,.28);backdrop-filter:blur(12px)}.category-pill.daily{color:#fef3c7;background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.28)}.empty-state{display:none;margin:28px 0;padding:34px;border-radius:24px;text-align:center;color:var(--muted);background:rgba(255,255,255,.055);border:1px dashed rgba(255,255,255,.16);font-weight:800}.empty-state.show{display:block}
+.lightbox{position:fixed;inset:0;background:rgba(4,7,16,.94);display:none;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:24px}.lightbox.show{display:flex;animation:fadeIn .25s ease}.lightbox-inner{max-width:1180px;width:94%;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:stretch}.lightbox-image-panel{min-height:0;display:flex;align-items:center;justify-content:center;border-radius:24px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.46)}.lightbox img{max-width:100%;max-height:80vh;object-fit:contain;display:block}.lb-meta{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));padding:22px;border-radius:24px;border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 50px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:space-between;gap:18px}.lb-top{display:grid;gap:8px}.lb-category{width:max-content;padding:7px 11px;border-radius:999px;background:rgba(110,168,255,.15);border:1px solid rgba(110,168,255,.28);color:#dbeafe;font-size:12px;font-weight:900}.lb-date{color:var(--gold);font-size:12px;font-weight:900;letter-spacing:1px}.lb-title{font-size:25px;font-weight:900;margin:0;line-height:1.35}.lb-desc{color:var(--muted);font-size:14px;line-height:1.8}.lb-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#c8d3ee;font-size:12px;font-weight:900}.lb-counter{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}.close-btn{position:fixed;top:22px;right:22px;z-index:10001;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center}.arrow{position:fixed;top:50%;width:52px;height:52px;display:grid;place-items:center;font-size:46px;line-height:1;color:rgba(255,255,255,.62);cursor:pointer;transform:translateY(-50%);border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);transition:.22s ease;user-select:none;z-index:10000}.arrow:hover{color:#fff;background:linear-gradient(135deg,rgba(110,168,255,.28),rgba(139,92,246,.24));box-shadow:0 12px 34px rgba(0,0,0,.28)}.left{left:22px}.right{right:22px}
+
+.upload-btn{padding:12px 18px;border:1px solid rgba(255,255,255,.14);border-radius:999px;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;font-weight:900;white-space:nowrap;box-shadow:0 10px 22px rgba(110,168,255,.22)}
+.upload-modal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;background:rgba(4,7,16,.76);backdrop-filter:blur(16px);padding:18px}.upload-modal.show{display:flex}.upload-card{width:min(520px,100%);border-radius:26px;padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.14);box-shadow:0 25px 80px rgba(0,0,0,.45)}.upload-card h2{margin:0 0 14px;font-size:24px}.upload-grid{display:grid;gap:12px}.upload-grid label{font-size:12px;font-weight:900;color:var(--muted)}.upload-grid input,.upload-grid select,.upload-grid textarea{width:100%;margin-top:6px;border-radius:16px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.08);color:#fff;padding:12px 13px;outline:none;font-family:inherit;font-weight:800}.upload-grid select option{color:#111}.upload-grid textarea{min-height:90px;resize:vertical}.upload-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}.upload-actions button{border:none;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer}.upload-cancel{background:rgba(255,255,255,.1);color:#dbe7ff;border:1px solid rgba(255,255,255,.14)!important}.upload-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.upload-status{margin-top:12px;color:var(--gold);font-size:13px;font-weight:900}
+@media(max-width:768px){.upload-btn{padding:10px 8px;font-size:12px;text-align:center}.filter{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes riseIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}.page-header,.gallery-toolbar,.gallery-result,.grid{animation:riseIn .65s ease both}.gallery-toolbar{animation-delay:.05s}.grid{animation-delay:.12s}
+@media(max-width:980px){.page-header{grid-template-columns:1fr}.header-stats{justify-content:flex-start}.gallery-toolbar{grid-template-columns:1fr}.filter{justify-content:flex-start}.lightbox-inner{grid-template-columns:1fr;width:100%;max-width:920px}.lb-meta{padding:18px}}
+@media(max-width:800px){.item{width:calc(50% - 10px)}.arrow{width:46px;height:46px;font-size:42px}.left{left:10px}.right{right:10px}}
+@media(max-width:768px){body{padding-top:150px!important}.topbar{top:10px;height:auto;padding:10px 16px;width:calc(100% - 20px);border-radius:24px;z-index:9999}.topbar-content{flex-direction:column;gap:8px}.brand-group{justify-content:center}.nav{width:100%;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:5px 0;gap:4px}.nav::-webkit-scrollbar{display:none}.nav a{padding:6px 12px!important;font-size:11px!important;font-weight:700!important}.container{padding:24px 14px 70px}.page-header{padding:22px 18px;border-radius:24px}.gallery-toolbar{position:relative;top:auto;border-radius:22px;margin-bottom:18px}.filter{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.filter button{padding:10px 8px;font-size:12px}.stat-card{min-width:86px;padding:10px 12px}}
+@media(max-width:560px){.page-title{font-size:34px}.page-subtitle{font-size:12px;line-height:1.7}.item{width:100%;border-radius:20px}.gallery-info{padding:50px 16px 16px}.lightbox{padding:12px}.lightbox img{max-height:62vh}.arrow{top:auto;bottom:18px;transform:none}.left{left:18px}.right{right:18px}.close-btn{top:14px;right:14px}}
 </style>
 </head>
-
 <body>
-
-<nav class="topbar" id="floatingNav">
-  <div class="topbar-content">
-    <div class="brand-group">
-      <span class="brand-badge">夢回花深處</span>
-      <span class="brand-badge sub">江湖回憶錄</span>
-    </div>
-
-    <div class="nav">
-      <a href="index" class="home-btn">首頁</a>
-      <a href="PVERegistration">副本報名</a>
-      <a href="gallery" class="active">江湖回憶錄</a>
-    </div>
-  </div>
-</nav>
-
-<div class="container">
-  <div class="page-header">
-    <div class="header-left">
-      <div class="kicker">夢回花深處</div>
-      <h1 class="page-title">江湖回憶錄</h1>
-      <p class="page-subtitle">幫會相簿・回憶紀錄・江湖日常</p>
-    </div>
-  </div>
-
-  <div class="filter">
-    <button class="active" data-filter="all">全部回憶</button>
-    <button data-filter="group">同門合照</button>
-    <button data-filter="daily">江湖日常</button>
-  </div>
-
-  <div class="grid" id="grid">
+<nav class="topbar" id="floatingNav"><div class="topbar-content"><div class="brand-group"><span class="brand-badge">夢回花深處</span><span class="brand-badge sub">江湖回憶錄</span></div><div class="nav"><a href="index" class="home-btn">首頁</a><a href="PVERegistration">俠境報名</a><a href="gallery" class="active">江湖回憶錄</a></div></div></nav>
+<div class="container"><section class="page-header"><div class="header-left"><div class="kicker">夢回花深處</div><h1 class="page-title">江湖回憶錄</h1><p class="page-subtitle">幫會相簿・回憶紀錄・江湖日常</p></div><div class="header-stats"><div class="stat-card"><div class="stat-label">總回憶</div><div class="stat-value" id="totalCount">0</div></div><div class="stat-card"><div class="stat-label">同門合照</div><div class="stat-value" id="groupCount">0</div></div><div class="stat-card"><div class="stat-label">江湖日常</div><div class="stat-value" id="dailyCount">0</div></div></div></section>
+<section class="gallery-toolbar"><div class="search-wrap"><span class="search-icon">🔍</span><input id="searchInput" type="text" placeholder="搜尋標題、日期或描述..."><button class="clear-search" id="clearSearch" type="button">清除</button></div><div class="filter"><button class="active" data-filter="all">全部回憶</button><button data-filter="group">同門合照</button><button data-filter="daily">江湖日常</button><button class="upload-btn" id="openUpload" type="button">📷 上傳</button></div></section>
+<div class="gallery-result"><div class="result-left"><span class="result-pill"><span class="result-dot"></span><span id="resultText">顯示全部回憶</span></span></div><span id="activeFilterLabel">全部回憶</span></div>
+<div class="grid" id="grid">
     <div class="item" data-category="group" data-title="跨年合照" data-date="2026.01.01" data-desc="迎接新的江湖篇章。">
       <img src="https://raw.githubusercontent.com/ItzSeir/WhereWindMeet/main/%E7%9B%B8%E7%89%87/%E8%B7%A8%E5%B9%B42025-2026.png" class="gallery-img" alt="跨年合照">
       <div class="gallery-info">
@@ -763,180 +95,288 @@ body::after{
       </div>
     </div>
   </div>
-</div>
+<div class="empty-state" id="emptyState">目前沒有符合條件的回憶。</div></div>
 
-<div class="lightbox" id="lightbox">
-  <div class="arrow left" id="prev">‹</div>
-
-  <div class="lightbox-inner">
-    <img id="light-img" alt="">
-    <div class="lb-meta">
-      <div class="lb-date" id="lb-date"></div>
-      <div class="lb-title" id="lb-title"></div>
-      <div class="lb-desc" id="lb-desc"></div>
-    </div>
-  </div>
-
-  <div class="arrow right" id="next">›</div>
-  <div class="close-tip">點擊空白處或按 ESC 關閉</div>
-</div>
-
+<div class="upload-modal" id="uploadModal"><div class="upload-card"><h2>上傳江湖回憶</h2><div class="upload-grid"><label>圖片<input id="uploadFile" type="file" accept="image/*"></label><label>標題<input id="uploadTitle" type="text" placeholder="例如：幫會合照"></label><label>日期<input id="uploadDate" type="date"></label><label>分類<select id="uploadCategory"><option value="group">同門合照</option><option value="daily">江湖日常</option></select></label><label>描述<textarea id="uploadDesc" placeholder="寫一點回憶描述..."></textarea></label></div><div class="upload-actions"><button class="upload-cancel" id="closeUpload" type="button">取消</button><button class="upload-submit" id="submitUpload" type="button">上傳</button></div><div class="upload-status" id="uploadStatus"></div></div></div>
+<div class="lightbox" id="lightbox"><button class="close-btn" id="closeLightbox" type="button">×</button><div class="arrow left" id="prev">‹</div><div class="lightbox-inner"><div class="lightbox-image-panel"><img id="light-img" alt=""></div><aside class="lb-meta"><div class="lb-top"><div class="lb-category" id="lb-category"></div><div class="lb-date" id="lb-date"></div><h2 class="lb-title" id="lb-title"></h2><div class="lb-desc" id="lb-desc"></div></div><div class="lb-actions"><span class="lb-counter" id="lb-counter">1 / 1</span><span>ESC 關閉・左右鍵切換</span></div></aside></div><div class="arrow right" id="next">›</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const nav = document.getElementById('floatingNav');
+/* =========================
+   SUPABASE CONFIG
+   Replace these 2 values
+========================= */
+const SUPABASE_URL = "https://ugipvbqcbrroiuhqqzjd.supabase.co";
 
-window.addEventListener('scroll', () => {
-  if(window.scrollY > 50){
-    nav.classList.add('scrolled');
-  }else{
-    nav.classList.remove('scrolled');
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnaXB2YnFjYnJyb2l1aHFxempkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDE1MTUsImV4cCI6MjA5Nzg3NzUxNX0.1TPfk4OJfJDGkkowgbMG3ojS4unGt8dGfMucrzW0sr8";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const BUCKET_NAME = "gallery-images";
+
+const nav=document.getElementById('floatingNav');
+window.addEventListener('scroll',()=>{window.scrollY>50?nav.classList.add('scrolled'):nav.classList.remove('scrolled')},{passive:true});
+
+const grid=document.getElementById('grid');
+let items=Array.from(document.querySelectorAll('.item'));
+const searchInput=document.getElementById('searchInput');
+const clearSearch=document.getElementById('clearSearch');
+const resultText=document.getElementById('resultText');
+const activeFilterLabel=document.getElementById('activeFilterLabel');
+const emptyState=document.getElementById('emptyState');
+const labels={all:'全部回憶',group:'同門合照',daily:'江湖日常'};
+let currentFilter='all';
+let currentIdx=0;
+
+function formatDateForDisplay(dateValue){
+  if(!dateValue)return '';
+  return String(dateValue).replaceAll('-','.');
+}
+
+function createGalleryItem(photo){
+  const item=document.createElement('div');
+  item.className='item';
+  item.dataset.category=photo.category || 'daily';
+  item.dataset.title=photo.title || '未命名回憶';
+  item.dataset.date=formatDateForDisplay(photo.photo_date || photo.date || new Date().toISOString().slice(0,10));
+  item.dataset.desc=photo.description || '這一刻，留給江湖慢慢回味。';
+  item.innerHTML=`
+    <img src="${photo.image_url}" class="gallery-img" alt="${item.dataset.title}">
+    <div class="gallery-info">
+      <span class="date">${item.dataset.date}</span>
+      <span class="title">${item.dataset.title}</span>
+    </div>
+  `;
+  grid.appendChild(item);
+  prepareItem(item);
+  return item;
+}
+
+function prepareItem(item){
+  const oldPill=item.querySelector('.category-pill');
+  if(oldPill)oldPill.remove();
+  const cat=item.dataset.category;
+  const pill=document.createElement('span');
+  pill.className='category-pill '+cat;
+  pill.textContent=labels[cat]||cat;
+  item.appendChild(pill);
+
+  const info=item.querySelector('.gallery-info');
+  if(info&&!info.querySelector('.gallery-desc-preview')){
+    const desc=document.createElement('div');
+    desc.className='gallery-desc-preview';
+    desc.textContent=item.dataset.desc||'這一刻，留給江湖慢慢回味。';
+    info.appendChild(desc);
   }
-}, { passive:true });
 
-const grid = document.getElementById('grid');
-const items = Array.from(document.querySelectorAll('.item'));
-
-function getColumnCount(){
-  if(window.innerWidth <= 560) return 1;
-  if(window.innerWidth <= 800) return 2;
-  return 3;
-}
-
-function layout(){
-  const containerWidth = grid.offsetWidth;
-  const cols = getColumnCount();
-  const gutter = window.innerWidth <= 560 ? 16 : 20;
-  const colWidth = (containerWidth - (gutter * (cols - 1))) / cols;
-  const heights = Array(cols).fill(0);
-
-  items.forEach(item => {
-    if(item.classList.contains('hide')){
-      item.style.opacity = '0';
-      return;
-    }
-
-    item.style.opacity = '1';
-    item.style.width = `${colWidth}px`;
-
-    const col = heights.indexOf(Math.min(...heights));
-    const x = col * (colWidth + gutter);
-    const y = heights[col];
-
-    item.style.transform = `translate(${x}px, ${y}px)`;
-    heights[col] += item.offsetHeight + gutter;
-  });
-
-  grid.style.height = Math.max(...heights) + 'px';
-}
-
-document.querySelectorAll('.filter button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const filterValue = btn.dataset.filter;
-
-    items.forEach(item => {
-      const shouldShow = filterValue === 'all' || item.dataset.category === filterValue;
-      item.classList.toggle('hide', !shouldShow);
-    });
-
-    let timer = setInterval(layout, 45);
-    setTimeout(() => clearInterval(timer), 650);
-  });
-});
-
-const lightbox = document.getElementById('lightbox');
-const lightImg = document.getElementById('light-img');
-const lbTitle = document.getElementById('lb-title');
-const lbDate = document.getElementById('lb-date');
-const lbDesc = document.getElementById('lb-desc');
-let currentIdx = 0;
-
-function visibleItems(){
-  return items.filter(item => !item.classList.contains('hide'));
-}
-
-function showLightbox(idx){
-  const list = visibleItems();
-  const target = list[idx];
-  if(!target) return;
-
-  const img = target.querySelector('img');
-  lightImg.src = img.src;
-  lightImg.alt = target.dataset.title || '';
-  lbTitle.textContent = target.dataset.title || '';
-  lbDate.textContent = target.dataset.date || '';
-  lbDesc.textContent = target.dataset.desc || '這一刻，留給江湖慢慢回味。';
-}
-
-items.forEach(item => {
-  item.addEventListener('click', () => {
-    const list = visibleItems();
-    currentIdx = list.indexOf(item);
+  item.addEventListener('click',()=>{
+    const list=visibleItems();
+    currentIdx=list.indexOf(item);
     showLightbox(currentIdx);
     lightbox.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow='hidden';
   });
-});
 
-document.getElementById('next').addEventListener('click', e => {
-  e.stopPropagation();
-  const list = visibleItems();
-  currentIdx = (currentIdx + 1) % list.length;
-  showLightbox(currentIdx);
-});
-
-document.getElementById('prev').addEventListener('click', e => {
-  e.stopPropagation();
-  const list = visibleItems();
-  currentIdx = (currentIdx - 1 + list.length) % list.length;
-  showLightbox(currentIdx);
-});
-
-function closeLightbox(){
-  lightbox.classList.remove('show');
-  document.body.style.overflow = '';
+  const img=item.querySelector('img');
+  if(img){
+    if(img.complete)layout();
+    else img.addEventListener('load',layout);
+  }
 }
 
-lightbox.addEventListener('click', e => {
-  if(e.target === lightbox) closeLightbox();
-});
+function refreshItems(){
+  items=Array.from(document.querySelectorAll('.item'));
+  document.getElementById('totalCount').textContent=items.length;
+  document.getElementById('groupCount').textContent=items.filter(i=>i.dataset.category==='group').length;
+  document.getElementById('dailyCount').textContent=items.filter(i=>i.dataset.category==='daily').length;
+}
 
-document.addEventListener('keydown', e => {
-  if(!lightbox.classList.contains('show')) return;
-
-  if(e.key === 'Escape') closeLightbox();
-
-  if(e.key === 'ArrowRight'){
-    const list = visibleItems();
-    currentIdx = (currentIdx + 1) % list.length;
-    showLightbox(currentIdx);
-  }
-
-  if(e.key === 'ArrowLeft'){
-    const list = visibleItems();
-    currentIdx = (currentIdx - 1 + list.length) % list.length;
-    showLightbox(currentIdx);
-  }
-});
-
-window.addEventListener('load', layout);
-
-window.addEventListener('resize', () => {
-  clearTimeout(window.__layoutTimer);
-  window.__layoutTimer = setTimeout(layout, 120);
-});
-
-items.forEach(item => {
-  const img = item.querySelector('img');
-
-  if(img.complete){
+async function loadSupabaseGallery(){
+  if(SUPABASE_URL.includes('YOUR_PROJECT_ID') || SUPABASE_ANON_KEY.includes('YOUR_ANON_PUBLIC_KEY')){
+    refreshItems();
+    items.forEach(prepareItem);
+    applyFilters();
     layout();
-  }else{
-    img.addEventListener('load', layout);
+    return;
   }
-});
-</script>
 
-</body>
-</html>
+  const { data, error } = await supabaseClient
+    .from('gallery')
+    .select('*')
+    .order('created_at', { ascending:false });
+
+  if(error){
+    console.error(error);
+    refreshItems();
+    items.forEach(prepareItem);
+    applyFilters();
+    layout();
+    return;
+  }
+
+  if(data && data.length){
+    data.reverse().forEach(photo=>createGalleryItem(photo));
+  }
+
+  refreshItems();
+  applyFilters();
+  layout();
+}
+
+function getColumnCount(){if(window.innerWidth<=560)return 1;if(window.innerWidth<=800)return 2;return 3;}
+function layout(){
+  refreshItems();
+  const visible=items.filter(item=>!item.classList.contains('hide'));
+  const containerWidth=grid.offsetWidth;
+  const cols=getColumnCount();
+  const gutter=window.innerWidth<=560?16:20;
+  const colWidth=(containerWidth-(gutter*(cols-1)))/cols;
+  const heights=Array(cols).fill(0);
+  visible.forEach(item=>{
+    item.style.opacity='1';
+    item.style.width=`${colWidth}px`;
+    const col=heights.indexOf(Math.min(...heights));
+    const x=col*(colWidth+gutter);
+    const y=heights[col];
+    item.style.transform=`translate(${x}px, ${y}px)`;
+    heights[col]+=item.offsetHeight+gutter;
+  });
+  grid.style.height=visible.length?Math.max(...heights)+'px':'0px';
+}
+
+function applyFilters(){
+  refreshItems();
+  const q=searchInput.value.trim().toLowerCase();
+  let shown=0;
+  items.forEach(item=>{
+    const catOK=currentFilter==='all'||item.dataset.category===currentFilter;
+    const text=`${item.dataset.title||''} ${item.dataset.date||''} ${item.dataset.desc||''}`.toLowerCase();
+    const searchOK=!q||text.includes(q);
+    const show=catOK&&searchOK;
+    item.classList.toggle('hide',!show);
+    if(show)shown++;
+  });
+  activeFilterLabel.textContent=labels[currentFilter]||'全部回憶';
+  resultText.textContent=q?`找到 ${shown} 個回憶`:`顯示 ${shown} 個回憶`;
+  emptyState.classList.toggle('show',shown===0);
+  let timer=setInterval(layout,45);
+  setTimeout(()=>clearInterval(timer),620);
+}
+
+document.querySelectorAll('.filter button[data-filter]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter button[data-filter]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter=btn.dataset.filter;
+    applyFilters();
+  });
+});
+searchInput.addEventListener('input',applyFilters);
+clearSearch.addEventListener('click',()=>{searchInput.value='';applyFilters();searchInput.focus();});
+
+const lightbox=document.getElementById('lightbox'),lightImg=document.getElementById('light-img'),lbTitle=document.getElementById('lb-title'),lbDate=document.getElementById('lb-date'),lbDesc=document.getElementById('lb-desc'),lbCategory=document.getElementById('lb-category'),lbCounter=document.getElementById('lb-counter');
+function visibleItems(){return items.filter(item=>!item.classList.contains('hide'));}
+function showLightbox(idx){
+  const list=visibleItems();
+  const target=list[idx];
+  if(!target)return;
+  const img=target.querySelector('img');
+  lightImg.src=img.src;
+  lightImg.alt=target.dataset.title||'';
+  lbTitle.textContent=target.dataset.title||'';
+  lbDate.textContent=target.dataset.date||'';
+  lbDesc.textContent=target.dataset.desc||'這一刻，留給江湖慢慢回味。';
+  lbCategory.textContent=labels[target.dataset.category]||'';
+  lbCounter.textContent=`${idx+1} / ${list.length}`;
+}
+function nextPhoto(){const list=visibleItems();if(!list.length)return;currentIdx=(currentIdx+1)%list.length;showLightbox(currentIdx);}
+function prevPhoto(){const list=visibleItems();if(!list.length)return;currentIdx=(currentIdx-1+list.length)%list.length;showLightbox(currentIdx);}
+document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();nextPhoto();});
+document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();prevPhoto();});
+function closeLightbox(){lightbox.classList.remove('show');document.body.style.overflow='';}
+document.getElementById('closeLightbox').addEventListener('click',closeLightbox);
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox();});
+document.addEventListener('keydown',e=>{if(!lightbox.classList.contains('show'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')nextPhoto();if(e.key==='ArrowLeft')prevPhoto();});
+
+/* Upload modal */
+const uploadModal=document.getElementById('uploadModal');
+const openUpload=document.getElementById('openUpload');
+const closeUpload=document.getElementById('closeUpload');
+const submitUpload=document.getElementById('submitUpload');
+const uploadStatus=document.getElementById('uploadStatus');
+openUpload.addEventListener('click',()=>{uploadModal.classList.add('show');uploadStatus.textContent='';});
+closeUpload.addEventListener('click',()=>uploadModal.classList.remove('show'));
+uploadModal.addEventListener('click',e=>{if(e.target===uploadModal)uploadModal.classList.remove('show');});
+
+document.getElementById('uploadDate').value=new Date().toISOString().slice(0,10);
+
+submitUpload.addEventListener('click',async()=>{
+  const file=document.getElementById('uploadFile').files[0];
+  const title=document.getElementById('uploadTitle').value.trim();
+  const photoDate=document.getElementById('uploadDate').value;
+  const category=document.getElementById('uploadCategory').value;
+  const description=document.getElementById('uploadDesc').value.trim();
+
+  if(SUPABASE_URL.includes('YOUR_PROJECT_ID') || SUPABASE_ANON_KEY.includes('YOUR_ANON_PUBLIC_KEY')){
+    uploadStatus.textContent='請先填入 Supabase URL 和 anon key。';
+    return;
+  }
+  if(!file){uploadStatus.textContent='請先選擇圖片。';return;}
+  if(!title){uploadStatus.textContent='請填寫標題。';return;}
+
+  submitUpload.disabled=true;
+  uploadStatus.textContent='上傳中...';
+
+  const ext=file.name.split('.').pop();
+  const safeName=`${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const filePath=`uploads/${safeName}`;
+
+  const { error: uploadError } = await supabaseClient.storage
+    .from(BUCKET_NAME)
+    .upload(filePath, file, { cacheControl:'3600', upsert:false });
+
+  if(uploadError){
+    console.error(uploadError);
+    uploadStatus.textContent='圖片上傳失敗：' + uploadError.message;
+    submitUpload.disabled=false;
+    return;
+  }
+
+  const { data: publicData } = supabaseClient.storage
+    .from(BUCKET_NAME)
+    .getPublicUrl(filePath);
+
+  const imageUrl=publicData.publicUrl;
+
+  const { data: inserted, error: dbError } = await supabaseClient
+    .from('gallery')
+    .insert({
+      title:title,
+      category:category,
+      description:description,
+      image_url:imageUrl,
+      image_path:filePath,
+      photo_date:photoDate
+    })
+    .select()
+    .single();
+
+  if(dbError){
+    console.error(dbError);
+    uploadStatus.textContent='資料儲存失敗：' + dbError.message;
+    submitUpload.disabled=false;
+    return;
+  }
+
+  createGalleryItem(inserted);
+  refreshItems();
+  applyFilters();
+  uploadStatus.textContent='上傳成功！';
+  document.getElementById('uploadFile').value='';
+  document.getElementById('uploadTitle').value='';
+  document.getElementById('uploadDesc').value='';
+  submitUpload.disabled=false;
+  setTimeout(()=>uploadModal.classList.remove('show'),700);
+});
+
+window.addEventListener('load',loadSupabaseGallery);
+window.addEventListener('resize',()=>{clearTimeout(window.__layoutTimer);window.__layoutTimer=setTimeout(layout,120);});
+</script></body></html>
