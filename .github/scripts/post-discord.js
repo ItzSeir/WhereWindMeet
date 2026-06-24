@@ -54,7 +54,11 @@ function getTeamType(slot) {
 
 function getTeamSize(slot, members = []) {
   const size = Number(slot.teamSize || slot.size || slot.teamSizeValue);
-  if (Number.isFinite(size) && size > 0) return size;
+
+  if (Number.isFinite(size) && size > 0) {
+    return size;
+  }
+
   return members.length > 5 ? 10 : 10;
 }
 
@@ -72,31 +76,32 @@ function getLeaderName(members = []) {
 
 function getTowerDifficulty(slot) {
   return (
-    slot.towerDifficulty ||
-    slot.difficulty ||
-    slot.towerMode ||
+    slot.towerDifficulty ??
+    slot.difficulty ??
+    slot.towerMode ??
+    slot.towerLevelDifficulty ??
     "未設定難度"
   );
 }
 
 function getTowerFloor(slot) {
-
   const start =
     slot.towerFloorStart ??
     slot.floorStart ??
     slot.startFloor ??
     slot.towerStart ??
-    slot.fromFloor;
+    slot.fromFloor ??
+    slot.floorFrom;
 
   const end =
     slot.towerFloorEnd ??
     slot.floorEnd ??
     slot.endFloor ??
     slot.towerEnd ??
-    slot.toFloor;
+    slot.toFloor ??
+    slot.floorTo;
 
-  if (start != null && end != null) {
-
+  if (start !== undefined && start !== null && end !== undefined && end !== null) {
     if (String(start) === String(end)) {
       return `${start}層`;
     }
@@ -104,7 +109,7 @@ function getTowerFloor(slot) {
     return `${start}-${end}層`;
   }
 
-  if (slot.towerFloor != null) {
+  if (slot.towerFloor !== undefined && slot.towerFloor !== null) {
     return `${slot.towerFloor}層`;
   }
 
@@ -115,7 +120,10 @@ function getTeamLabel(slot, members = []) {
   const size = getTeamSize(slot, members);
   const type = getTeamType(slot);
 
-  if (type === "爬塔") return `${size}人｜爬塔`;
+  if (type === "爬塔") {
+    return `${size}人｜爬塔`;
+  }
+
   return `${size}人｜${type}團`;
 }
 
@@ -130,18 +138,15 @@ function getSlotText(team) {
 
   const lines = [
     `> **${formatTime(slot.time)}｜${getTeamLabel(slot, members)}**`,
-    `> 開團：**${leader}**`,
-    `> 輸出 ${role.dps}｜承傷 ${role.tank}｜治療 ${role.heal} ｜ 👥 \`${count}/${max}\``,
   ];
 
   if (type === "爬塔") {
-    lines.splice(
-      1,
-      0,
-      `> 難度：**${getTowerDifficulty(slot)}**`,
-      `> 層數：**${getTowerFloor(slot)}**`
-    );
+    lines.push(`> 難度：**${getTowerDifficulty(slot)}**`);
+    lines.push(`> 層數：**${getTowerFloor(slot)}**`);
   }
+
+  lines.push(`> 開團：**${leader}**`);
+  lines.push(`> 輸出 ${role.dps}｜承傷 ${role.tank}｜治療 ${role.heal} ｜ 👥 \`${count}/${max}\``);
 
   return lines.join("\n");
 }
@@ -149,7 +154,9 @@ function getSlotText(team) {
 async function sendDiscord(payload) {
   const res = await fetch(WEBHOOK, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(payload),
   });
 
@@ -176,20 +183,34 @@ async function main() {
 
     slots.forEach((slot) => {
       const members = Array.isArray(slot.members) ? slot.members : [];
+
       if (members.length === 0) return;
-      allTeams.push({ dateId, slot, members });
+
+      allTeams.push({
+        dateId,
+        slot,
+        members,
+      });
     });
   });
 
   allTeams.sort((a, b) => {
     const dateCompare = a.dateId.localeCompare(b.dateId);
-    if (dateCompare !== 0) return dateCompare;
+
+    if (dateCompare !== 0) {
+      return dateCompare;
+    }
+
     return String(a.slot.time || "").localeCompare(String(b.slot.time || ""));
   });
 
   const groupedByDate = {};
+
   allTeams.forEach((team) => {
-    if (!groupedByDate[team.dateId]) groupedByDate[team.dateId] = [];
+    if (!groupedByDate[team.dateId]) {
+      groupedByDate[team.dateId] = [];
+    }
+
     groupedByDate[team.dateId].push(team);
   });
 
@@ -210,7 +231,9 @@ async function main() {
   }
 
   if (description.length > 3800) {
-    description = description.slice(0, 3600) + "\n\n隊伍太多，請到報名頁查看完整列表。";
+    description =
+      description.slice(0, 3600) +
+      "\n\n隊伍太多，請到報名頁查看完整列表。";
   }
 
   await sendDiscord({
