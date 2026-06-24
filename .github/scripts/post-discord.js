@@ -11,7 +11,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const WEBHOOK = process.env.DISCORD_WEBHOOK;
-const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration.html";
+const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration";
 
 const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
@@ -53,18 +53,9 @@ function getTeamType(slot) {
 }
 
 function getTeamSize(slot, members = []) {
-  const raw = slot.teamSize || slot.size || slot.teamSizeValue;
-
-  const size = Number(raw);
+  const size = Number(slot.teamSize || slot.size || slot.teamSizeValue);
   if (Number.isFinite(size) && size > 0) return size;
-
-  // 舊資料沒有 teamSize，用人數推斷
-  if (members.length > 5) return 10;
-  return 10;
-}
-
-function getMaxSize(slot, members = []) {
-  return getTeamSize(slot, members);
+  return members.length > 5 ? 10 : 10;
 }
 
 function getRoleCount(members = []) {
@@ -80,86 +71,76 @@ function getLeaderName(members = []) {
 }
 
 function getTowerDifficulty(slot) {
-  return (
-    slot.difficulty ||
-    slot.towerDifficulty ||
-    slot.towerMode ||
-    slot.towerLevelDifficulty ||
-    "未設定難度"
-  );
+  return slot.difficulty || slot.towerDifficulty || slot.towerMode || "未設定難度";
 }
 
 function getTowerFloor(slot) {
-  const start =
-    slot.floorStart ||
-    slot.startFloor ||
-    slot.towerStart ||
-    slot.fromFloor ||
-    slot.floorFrom;
-
-  const end =
-    slot.floorEnd ||
-    slot.endFloor ||
-    slot.towerEnd ||
-    slot.toFloor ||
-    slot.floorTo;
+  const start = slot.floorStart || slot.startFloor || slot.towerStart || slot.fromFloor || slot.floorFrom;
+  const end = slot.floorEnd || slot.endFloor || slot.towerEnd || slot.toFloor || slot.floorTo;
 
   if (start && end) {
     if (String(start) === String(end)) return `${start}層`;
     return `${start}層 - ${end}層`;
   }
 
-  return (
-    slot.floorText ||
-    slot.towerText ||
-    slot.towerLevel ||
-    slot.floor ||
-    slot.level ||
-    "未設定層數"
-  );
+  return slot.floorText || slot.towerText || slot.towerLevel || slot.floor || slot.level || "未設定層數";
+}
+
+function getTeamIcon(type) {
+  if (type === "天賦") return "✨";
+  if (type === "爬塔") return "🗼";
+  return "⚔";
 }
 
 function getTeamLabel(slot, members = []) {
   const size = getTeamSize(slot, members);
   const type = getTeamType(slot);
 
-  if (type === "爬塔") {
-    return `${size}人｜爬塔`;
-  }
-
+  if (type === "爬塔") return `${size}人｜爬塔`;
   return `${size}人｜${type}團`;
 }
 
-function getStatus(count, max) {
-  if (count >= max) return "已滿";
-  return "招募中";
+function getStatusText(count, max) {
+  return count >= max ? "已滿員" : "招募中";
 }
 
 function getSlotText(team) {
   const { slot, members } = team;
 
   const count = members.length;
-  const max = getMaxSize(slot, members);
+  const max = getTeamSize(slot, members);
   const role = getRoleCount(members);
   const leader = getLeaderName(members);
   const type = getTeamType(slot);
-  const status = getStatus(count, max);
-
-  const title = `**${formatTime(slot.time)}｜${getTeamLabel(slot, members)}｜隊伍#${slot.instance || 1}**`;
+  const icon = getTeamIcon(type);
+  const status = getStatusText(count, max);
 
   const lines = [
-    title,
-    `狀態：${status}　人數：${count}/${max}`,
-    `職業：輸出 ${role.dps}｜承傷 ${role.tank}｜治療 ${role.heal}`,
+    `${icon} **${getTeamLabel(slot, members)}**`,
+    `👑 __${leader} 開團__`,
+    `🕒 ${formatTime(slot.time)}　｜　${status}`,
+    `👥 **${count}/${max}**`,
+    `輸出 **${role.dps}**｜承傷 **${role.tank}**｜治療 **${role.heal}**`,
   ];
 
   if (type === "爬塔") {
-    lines.push(`爬塔：${getTowerDifficulty(slot)}｜${getTowerFloor(slot)}`);
+    lines.splice(2, 0, `難度：**${getTowerDifficulty(slot)}**｜層數：**${getTowerFloor(slot)}**`);
   }
 
-  lines.push(`申請：${leader} 隊伍`);
-
   return lines.join("\n");
+}
+
+async function sendDiscord(payload) {
+  const res = await fetch(WEBHOOK, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Discord webhook failed: ${res.status} ${text}`);
+  }
 }
 
 async function main() {
@@ -192,33 +173,11 @@ async function main() {
   });
 
   if (allTeams.length === 0) {
-    await fetch(WEBHOOK, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        embeds: [
-          {
-            title: "📢 副本招募公告",
-            description: "目前沒有任何已報名的未來隊伍。",
-            color: 7248127,
-            footer: { text: "夢回花深處｜每日自動公告" },
-            timestamp: new Date().toISOString(),
-          },
-        ],
-        components: [
-          {
-            type: 1,
-            components: [
-              {
-                type: 2,
-                style: 5,
-                label: "前往副本報名",
-                url: SITE_URL,
-              },
-            ],
-          },
-        ],
-      }),
+    await sendDiscord({
+      content:
+        `# 📢 夢回花深處｜副本招募公告\n\n` +
+        `目前沒有任何已報名的未來隊伍。\n\n` +
+        `🔗 **副本報名：**\n${SITE_URL}`,
     });
     return;
   }
@@ -229,47 +188,33 @@ async function main() {
     groupedByDate[team.dateId].push(team);
   });
 
-  const embeds = Object.keys(groupedByDate)
+  let content = "# 📢 夢回花深處｜副本招募公告\n\n";
+
+  Object.keys(groupedByDate)
     .sort()
-    .slice(0, 8)
-    .map((dateId, index) => {
-      const teams = groupedByDate[dateId];
+    .forEach(dateId => {
+      content += `## 📅 ${formatDateTitle(dateId)}\n\n`;
 
-      let description = teams.map(getSlotText).join("\n\n");
+      groupedByDate[dateId].forEach((team, index) => {
+        content += getSlotText(team);
 
-      if (description.length > 3800) {
-        description = description.slice(0, 3600) + "\n\n……隊伍太多，請到報名頁查看完整列表。";
-      }
-
-      return {
-        title: index === 0 ? "📢 副本招募公告" : " ",
-        description: `### ${formatDateTitle(dateId)}\n${description}`,
-        color: 7248127,
-        footer: index === 0 ? { text: "夢回花深處｜每日自動公告" } : undefined,
-        timestamp: index === 0 ? new Date().toISOString() : undefined,
-      };
+        if (index !== groupedByDate[dateId].length - 1) {
+          content += "\n\n━━━━━━━━━━━━━━━━\n\n";
+        } else {
+          content += "\n\n";
+        }
+      });
     });
 
-  await fetch(WEBHOOK, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      embeds,
-      components: [
-        {
-          type: 1,
-          components: [
-            {
-              type: 2,
-              style: 5,
-              label: "前往副本報名",
-              url: SITE_URL,
-            },
-          ],
-        },
-      ],
-    }),
-  });
+  content += `━━━━━━━━━━━━━━━━\n\n🔗 **副本報名：**\n${SITE_URL}`;
+
+  if (content.length > 1900) {
+    content =
+      content.slice(0, 1750) +
+      `\n\n……請到報名頁面報名和查看完整名單。\n\n🔗 ${SITE_URL}`;
+  }
+
+  await sendDiscord({ content });
 }
 
 main().catch(error => {
