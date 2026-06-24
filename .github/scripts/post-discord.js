@@ -71,19 +71,44 @@ function getLeaderName(members = []) {
 }
 
 function getTowerDifficulty(slot) {
-  return slot.difficulty || slot.towerDifficulty || slot.towerMode || "未設定難度";
+  return (
+    slot.towerDifficulty ||
+    slot.difficulty ||
+    slot.towerMode ||
+    "未設定難度"
+  );
 }
 
 function getTowerFloor(slot) {
-  const start = slot.floorStart || slot.startFloor || slot.towerStart || slot.fromFloor || slot.floorFrom;
-  const end = slot.floorEnd || slot.endFloor || slot.towerEnd || slot.toFloor || slot.floorTo;
 
-  if (start && end) {
-    if (String(start) === String(end)) return `${start}層`;
-    return `${start}層 - ${end}層`;
+  const start =
+    slot.towerFloorStart ??
+    slot.floorStart ??
+    slot.startFloor ??
+    slot.towerStart ??
+    slot.fromFloor;
+
+  const end =
+    slot.towerFloorEnd ??
+    slot.floorEnd ??
+    slot.endFloor ??
+    slot.towerEnd ??
+    slot.toFloor;
+
+  if (start != null && end != null) {
+
+    if (String(start) === String(end)) {
+      return `${start}層`;
+    }
+
+    return `${start}-${end}層`;
   }
 
-  return slot.floorText || slot.towerText || slot.towerLevel || slot.floor || slot.level || "未設定層數";
+  if (slot.towerFloor != null) {
+    return `${slot.towerFloor}層`;
+  }
+
+  return "未設定層數";
 }
 
 function getTeamLabel(slot, members = []) {
