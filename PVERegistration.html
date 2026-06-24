@@ -10234,7 +10234,17 @@ body {
             .map((slot, slotIndex) => ({ slot, slotIndex }))
             .filter(item => teamTypeMatchesFilter(item.slot))
             .filter(item => memberMatchesSearch(item.slot))
-            .sort((a,b) => getSlotUiPriority(b.slot, date) - getSlotUiPriority(a.slot, date));
+            .sort((a,b) => {
+              const timeA = a.slot?.time || "";
+              const timeB = b.slot?.time || "";
+              if(timeA !== timeB) return timeA.localeCompare(timeB);
+
+              const instanceA = Number(a.slot?.instance || 1);
+              const instanceB = Number(b.slot?.instance || 1);
+              if(instanceA !== instanceB) return instanceA - instanceB;
+
+              return a.slotIndex - b.slotIndex;
+            });
 
           if(filteredSlots.length === 0){
             html += `<div class="activity-empty-note">${currentSearchQuery ? "目前這一天沒有找到符合搜尋的玩家。" : "目前這一天沒有符合篩選的團隊。"}</div>`;
