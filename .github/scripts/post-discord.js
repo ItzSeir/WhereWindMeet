@@ -15,6 +15,15 @@ const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration.html";
 
 const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
+function getMalaysiaDateId() {
+  const now = new Date();
+  const malaysia = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" }));
+  const y = malaysia.getFullYear();
+  const m = String(malaysia.getMonth() + 1).padStart(2, "0");
+  const d = String(malaysia.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function formatDateTitle(dateId) {
   const [y, m, d] = dateId.split("-").map(Number);
   const date = new Date(y, m - 1, d);
@@ -35,6 +44,29 @@ function formatTime(time = "") {
   return `${String(hour).padStart(2, "0")}:${minute}${suffix}`;
 }
 
+function cleanType(rawType = "普通") {
+  return String(rawType).replace(/團$/g, "");
+}
+
+function getTeamType(slot) {
+  return cleanType(slot.teamType || slot.type || slot.activityType || "普通");
+}
+
+function getTeamSize(slot, members = []) {
+  const raw = slot.teamSize || slot.size || slot.teamSizeValue;
+
+  const size = Number(raw);
+  if (Number.isFinite(size) && size > 0) return size;
+
+  // 舊資料沒有 teamSize，用人數推斷
+  if (members.length > 5) return 10;
+  return 10;
+}
+
+function getMaxSize(slot, members = []) {
+  return getTeamSize(slot, members);
+}
+
 function getRoleCount(members = []) {
   return {
     dps: members.filter(m => m.role === "輸出").length,
@@ -43,17 +75,8 @@ function getRoleCount(members = []) {
   };
 }
 
-function getMaxSize(slot) {
-  const size = Number(slot.teamSize || slot.size || slot.teamSizeValue);
-  return Number.isFinite(size) && size > 0 ? size : 10;
-}
-
-function getTeamType(slot) {
-  return slot.teamType || slot.type || slot.activityType || "普通";
-}
-
-function getTeamSize(slot) {
-  return slot.teamSize || slot.size || slot.teamSizeValue || "？";
+function getLeaderName(members = []) {
+  return members[0]?.name || "隊長";
 }
 
 function getTowerDifficulty(slot) {
@@ -96,8 +119,8 @@ function getTowerFloor(slot) {
   );
 }
 
-function getTeamLabel(slot) {
-  const size = getTeamSize(slot);
+function getTeamLabel(slot, members = []) {
+  const size = getTeamSize(slot, members);
   const type = getTeamType(slot);
 
   if (type === "爬塔") {
@@ -107,45 +130,45 @@ function getTeamLabel(slot) {
   return `${size}人｜${type}團`;
 }
 
-function getLeaderName(members = []) {
-  return members[0]?.name || "隊長";
+function getStatus(count, max) {
+  if (count >= max) return "已滿";
+  return "招募中";
 }
 
-function getSlotLine(team) {
+function getSlotText(team) {
   const { slot, members } = team;
 
   const count = members.length;
-  const max = getMaxSize(slot);
+  const max = getMaxSize(slot, members);
   const role = getRoleCount(members);
   const leader = getLeaderName(members);
   const type = getTeamType(slot);
+  const status = getStatus(count, max);
 
-  const header = `【${getTeamLabel(slot)}】隊伍#${slot.instance || 1}　${formatTime(slot.time)}`;
+  const title = `**${formatTime(slot.time)}｜${getTeamLabel(slot, members)}｜隊伍#${slot.instance || 1}**`;
 
-  const roleLine = `輸出 ${role.dps}｜承傷 ${role.tank}｜治療 ${role.heal}　${count}/${max}`;
-  const leaderLine = `申請 ${leader} 隊伍`;
+  const lines = [
+    title,
+    `狀態：${status}　人數：${count}/${max}`,
+    `職業：輸出 ${role.dps}｜承傷 ${role.tank}｜治療 ${role.heal}`,
+  ];
 
   if (type === "爬塔") {
-    const difficulty = getTowerDifficulty(slot);
-    const floor = getTowerFloor(slot);
-
-    return [
-      header,
-      `難度：${difficulty}｜層數：${floor}`,
-      roleLine,
-      leaderLine,
-    ].join("\n");
+    lines.push(`爬塔：${getTowerDifficulty(slot)}｜${getTowerFloor(slot)}`);
   }
 
-  return [
-    header,
-    roleLine,
-    leaderLine,
-  ].join("\n");
+  lines.push(`申請：${leader} 隊伍`);
+
+  return lines.join("\n");
 }
 
 async function main() {
-  const snap = await db.collection("schedule").get();
+  const todayId = getMalaysiaDateId();
+
+  const snap = await db
+    .collection("schedule")
+    .where(admin.firestore.FieldPath.documentId(), ">=", todayId)
+    .get();
 
   const allTeams = [];
 
@@ -158,65 +181,80 @@ async function main() {
       const members = Array.isArray(slot.members) ? slot.members : [];
       if (members.length === 0) return;
 
-      allTeams.push({
-        dateId,
-        slot,
-        members,
-      });
+      allTeams.push({ dateId, slot, members });
     });
   });
 
   allTeams.sort((a, b) => {
     const dateCompare = a.dateId.localeCompare(b.dateId);
     if (dateCompare !== 0) return dateCompare;
-
-    const timeA = a.slot.time || "";
-    const timeB = b.slot.time || "";
-    return timeA.localeCompare(timeB);
+    return String(a.slot.time || "").localeCompare(String(b.slot.time || ""));
   });
 
-  let description = "";
-
   if (allTeams.length === 0) {
-    description = "目前沒有任何已報名的隊伍。";
-  } else {
-    const groupedByDate = {};
-
-    allTeams.forEach(team => {
-      if (!groupedByDate[team.dateId]) groupedByDate[team.dateId] = [];
-      groupedByDate[team.dateId].push(team);
+    await fetch(WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        embeds: [
+          {
+            title: "📢 副本招募公告",
+            description: "目前沒有任何已報名的未來隊伍。",
+            color: 7248127,
+            footer: { text: "夢回花深處｜每日自動公告" },
+            timestamp: new Date().toISOString(),
+          },
+        ],
+        components: [
+          {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                style: 5,
+                label: "前往副本報名",
+                url: SITE_URL,
+              },
+            ],
+          },
+        ],
+      }),
     });
-
-    description = Object.keys(groupedByDate)
-      .sort()
-      .map(dateId => {
-        const lines = groupedByDate[dateId].map(team => getSlotLine(team));
-        return `**${formatDateTitle(dateId)}**\n${lines.join("\n\n")}`;
-      })
-      .join("\n\n");
+    return;
   }
 
-  if (description.length > 3800) {
-    description =
-      description.slice(0, 3600) +
-      "\n\n……隊伍太多，請到報名頁查看完整列表。";
-  }
+  const groupedByDate = {};
+  allTeams.forEach(team => {
+    if (!groupedByDate[team.dateId]) groupedByDate[team.dateId] = [];
+    groupedByDate[team.dateId].push(team);
+  });
+
+  const embeds = Object.keys(groupedByDate)
+    .sort()
+    .slice(0, 8)
+    .map((dateId, index) => {
+      const teams = groupedByDate[dateId];
+
+      let description = teams.map(getSlotText).join("\n\n");
+
+      if (description.length > 3800) {
+        description = description.slice(0, 3600) + "\n\n……隊伍太多，請到報名頁查看完整列表。";
+      }
+
+      return {
+        title: index === 0 ? "📢 副本招募公告" : " ",
+        description: `### ${formatDateTitle(dateId)}\n${description}`,
+        color: 7248127,
+        footer: index === 0 ? { text: "夢回花深處｜每日自動公告" } : undefined,
+        timestamp: index === 0 ? new Date().toISOString() : undefined,
+      };
+    });
 
   await fetch(WEBHOOK, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      embeds: [
-        {
-          title: "📢 目前所有已報名隊伍",
-          description,
-          color: 7248127,
-          footer: {
-            text: "夢回花深處｜每日自動公告",
-          },
-          timestamp: new Date().toISOString(),
-        },
-      ],
+      embeds,
       components: [
         {
           type: 1,
