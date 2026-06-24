@@ -1,12 +1,10 @@
 name: Daily Recruitment Summary
 
-
 on:
-  push:
-    schedule:
-      - cron: "25 2 * * *"
-      - cron: "25 14 * * *"
-    workflow_dispatch:
+  schedule:
+    - cron: "00 3 * * *"
+    - cron: "00 15 * * *"
+  workflow_dispatch: # Keeps your manual button working
 
 jobs:
   post-discord:
