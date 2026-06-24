@@ -60,11 +60,28 @@ function getTeamSize(slot, members = []) {
 }
 
 function getRoleCount(members = []) {
-  return {
-    dps: members.filter((m) => m.role === "輸出").length,
-    tank: members.filter((m) => m.role === "承傷").length,
-    heal: members.filter((m) => m.role === "治療").length,
-  };
+  let dps = 0;
+  let tank = 0;
+  let heal = 0;
+
+  const fakeHealers = [];
+
+  members.forEach((m) => {
+    if (m.role === "輸出") dps++;
+    else if (m.role === "承傷") tank++;
+    else if (m.role === "治療") heal++;
+    else if (m.role === "假奶") fakeHealers.push(m);
+  });
+
+  fakeHealers.forEach(() => {
+    if (heal < 2) {
+      heal++;
+    } else {
+      dps++;
+    }
+  });
+
+  return { dps, tank, heal };
 }
 
 function getLeaderName(members = []) {
