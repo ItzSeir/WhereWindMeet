@@ -474,6 +474,104 @@ body {
       line-height:1.1;
     }
 
+    .slot-time-display{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+      min-width:0;
+    }
+
+    .slot-time-old{
+      font-size:15px;
+      font-weight:800;
+      color:rgba(226,232,240,.58);
+      text-decoration:line-through;
+      text-decoration-thickness:2px;
+      text-decoration-color:rgba(255,107,129,.76);
+    }
+
+    .slot-time-new{
+      font-size:18px;
+      font-weight:900;
+      color:#ffffff;
+      padding:2px 9px;
+      border-radius:999px;
+      background:linear-gradient(135deg, rgba(110,168,255,.24), rgba(139,92,246,.22));
+      border:1px solid rgba(180,200,255,.26);
+      box-shadow:0 8px 20px rgba(110,168,255,.12);
+    }
+
+    .slot-status-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      line-height:1;
+      border:1px solid rgba(255,255,255,.16);
+      color:#dbe7ff;
+      background:rgba(255,255,255,.08);
+      white-space:nowrap;
+    }
+
+    .slot-status-pill.on-time{
+      color:#bbf7d0;
+      background:rgba(34,197,94,.14);
+      border-color:rgba(34,197,94,.28);
+    }
+
+    .slot-status-pill.changed{
+      color:#bfdbfe;
+      background:rgba(96,165,250,.16);
+      border-color:rgba(96,165,250,.30);
+    }
+
+    .slot-status-pill.cancelled{
+      color:#fecdd3;
+      background:rgba(255,107,129,.15);
+      border-color:rgba(255,107,129,.34);
+    }
+
+    .slot-card.cancelled-slot{
+      opacity:.72;
+      filter:saturate(.72);
+      background:linear-gradient(180deg, rgba(255,107,129,.10), rgba(255,255,255,.035));
+      border-color:rgba(255,107,129,.24);
+    }
+
+    .slot-card.cancelled-slot .member-list,
+    .slot-card.cancelled-slot .slot-description,
+    .slot-card.cancelled-slot .slot-alert-row{
+      opacity:.72;
+    }
+
+    .slot-status-preview{
+      margin:10px 0 0;
+      padding:10px 12px;
+      border-radius:14px;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.6;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .slot-time-change-panel{
+      display:none;
+      margin-top:10px;
+      padding:12px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(110,168,255,.11), rgba(139,92,246,.08));
+      border:1px solid rgba(180,200,255,.18);
+    }
+
+    .slot-time-change-panel.show{
+      display:block;
+    }
+
     .recommend-badge{
       display:inline-flex;
       align-items:center;
@@ -7815,6 +7913,38 @@ body {
     </div>
   </div>
 
+
+  <div id="slotStatusModal" class="confirm-modal">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-title">設定隊伍狀態</div>
+
+      <div id="slotStatusInfo" class="confirm-modal-text" style="margin-bottom:10px;">
+        預設為準時。若時間更改，原時間會劃掉並顯示新的時間。
+      </div>
+
+      <label class="signup-label" for="slotStatusSelect">隊伍狀態</label>
+      <select id="slotStatusSelect" class="signup-select">
+        <option value="準時">準時</option>
+        <option value="時間更改">時間更改</option>
+        <option value="取消">取消</option>
+      </select>
+
+      <div id="slotTimeChangePanel" class="slot-time-change-panel">
+        <label class="signup-label" for="slotChangedTimeInput" style="margin-top:0;">新的時間</label>
+        <input id="slotChangedTimeInput" class="signup-input" type="time" />
+      </div>
+
+      <div id="slotStatusPreview" class="slot-status-preview">
+        目前狀態：準時
+      </div>
+
+      <div class="confirm-modal-actions">
+        <button type="button" class="confirm-cancel-btn" onclick="closeSlotStatusModal()">取消</button>
+        <button type="button" class="signup-confirm-btn" onclick="saveSlotStatusModal()">儲存狀態</button>
+      </div>
+    </div>
+  </div>
+
   <div id="myProfileModal" class="confirm-modal">
     <div class="confirm-modal-box">
       <div class="confirm-modal-title">我的資料</div>
@@ -7923,6 +8053,7 @@ body {
     let currentMoveEdit = null;
     let currentRoleEdit = null;
     let currentTeamTypeEdit = null;
+    let currentSlotStatusEdit = null;
     let currentDateTimeEdit = null;
     let currentBatchSignup = null;
     let editingBatchPresetIndex = -1;
@@ -8038,9 +8169,67 @@ body {
 
     function sortSlots(slots){
       slots.sort((a,b) => {
-        if(a.time === b.time) return (a.instance || 1) - (b.instance || 1);
-        return a.time.localeCompare(b.time);
+        const timeA = getSlotSortTime(a);
+        const timeB = getSlotSortTime(b);
+        if(timeA === timeB) return (a.instance || 1) - (b.instance || 1);
+        return timeA.localeCompare(timeB);
       });
+    }
+
+
+    function getSlotStatus(slot){
+      const raw = String(slot?.slotStatus || slot?.scheduleStatus || "準時").trim();
+      if(raw === "changed" || raw === "timeChanged" || raw === "改時間") return "時間更改";
+      if(raw === "cancelled" || raw === "canceled" || raw === "已取消") return "取消";
+      if(raw === "時間更改" || raw === "取消" || raw === "準時") return raw;
+      return "準時";
+    }
+
+    function getSlotChangedTime(slot){
+      return String(slot?.changedTime || slot?.newTime || slot?.updatedTime || "").trim();
+    }
+
+    function getSlotDisplayTime(slot){
+      const status = getSlotStatus(slot);
+      const changedTime = getSlotChangedTime(slot);
+      if(status === "時間更改" && changedTime) return changedTime;
+      return slot?.time || "";
+    }
+
+    function getSlotSortTime(slot){
+      return getSlotDisplayTime(slot) || slot?.time || "";
+    }
+
+    function renderSlotTime(slot){
+      const originalTime = escapeHtml(slot?.time || "未設定時間");
+      const status = getSlotStatus(slot);
+      const changedTime = escapeHtml(getSlotChangedTime(slot));
+
+      if(status === "時間更改" && changedTime){
+        return `
+          <div class="slot-time-display">
+            <span class="slot-time-old">${originalTime}</span>
+            <span class="slot-time-new">${changedTime}</span>
+            <span class="slot-status-pill changed">時間更改</span>
+          </div>
+        `;
+      }
+
+      if(status === "取消"){
+        return `
+          <div class="slot-time-display">
+            <span class="slot-time old slot-time-old">${originalTime}</span>
+            <span class="slot-status-pill cancelled">已取消</span>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="slot-time-display">
+          <span class="slot-time">${originalTime}</span>
+          <span class="slot-status-pill on-time">準時</span>
+        </div>
+      `;
     }
 
     function countRole(members, role){
@@ -8829,6 +9018,11 @@ body {
         if(e.target.id === "teamTypeModal") closeTeamTypeModal();
       });
 
+      const slotStatusModal = document.getElementById("slotStatusModal");
+      slotStatusModal.addEventListener("click", (e) => {
+        if(e.target.id === "slotStatusModal") closeSlotStatusModal();
+      });
+
       myProfileModal.addEventListener("click", (e) => {
         if(e.target.id === "myProfileModal") closeMyProfileModal();
       });
@@ -9202,6 +9396,73 @@ body {
 [highlight=blue]其他要求[/highlight]`;
     }
 
+    function updateSlotStatusPreview(){
+      const statusSelect = document.getElementById("slotStatusSelect");
+      const changedInput = document.getElementById("slotChangedTimeInput");
+      const panel = document.getElementById("slotTimeChangePanel");
+      const preview = document.getElementById("slotStatusPreview");
+      if(!statusSelect || !changedInput || !panel || !preview) return;
+
+      const status = statusSelect.value;
+      panel.classList.toggle("show", status === "時間更改");
+
+      if(status === "時間更改"){
+        preview.innerHTML = `目前狀態：<strong>時間更改</strong><br>原本時間會劃掉，並顯示新的時間 <strong>${escapeHtml(changedInput.value || "未設定")}</strong>。`;
+      }else if(status === "取消"){
+        preview.innerHTML = `目前狀態：<strong>取消</strong><br>隊伍會標記為已取消，並停止新的報名。`;
+      }else{
+        preview.innerHTML = `目前狀態：<strong>準時</strong><br>隊伍會使用原本的時間顯示。`;
+      }
+    }
+
+    function openSlotStatusModal(dateKey, slotIndex){
+      const slot = globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot) return;
+
+      currentSlotStatusEdit = { dateKey, slotIndex };
+      const statusSelect = document.getElementById("slotStatusSelect");
+      const changedInput = document.getElementById("slotChangedTimeInput");
+      const info = document.getElementById("slotStatusInfo");
+
+      statusSelect.value = getSlotStatus(slot);
+      changedInput.value = getSlotChangedTime(slot) || slot.time || "";
+      info.innerHTML = `隊伍：<strong style="color:var(--text);">${escapeHtml(dateKey)}｜${escapeHtml(slot.time || "未設定時間")}｜第 ${slot.instance || 1} 隊</strong>`;
+
+      statusSelect.onchange = updateSlotStatusPreview;
+      changedInput.oninput = updateSlotStatusPreview;
+      updateSlotStatusPreview();
+
+      document.getElementById("slotStatusModal").classList.add("show");
+    }
+
+    window.closeSlotStatusModal = () => {
+      currentSlotStatusEdit = null;
+      document.getElementById("slotStatusModal").classList.remove("show");
+    };
+
+    window.saveSlotStatusModal = async () => {
+      if(!currentSlotStatusEdit) return;
+
+      const { dateKey, slotIndex } = currentSlotStatusEdit;
+      const status = document.getElementById("slotStatusSelect").value;
+      const changedTime = document.getElementById("slotChangedTimeInput").value;
+
+      if(status === "時間更改" && !changedTime){
+        alert("請選擇新的時間。");
+        return;
+      }
+
+      const dayData = structuredClone(globalData[dateKey]);
+      if(!dayData || !Array.isArray(dayData.slots)) return;
+      if(!dayData.slots[slotIndex]) return;
+
+      dayData.slots[slotIndex].slotStatus = status;
+      dayData.slots[slotIndex].changedTime = status === "時間更改" ? changedTime : "";
+
+      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      closeSlotStatusModal();
+    };
+
     function openTeamTypeModal(dateKey, slotIndex){
       const slot = globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot) return;
@@ -9427,6 +9688,8 @@ body {
       if(moveModal.classList.contains("show") && e.key === "Escape") closeMoveModal();
       if(editRoleModal.classList.contains("show") && e.key === "Escape") closeEditRoleModal();
       if(teamTypeModal.classList.contains("show") && e.key === "Escape") closeTeamTypeModal();
+      const slotStatusModal = document.getElementById("slotStatusModal");
+      if(slotStatusModal.classList.contains("show") && e.key === "Escape") closeSlotStatusModal();
       if(myProfileModal.classList.contains("show") && e.key === "Escape") closeMyProfileModal();
       if(dateTimeModal.classList.contains("show")){
         if(e.key === "Escape") closeDateTimeModal();
@@ -10235,8 +10498,8 @@ body {
             .filter(item => teamTypeMatchesFilter(item.slot))
             .filter(item => memberMatchesSearch(item.slot))
             .sort((a,b) => {
-              const timeA = a.slot?.time || "";
-              const timeB = b.slot?.time || "";
+              const timeA = getSlotSortTime(a.slot);
+              const timeB = getSlotSortTime(b.slot);
               if(timeA !== timeB) return timeA.localeCompare(timeB);
 
               const instanceA = Number(a.slot?.instance || 1);
@@ -10264,6 +10527,8 @@ body {
                 ? `<div class="slot-alert-row"><div class="missing-role-hint"><span class="missing-role-pill">缺治療 x${missingInfo.missingHeal}</span></div><div class="slot-tag-strip">${renderSlotTagStrip(members)}</div></div>`
                 : `<div class="slot-alert-row"><div class="missing-role-hint"><span class="missing-role-pill good">配置已達標</span></div><div class="slot-tag-strip">${renderSlotTagStrip(members)}</div></div>`;
             const status = getStatus(members, slot);
+            const slotScheduleStatus = getSlotStatus(slot);
+            const isSlotCancelled = slotScheduleStatus === "取消";
             const allowedRoles = getAllowedRoles(members, slot);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
@@ -10274,23 +10539,25 @@ body {
             const quickRole = String(quickProfile.role || "").trim();
             const canQuickSignup = !!quickName
               && !!quickRole
+              && !isSlotCancelled
               && members.length < maxPeople
               && allowedRoles.includes(quickRole)
               && !members.some(m => normalizeName(m.name) === quickName);
 
             const quickFillClass = members.length > 0 && members.length < maxPeople && (members.length / maxPeople) >= .7 ? " quick-fill" : "";
-            const slotCardClass = members.length >= maxPeople
+            const slotCardBaseClass = members.length >= maxPeople
               ? `slot-card full-team${isMyTeam ? " my-team" : ""}`
               : members.length > 0
                 ? `slot-card has-members${quickFillClass}${isMyTeam ? " my-team" : ""}`
                 : `slot-card${isMyTeam ? " my-team" : ""}`;
+            const slotCardClass = `${slotCardBaseClass}${isSlotCancelled ? " cancelled-slot" : ""}`;
 
             html += `
               <div class="${slotCardClass}">
                 <div class="slot-top">
                   <div>
                     <div class="slot-time-wrap">
-                      <div class="slot-time">${slot.time}</div>
+                      ${renderSlotTime(slot)}
                       ${isRecommended ? `<span class="recommend-badge">推薦</span>` : ``}
                     </div>
                     <div class="slot-instance">
@@ -10312,7 +10579,7 @@ body {
                     <div class="slot-badges">
                       <span class="badge">${members.length}/${maxPeople}</span>
                       <span class="badge ${status.cls}">
-                        ${forceHeal && members.length < maxPeople ? "保留治療位" : status.text}
+                        ${isSlotCancelled ? "已取消" : (forceHeal && members.length < maxPeople ? "保留治療位" : status.text)}
                       </span>
                     </div>
 
@@ -10321,6 +10588,9 @@ body {
                       <div class="slot-menu-dropdown">
                         <button class="slot-menu-item team" data-action="edit-team-type" data-date="${dateKey}" data-slot="${slotIndex}">
                           團類型 / 說明
+                        </button>
+                        <button class="slot-menu-item team" data-action="edit-slot-status" data-date="${dateKey}" data-slot="${slotIndex}">
+                          隊伍狀態
                         </button>
 
                         ${slot.isCustom ? `
@@ -10392,10 +10662,10 @@ body {
                 </div>
 
                 <div class="slot-actions">
-                  <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= maxPeople ? "disabled" : ""}>
-                    ${members.length >= maxPeople ? "此隊已滿" : forceHeal ? "僅限治療報名" : "立即報名"}
+                  <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || members.length >= maxPeople ? "disabled" : ""}>
+                    ${isSlotCancelled ? "此隊已取消" : members.length >= maxPeople ? "此隊已滿" : forceHeal ? "僅限治療報名" : "立即報名"}
                   </button>
-                  <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${members.length >= maxPeople ? "disabled" : ""}>
+                  <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || members.length >= maxPeople ? "disabled" : ""}>
                     批量報名
                   </button>
                   <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
@@ -10493,6 +10763,13 @@ body {
         btn.onclick = () => {
           document.querySelectorAll(".slot-menu.open").forEach(menu => menu.classList.remove("open"));
           openTeamTypeModal(btn.dataset.date, Number(btn.dataset.slot));
+        };
+      });
+
+      document.querySelectorAll('[data-action="edit-slot-status"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".slot-menu.open").forEach(menu => menu.classList.remove("open"));
+          openSlotStatusModal(btn.dataset.date, Number(btn.dataset.slot));
         };
       });
 
