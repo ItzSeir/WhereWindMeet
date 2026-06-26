@@ -11,7 +11,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const WEBHOOK = process.env.DISCORD_WEBHOOK;
-const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration.html";
+const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration";
 
 const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
@@ -121,6 +121,39 @@ function getTowerFloor(slot, members = []) {
   const size = getTeamSize(slot, members);
   return size === 5 ? "1-5層" : "1-10層";
 }
+function getSlotStatus(slot) {
+  return slot.status || slot.slotStatus || "準時";
+}
+
+function getChangedTime(slot) {
+  return slot.changedTime || slot.newTime || slot.updatedTime || "";
+}
+
+function getDisplayTime(slot) {
+  const status = getSlotStatus(slot);
+  const oldTime = formatTime(slot.time);
+
+  if (status === "時間更改") {
+    const newTime = getChangedTime(slot);
+    return `~~${oldTime}~~ → ${formatTime(newTime)}`;
+  }
+
+  return oldTime;
+}
+
+function getStatusLine(slot) {
+  const status = getSlotStatus(slot);
+
+  if (status === "取消") {
+    return `> 狀態：**已取消**`;
+  }
+
+  if (status === "時間更改") {
+    return `> 狀態：**時間更改**`;
+  }
+
+  return `> 狀態：**準時**`;
+}
 
 function getTeamLabel(slot, members = []) {
   const size = getTeamSize(slot, members);
@@ -143,7 +176,8 @@ function getSlotText(team) {
   const type = getTeamType(slot);
 
   const lines = [
-    `> **${formatTime(slot.time)}｜${getTeamLabel(slot, members)}**`,
+    `> **${getDisplayTime(slot)}｜${getTeamLabel(slot, members)}**`,
+    getStatusLine(slot),
   ];
 
   if (type === "爬塔") {
