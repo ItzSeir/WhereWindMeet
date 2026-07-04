@@ -898,10 +898,14 @@
       .container { padding: 24px 14px 70px; }
       .page-header { padding: 22px 18px; border-radius: 24px; }
       .gallery-toolbar { position: relative; top: auto; border-radius: 22px; margin-bottom: 18px; }
-      .filter { display: grid; grid-template-columns: minmax(0, 1fr) auto; width: 100%; }
+      .filter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; width: 100%; }
       .filter-select-wrap { width: 100%; height: 46px; }
       .filter-select { width: 100%; min-width: 0; }
       .upload-btn { padding: 10px 12px; font-size: 12px; text-align: center; }
+    }
+
+    @media (max-width: 640px) {
+      .filter { grid-template-columns: 1fr; }
       .stat-card { min-width: 86px; padding: 10px 12px; }
     }
 
@@ -976,6 +980,15 @@
             <option value="all">全部回憶</option>
           </select>
         </label>
+
+        <label class="filter-select-wrap" for="sortSelect">
+          <span class="filter-select-label">排序</span>
+          <select id="sortSelect" class="filter-select">
+            <option value="latest">最新日期</option>
+            <option value="oldest">最早日期</option>
+          </select>
+        </label>
+
         <button class="upload-btn" id="openUpload" type="button">📷 上傳</button>
       </div>
     </section>
@@ -1066,13 +1079,34 @@
     <div class="arrow right" id="next">›</div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://ugipvbqcbrroiuhqqzjd.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnaXB2YnFjYnJyb2l1aHFxempkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDE1MTUsImV4cCI6MjA5Nzg3NzUxNX0.1TPfk4OJfJDGkkowgbMG3ojS4unGt8dGfMucrzW0sr8";
-    const BUCKET_NAME = "gallery-images";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      orderBy,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const firebaseConfig = {
+      apiKey: "AIzaSyBIoYZqWWifh04b4to6ksLdvCeHLhNo4PE",
+      authDomain: "guild-gallery.firebaseapp.com",
+      projectId: "guild-gallery",
+      storageBucket: "guild-gallery.firebasestorage.app",
+      messagingSenderId: "1009198133204",
+      appId: "1:1009198133204:web:2f1f72ff8ed5104d797041",
+      measurementId: "G-HNVW852CNY"
+    };
+
+    const CLOUDINARY_CLOUD_NAME = "jwwgtso0";
+    const CLOUDINARY_UPLOAD_PRESET = "qfsabzre";
+    const FIRESTORE_COLLECTION = "gallery_photos";
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
     const defaultCategories = [
       "同門合照",
@@ -1096,8 +1130,8 @@
     const resultText = document.getElementById("resultText");
     const activeFilterLabel = document.getElementById("activeFilterLabel");
     const emptyState = document.getElementById("emptyState");
-    const filterBar = document.getElementById("filterBar");
     const filterSelect = document.getElementById("filterSelect");
+    const sortSelect = document.getElementById("sortSelect");
     const uploadBtn = document.getElementById("openUpload");
 
     const uploadModal = document.getElementById("uploadModal");
@@ -1130,9 +1164,16 @@
       return categoryAliases[category] || category || "江湖日常";
     }
 
+    function toDateInputValue(value) {
+      if (!value) return new Date().toISOString().slice(0, 10);
+      if (typeof value === "string") return value.slice(0, 10);
+      if (value.toDate) return value.toDate().toISOString().slice(0, 10);
+      return new Date(value).toISOString().slice(0, 10);
+    }
+
     function formatDateForDisplay(dateValue) {
       if (!dateValue) return "";
-      return String(dateValue).replaceAll("-", ".");
+      return String(dateValue).slice(0, 10).replaceAll("-", ".");
     }
 
     function escapeHtml(value) {
@@ -1142,6 +1183,25 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+    }
+
+    function getSortValue(item) {
+      return item.dataset.sortDate || "0000-00-00";
+    }
+
+    function sortGalleryItems() {
+      const sortType = sortSelect.value || "latest";
+
+      items.sort((a, b) => {
+        const aDate = getSortValue(a);
+        const bDate = getSortValue(b);
+        return sortType === "latest"
+          ? bDate.localeCompare(aDate)
+          : aDate.localeCompare(bDate);
+      });
+
+      items.forEach(item => grid.appendChild(item));
+      applyFilters();
     }
 
     function getAllCategories() {
@@ -1233,19 +1293,22 @@
     function createGalleryItem(photo) {
       const category = normalizeCategory(photo.category);
       const title = photo.title || "未命名回憶";
-      const date = formatDateForDisplay(photo.photo_date || photo.date || new Date().toISOString().slice(0, 10));
+      const sortDate = toDateInputValue(photo.photo_date || photo.date || photo.created_at);
+      const date = formatDateForDisplay(sortDate);
       const description = photo.description || "這一刻，留給江湖慢慢回味。";
+      const imageUrl = photo.image_url || photo.secure_url || "";
 
       const item = document.createElement("div");
       item.className = "item shape-square";
       item.dataset.category = category;
       item.dataset.title = title;
       item.dataset.date = date;
+      item.dataset.sortDate = sortDate;
       item.dataset.desc = description;
 
       item.innerHTML = `
         <img
-          src="${escapeHtml(photo.image_url)}"
+          src="${escapeHtml(imageUrl)}"
           class="gallery-img"
           alt="${escapeHtml(title)}"
           loading="lazy"
@@ -1298,32 +1361,37 @@
           setImageShape(item, img);
           layout();
         });
+        img.addEventListener("error", () => {
+          item.style.opacity = ".55";
+          layout();
+        });
       }
     }
 
-    async function loadSupabaseGallery() {
-      const { data, error } = await supabaseClient
-        .from("gallery")
-        .select("*")
-        .order("created_at", { ascending: false });
+    async function loadGallery() {
+      uploadStatus.textContent = "";
 
-      if (error) {
+      try {
+        const q = query(collection(db, FIRESTORE_COLLECTION), orderBy("photo_date", "desc"));
+        const snapshot = await getDocs(q);
+
+        grid.innerHTML = "";
+
+        snapshot.forEach(docSnap => {
+          createGalleryItem({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        refreshItems();
+        sortGalleryItems();
+      } catch (error) {
         console.error(error);
+        grid.innerHTML = "";
         refreshItems();
         applyFilters();
         layout();
-        return;
+        emptyState.classList.add("show");
+        resultText.textContent = "載入失敗，請檢查 Firestore Rules。";
       }
-
-      grid.innerHTML = "";
-
-      if (data && data.length) {
-        data.reverse().forEach(photo => createGalleryItem(photo));
-      }
-
-      refreshItems();
-      applyFilters();
-      layout();
     }
 
     function getColumnCount() {
@@ -1369,7 +1437,8 @@
         if (show) shown++;
       });
 
-      activeFilterLabel.textContent = currentFilter === "all" ? "全部回憶" : currentFilter;
+      const sortLabel = sortSelect.value === "oldest" ? "最早日期" : "最新日期";
+      activeFilterLabel.textContent = `${currentFilter === "all" ? "全部回憶" : currentFilter}・${sortLabel}`;
       resultText.textContent = q ? `找到 ${shown} 個回憶` : `顯示 ${shown} 個回憶`;
       emptyState.classList.toggle("show", shown === 0);
 
@@ -1423,10 +1492,31 @@
       return uploadCategorySelect.value;
     }
 
+    async function uploadToCloudinary(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error?.message || "Cloudinary upload failed.");
+      }
+
+      return result;
+    }
+
     filterSelect.addEventListener("change", () => {
       currentFilter = filterSelect.value;
       applyFilters();
     });
+
+    sortSelect.addEventListener("change", sortGalleryItems);
 
     searchInput.addEventListener("input", applyFilters);
 
@@ -1474,8 +1564,18 @@
         return;
       }
 
+      if (!file.type.startsWith("image/")) {
+        uploadStatus.textContent = "只能上傳圖片檔案。";
+        return;
+      }
+
       if (!title) {
         uploadStatus.textContent = "請填寫標題。";
+        return;
+      }
+
+      if (!photoDate) {
+        uploadStatus.textContent = "請選擇日期。";
         return;
       }
 
@@ -1485,66 +1585,46 @@
       }
 
       submitUpload.disabled = true;
-      uploadStatus.textContent = "上傳中...";
+      uploadStatus.textContent = "圖片上傳中...";
 
-      const ext = file.name.split(".").pop();
-      const safeName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      const filePath = `uploads/${safeName}`;
+      try {
+        const uploaded = await uploadToCloudinary(file);
+        uploadStatus.textContent = "圖片已上傳，正在儲存資料...";
 
-      const { error: uploadError } = await supabaseClient.storage
-        .from(BUCKET_NAME)
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: false
-        });
-
-      if (uploadError) {
-        console.error(uploadError);
-        uploadStatus.textContent = "圖片上傳失敗：" + uploadError.message;
-        submitUpload.disabled = false;
-        return;
-      }
-
-      const { data: publicData } = supabaseClient.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(filePath);
-
-      const imageUrl = publicData.publicUrl;
-
-      const { data: inserted, error: dbError } = await supabaseClient
-        .from("gallery")
-        .insert({
+        const photoData = {
           title,
           category,
           description,
-          image_url: imageUrl,
-          image_path: filePath,
-          photo_date: photoDate
-        })
-        .select()
-        .single();
+          image_url: uploaded.secure_url,
+          image_path: uploaded.public_id,
+          photo_date: photoDate,
+          cloudinary_public_id: uploaded.public_id,
+          width: uploaded.width || null,
+          height: uploaded.height || null,
+          created_at: serverTimestamp()
+        };
 
-      if (dbError) {
-        console.error(dbError);
-        uploadStatus.textContent = "資料儲存失敗：" + dbError.message;
+        await addDoc(collection(db, FIRESTORE_COLLECTION), photoData);
+
+        createGalleryItem(photoData);
+        refreshItems();
+        sortGalleryItems();
+
+        uploadStatus.textContent = "上傳成功！";
+        document.getElementById("uploadFile").value = "";
+        document.getElementById("uploadTitle").value = "";
+        document.getElementById("uploadDesc").value = "";
+        uploadCategoryCustom.value = "";
+        uploadCategorySelect.value = category;
+        customCategoryWrap.classList.remove("show");
+
+        setTimeout(() => uploadModal.classList.remove("show"), 700);
+      } catch (error) {
+        console.error(error);
+        uploadStatus.textContent = "上傳失敗：" + error.message;
+      } finally {
         submitUpload.disabled = false;
-        return;
       }
-
-      createGalleryItem(inserted);
-      refreshItems();
-      applyFilters();
-
-      uploadStatus.textContent = "上傳成功！";
-      document.getElementById("uploadFile").value = "";
-      document.getElementById("uploadTitle").value = "";
-      document.getElementById("uploadDesc").value = "";
-      uploadCategoryCustom.value = "";
-      uploadCategorySelect.value = category;
-      customCategoryWrap.classList.remove("show");
-      submitUpload.disabled = false;
-
-      setTimeout(() => uploadModal.classList.remove("show"), 700);
     });
 
     document.getElementById("next").addEventListener("click", event => {
@@ -1570,7 +1650,7 @@
       if (event.key === "ArrowLeft") prevPhoto();
     });
 
-    window.addEventListener("load", loadSupabaseGallery);
+    window.addEventListener("load", loadGallery);
 
     window.addEventListener("resize", () => {
       clearTimeout(window.__layoutTimer);
