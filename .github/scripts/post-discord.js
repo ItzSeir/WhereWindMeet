@@ -14,7 +14,7 @@ const WEBHOOK = process.env.DISCORD_WEBHOOK;
 const SITE_URL = "https://itzseir.github.io/WhereWindMeet/PVERegistration";
 
 const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-
+ 
 function getMalaysiaDateId() {
   const now = new Date();
   const malaysia = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" }));
