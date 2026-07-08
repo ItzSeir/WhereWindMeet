@@ -18,12 +18,14 @@ const WEEKDAY_MAP = ["星期日", "星期一", "星期二", "星期三", "星期
 function getMalaysiaDateId() {
   const now = new Date();
   const malaysia = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" }));
+
   return `${malaysia.getFullYear()}-${String(malaysia.getMonth() + 1).padStart(2, "0")}-${String(malaysia.getDate()).padStart(2, "0")}`;
 }
 
 function formatDateTitle(dateId) {
   const [y, m, d] = dateId.split("-").map(Number);
   const date = new Date(y, m - 1, d);
+
   return `${m}月${d}日（${WEEKDAY_MAP[date.getDay()]}）`;
 }
 
@@ -121,6 +123,7 @@ function getTowerFloor(slot, members = []) {
   const size = getTeamSize(slot, members);
   return size === 5 ? "1-5層" : "1-10層";
 }
+
 function getSlotStatus(slot) {
   return slot.status || slot.slotStatus || "準時";
 }
@@ -209,66 +212,44 @@ async function sendDiscord(payload) {
 async function main() {
   const todayId = getMalaysiaDateId();
 
-  const snap = await db
-    .collection("schedule")
-    .where(admin.firestore.FieldPath.documentId(), ">=", todayId)
-    .get();
+  const doc = await db.collection("schedule").doc(todayId).get();
+
+  if (!doc.exists) {
+    console.log("No schedule document today. No Discord message sent.");
+    return;
+  }
+
+  const data = doc.data();
+  const slots = Array.isArray(data.slots) ? data.slots : [];
 
   const allTeams = [];
 
-  snap.forEach((doc) => {
-    const dateId = doc.id;
-    const data = doc.data();
-    const slots = Array.isArray(data.slots) ? data.slots : [];
+  slots.forEach((slot) => {
+    const members = Array.isArray(slot.members) ? slot.members : [];
 
-    slots.forEach((slot) => {
-      const members = Array.isArray(slot.members) ? slot.members : [];
+    if (members.length === 0) return;
 
-      if (members.length === 0) return;
-
-      allTeams.push({
-        dateId,
-        slot,
-        members,
-      });
+    allTeams.push({
+      dateId: todayId,
+      slot,
+      members,
     });
   });
 
+  if (allTeams.length === 0) {
+    console.log("No teams today. No Discord message sent.");
+    return;
+  }
+
   allTeams.sort((a, b) => {
-    const dateCompare = a.dateId.localeCompare(b.dateId);
-
-    if (dateCompare !== 0) {
-      return dateCompare;
-    }
-
     return String(a.slot.time || "").localeCompare(String(b.slot.time || ""));
   });
 
-  const groupedByDate = {};
+  const teamsText = allTeams
+    .map((team) => getSlotText(team))
+    .join("\n\n");
 
-  allTeams.forEach((team) => {
-    if (!groupedByDate[team.dateId]) {
-      groupedByDate[team.dateId] = [];
-    }
-
-    groupedByDate[team.dateId].push(team);
-  });
-
-  let description = "";
-
-  if (allTeams.length === 0) {
-    description = "今天暫時沒有已報名的未來隊伍。";
-  } else {
-    Object.keys(groupedByDate)
-      .sort()
-      .forEach((dateId) => {
-        const teamsText = groupedByDate[dateId]
-          .map((team) => getSlotText(team))
-          .join("\n\n");
-
-        description += `## ${formatDateTitle(dateId)}\n\n${teamsText}\n\n`;
-      });
-  }
+  let description = `## ${formatDateTitle(todayId)}\n\n${teamsText}\n\n`;
 
   if (description.length > 3800) {
     description =
@@ -290,7 +271,7 @@ async function main() {
           },
         ],
         footer: {
-          text: "夢回花深處｜每日自動公告",
+          text: "夢回花深處｜每日 12PM 自動提醒",
         },
         timestamp: new Date().toISOString(),
       },
