@@ -1,0 +1,292 @@
+/* ===== WhereWindMeet Announcement Banner ===== */
+#siteAnnouncement{
+  margin:14px 0;
+}
+
+.announcementBar{
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:16px 96px 16px 18px;
+  border-radius:24px;
+  border:1px solid rgba(139,120,255,.28);
+  background:
+    radial-gradient(circle at 92% 0%, rgba(206,86,255,.18), transparent 36%),
+    linear-gradient(135deg, rgba(34,46,82,.92), rgba(24,29,58,.88));
+  box-shadow:0 18px 40px rgba(0,0,0,.20);
+  color:#eef2ff;
+  animation:announcementSlideIn .35s ease;
+}
+
+@keyframes announcementSlideIn{
+  from{ opacity:0; transform:translateY(8px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.announcementIcon{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#7c7cff,#d84fdc);
+  box-shadow:0 12px 26px rgba(124,124,255,.28);
+  font-size:20px;
+}
+
+.announcementContent{
+  flex:1;
+  min-width:0;
+}
+
+.announcementTitle{
+  margin:1px 0 8px;
+  font-size:15px;
+  font-weight:900;
+  color:#ffffff;
+}
+
+.announcementPill{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  max-width:100%;
+  padding:5px 10px;
+  margin-bottom:8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#7c7cff,#c94cff);
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(124,124,255,.28);
+}
+
+.announcementText{
+  color:#dbe4ff;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.7;
+}
+
+.announcementTime{
+  margin-top:9px;
+  color:rgba(238,242,255,.62);
+  font-size:11px;
+  font-weight:800;
+}
+
+.announcementControls{
+  position:absolute;
+  top:14px;
+  right:14px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.announcementArrow{
+  width:30px;
+  height:30px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.announcementArrow:hover{
+  background:rgba(255,255,255,.18);
+}
+
+.announcementDots{
+  position:absolute;
+  right:18px;
+  bottom:14px;
+  display:flex;
+  gap:6px;
+}
+
+.announcementDot{
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  border:0;
+  padding:0;
+  background:rgba(255,255,255,.28);
+  cursor:pointer;
+}
+
+.announcementDot.active{
+  width:18px;
+  background:#fff;
+}
+
+@media (max-width:768px){
+  .announcementBar{
+    padding:14px 14px 42px;
+    gap:12px;
+    border-radius:20px;
+  }
+
+  .announcementIcon{
+    width:36px;
+    height:36px;
+    border-radius:14px;
+    font-size:18px;
+  }
+
+  .announcementControls{
+    top:auto;
+    right:14px;
+    bottom:12px;
+  }
+
+  .announcementDots{
+    left:64px;
+    right:auto;
+    bottom:23px;
+  }
+
+  .announcementTitle{
+    font-size:14px;
+  }
+
+  .announcementText{
+    font-size:12px;
+  }
+}
+
+
+
+
+        <div id="siteAnnouncement"></div>
+
+<script>
+(async () => {
+
+const box = document.getElementById("siteAnnouncement");
+if(!box) return;
+
+try{
+
+const res = await fetch("/WhereWindMeet/data/announcement.json?t=" + Date.now());
+const data = await res.json();
+
+if(!data.enabled){
+    box.remove();
+    return;
+}
+
+const announcements = Array.isArray(data.announcements) ? data.announcements : [];
+
+if(!announcements.length){
+    box.remove();
+    return;
+}
+
+let current = 0;
+let timer = null;
+
+function render(index){
+    const item = announcements[index];
+
+    box.innerHTML = `
+    <div class="announcementBar">
+
+        <div class="announcementIcon">📢</div>
+
+        <div class="announcementContent">
+
+            <div class="announcementTitle">
+                ${escapeHtml(item.title || "重要公告")}
+            </div>
+
+            ${item.pill ? `
+            <div class="announcementPill">
+                ${escapeHtml(item.pill)}
+            </div>
+            ` : ""}
+
+            <div class="announcementText">
+                ${escapeHtml(item.text || item.content || item.message || "")}
+            </div>
+
+            <div class="announcementTime">
+                更新時間：${escapeHtml(item.updated || "")}
+            </div>
+
+        </div>
+
+        ${
+          announcements.length > 1 ? `
+          <div class="announcementControls">
+            <button class="announcementArrow" id="annPrev" type="button">‹</button>
+            <button class="announcementArrow" id="annNext" type="button">›</button>
+          </div>
+
+          <div class="announcementDots">
+            ${announcements.map((_, i) => `
+              <button class="announcementDot ${i === current ? "active" : ""}" data-index="${i}" type="button"></button>
+            `).join("")}
+          </div>
+          ` : ""
+        }
+
+    </div>
+    `;
+
+    const prev = box.querySelector("#annPrev");
+    const next = box.querySelector("#annNext");
+    const dots = box.querySelectorAll(".announcementDot");
+
+    if(prev) prev.onclick = () => manualGo(current - 1);
+    if(next) next.onclick = () => manualGo(current + 1);
+
+    dots.forEach(dot => {
+      dot.onclick = () => manualGo(Number(dot.dataset.index));
+    });
+}
+
+function go(index){
+    current = (index + announcements.length) % announcements.length;
+    render(current);
+}
+
+function manualGo(index){
+    go(index);
+    restartTimer();
+}
+
+function restartTimer(){
+    if(timer) clearInterval(timer);
+
+    if(announcements.length > 1){
+        timer = setInterval(() => {
+            go(current + 1);
+        }, 5000);
+    }
+}
+
+render(current);
+restartTimer();
+
+}catch(e){
+    console.log(e);
+    box.remove();
+}
+
+function escapeHtml(text){
+  return String(text || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+})();
+</script>
