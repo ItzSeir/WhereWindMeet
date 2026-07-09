@@ -1,7 +1,6 @@
 name: Daily Recruitment Summary
 
 on:
-  push:
   schedule:
     - cron: "0 2 * * *"
   workflow_dispatch:
