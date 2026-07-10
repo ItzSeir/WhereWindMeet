@@ -4,11 +4,11 @@ on:
   schedule:
     # 每天中午 12:00（馬來西亞時間）
     # Malaysia UTC+8，所以 GitHub Actions 使用 04:00 UTC
-    - cron: "0 4 * * *"
+    - cron: "0 2 * * *"
 
     # 每個星期六晚上 7:00（馬來西亞時間）
     # Malaysia UTC+8，所以 GitHub Actions 使用 11:00 UTC
-    - cron: "0 11 * * 6"
+    - cron: "0 7 * * 6"
 
   workflow_dispatch:
     inputs:
