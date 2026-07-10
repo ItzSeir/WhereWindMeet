@@ -1,7 +1,7 @@
 const admin = require("firebase-admin");
 
 // ==========================================
-// Configuration checking
+// Environment variables
 // ==========================================
 
 const REQUIRED_ENVIRONMENT_VARIABLES = [
@@ -79,6 +79,24 @@ function getMalaysiaDateId() {
   )?.value;
 
   return `${year}-${month}-${day}`;
+}
+
+function addDaysToDateId(dateId, days) {
+  const [year, month, day] = dateId
+    .split("-")
+    .map(Number);
+
+  const date = new Date(
+    Date.UTC(year, month - 1, day)
+  );
+
+  date.setUTCDate(date.getUTCDate() + days);
+
+  return [
+    date.getUTCFullYear(),
+    String(date.getUTCMonth() + 1).padStart(2, "0"),
+    String(date.getUTCDate()).padStart(2, "0"),
+  ].join("-");
 }
 
 function formatDateTitle(dateId) {
@@ -159,19 +177,10 @@ function getTeamSize(slot, members = []) {
     return size;
   }
 
-  /*
-   * Older Firestore records may not contain a team size.
-   * A team containing more than five members is treated
-   * as a 10-person team.
-   */
   if (members.length > 5) {
     return 10;
   }
 
-  /*
-   * Change this default to 5 if most older records
-   * without teamSize are five-person teams.
-   */
   return 10;
 }
 
@@ -278,6 +287,45 @@ function getChangedTime(slot) {
   );
 }
 
+function getEffectiveSlotTime(slot) {
+  const status = getSlotStatus(slot);
+
+  if (status === "時間更改") {
+    return (
+      getChangedTime(slot) ||
+      slot.time ||
+      ""
+    );
+  }
+
+  return slot.time || "";
+}
+
+function isBeforeNoon(slot) {
+  const time = getEffectiveSlotTime(slot);
+
+  if (!time) {
+    return false;
+  }
+
+  const [hourString, minuteString = "00"] =
+    String(time).split(":");
+
+  const hour = Number(hourString);
+  const minute = Number(minuteString);
+
+  if (
+    !Number.isFinite(hour) ||
+    !Number.isFinite(minute)
+  ) {
+    return false;
+  }
+
+  const totalMinutes = hour * 60 + minute;
+
+  return totalMinutes < 12 * 60;
+}
+
 function getDisplayTime(slot) {
   const status = getSlotStatus(slot);
   const originalTime = formatTime(slot.time);
@@ -361,7 +409,7 @@ function getSlotText(team) {
 }
 
 // ==========================================
-// Read Firestore data
+// Firestore reading
 // ==========================================
 
 function extractTeamsFromDocument(
@@ -385,10 +433,6 @@ function extractTeamsFromDocument(
       ? slot.members
       : [];
 
-    /*
-     * Empty teams are not included in the
-     * Discord announcement.
-     */
     if (members.length === 0) {
       return;
     }
@@ -403,15 +447,41 @@ function extractTeamsFromDocument(
   return teams;
 }
 
-async function getTodayTeams(todayId) {
-  const documentSnapshot = await db
-    .collection("schedule")
-    .doc(todayId)
-    .get();
-
-  return extractTeamsFromDocument(
-    documentSnapshot
+async function getDailyAnnouncementTeams(
+  todayId
+) {
+  const tomorrowId = addDaysToDateId(
+    todayId,
+    1
   );
+
+  const [todaySnapshot, tomorrowSnapshot] =
+    await Promise.all([
+      db
+        .collection("schedule")
+        .doc(todayId)
+        .get(),
+
+      db
+        .collection("schedule")
+        .doc(tomorrowId)
+        .get(),
+    ]);
+
+  const todayTeams =
+    extractTeamsFromDocument(todaySnapshot);
+
+  const tomorrowTeams =
+    extractTeamsFromDocument(
+      tomorrowSnapshot
+    ).filter((team) =>
+      isBeforeNoon(team.slot)
+    );
+
+  return [
+    ...todayTeams,
+    ...tomorrowTeams,
+  ];
 }
 
 async function getAllFutureTeams(todayId) {
@@ -449,11 +519,11 @@ function sortTeams(teams) {
     }
 
     const timeA = String(
-      teamA.slot.time || ""
+      getEffectiveSlotTime(teamA.slot) || ""
     );
 
     const timeB = String(
-      teamB.slot.time || ""
+      getEffectiveSlotTime(teamB.slot) || ""
     );
 
     return timeA.localeCompare(timeB);
@@ -565,21 +635,26 @@ async function sendRecruitmentMessage({
 async function runDailyAnnouncement(
   todayId
 ) {
+  const tomorrowId = addDaysToDateId(
+    todayId,
+    1
+  );
+
   console.log(
     `Running daily announcement for ${todayId}`
   );
 
-  const teams = sortTeams(
-    await getTodayTeams(todayId)
+  console.log(
+    `Also checking teams before 12:00 PM on ${tomorrowId}`
   );
 
-  /*
-   * At noon, do not send anything when
-   * there are no registered teams today.
-   */
+  const teams = sortTeams(
+    await getDailyAnnouncementTeams(todayId)
+  );
+
   if (teams.length === 0) {
     console.log(
-      "No registered teams today. Discord message skipped."
+      "No registered teams today or before noon tomorrow. Discord message skipped."
     );
 
     return;
@@ -587,11 +662,11 @@ async function runDailyAnnouncement(
 
   const description = buildDescription(
     teams,
-    "今天暫時沒有已報名的隊伍。"
+    "今天及明天中午前暫時沒有已報名的隊伍。"
   );
 
   await sendRecruitmentMessage({
-    title: "今日副本招募",
+    title: "今日及明早副本招募",
     description,
     footerText:
       "夢回花深處｜每日中午自動公告",
@@ -603,7 +678,7 @@ async function runDailyAnnouncement(
 }
 
 // ==========================================
-// Saturday announcement
+// Saturday weekly announcement
 // ==========================================
 
 async function runWeeklyAnnouncement(
@@ -617,10 +692,6 @@ async function runWeeklyAnnouncement(
     await getAllFutureTeams(todayId)
   );
 
-  /*
-   * Saturday will always send one message,
-   * even when no future team currently exists.
-   */
   const description = buildDescription(
     teams,
     "目前暫時沒有已報名的未來隊伍。"
