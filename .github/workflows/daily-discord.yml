@@ -2,18 +2,18 @@ name: Daily Recruitment Summary
 
 on:
   schedule:
-    # 每天中午 12:00（马来西亚时间）
-    # Malaysia UTC+8 → UTC 04:00
+    # Every day at 12:00 PM Malaysia time
+    # Malaysia is UTC+8, so this is 04:00 UTC
     - cron: "0 2 * * *"
 
-    # 每周六晚上 7:00（马来西亚时间）
-    # Malaysia UTC+8 → UTC 11:00
+    # Every Saturday at 7:00 PM Malaysia time
+    # Malaysia is UTC+8, so this is 11:00 UTC
     - cron: "0 7 * * 6"
 
   workflow_dispatch:
     inputs:
       mode:
-        description: "选择要测试的公告类型"
+        description: "Select announcement type"
         required: true
         default: "daily"
         type: choice
@@ -34,11 +34,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Install Firebase Admin
         run: npm install firebase-admin
 
       - name: Determine announcement mode
-        id: mode
+        id: determine-mode
         shell: bash
         env:
           MANUAL_MODE: ${{ inputs.mode }}
@@ -55,10 +55,10 @@ jobs:
           echo "Selected mode: $RUN_MODE"
           echo "run_mode=$RUN_MODE" >> "$GITHUB_OUTPUT"
 
-      - name: Post recruitment summary to Discord
+      - name: Send Discord announcement
         run: node .github/scripts/post-discord.js
         env:
-          RUN_MODE: ${{ steps.mode.outputs.run_mode }}
+          RUN_MODE: ${{ steps.determine-mode.outputs.run_mode }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
