@@ -2,25 +2,63 @@ name: Daily Recruitment Summary
 
 on:
   schedule:
+    # 每天中午 12:00（马来西亚时间）
+    # Malaysia UTC+8 → UTC 04:00
     - cron: "0 2 * * *"
-  workflow_dispatch:
 
+    # 每周六晚上 7:00（马来西亚时间）
+    # Malaysia UTC+8 → UTC 11:00
+    - cron: "0 7 * * 6"
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "选择要测试的公告类型"
+        required: true
+        default: "daily"
+        type: choice
+        options:
+          - daily
+          - weekly
 
 jobs:
   post-discord:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - run: npm install firebase-admin
+      - name: Install dependencies
+        run: npm install firebase-admin
 
-      - run: node .github/scripts/post-discord.js
+      - name: Determine announcement mode
+        id: mode
+        shell: bash
         env:
+          MANUAL_MODE: ${{ inputs.mode }}
+          SCHEDULE_CRON: ${{ github.event.schedule }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            RUN_MODE="${MANUAL_MODE:-daily}"
+          elif [ "$SCHEDULE_CRON" = "0 11 * * 6" ]; then
+            RUN_MODE="weekly"
+          else
+            RUN_MODE="daily"
+          fi
+
+          echo "Selected mode: $RUN_MODE"
+          echo "run_mode=$RUN_MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Post recruitment summary to Discord
+        run: node .github/scripts/post-discord.js
+        env:
+          RUN_MODE: ${{ steps.mode.outputs.run_mode }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
