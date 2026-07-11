@@ -2,12 +2,10 @@ name: Daily Recruitment Summary
 
 on:
   schedule:
-    # 每天中午 12:00（馬來西亞時間）
-    # Malaysia UTC+8，所以 GitHub Actions 使用 04:00 UTC
+    # Daily
     - cron: "0 2 * * *"
 
-    # 每個星期六晚上 7:00（馬來西亞時間）
-    # Malaysia UTC+8，所以 GitHub Actions 使用 11:00 UTC
+    # 每個星期六 Weekly
     - cron: "0 7 * * 6"
 
   workflow_dispatch:
@@ -41,14 +39,24 @@ jobs:
         id: determine-mode
         shell: bash
         env:
-          MANUAL_MODE: ${{ inputs.mode }}
+          MANUAL_MODE: ${{ github.event.inputs.mode }}
           SCHEDULE_CRON: ${{ github.event.schedule }}
         run: |
+          echo "Event name: $GITHUB_EVENT_NAME"
+          echo "Schedule cron: $SCHEDULE_CRON"
+          echo "Manual mode: $MANUAL_MODE"
+
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             RUN_MODE="${MANUAL_MODE:-daily}"
-          elif [ "$SCHEDULE_CRON" = "0 11 * * 6" ]; then
+
+          elif [ "$SCHEDULE_CRON" = "0 7 * * 6" ]; then
             RUN_MODE="weekly"
+
+          elif [ "$SCHEDULE_CRON" = "0 2 * * *" ]; then
+            RUN_MODE="daily"
+
           else
+            echo "Unknown trigger, defaulting to daily"
             RUN_MODE="daily"
           fi
 
