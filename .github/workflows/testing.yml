@@ -20,7 +20,7 @@ on:
           - weekly
 
 jobs:
-  post-discord:
+  testing:
     runs-on: ubuntu-latest
 
     steps:
@@ -79,13 +79,13 @@ jobs:
           git rev-parse HEAD
 
           echo ""
-          echo "First 60 lines of post-discord.js:"
-          sed -n '1,60p' .github/scripts/post-discord.js
+          echo "First 60 lines of testing.js:"
+          sed -n '1,60p' .github/scripts/testing.js
 
           echo ""
           echo "Checking for old Firebase syntax:"
 
-          if grep -nE 'const admin = require|admin\.credential|admin\.firestore|admin\.initializeApp' .github/scripts/post-discord.js; then
+          if grep -nE 'const admin = require|admin\.credential|admin\.firestore|admin\.initializeApp' .github/scripts/testing.js; then
             echo ""
             echo "ERROR: Old Firebase Admin syntax still exists."
             exit 1
@@ -96,10 +96,10 @@ jobs:
           echo ""
           echo "Checking new Firebase syntax:"
 
-          grep -nE 'firebase-admin/app|firebase-admin/firestore|initializeApp|cert|getFirestore' .github/scripts/post-discord.js
+          grep -nE 'firebase-admin/app|firebase-admin/firestore|initializeApp|cert|getFirestore' .github/scripts/testing.js
 
       - name: Send Discord announcement
-        run: node .github/scripts/post-discord.js
+        run: node .github/scripts/testing.js
         env:
           RUN_MODE: ${{ steps.determine-mode.outputs.run_mode }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
