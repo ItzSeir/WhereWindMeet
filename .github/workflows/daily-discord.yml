@@ -25,15 +25,24 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install Firebase Admin
-        run: npm install firebase-admin
+        run: npm install firebase-admin@latest
+
+      - name: Show runner time
+        shell: bash
+        run: |
+          echo "UTC time:"
+          date -u
+
+          echo "Malaysia time:"
+          TZ=Asia/Kuala_Lumpur date
 
       - name: Determine announcement mode
         id: determine-mode
@@ -56,12 +65,33 @@ jobs:
             RUN_MODE="daily"
 
           else
-            echo "Unknown trigger, defaulting to daily"
+            echo "Unknown trigger. Defaulting to daily."
             RUN_MODE="daily"
           fi
 
           echo "Selected mode: $RUN_MODE"
           echo "run_mode=$RUN_MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Verify post-discord.js
+        shell: bash
+        run: |
+          echo "Current commit:"
+          git rev-parse HEAD
+
+          echo ""
+          echo "First 60 lines of post-discord.js:"
+          sed -n '1,60p' .github/scripts/post-discord.js
+
+          echo ""
+          echo "Checking for old Firebase syntax..."
+
+          if grep -nE 'const admin = require|admin\.credential|admin\.firestore|admin\.initializeApp' .github/scripts/post-discord.js; then
+            echo ""
+            echo "ERROR: Old Firebase syntax still exists."
+            exit 1
+          else
+            echo "OK - Using new Firebase syntax."
+          fi
 
       - name: Send Discord announcement
         run: node .github/scripts/post-discord.js
