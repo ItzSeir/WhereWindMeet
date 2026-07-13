@@ -1,4 +1,4 @@
-name: Daily Recruitment Summary
+name: Testing
 
 on:
   schedule:
