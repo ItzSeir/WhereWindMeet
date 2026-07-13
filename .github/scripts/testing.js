@@ -61,7 +61,7 @@ const WEEKDAY_MAP = [
 ];
 
 // ==========================================
-// Malaysia date helpers
+// Date helpers
 // ==========================================
 
 function getMalaysiaDateId() {
@@ -88,7 +88,7 @@ function getMalaysiaDateId() {
 
   if (!year || !month || !day) {
     throw new Error(
-      "Unable to determine the current Malaysia date."
+      "Unable to determine Malaysia date."
     );
   }
 
@@ -104,12 +104,18 @@ function addDaysToDateId(dateId, days) {
     Date.UTC(year, month - 1, day)
   );
 
-  date.setUTCDate(date.getUTCDate() + days);
+  date.setUTCDate(
+    date.getUTCDate() + days
+  );
 
   return [
     date.getUTCFullYear(),
-    String(date.getUTCMonth() + 1).padStart(2, "0"),
-    String(date.getUTCDate()).padStart(2, "0"),
+    String(
+      date.getUTCMonth() + 1
+    ).padStart(2, "0"),
+    String(
+      date.getUTCDate()
+    ).padStart(2, "0"),
   ].join("-");
 }
 
@@ -133,7 +139,8 @@ function formatTime(time = "") {
     return "未設定時間";
   }
 
-  const normalizedTime = String(time).trim();
+  const normalizedTime =
+    String(time).trim();
 
   const match = normalizedTime.match(
     /^(\d{1,2}):(\d{1,2})$/
@@ -144,20 +151,21 @@ function formatTime(time = "") {
   }
 
   let hour = Number(match[1]);
-  const minuteNumber = Number(match[2]);
+  const minute = Number(match[2]);
 
   if (
     !Number.isInteger(hour) ||
-    !Number.isInteger(minuteNumber) ||
+    !Number.isInteger(minute) ||
     hour < 0 ||
     hour > 23 ||
-    minuteNumber < 0 ||
-    minuteNumber > 59
+    minute < 0 ||
+    minute > 59
   ) {
     return normalizedTime;
   }
 
-  const suffix = hour >= 12 ? "PM" : "AM";
+  const suffix =
+    hour >= 12 ? "PM" : "AM";
 
   hour %= 12;
 
@@ -165,14 +173,42 @@ function formatTime(time = "") {
     hour = 12;
   }
 
-  const minute = String(
-    minuteNumber
-  ).padStart(2, "0");
-
   return `${String(hour).padStart(
     2,
     "0"
-  )}:${minute}${suffix}`;
+  )}:${String(minute).padStart(
+    2,
+    "0"
+  )}${suffix}`;
+}
+
+function parseTimeToMinutes(time = "") {
+  const normalizedTime =
+    String(time).trim();
+
+  const match = normalizedTime.match(
+    /^(\d{1,2}):(\d{1,2})$/
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+
+  if (
+    !Number.isInteger(hour) ||
+    !Number.isInteger(minute) ||
+    hour < 0 ||
+    hour > 23 ||
+    minute < 0 ||
+    minute > 59
+  ) {
+    return null;
+  }
+
+  return hour * 60 + minute;
 }
 
 // ==========================================
@@ -180,10 +216,9 @@ function formatTime(time = "") {
 // ==========================================
 
 function cleanType(rawType = "普通") {
-  return String(rawType || "普通").replace(
-    /團$/g,
-    ""
-  );
+  return String(
+    rawType || "普通"
+  ).replace(/團$/g, "");
 }
 
 function getTeamType(slot = {}) {
@@ -195,14 +230,20 @@ function getTeamType(slot = {}) {
   );
 }
 
-function getTeamSize(slot = {}, members = []) {
+function getTeamSize(
+  slot = {},
+  members = []
+) {
   const size = Number(
     slot.teamSize ??
       slot.size ??
       slot.teamSizeValue
   );
 
-  if (Number.isFinite(size) && size > 0) {
+  if (
+    Number.isFinite(size) &&
+    size > 0
+  ) {
     return size;
   }
 
@@ -249,11 +290,15 @@ function getRoleCount(members = []) {
   };
 }
 
-function getLeaderName(members = []) {
+function getLeaderName(
+  members = []
+) {
   return members[0]?.name || "隊長";
 }
 
-function getTowerDifficulty(slot = {}) {
+function getTowerDifficulty(
+  slot = {}
+) {
   return (
     slot.towerDifficulty ??
     slot.difficulty ??
@@ -273,9 +318,14 @@ function getTowerFloor(
     return "";
   }
 
-  const start = slot.towerFloorStart;
-  const end = slot.towerFloorEnd;
-  const single = slot.towerFloor;
+  const start =
+    slot.towerFloorStart;
+
+  const end =
+    slot.towerFloorEnd;
+
+  const single =
+    slot.towerFloor;
 
   if (
     start !== null &&
@@ -283,7 +333,10 @@ function getTowerFloor(
     end !== null &&
     end !== undefined
   ) {
-    if (String(start) === String(end)) {
+    if (
+      String(start) ===
+      String(end)
+    ) {
       return `${start}層`;
     }
 
@@ -297,7 +350,8 @@ function getTowerFloor(
     return `${single}層`;
   }
 
-  const size = getTeamSize(slot, members);
+  const size =
+    getTeamSize(slot, members);
 
   return size === 5
     ? "1-5層"
@@ -321,8 +375,11 @@ function getChangedTime(slot = {}) {
   );
 }
 
-function getEffectiveSlotTime(slot = {}) {
-  const status = getSlotStatus(slot);
+function getEffectiveSlotTime(
+  slot = {}
+) {
+  const status =
+    getSlotStatus(slot);
 
   if (status === "時間更改") {
     return (
@@ -335,51 +392,25 @@ function getEffectiveSlotTime(slot = {}) {
   return slot.time || "";
 }
 
-function parseTimeToMinutes(time = "") {
-  const normalizedTime =
-    String(time).trim();
-
-  const match = normalizedTime.match(
-    /^(\d{1,2}):(\d{1,2})$/
-  );
-
-  if (!match) {
-    return null;
-  }
-
-  const hour = Number(match[1]);
-  const minute = Number(match[2]);
-
-  if (
-    !Number.isInteger(hour) ||
-    !Number.isInteger(minute) ||
-    hour < 0 ||
-    hour > 23 ||
-    minute < 0 ||
-    minute > 59
-  ) {
-    return null;
-  }
-
-  return hour * 60 + minute;
-}
-
 function isBeforeNoon(slot = {}) {
-  const effectiveTime =
-    getEffectiveSlotTime(slot);
-
   const totalMinutes =
-    parseTimeToMinutes(effectiveTime);
+    parseTimeToMinutes(
+      getEffectiveSlotTime(slot)
+    );
 
   if (totalMinutes === null) {
     return false;
   }
 
-  return totalMinutes < 12 * 60;
+  return totalMinutes < 720;
 }
 
-function getDisplayTime(slot = {}) {
-  const status = getSlotStatus(slot);
+function getDisplayTime(
+  slot = {}
+) {
+  const status =
+    getSlotStatus(slot);
+
   const originalTime =
     formatTime(slot.time);
 
@@ -400,7 +431,8 @@ function getDisplayTime(slot = {}) {
 }
 
 function getStatusLine(slot = {}) {
-  const status = getSlotStatus(slot);
+  const status =
+    getSlotStatus(slot);
 
   if (status === "取消") {
     return "> 狀態：**已取消**";
@@ -417,8 +449,11 @@ function getTeamLabel(
   slot = {},
   members = []
 ) {
-  const size = getTeamSize(slot, members);
-  const type = getTeamType(slot);
+  const size =
+    getTeamSize(slot, members);
+
+  const type =
+    getTeamType(slot);
 
   if (type === "爬塔") {
     return `${size}人｜爬塔`;
@@ -430,10 +465,10 @@ function getTeamLabel(
 function getSlotText(team) {
   const { slot, members } = team;
 
-  const currentMemberCount =
+  const memberCount =
     members.length;
 
-  const maximumMemberCount =
+  const maximum =
     getTeamSize(slot, members);
 
   const roleCount =
@@ -475,7 +510,7 @@ function getSlotText(team) {
   );
 
   lines.push(
-    `> 輸出 ${roleCount.dps}｜承傷 ${roleCount.tank}｜治療 ${roleCount.heal} ｜ 👥 \`${currentMemberCount}/${maximumMemberCount}\``
+    `> 輸出 ${roleCount.dps}｜承傷 ${roleCount.tank}｜治療 ${roleCount.heal} ｜ 👥 \`${memberCount}/${maximum}\``
   );
 
   return lines.join("\n");
@@ -492,26 +527,31 @@ function extractTeamsFromDocument(
     return [];
   }
 
-  const dateId = documentSnapshot.id;
+  const dateId =
+    documentSnapshot.id;
+
   const data =
     documentSnapshot.data() || {};
 
-  const slots = Array.isArray(data.slots)
-    ? data.slots
-    : [];
+  const slots =
+    Array.isArray(data.slots)
+      ? data.slots
+      : [];
 
   const teams = [];
 
   slots.forEach((slot) => {
-    if (!slot || typeof slot !== "object") {
+    if (
+      !slot ||
+      typeof slot !== "object"
+    ) {
       return;
     }
 
-    const members = Array.isArray(
-      slot.members
-    )
-      ? slot.members
-      : [];
+    const members =
+      Array.isArray(slot.members)
+        ? slot.members
+        : [];
 
     if (members.length === 0) {
       return;
@@ -566,7 +606,9 @@ async function getDailyAnnouncementTeams(
   ];
 }
 
-async function getAllFutureTeams(todayId) {
+async function getAllFutureTeams(
+  todayId
+) {
   const querySnapshot = await db
     .collection("schedule")
     .where(
@@ -636,39 +678,31 @@ function sortTeams(teams) {
         return 1;
       }
 
-      return String(
-        getEffectiveSlotTime(
-          teamA.slot
-        )
-      ).localeCompare(
-        String(
-          getEffectiveSlotTime(
-            teamB.slot
-          )
-        )
-      );
+      return 0;
     }
   );
 }
 
-function groupTeamsByDate(teams) {
-  const groupedTeams = {};
+function groupTeamsByDate(
+  teams
+) {
+  const grouped = {};
 
   teams.forEach((team) => {
-    if (!groupedTeams[team.dateId]) {
-      groupedTeams[team.dateId] = [];
+    if (!grouped[team.dateId]) {
+      grouped[team.dateId] = [];
     }
 
-    groupedTeams[team.dateId].push(
+    grouped[team.dateId].push(
       team
     );
   });
 
-  return groupedTeams;
+  return grouped;
 }
 
 // ==========================================
-// Discord message construction
+// Discord
 // ==========================================
 
 function buildDescription(
@@ -679,16 +713,16 @@ function buildDescription(
     return emptyMessage;
   }
 
-  const groupedTeams =
+  const grouped =
     groupTeamsByDate(teams);
 
   let description = "";
 
-  Object.keys(groupedTeams)
+  Object.keys(grouped)
     .sort()
     .forEach((dateId) => {
       const teamsText =
-        groupedTeams[dateId]
+        grouped[dateId]
           .map((team) =>
             getSlotText(team)
           )
@@ -697,35 +731,44 @@ function buildDescription(
       description +=
         `## ${formatDateTitle(
           dateId
-        )}\n\n` +
-        `${teamsText}\n\n`;
+        )}\n\n${teamsText}\n\n`;
     });
 
   if (description.length > 3800) {
     description =
-      description.slice(0, 3600) +
+      description.slice(
+        0,
+        3600
+      ) +
       "\n\n隊伍數量較多，請到報名頁查看完整列表。";
   }
 
   return description.trim();
 }
 
-async function sendDiscord(payload) {
-  const response = await fetch(WEBHOOK, {
-    method: "POST",
-    headers: {
-      "Content-Type":
-        "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+async function sendDiscord(
+  payload
+) {
+  const response = await fetch(
+    WEBHOOK,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(
+        payload
+      ),
+    }
+  );
 
   if (!response.ok) {
-    const responseText =
+    const text =
       await response.text();
 
     throw new Error(
-      `Discord webhook failed: ${response.status} ${responseText}`
+      `Discord webhook failed: ${response.status} ${text}`
     );
   }
 }
@@ -759,7 +802,7 @@ async function sendRecruitmentMessage({
 }
 
 // ==========================================
-// Daily announcement
+// Daily
 // ==========================================
 
 async function runDailyAnnouncement(
@@ -769,11 +812,11 @@ async function runDailyAnnouncement(
     addDaysToDateId(todayId, 1);
 
   console.log(
-    `Running daily announcement for ${todayId}`
+    `Daily mode: ${todayId}`
   );
 
   console.log(
-    `Checking all teams today and teams before 12:00 PM on ${tomorrowId}`
+    `Also checking ${tomorrowId} before 12:00 PM`
   );
 
   const teams = sortTeams(
@@ -788,7 +831,7 @@ async function runDailyAnnouncement(
 
   if (teams.length === 0) {
     console.log(
-      "No registered teams today or before noon tomorrow. Discord message skipped."
+      "No teams found. Discord message skipped."
     );
 
     return;
@@ -808,23 +851,25 @@ async function runDailyAnnouncement(
   });
 
   console.log(
-    `Daily announcement sent successfully. Teams: ${teams.length}`
+    "Daily announcement sent."
   );
 }
 
 // ==========================================
-// Saturday weekly announcement
+// Weekly
 // ==========================================
 
 async function runWeeklyAnnouncement(
   todayId
 ) {
   console.log(
-    `Running weekly future-team announcement from ${todayId}`
+    `Weekly mode from ${todayId}`
   );
 
   const teams = sortTeams(
-    await getAllFutureTeams(todayId)
+    await getAllFutureTeams(
+      todayId
+    )
   );
 
   console.log(
@@ -845,7 +890,7 @@ async function runWeeklyAnnouncement(
   });
 
   console.log(
-    `Weekly announcement sent successfully. Teams: ${teams.length}`
+    "Weekly announcement sent."
   );
 }
 
@@ -882,13 +927,13 @@ async function main() {
   }
 
   throw new Error(
-    `Invalid RUN_MODE "${RUN_MODE}". Use "daily" or "weekly".`
+    `Invalid RUN_MODE "${RUN_MODE}".`
   );
 }
 
 main().catch((error) => {
   console.error(
-    "Recruitment announcement failed:"
+    "Testing announcement failed:"
   );
 
   console.error(error);
