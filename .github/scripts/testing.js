@@ -16,7 +16,7 @@ const REQUIRED_ENVIRONMENT_VARIABLES = [
   "FIREBASE_PROJECT_ID",
   "FIREBASE_CLIENT_EMAIL",
   "FIREBASE_PRIVATE_KEY",
-  "DISCORD_WEBHOOK",
+  "DISCORD_WEBHOOK2",
 ];
 
 for (const variableName of REQUIRED_ENVIRONMENT_VARIABLES) {
@@ -44,7 +44,7 @@ initializeApp({
 
 const db = getFirestore();
 
-const WEBHOOK = process.env.DISCORD_WEBHOOK;
+const WEBHOOK = process.env.DISCORD_WEBHOOK2;
 const RUN_MODE = process.env.RUN_MODE || "daily";
 
 const SITE_URL =
