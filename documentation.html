@@ -348,11 +348,10 @@
     }
 
     .content{
-      min-width:0;
-      padding:34px clamp(24px,4vw,64px) 80px;
-      color:var(--text);
-      background:var(--panel);
-    }
+    padding:34px clamp(24px,4vw,64px) 80px;
+    overflow-y: auto;
+    height: calc(100vh - 118px);
+}
 
     .docHeader{
       margin-bottom:24px;
