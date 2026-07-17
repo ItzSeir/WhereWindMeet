@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>葉離 Minecraft｜教學與公告</title>
+  <title>夢回花深處｜教學與公告</title>
 
-  <link rel="icon" type="image/png" href="data/葉離.png">
+  <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
   <script>
     (function(){
       try{
-        const saved = localStorage.getItem("docs-theme");
+        const saved = localStorage.getItem("wwm-docs-theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
       }catch(error){
@@ -29,23 +29,27 @@
 
   <style>
     :root{
-      --bg:#f6f8fa;
-      --panel:#ffffff;
-      --panel-soft:#f6f8fa;
-      --border:#d0d7de;
-      --border-soft:#d8dee4;
-      --text:#1f2328;
-      --muted:#59636e;
-      --link:#0969da;
-      --green:#1f883d;
-      --green-soft:#dafbe1;
-      --orange:#9a6700;
-      --orange-soft:#fff8c5;
-      --red:#cf222e;
-      --red-soft:#ffebe9;
-      --purple:#8250df;
-      --purple-soft:#fbefff;
-      --shadow:0 8px 24px rgba(140,149,159,.18);
+      --bg:#0b1020;
+      --panel:rgba(17,25,48,.86);
+      --panel-soft:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --border-soft:rgba(255,255,255,.18);
+      --text:#eef2ff;
+      --muted:#a8b3cf;
+      --link:#7db5ff;
+      --green:#34d399;
+      --green-soft:rgba(52,211,153,.12);
+      --orange:#fbbf24;
+      --orange-soft:rgba(251,191,36,.12);
+      --red:#ff6b81;
+      --red-soft:rgba(255,107,129,.12);
+      --purple:#a78bfa;
+      --purple-soft:rgba(139,92,246,.14);
+      --shadow:0 18px 40px rgba(0,0,0,.28);
+      --site-sea:#6ea8ff;
+      --site-teal:#8b5cf6;
+      --site-ice:#60a5fa;
+      --site-warm:#f59e0b;
       --sidebar:286px;
       --toc:230px;
       --max:1500px;
@@ -53,24 +57,54 @@
 
 
     html[data-theme="dark"]{
-      --bg:#0d1117;
-      --panel:#161b22;
-      --panel-soft:#21262d;
-      --border:#30363d;
-      --border-soft:#30363d;
-      --text:#e6edf3;
-      --muted:#8b949e;
-      --link:#58a6ff;
-      --green:#3fb950;
-      --green-soft:#12261b;
-      --orange:#d29922;
-      --orange-soft:#2d250f;
-      --red:#f85149;
-      --red-soft:#2d1517;
-      --purple:#a371f7;
-      --purple-soft:#241a35;
-      --shadow:0 8px 24px rgba(0,0,0,.42);
+      --bg:#0b1020;
+      --panel:rgba(17,25,48,.90);
+      --panel-soft:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --border-soft:rgba(255,255,255,.18);
+      --text:#eef2ff;
+      --muted:#a8b3cf;
+      --link:#7db5ff;
+      --green:#34d399;
+      --green-soft:rgba(52,211,153,.12);
+      --orange:#fbbf24;
+      --orange-soft:rgba(251,191,36,.12);
+      --red:#ff6b81;
+      --red-soft:rgba(255,107,129,.12);
+      --purple:#a78bfa;
+      --purple-soft:rgba(139,92,246,.14);
+      --shadow:0 18px 40px rgba(0,0,0,.32);
+      --site-sea:#6ea8ff;
+      --site-teal:#8b5cf6;
+      --site-ice:#60a5fa;
+      --site-warm:#f59e0b;
     }
+
+
+    html[data-theme="light"]{
+      --bg:#eef3fb;
+      --panel:rgba(255,255,255,.86);
+      --panel-soft:rgba(91,120,180,.08);
+      --border:rgba(67,89,130,.16);
+      --border-soft:rgba(67,89,130,.22);
+      --text:#17233c;
+      --muted:#64748b;
+      --link:#2563eb;
+      --green:#059669;
+      --green-soft:rgba(16,185,129,.11);
+      --orange:#b7791f;
+      --orange-soft:rgba(245,158,11,.11);
+      --red:#dc3958;
+      --red-soft:rgba(255,107,129,.10);
+      --purple:#7c3aed;
+      --purple-soft:rgba(139,92,246,.11);
+      --shadow:0 18px 40px rgba(65,86,125,.16);
+      --site-sea:#4f8ef7;
+      --site-teal:#7c3aed;
+      --site-ice:#60a5fa;
+      --site-warm:#f59e0b;
+    }
+
 
     .themeToggle{
       display:inline-flex;
@@ -646,6 +680,535 @@
       background:#ffffff;
     }
 
+
+    /* =========================
+       葉離／WhereWindMeet 風格
+    ========================= */
+
+    body{
+      background:
+        radial-gradient(circle at 10% -10%, color-mix(in srgb, var(--site-teal) 16%, transparent), transparent 34%),
+        radial-gradient(circle at 88% 6%, color-mix(in srgb, var(--site-ice) 15%, transparent), transparent 30%),
+        var(--bg);
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background-image:
+        linear-gradient(color-mix(in srgb, var(--site-sea) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--site-sea) 5%, transparent) 1px, transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.7), transparent 78%);
+    }
+
+    .topbar{
+      margin:12px 14px 0;
+      min-height:66px;
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand img{
+      border-radius:12px;
+      box-shadow:0 8px 18px color-mix(in srgb, var(--site-sea) 18%, transparent);
+    }
+
+    .brandText strong{
+      color:var(--site-sea);
+    }
+
+    .searchInput{
+      border-radius:999px;
+      padding-left:40px;
+    }
+
+    .searchInput:focus{
+      border-color:var(--site-teal);
+      box-shadow:0 0 0 3px color-mix(in srgb, var(--site-teal) 20%, transparent);
+    }
+
+    .themeToggle,
+    .mobileMenuBtn{
+      border-radius:999px;
+    }
+
+    .themeToggle:hover{
+      color:var(--site-sea);
+      border-color:var(--site-teal);
+      background:color-mix(in srgb, var(--site-teal) 10%, var(--panel));
+    }
+
+    .layout{
+      width:min(calc(100% - 28px), var(--max));
+      margin:14px auto 28px;
+      min-height:calc(100vh - 96px);
+      border:1px solid var(--border);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:var(--panel);
+    }
+
+    .sidebar,
+    .content,
+    .toc{
+      top:94px;
+      height:calc(100vh - 108px);
+    }
+
+    .sidebarTitle{
+      color:var(--site-sea);
+      letter-spacing:.02em;
+    }
+
+    .docItem{
+      border-radius:12px;
+      transition:.16s ease;
+    }
+
+    .docItem:hover{
+      transform:translateX(3px);
+      background:color-mix(in srgb, var(--site-teal) 9%, var(--panel-soft));
+    }
+
+    .docItem.active{
+      color:#fff;
+      background:linear-gradient(135deg, var(--site-sea), var(--site-teal));
+      box-shadow:0 10px 22px color-mix(in srgb, var(--site-sea) 24%, transparent);
+    }
+
+    .statusBox{
+      border-style:dashed;
+      border-radius:14px;
+    }
+
+    .docHeader{
+      position:relative;
+      padding:22px 24px;
+      border:1px solid var(--border);
+      border-radius:20px;
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb, var(--site-sea) 7%, var(--panel)),
+          color-mix(in srgb, var(--site-teal) 7%, var(--panel))
+        );
+      overflow:hidden;
+    }
+
+    .docHeader::after{
+      content:"";
+      position:absolute;
+      right:-48px;
+      bottom:-62px;
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      border:24px solid color-mix(in srgb, var(--site-sea) 7%, transparent);
+      pointer-events:none;
+    }
+
+    .docTitle{
+      position:relative;
+      z-index:1;
+      color:var(--text);
+    }
+
+    .breadcrumb,
+    .docFile{
+      position:relative;
+      z-index:1;
+    }
+
+    .markdownBody h2{
+      border-bottom-color:color-mix(in srgb, var(--site-teal) 30%, var(--border));
+    }
+
+    .markdownBody h2::before{
+      content:"";
+      display:inline-block;
+      width:6px;
+      height:20px;
+      margin-right:10px;
+      border-radius:999px;
+      vertical-align:-2px;
+      background:linear-gradient(180deg, var(--site-sea), var(--site-teal));
+    }
+
+    .markdownBody blockquote{
+      border-left-color:var(--site-teal);
+      border-radius:0 12px 12px 0;
+    }
+
+    .tocLink{
+      border-radius:8px;
+      transition:.15s ease;
+    }
+
+    .tocLink:hover{
+      color:var(--site-sea);
+      border-left-color:var(--site-teal);
+      background:color-mix(in srgb, var(--site-teal) 7%, transparent);
+    }
+
+
+    .tocLink.active{
+      color:var(--site-sea);
+      font-weight:900;
+      border-left-color:var(--site-teal);
+      background:color-mix(in srgb, var(--site-teal) 12%, transparent);
+    }
+
+    .tocLink.active::before{
+      content:"●";
+      display:inline-block;
+      margin-right:7px;
+      color:var(--site-teal);
+      font-size:8px;
+      vertical-align:2px;
+    }
+
+    .searchResults{
+      border-radius:16px;
+    }
+
+    .searchResult{
+      border-radius:10px;
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        margin:8px 8px 0;
+        border-radius:18px;
+      }
+
+      .layout{
+        width:calc(100% - 16px);
+        margin:10px auto 18px;
+        border-radius:20px;
+      }
+
+      .sidebar{
+        top:0;
+        height:100vh;
+        border-radius:0 20px 20px 0;
+      }
+
+      .content{
+        height:auto;
+      }
+
+      .docHeader{
+        padding:18px;
+        border-radius:18px;
+      }
+    }
+
+
+    /* =========================================
+       WhereWindMeet / PVERegistration Theme
+       ========================================= */
+
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 88%, #18233f));
+      background-attachment:fixed;
+    }
+
+    body::before{
+      display:none;
+    }
+
+    .topbar{
+      position:sticky;
+      top:12px;
+      width:min(calc(100% - 40px), 1100px);
+      min-height:64px;
+      margin:12px auto 0;
+      padding:10px 14px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:color-mix(in srgb, var(--panel) 76%, transparent);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+    }
+
+    .brand img{
+      width:38px;
+      height:38px;
+      border-radius:13px;
+      border-color:var(--border);
+      box-shadow:0 8px 18px rgba(110,168,255,.20);
+    }
+
+    .brandText{
+      color:var(--text);
+    }
+
+    .brandText strong{
+      color:var(--muted);
+    }
+
+    .searchInput{
+      height:40px;
+      border-radius:999px;
+      background:var(--panel-soft);
+      border-color:var(--border);
+    }
+
+    .searchInput:focus{
+      border-color:rgba(110,168,255,.65);
+      box-shadow:0 0 0 3px rgba(110,168,255,.15);
+    }
+
+    .searchKey{
+      border-radius:8px;
+      background:var(--panel-soft);
+    }
+
+    .themeToggle{
+      border-radius:999px;
+      background:var(--panel-soft);
+    }
+
+    .topLink{
+      padding:8px 13px;
+      border-radius:999px;
+      color:var(--muted);
+    }
+
+    .topLink:hover{
+      color:var(--text);
+      background:var(--panel-soft);
+    }
+
+    .layout{
+      width:min(calc(100% - 40px), var(--max));
+      margin:20px auto 34px;
+      min-height:calc(100vh - 118px);
+      border:1px solid var(--border);
+      border-radius:28px;
+      overflow:hidden;
+      background:color-mix(in srgb, var(--panel) 88%, transparent);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+
+    .sidebar,
+    .content,
+    .toc{
+      top:96px;
+      height:calc(100vh - 118px);
+      background:transparent;
+    }
+
+    .sidebar{
+      border-right-color:var(--border);
+    }
+
+    .toc{
+      border-left-color:var(--border);
+    }
+
+    .sidebarTitle,
+    .tocTitle{
+      color:var(--text);
+    }
+
+    .sidebarMeta,
+    .statusBox,
+    .docFile,
+    .breadcrumb,
+    .tocLink{
+      color:var(--muted);
+    }
+
+    .docItem{
+      border:1px solid transparent;
+      border-radius:14px;
+      transition:.18s ease;
+    }
+
+    .docItem:hover{
+      transform:translateX(3px);
+      color:var(--text);
+      background:rgba(255,255,255,.07);
+      border-color:rgba(255,255,255,.08);
+    }
+
+    .docItem.active,
+    html[data-theme="dark"] .docItem.active{
+      color:#fff;
+      background:linear-gradient(135deg, var(--site-sea), var(--site-teal));
+      border-color:rgba(255,255,255,.18);
+      box-shadow:0 10px 24px rgba(110,168,255,.20);
+    }
+
+    .statusBox{
+      border-radius:16px;
+      background:var(--panel-soft);
+      border-color:var(--border);
+    }
+
+    .content{
+      padding:34px clamp(24px,4vw,64px) 80px;
+    }
+
+    .docHeader{
+      padding:26px;
+      border:1px solid var(--border);
+      border-radius:24px;
+      background:
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 38%),
+        linear-gradient(135deg, rgba(110,168,255,.12), rgba(139,92,246,.08));
+      box-shadow:0 14px 30px rgba(0,0,0,.12);
+    }
+
+    .docHeader::after{
+      border-color:rgba(110,168,255,.08);
+    }
+
+    .docTitle{
+      color:var(--text);
+      font-size:clamp(28px,4vw,40px);
+    }
+
+    .markdownBody{
+      color:var(--text);
+    }
+
+    .markdownBody h2{
+      border-bottom-color:var(--border);
+    }
+
+    .markdownBody h2::before{
+      background:linear-gradient(180deg, var(--site-sea), var(--site-teal));
+    }
+
+    .markdownBody blockquote,
+    .markdownBody pre,
+    .markdownBody tr:nth-child(2n){
+      background:var(--panel-soft);
+    }
+
+    .markdownBody blockquote{
+      border-left-color:var(--site-sea);
+    }
+
+    .markdownBody code{
+      background:rgba(255,255,255,.09);
+    }
+
+    .markdownBody table{
+      border-radius:16px;
+    }
+
+    .markdownBody th,
+    .markdownBody td{
+      border-color:var(--border);
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info{
+      border-color:rgba(110,168,255,.38);
+      background:rgba(110,168,255,.11);
+    }
+
+    .markdownBody .warning{
+      border-color:rgba(245,158,11,.42);
+      background:rgba(245,158,11,.10);
+    }
+
+    .markdownBody .danger{
+      border-color:rgba(255,107,129,.42);
+      background:rgba(255,107,129,.10);
+    }
+
+    .tocLink{
+      border-radius:10px;
+    }
+
+    .tocLink:hover{
+      color:var(--text);
+      border-left-color:var(--site-sea);
+      background:rgba(255,255,255,.06);
+    }
+
+    .tocLink.active{
+      color:#ffffff;
+      font-weight:900;
+      border-left:3px solid var(--site-teal);
+      background:linear-gradient(135deg, #4f8ef7, #7c3aed);
+      box-shadow:0 8px 18px rgba(79,142,247,.22);
+    }
+
+    .tocLink.active::before{
+      color:#ffffff;
+    }
+
+    html[data-theme="light"] .tocLink{
+      color:#53627a;
+    }
+
+    html[data-theme="light"] .tocLink:hover{
+      color:#17233c;
+      background:rgba(79,142,247,.10);
+    }
+
+    html[data-theme="light"] .tocLink.active{
+      color:#ffffff;
+      background:linear-gradient(135deg, #4f8ef7, #7c3aed);
+    }
+
+    .searchResults{
+      border-radius:18px;
+      background:color-mix(in srgb, var(--panel) 96%, transparent);
+      border-color:var(--border);
+      backdrop-filter:blur(18px);
+    }
+
+    .searchResult{
+      border-radius:12px;
+    }
+
+    .searchResult:hover{
+      background:var(--panel-soft);
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        top:8px;
+        width:calc(100% - 20px);
+        margin-top:8px;
+        border-radius:24px;
+      }
+
+      .layout{
+        width:calc(100% - 20px);
+        margin-top:12px;
+        border-radius:24px;
+      }
+
+      .sidebar{
+        top:0;
+        height:100vh;
+        background:color-mix(in srgb, var(--panel) 98%, transparent);
+        border-radius:0 22px 22px 0;
+      }
+
+      .content{
+        height:auto;
+      }
+    }
+
     @media (max-width:1100px){
       .layout{
         grid-template-columns:var(--sidebar) minmax(0,1fr);
@@ -708,14 +1271,14 @@
   </style>
 </head>
 
-<body>
+<body class="wherewindmeet-docs-page">
   <header class="topbar">
-    <a class="brand" href="minecraft">
-      <img src="https://raw.githubusercontent.com/ItzSeir/ItzSeir/bc6a1e6687c70f0eb1ddcbd431e869bf2262dadb/Profile%20Pitcure/%E8%91%89%E9%9B%A2.png" alt="葉離">
+    <a class="brand" href="index.html">
+      <img src="https://raw.githubusercontent.com/ItzSeir/ItzSeir/bc6a1e6687c70f0eb1ddcbd431e869bf2262dadb/Profile%20Pitcure/%E8%91%89%E9%9B%A2.png" alt="WhereWindMeet">
       <span class="brandText">
-        <span>葉離社群</span>
+        <span>WhereWindMeet</span>
         <span class="slash">/</span>
-        <strong>麥塊教學及公告</strong>
+        <strong>使用教學及公告</strong>
       </span>
     </a>
 
@@ -723,7 +1286,7 @@
 
     <div class="searchWrap">
       <span class="searchIcon">⌕</span>
-      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋教學、資訊或公告">
+      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋 WhereWindMeet 教學、資訊或公告">
       <span class="searchKey">/</span>
       <div class="searchResults" id="searchResults"></div>
     </div>
@@ -733,15 +1296,15 @@
       <span id="themeText">夜晚</span>
     </button>
 
-    <a class="topLink" href="minecraft">返回麥塊首頁</a>
-    <a class="topLink" href="index.html">社群首頁</a>
+    <a class="topLink" href="index.html">返回 WhereWindMeet</a>
+    <a class="topLink" href="PVERegistration.html">副本報名</a>
   </header>
 
   <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
   <div class="layout">
     <aside class="sidebar" id="sidebar">
-      <h2 class="sidebarTitle">教學與資訊</h2>
+      <h2 class="sidebarTitle">WhereWindMeet 文件</h2>
       <p class="sidebarMeta">
       </p>
 
@@ -760,12 +1323,12 @@
     <main class="content">
       <header class="docHeader">
         <div class="breadcrumb">
-          <span>Minecraft</span>
+          <span>WhereWindMeet</span>
           <span>›</span>
           <span id="breadcrumbName">Documentation</span>
         </div>
 
-        <h1 class="docTitle" id="docTitle">教學與公告</h1>
+        <h1 class="docTitle" id="docTitle">使用教學與公告</h1>
         <div class="docFile" id="docFile">從左側選擇一篇文章</div>
       </header>
 
@@ -794,13 +1357,13 @@
       owner: "ItzSeir",
 
       // Repository name, for example: ItzSeir or WhereWindMeet
-      repo: "FloestSMP",
+      repo: "WhereWindMeet",
 
       // Branch name
       branch: "main",
 
       // Folder containing all .md files
-      folder: "data/minecraft-docs",
+      folder: "data/wherewindmeet-docs",
 
       // Open this file first. Leave empty to open the first file.
       defaultFile: "01-start.md"
@@ -1006,10 +1569,11 @@ el.markdownBody.innerHTML = safeHtml;
 el.docTitle.textContent = title;
 el.docFile.textContent = `${DOCS_CONFIG.folder}/${file.name}`;
 el.breadcrumbName.textContent = title;
-document.title = `${title}｜Minecraft Docs`;
+document.title = `${title}｜WhereWindMeet Docs`;
 
         prepareHeadings();
         buildToc();
+        updateActiveToc();
 
         if(updateHash){
           history.replaceState(null, "", `#doc=${encodeURIComponent(file.name)}`);
@@ -1075,6 +1639,45 @@ document.title = `${title}｜Minecraft Docs`;
           ${escapeHtml(heading.textContent)}
         </a>
       `).join("");
+    }
+
+
+    function updateActiveToc(){
+      const headings = Array.from(
+        el.markdownBody.querySelectorAll("h2, h3")
+      );
+
+      const links = Array.from(
+        el.tocList.querySelectorAll(".tocLink")
+      );
+
+      if(!headings.length || !links.length) return;
+
+      let currentId = headings[0].id;
+
+      for(const heading of headings){
+        const top = heading.getBoundingClientRect().top;
+
+        if(top <= 150){
+          currentId = heading.id;
+        }else{
+          break;
+        }
+      }
+
+      links.forEach(link => {
+        const isActive =
+          link.getAttribute("href") === `#${currentId}`;
+
+        link.classList.toggle("active", isActive);
+
+        if(isActive){
+          link.scrollIntoView({
+            block:"nearest",
+            behavior:"smooth"
+          });
+        }
+      });
     }
 
     async function searchDocuments(keyword){
@@ -1213,11 +1816,24 @@ document.title = `${title}｜Minecraft Docs`;
     el.sidebarBackdrop.addEventListener("click", closeSidebar);
 
 
+    window.addEventListener(
+      "scroll",
+      updateActiveToc,
+      { passive:true }
+    );
+
+    window.addEventListener(
+      "resize",
+      updateActiveToc,
+      { passive:true }
+    );
+
+
     function applyTheme(theme){
       const finalTheme = theme === "dark" ? "dark" : "light";
 
       document.documentElement.dataset.theme = finalTheme;
-      localStorage.setItem("docs-theme", finalTheme);
+      localStorage.setItem("wwm-docs-theme", finalTheme);
 
       const isDark = finalTheme === "dark";
 
@@ -1231,7 +1847,7 @@ document.title = `${title}｜Minecraft Docs`;
     }
 
     function initTheme(){
-      const savedTheme = localStorage.getItem("docs-theme");
+      const savedTheme = localStorage.getItem("wwm-docs-theme");
       const systemPrefersDark =
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches;
