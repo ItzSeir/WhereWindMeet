@@ -1,0 +1,1224 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WhereWindMeet｜Documentation</title>
+
+  <link rel="icon" type="image/png" href="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f6f8fa;
+      --panel:#ffffff;
+      --panel-soft:#f6f8fa;
+      --border:#d0d7de;
+      --border-soft:#d8dee4;
+      --text:#1f2328;
+      --muted:#59636e;
+      --link:#0969da;
+      --green:#1f883d;
+      --green-soft:#dafbe1;
+      --orange:#9a6700;
+      --orange-soft:#fff8c5;
+      --red:#cf222e;
+      --red-soft:#ffebe9;
+      --purple:#8250df;
+      --purple-soft:#fbefff;
+      --shadow:0 8px 24px rgba(140,149,159,.18);
+      --sidebar:286px;
+      --toc:230px;
+      --max:1500px;
+    }
+
+
+    html[data-theme="dark"]{
+      --bg:#0d1117;
+      --panel:#161b22;
+      --panel-soft:#21262d;
+      --border:#30363d;
+      --border-soft:#30363d;
+      --text:#e6edf3;
+      --muted:#8b949e;
+      --link:#58a6ff;
+      --green:#3fb950;
+      --green-soft:#12261b;
+      --orange:#d29922;
+      --orange-soft:#2d250f;
+      --red:#f85149;
+      --red-soft:#2d1517;
+      --purple:#a371f7;
+      --purple-soft:#241a35;
+      --shadow:0 8px 28px rgba(0,0,0,.35);
+    }
+
+    html[data-theme="dark"] body{
+      background:var(--bg);
+    }
+
+    html[data-theme="dark"] .topbar,
+    html[data-theme="dark"] .sidebar,
+    html[data-theme="dark"] .content,
+    html[data-theme="dark"] .toc,
+    html[data-theme="dark"] .searchResults{
+      background:var(--panel);
+    }
+
+    html[data-theme="dark"] .searchInput,
+    html[data-theme="dark"] .searchKey,
+    html[data-theme="dark"] .mobileMenuBtn{
+      color:var(--text);
+      background:var(--panel-soft);
+    }
+
+    html[data-theme="dark"] .searchInput:focus{
+      background:var(--panel);
+    }
+
+    html[data-theme="dark"] .markdownBody pre{
+      background:#161b22;
+    }
+
+    html[data-theme="dark"] .markdownBody code{
+      background:rgba(110,118,129,.28);
+    }
+
+    html[data-theme="dark"] .markdownBody tr:nth-child(2n){
+      background:var(--panel-soft);
+    }
+
+    .themeToggle{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:38px;
+      padding:0 12px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      color:var(--text);
+      background:var(--panel);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+      transition:.15s ease;
+    }
+
+    .themeToggle:hover{
+      border-color:var(--link);
+      color:var(--link);
+    }
+
+    .themeIcon{
+      font-size:16px;
+      line-height:1;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html{ scroll-behavior:smooth; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:var(--bg);
+      font-family:"Noto Sans TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    button,input{ font:inherit; }
+    a{ color:var(--link); }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:10px 20px;
+      border-bottom:1px solid var(--border);
+      background:rgba(255,255,255,.96);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:max-content;
+      color:var(--text);
+      text-decoration:none;
+      font-weight:800;
+    }
+
+    .brand img{
+      width:34px;
+      height:34px;
+      border-radius:8px;
+      object-fit:cover;
+      border:1px solid var(--border);
+    }
+
+    .brandText{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:14px;
+    }
+
+    .brandText .slash{ color:var(--muted); font-weight:500; }
+    .brandText strong{ font-weight:800; }
+
+    .searchWrap{
+      flex:1;
+      max-width:680px;
+      margin-left:auto;
+      position:relative;
+    }
+
+    .searchInput{
+      width:100%;
+      height:38px;
+      padding:0 42px 0 36px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      color:var(--text);
+      background:var(--panel-soft);
+      outline:none;
+      transition:.15s ease;
+    }
+
+    .searchInput:focus{
+      border-color:#54aeff;
+      background:#fff;
+      box-shadow:0 0 0 3px rgba(84,174,255,.25);
+    }
+
+    .searchIcon{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--muted);
+      pointer-events:none;
+    }
+
+    .searchKey{
+      position:absolute;
+      right:9px;
+      top:50%;
+      transform:translateY(-50%);
+      padding:2px 7px;
+      border:1px solid var(--border);
+      border-radius:5px;
+      color:var(--muted);
+      background:#fff;
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .topLink{
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .topLink:hover{ color:var(--link); }
+
+    .mobileMenuBtn{
+      display:none;
+      width:38px;
+      height:38px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:#fff;
+      cursor:pointer;
+    }
+
+    .layout{
+      width:min(100%, var(--max));
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:var(--sidebar) minmax(0,1fr) var(--toc);
+      min-height:calc(100vh - 64px);
+    }
+
+    .sidebar{
+      position:sticky;
+      top:64px;
+      height:calc(100vh - 64px);
+      overflow:auto;
+      padding:24px 18px 40px;
+      border-right:1px solid var(--border);
+      background:#fff;
+    }
+
+    .sidebarTitle{
+      margin:0 0 14px;
+      padding:0 8px;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .sidebarMeta{
+      margin:0 8px 18px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .docList{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+
+    .docItem{
+      display:flex;
+      align-items:flex-start;
+      gap:9px;
+      width:100%;
+      padding:9px 10px;
+      border:0;
+      border-radius:7px;
+      color:var(--text);
+      background:transparent;
+      text-align:left;
+      cursor:pointer;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .docItem:hover{ background:var(--panel-soft); }
+
+    .docItem.active{
+      color:#fff;
+      background:#0969da;
+      font-weight:700;
+    }
+
+    .docIcon{
+      margin-top:1px;
+      flex:0 0 auto;
+      opacity:.8;
+    }
+
+    .docName{
+      min-width:0;
+      overflow-wrap:anywhere;
+    }
+
+    .statusBox{
+      margin:14px 8px 0;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      color:var(--muted);
+      background:var(--panel-soft);
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    .content{
+      min-width:0;
+      padding:34px clamp(24px,4vw,64px) 80px;
+      background:#fff;
+    }
+
+    .docHeader{
+      margin-bottom:24px;
+      padding-bottom:18px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .breadcrumb{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      margin-bottom:12px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .docTitle{
+      margin:0;
+      font-size:32px;
+      line-height:1.25;
+      letter-spacing:-.025em;
+      font-weight:800;
+    }
+
+    .docFile{
+      margin-top:9px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .markdownBody{
+      max-width:920px;
+      font-size:15px;
+      line-height:1.78;
+      word-wrap:break-word;
+    }
+
+    .markdownBody > :first-child{ margin-top:0; }
+    .markdownBody > :last-child{ margin-bottom:0; }
+
+    .markdownBody h1,
+    .markdownBody h2,
+    .markdownBody h3,
+    .markdownBody h4{
+      scroll-margin-top:86px;
+      line-height:1.3;
+      font-weight:800;
+    }
+
+    .markdownBody h1{
+      margin:0 0 22px;
+      padding-bottom:10px;
+      border-bottom:1px solid var(--border);
+      font-size:30px;
+    }
+
+    .markdownBody h2{
+      margin:38px 0 16px;
+      padding-bottom:8px;
+      border-bottom:1px solid var(--border);
+      font-size:23px;
+    }
+
+    .markdownBody h3{
+      margin:28px 0 12px;
+      font-size:19px;
+    }
+
+    .markdownBody p{ margin:0 0 16px; }
+
+    .markdownBody ul,
+    .markdownBody ol{
+      margin:0 0 16px;
+      padding-left:28px;
+    }
+
+    .markdownBody li + li{ margin-top:5px; }
+
+    .markdownBody blockquote{
+      margin:18px 0;
+      padding:10px 16px;
+      border-left:4px solid var(--border);
+      color:var(--muted);
+      background:var(--panel-soft);
+    }
+
+    .markdownBody code{
+      padding:.18em .38em;
+      border-radius:5px;
+      background:rgba(175,184,193,.22);
+      font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+      font-size:85%;
+    }
+
+    .markdownBody pre{
+      overflow:auto;
+      margin:18px 0;
+      padding:16px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:#f6f8fa;
+      line-height:1.5;
+    }
+
+    .markdownBody pre code{
+      padding:0;
+      background:transparent;
+      font-size:13px;
+    }
+
+    .markdownBody table{
+      width:100%;
+      display:block;
+      overflow:auto;
+      border-collapse:collapse;
+      margin:18px 0;
+    }
+
+    .markdownBody th,
+    .markdownBody td{
+      padding:8px 12px;
+      border:1px solid var(--border);
+      text-align:left;
+    }
+
+    .markdownBody tr:nth-child(2n){ background:var(--panel-soft); }
+
+    .markdownBody img{
+      max-width:100%;
+      height:auto;
+      border-radius:8px;
+      border:1px solid var(--border);
+    }
+
+    .markdownBody hr{
+      height:1px;
+      margin:28px 0;
+      border:0;
+      background:var(--border);
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info,
+    .markdownBody .warning,
+    .markdownBody .danger{
+      margin:18px 0;
+      padding:14px 16px;
+      border:1px solid;
+      border-radius:7px;
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info{
+      border-color:#54aeff;
+      background:#ddf4ff;
+    }
+
+    .markdownBody .warning{
+      border-color:#d4a72c;
+      background:var(--orange-soft);
+    }
+
+    .markdownBody .danger{
+      border-color:#ff8182;
+      background:var(--red-soft);
+    }
+
+    .emptyState{
+      padding:60px 20px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .emptyState strong{
+      display:block;
+      margin-bottom:8px;
+      color:var(--text);
+      font-size:20px;
+    }
+
+    .toc{
+      position:sticky;
+      top:64px;
+      height:calc(100vh - 64px);
+      overflow:auto;
+      padding:30px 20px;
+      border-left:1px solid var(--border);
+      background:#fff;
+    }
+
+    .tocTitle{
+      margin:0 0 12px;
+      color:var(--text);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .tocList{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .tocLink{
+      padding:5px 8px;
+      border-left:2px solid transparent;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .tocLink:hover{
+      color:var(--link);
+      border-left-color:var(--link);
+    }
+
+    .tocLink.level3{ padding-left:20px; }
+
+    .loading{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .spinner{
+      width:18px;
+      height:18px;
+      border:2px solid var(--border);
+      border-top-color:var(--link);
+      border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    .searchResults{
+      position:absolute;
+      left:0;
+      right:0;
+      top:44px;
+      display:none;
+      max-height:420px;
+      overflow:auto;
+      padding:7px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+
+    .searchResults.open{ display:block; }
+
+    .searchResult{
+      display:block;
+      width:100%;
+      padding:10px 11px;
+      border:0;
+      border-radius:6px;
+      color:var(--text);
+      background:transparent;
+      text-align:left;
+      cursor:pointer;
+    }
+
+    .searchResult:hover{ background:var(--panel-soft); }
+
+    .searchResult strong{
+      display:block;
+      margin-bottom:3px;
+      font-size:13px;
+    }
+
+    .searchResult span{
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    @media (max-width:1100px){
+      .layout{
+        grid-template-columns:var(--sidebar) minmax(0,1fr);
+      }
+      .toc{ display:none; }
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        flex-wrap:wrap;
+        gap:10px;
+      }
+
+      .brandText .slash,
+      .brandText strong{ display:none; }
+
+      .searchWrap{
+        order:3;
+        width:100%;
+        max-width:none;
+      }
+
+      .topLink{ display:none; }
+      .mobileMenuBtn{ display:grid; place-items:center; margin-left:auto; }
+
+      .layout{
+        display:block;
+      }
+
+      .sidebar{
+        position:fixed;
+        top:0;
+        left:0;
+        z-index:1500;
+        width:min(88vw, 320px);
+        height:100vh;
+        transform:translateX(-105%);
+        transition:transform .2s ease;
+        box-shadow:var(--shadow);
+      }
+
+      .sidebar.open{ transform:translateX(0); }
+
+      .sidebarBackdrop{
+        position:fixed;
+        inset:0;
+        z-index:1400;
+        display:none;
+        background:rgba(31,35,40,.35);
+      }
+
+      .sidebarBackdrop.open{ display:block; }
+
+      .content{
+        padding:26px 18px 60px;
+      }
+
+      .docTitle{ font-size:27px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <img src="https://raw.githubusercontent.com/ItzSeir/ItzSeir/bc6a1e6687c70f0eb1ddcbd431e869bf2262dadb/Profile%20Pitcure/%E8%91%89%E9%9B%A2.png" alt="WhereWindMeet">
+      <span class="brandText">
+        <span>WhereWindMeet</span>
+        <span class="slash">/</span>
+        <strong>Documentation</strong>
+      </span>
+    </a>
+
+    <button class="mobileMenuBtn" id="mobileMenuBtn" type="button" aria-label="開啟文章列表">☰</button>
+
+    <div class="searchWrap">
+      <span class="searchIcon">⌕</span>
+      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋使用教學、系統資訊或公告">
+      <span class="searchKey">/</span>
+      <div class="searchResults" id="searchResults"></div>
+    </div>
+
+    <button class="themeToggle" id="themeToggle" type="button" aria-label="切換顯示主題">
+      <span class="themeIcon" id="themeIcon">◐</span>
+      <span id="themeText">主題</span>
+    </button>
+
+    <a class="topLink" href="../index.html">返回 WhereWindMeet</a>
+    <a class="topLink" href="../index.html">網站首頁</a>
+  </header>
+
+  <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="sidebarTitle">WhereWindMeet 文件</h2>
+      <p class="sidebarMeta">
+      </p>
+
+      <div class="docList" id="docList">
+        <div class="loading">
+          <span class="spinner"></span>
+          正在讀取文章…
+        </div>
+      </div>
+
+      <div class="statusBox" id="statusBox">
+        準備載入文件。
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="docHeader">
+        <div class="breadcrumb">
+          <span>WhereWindMeet</span>
+          <span>›</span>
+          <span id="breadcrumbName">Documentation</span>
+        </div>
+
+        <h1 class="docTitle" id="docTitle">使用教學與系統資訊</h1>
+        <div class="docFile" id="docFile">從左側選擇一篇文章</div>
+      </header>
+
+      <article class="markdownBody" id="markdownBody">
+        <div class="emptyState">
+          <strong>正在讀取文章列表</strong>
+          正在讀取文章列表。
+        </div>
+      </article>
+    </main>
+
+    <aside class="toc">
+      <h2 class="tocTitle">本頁內容</h2>
+      <nav class="tocList" id="tocList">
+        <span style="color:var(--muted);font-size:12px;">尚未選擇文章</span>
+      </nav>
+    </aside>
+  </div>
+
+  <script>
+    /* =========================================================
+       ONLY CHANGE THIS CONFIG
+       ========================================================= */
+    const DOCS_CONFIG = {
+      // GitHub account name
+      owner: "ItzSeir",
+
+      // Repository name, for example: ItzSeir or WhereWindMeet
+      repo: "WhereWindMeet",
+
+      // Branch name
+      branch: "main",
+
+      // Folder containing all .md files
+      folder: "data/wherewindmeet-docs",
+
+      // Open this file first. Leave empty to open the first file.
+      defaultFile: "01-start.md"
+    };
+
+    /* =========================================================
+       APPLICATION
+       ========================================================= */
+    const state = {
+      files: [],
+      documents: new Map(),
+      activeFile: ""
+    };
+
+    const el = {
+      docList: document.getElementById("docList"),
+      statusBox: document.getElementById("statusBox"),
+      markdownBody: document.getElementById("markdownBody"),
+      docTitle: document.getElementById("docTitle"),
+      docFile: document.getElementById("docFile"),
+      breadcrumbName: document.getElementById("breadcrumbName"),
+      tocList: document.getElementById("tocList"),
+      searchInput: document.getElementById("searchInput"),
+      searchResults: document.getElementById("searchResults"),
+      sidebar: document.getElementById("sidebar"),
+      mobileMenuBtn: document.getElementById("mobileMenuBtn"),
+      sidebarBackdrop: document.getElementById("sidebarBackdrop"),
+      themeToggle: document.getElementById("themeToggle"),
+      themeIcon: document.getElementById("themeIcon"),
+      themeText: document.getElementById("themeText")
+    };
+
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      headerIds: false,
+      mangle: false
+    });
+
+    function apiFolderUrl(){
+      const path = DOCS_CONFIG.folder
+        .split("/")
+        .map(encodeURIComponent)
+        .join("/");
+
+      return `https://api.github.com/repos/${encodeURIComponent(DOCS_CONFIG.owner)}/${encodeURIComponent(DOCS_CONFIG.repo)}/contents/${path}?ref=${encodeURIComponent(DOCS_CONFIG.branch)}`;
+    }
+
+    function cleanFilename(filename){
+      return filename
+        .replace(/\.md$/i, "")
+        .replace(/^\d+[-_. ]*/, "")
+        .replace(/[-_]+/g, " ")
+        .trim();
+    }
+
+    function titleFromMarkdown(markdown, fallback){
+      const match = markdown.match(/^#\s+(.+)$/m);
+      return match ? match[1].trim() : cleanFilename(fallback);
+    }
+
+    function fileOrder(name){
+      const match = name.match(/^(\d+)/);
+      return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+    }
+
+    function slugify(text, index){
+      const base = text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\p{L}\p{N}\s-]/gu, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
+      return base || `section-${index}`;
+    }
+
+    async function loadFolder(){
+      try{
+        el.statusBox.textContent = "正在從 GitHub 讀取文件資料夾…";
+
+        const response = await fetch(apiFolderUrl(), {
+          headers: { "Accept": "application/vnd.github+json" },
+          cache: "no-store"
+        });
+
+        if(!response.ok){
+          throw new Error(`GitHub API ${response.status}`);
+        }
+
+        const items = await response.json();
+
+        state.files = items
+          .filter(item => item.type === "file" && /\.md$/i.test(item.name))
+          .sort((a,b) => {
+            const orderDiff = fileOrder(a.name) - fileOrder(b.name);
+            return orderDiff || a.name.localeCompare(b.name, "zh-Hant");
+          });
+
+        if(!state.files.length){
+          throw new Error("資料夾內沒有找到 Markdown 文件");
+        }
+
+        renderFileList();
+
+        el.statusBox.textContent = `已找到 ${state.files.length} 篇文章。`;
+
+        const hashFile = decodeURIComponent(location.hash.replace(/^#doc=/, ""));
+        const firstFile =
+          state.files.find(file => file.name === hashFile) ||
+          state.files.find(file => file.name === DOCS_CONFIG.defaultFile) ||
+          state.files[0];
+
+        await openDocument(firstFile.name, false);
+      }catch(error){
+        console.error(error);
+
+        el.docList.innerHTML = `
+          <div class="statusBox">
+            無法載入文件列表。請檢查 owner、repo、branch 和 folder 設定。
+          </div>
+        `;
+
+        el.markdownBody.innerHTML = `
+          <div class="emptyState">
+            <strong>文件載入失敗</strong>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
+
+        el.statusBox.textContent = `錯誤：${error.message}`;
+      }
+    }
+
+    function renderFileList(){
+      el.docList.innerHTML = "";
+
+      state.files.forEach(file => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "docItem";
+        button.dataset.file = file.name;
+
+        button.innerHTML = `
+          <span class="docIcon">▤</span>
+          <span class="docName">${escapeHtml(cleanFilename(file.name))}</span>
+        `;
+
+        button.addEventListener("click", () => openDocument(file.name));
+        el.docList.appendChild(button);
+      });
+    }
+
+    async function fetchMarkdown(file){
+      if(state.documents.has(file.name)){
+        return state.documents.get(file.name);
+      }
+
+      const response = await fetch(file.download_url, { cache:"no-store" });
+
+      if(!response.ok){
+        throw new Error(`無法讀取 ${file.name}`);
+      }
+
+      const markdown = await response.text();
+      state.documents.set(file.name, markdown);
+      return markdown;
+    }
+
+    async function openDocument(filename, updateHash = true){
+      const file = state.files.find(item => item.name === filename);
+      if(!file) return;
+
+      state.activeFile = filename;
+
+      document.querySelectorAll(".docItem").forEach(item => {
+        item.classList.toggle("active", item.dataset.file === filename);
+      });
+
+      el.markdownBody.innerHTML = `
+        <div class="loading">
+          <span class="spinner"></span>
+          正在讀取 ${escapeHtml(filename)}…
+        </div>
+      `;
+
+      try{
+        const markdown = await fetchMarkdown(file);
+const title = titleFromMarkdown(markdown, file.name);
+
+const markdownWithoutFirstTitle = markdown.replace(
+  /^#\s+.+(?:\r?\n)+/,
+  ""
+);
+
+const rawHtml = marked.parse(markdownWithoutFirstTitle);
+
+const safeHtml = DOMPurify.sanitize(rawHtml, {
+  ADD_ATTR: ["target"]
+});
+
+el.markdownBody.innerHTML = safeHtml;
+el.docTitle.textContent = title;
+el.docFile.textContent = `${DOCS_CONFIG.folder}/${file.name}`;
+el.breadcrumbName.textContent = title;
+document.title = `${title}｜WhereWindMeet Docs`;
+
+        prepareHeadings();
+        buildToc();
+
+        if(updateHash){
+          history.replaceState(null, "", `#doc=${encodeURIComponent(file.name)}`);
+        }
+
+        closeSidebar();
+        window.scrollTo({ top:0, behavior:"smooth" });
+      }catch(error){
+        el.markdownBody.innerHTML = `
+          <div class="emptyState">
+            <strong>文章載入失敗</strong>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
+      }
+    }
+
+    function prepareHeadings(){
+      const headings = Array.from(
+        el.markdownBody.querySelectorAll("h1, h2, h3")
+      );
+
+      const used = new Set();
+
+      headings.forEach((heading, index) => {
+        let id = slugify(heading.textContent, index);
+
+        while(used.has(id)){
+          id = `${id}-${index}`;
+        }
+
+        used.add(id);
+        heading.id = id;
+      });
+
+      el.markdownBody.querySelectorAll("a[href]").forEach(link => {
+        const href = link.getAttribute("href");
+
+        if(href && /^https?:\/\//i.test(href)){
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
+      });
+    }
+
+    function buildToc(){
+      const headings = Array.from(
+        el.markdownBody.querySelectorAll("h2, h3")
+      );
+
+      if(!headings.length){
+        el.tocList.innerHTML = `
+          <span style="color:var(--muted);font-size:12px;">
+            此文章沒有小標題
+          </span>
+        `;
+        return;
+      }
+
+      el.tocList.innerHTML = headings.map(heading => `
+        <a class="tocLink ${heading.tagName === "H3" ? "level3" : ""}"
+           href="#${heading.id}">
+          ${escapeHtml(heading.textContent)}
+        </a>
+      `).join("");
+    }
+
+    async function searchDocuments(keyword){
+      const query = keyword.trim().toLowerCase();
+
+      if(!query){
+        el.searchResults.classList.remove("open");
+        el.searchResults.innerHTML = "";
+        return;
+      }
+
+      const results = [];
+
+      for(const file of state.files){
+        try{
+          const markdown = await fetchMarkdown(file);
+          const title = titleFromMarkdown(markdown, file.name);
+          const plain = markdown
+            .replace(/```[\s\S]*?```/g, " ")
+            .replace(/[#>*_`\[\]()!-]/g, " ")
+            .replace(/\s+/g, " ");
+
+          const haystack = `${title} ${plain}`.toLowerCase();
+
+          if(haystack.includes(query)){
+            const position = haystack.indexOf(query);
+            const start = Math.max(0, position - 45);
+            const snippet = plain.slice(start, start + 120);
+
+            results.push({
+              file: file.name,
+              title,
+              snippet
+            });
+          }
+        }catch(error){
+          console.warn("Search skipped:", file.name, error);
+        }
+      }
+
+      renderSearchResults(results, query);
+    }
+
+    function renderSearchResults(results, query){
+      if(!results.length){
+        el.searchResults.innerHTML = `
+          <div style="padding:14px;color:var(--muted);font-size:12px;">
+            找不到「${escapeHtml(query)}」
+          </div>
+        `;
+      }else{
+        el.searchResults.innerHTML = results.map(result => `
+          <button class="searchResult" type="button"
+                  data-file="${escapeHtml(result.file)}">
+            <strong>${highlight(result.title, query)}</strong>
+            <span>${highlight(result.snippet, query)}</span>
+          </button>
+        `).join("");
+      }
+
+      el.searchResults.classList.add("open");
+
+      el.searchResults.querySelectorAll(".searchResult").forEach(button => {
+        button.addEventListener("click", async () => {
+          await openDocument(button.dataset.file);
+          el.searchResults.classList.remove("open");
+          el.searchInput.value = "";
+        });
+      });
+    }
+
+    function highlight(text, query){
+      const safeText = escapeHtml(text);
+      const safeQuery = escapeRegExp(escapeHtml(query));
+
+      return safeText.replace(
+        new RegExp(`(${safeQuery})`, "ig"),
+        "<mark>$1</mark>"
+      );
+    }
+
+    function escapeHtml(value){
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeRegExp(value){
+      return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    let searchTimer;
+
+    el.searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(
+        () => searchDocuments(el.searchInput.value),
+        260
+      );
+    });
+
+    el.searchInput.addEventListener("keydown", event => {
+      if(event.key === "Escape"){
+        el.searchInput.value = "";
+        el.searchResults.classList.remove("open");
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if(event.key === "/" && document.activeElement !== el.searchInput){
+        event.preventDefault();
+        el.searchInput.focus();
+      }
+    });
+
+    document.addEventListener("click", event => {
+      if(!event.target.closest(".searchWrap")){
+        el.searchResults.classList.remove("open");
+      }
+    });
+
+    function openSidebar(){
+      el.sidebar.classList.add("open");
+      el.sidebarBackdrop.classList.add("open");
+    }
+
+    function closeSidebar(){
+      el.sidebar.classList.remove("open");
+      el.sidebarBackdrop.classList.remove("open");
+    }
+
+    el.mobileMenuBtn.addEventListener("click", openSidebar);
+    el.sidebarBackdrop.addEventListener("click", closeSidebar);
+
+
+    function applyTheme(theme){
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem("wwm-docs-theme", theme);
+
+      const isDark = theme === "dark";
+      el.themeIcon.textContent = isDark ? "☀" : "☾";
+      el.themeText.textContent = isDark ? "白天模式" : "夜晚模式";
+      el.themeToggle.setAttribute(
+        "aria-label",
+        isDark ? "切換至白天模式" : "切換至夜晚模式"
+      );
+    }
+
+    function initTheme(){
+      const saved = localStorage.getItem("wwm-docs-theme");
+      const systemDark = window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      applyTheme(saved || (systemDark ? "dark" : "light"));
+
+      el.themeToggle.addEventListener("click", () => {
+        const next =
+          document.documentElement.dataset.theme === "dark"
+            ? "light"
+            : "dark";
+
+        applyTheme(next);
+      });
+    }
+
+    initTheme();
+
+    loadFolder();
+  </script>
+</body>
+</html>
