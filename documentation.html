@@ -1143,29 +1143,14 @@
     }
 
     .tocLink.active{
-      color:#ffffff;
+      color:#17233c;
+      border-left-color:var(--site-teal);
+      background:linear-gradient(135deg, rgba(110,168,255,.20), rgba(139,92,246,.16));
       font-weight:900;
-      border-left:3px solid var(--site-teal);
-      background:linear-gradient(135deg, #4f8ef7, #7c3aed);
-      box-shadow:0 8px 18px rgba(79,142,247,.22);
     }
 
     .tocLink.active::before{
-      color:#ffffff;
-    }
-
-    html[data-theme="light"] .tocLink{
-      color:#53627a;
-    }
-
-    html[data-theme="light"] .tocLink:hover{
       color:#17233c;
-      background:rgba(79,142,247,.10);
-    }
-
-    html[data-theme="light"] .tocLink.active{
-      color:#ffffff;
-      background:linear-gradient(135deg, #4f8ef7, #7c3aed);
     }
 
     .searchResults{
