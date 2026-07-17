@@ -3,9 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WhereWindMeet｜Documentation</title>
+  <title>葉離 Minecraft｜教學與公告</title>
 
-  <link rel="icon" type="image/png" href="">
+  <link rel="icon" type="image/png" href="data/葉離.png">
+
+  <script>
+    (function(){
+      try{
+        const saved = localStorage.getItem("docs-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
+      }catch(error){
+        document.documentElement.dataset.theme = "light";
+      }
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -56,64 +69,31 @@
       --red-soft:#2d1517;
       --purple:#a371f7;
       --purple-soft:#241a35;
-      --shadow:0 8px 28px rgba(0,0,0,.35);
-    }
-
-    html[data-theme="dark"] body{
-      background:var(--bg);
-    }
-
-    html[data-theme="dark"] .topbar,
-    html[data-theme="dark"] .sidebar,
-    html[data-theme="dark"] .content,
-    html[data-theme="dark"] .toc,
-    html[data-theme="dark"] .searchResults{
-      background:var(--panel);
-    }
-
-    html[data-theme="dark"] .searchInput,
-    html[data-theme="dark"] .searchKey,
-    html[data-theme="dark"] .mobileMenuBtn{
-      color:var(--text);
-      background:var(--panel-soft);
-    }
-
-    html[data-theme="dark"] .searchInput:focus{
-      background:var(--panel);
-    }
-
-    html[data-theme="dark"] .markdownBody pre{
-      background:#161b22;
-    }
-
-    html[data-theme="dark"] .markdownBody code{
-      background:rgba(110,118,129,.28);
-    }
-
-    html[data-theme="dark"] .markdownBody tr:nth-child(2n){
-      background:var(--panel-soft);
+      --shadow:0 8px 24px rgba(0,0,0,.42);
     }
 
     .themeToggle{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       min-height:38px;
       padding:0 12px;
       border:1px solid var(--border);
-      border-radius:7px;
+      border-radius:8px;
       color:var(--text);
       background:var(--panel);
       cursor:pointer;
       font-size:13px;
-      font-weight:700;
+      font-weight:800;
       white-space:nowrap;
-      transition:.15s ease;
+      transition:.16s ease;
     }
 
     .themeToggle:hover{
-      border-color:var(--link);
       color:var(--link);
+      border-color:var(--link);
+      transform:translateY(-1px);
     }
 
     .themeIcon{
@@ -137,6 +117,7 @@
     a{ color:var(--link); }
 
     .topbar{
+      color:var(--text);
       position:sticky;
       top:0;
       z-index:1000;
@@ -146,7 +127,7 @@
       gap:16px;
       padding:10px 20px;
       border-bottom:1px solid var(--border);
-      background:rgba(255,255,255,.96);
+      background:color-mix(in srgb, var(--panel) 96%, transparent);
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
     }
@@ -200,7 +181,7 @@
 
     .searchInput:focus{
       border-color:#54aeff;
-      background:#fff;
+      background:var(--panel);
       box-shadow:0 0 0 3px rgba(84,174,255,.25);
     }
 
@@ -222,7 +203,7 @@
       border:1px solid var(--border);
       border-radius:5px;
       color:var(--muted);
-      background:#fff;
+      background:var(--panel);
       font-size:11px;
       font-weight:700;
     }
@@ -243,7 +224,7 @@
       height:38px;
       border:1px solid var(--border);
       border-radius:7px;
-      background:#fff;
+      background:var(--panel);
       cursor:pointer;
     }
 
@@ -256,13 +237,14 @@
     }
 
     .sidebar{
+      color:var(--text);
       position:sticky;
       top:64px;
       height:calc(100vh - 64px);
       overflow:auto;
       padding:24px 18px 40px;
       border-right:1px solid var(--border);
-      background:#fff;
+      background:var(--panel);
     }
 
     .sidebarTitle{
@@ -334,7 +316,8 @@
     .content{
       min-width:0;
       padding:34px clamp(24px,4vw,64px) 80px;
-      background:#fff;
+      color:var(--text);
+      background:var(--panel);
     }
 
     .docHeader{
@@ -426,7 +409,7 @@
     .markdownBody code{
       padding:.18em .38em;
       border-radius:5px;
-      background:rgba(175,184,193,.22);
+      background:color-mix(in srgb, var(--muted) 22%, transparent);
       font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
       font-size:85%;
     }
@@ -437,7 +420,7 @@
       padding:16px;
       border:1px solid var(--border);
       border-radius:7px;
-      background:#f6f8fa;
+      background:var(--panel-soft);
       line-height:1.5;
     }
 
@@ -491,7 +474,7 @@
     .markdownBody .notice,
     .markdownBody .info{
       border-color:#54aeff;
-      background:#ddf4ff;
+      background:color-mix(in srgb, var(--link) 14%, var(--panel));
     }
 
     .markdownBody .warning{
@@ -518,13 +501,14 @@
     }
 
     .toc{
+      color:var(--text);
       position:sticky;
       top:64px;
       height:calc(100vh - 64px);
       overflow:auto;
       padding:30px 20px;
       border-left:1px solid var(--border);
-      background:#fff;
+      background:var(--panel);
     }
 
     .tocTitle{
@@ -588,7 +572,7 @@
       padding:7px;
       border:1px solid var(--border);
       border-radius:8px;
-      background:#fff;
+      background:var(--panel);
       box-shadow:var(--shadow);
     }
 
@@ -617,6 +601,49 @@
     .searchResult span{
       color:var(--muted);
       font-size:11px;
+    }
+
+
+    .searchInput::placeholder{
+      color:var(--muted);
+      opacity:.92;
+    }
+
+    mark{
+      color:inherit;
+      background:#fff1a8;
+      border-radius:3px;
+      padding:0 .08em;
+    }
+
+    html[data-theme="dark"] mark{
+      color:#0d1117;
+      background:#f2cc60;
+    }
+
+    html[data-theme="dark"] .docItem.active{
+      color:#ffffff;
+      background:#1f6feb;
+    }
+
+    html[data-theme="dark"] .markdownBody .notice,
+    html[data-theme="dark"] .markdownBody .info{
+      border-color:#1f6feb;
+      background:#0c2d4a;
+    }
+
+    html[data-theme="dark"] .markdownBody .warning{
+      border-color:#9e6a03;
+      background:#332701;
+    }
+
+    html[data-theme="dark"] .markdownBody .danger{
+      border-color:#da3633;
+      background:#3c1518;
+    }
+
+    html[data-theme="dark"] .markdownBody img{
+      background:#ffffff;
     }
 
     @media (max-width:1100px){
@@ -683,12 +710,12 @@
 
 <body>
   <header class="topbar">
-    <a class="brand" href="../index.html">
-      <img src="https://raw.githubusercontent.com/ItzSeir/ItzSeir/bc6a1e6687c70f0eb1ddcbd431e869bf2262dadb/Profile%20Pitcure/%E8%91%89%E9%9B%A2.png" alt="WhereWindMeet">
+    <a class="brand" href="minecraft">
+      <img src="https://raw.githubusercontent.com/ItzSeir/ItzSeir/bc6a1e6687c70f0eb1ddcbd431e869bf2262dadb/Profile%20Pitcure/%E8%91%89%E9%9B%A2.png" alt="葉離">
       <span class="brandText">
-        <span>WhereWindMeet</span>
+        <span>葉離社群</span>
         <span class="slash">/</span>
-        <strong>Documentation</strong>
+        <strong>麥塊教學及公告</strong>
       </span>
     </a>
 
@@ -696,25 +723,25 @@
 
     <div class="searchWrap">
       <span class="searchIcon">⌕</span>
-      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋使用教學、系統資訊或公告">
+      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋教學、資訊或公告">
       <span class="searchKey">/</span>
       <div class="searchResults" id="searchResults"></div>
     </div>
 
     <button class="themeToggle" id="themeToggle" type="button" aria-label="切換顯示主題">
-      <span class="themeIcon" id="themeIcon">◐</span>
-      <span id="themeText">主題</span>
+      <span class="themeIcon" id="themeIcon">🌙</span>
+      <span id="themeText">夜晚</span>
     </button>
 
-    <a class="topLink" href="../index.html">返回 WhereWindMeet</a>
-    <a class="topLink" href="../index.html">網站首頁</a>
+    <a class="topLink" href="minecraft">返回麥塊首頁</a>
+    <a class="topLink" href="index.html">社群首頁</a>
   </header>
 
   <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
   <div class="layout">
     <aside class="sidebar" id="sidebar">
-      <h2 class="sidebarTitle">WhereWindMeet 文件</h2>
+      <h2 class="sidebarTitle">教學與資訊</h2>
       <p class="sidebarMeta">
       </p>
 
@@ -733,19 +760,19 @@
     <main class="content">
       <header class="docHeader">
         <div class="breadcrumb">
-          <span>WhereWindMeet</span>
+          <span>Minecraft</span>
           <span>›</span>
           <span id="breadcrumbName">Documentation</span>
         </div>
 
-        <h1 class="docTitle" id="docTitle">使用教學與系統資訊</h1>
+        <h1 class="docTitle" id="docTitle">教學與公告</h1>
         <div class="docFile" id="docFile">從左側選擇一篇文章</div>
       </header>
 
       <article class="markdownBody" id="markdownBody">
         <div class="emptyState">
           <strong>正在讀取文章列表</strong>
-          正在讀取文章列表。
+          請稍候，系統會自動載入資料夾內的 Markdown 文件。
         </div>
       </article>
     </main>
@@ -767,13 +794,13 @@
       owner: "ItzSeir",
 
       // Repository name, for example: ItzSeir or WhereWindMeet
-      repo: "WhereWindMeet",
+      repo: "FloestSMP",
 
       // Branch name
       branch: "main",
 
       // Folder containing all .md files
-      folder: "data/wherewindmeet-docs",
+      folder: "data/minecraft-docs",
 
       // Open this file first. Leave empty to open the first file.
       defaultFile: "01-start.md"
@@ -800,10 +827,7 @@
       searchResults: document.getElementById("searchResults"),
       sidebar: document.getElementById("sidebar"),
       mobileMenuBtn: document.getElementById("mobileMenuBtn"),
-      sidebarBackdrop: document.getElementById("sidebarBackdrop"),
-      themeToggle: document.getElementById("themeToggle"),
-      themeIcon: document.getElementById("themeIcon"),
-      themeText: document.getElementById("themeText")
+      sidebarBackdrop: document.getElementById("sidebarBackdrop")
     };
 
     marked.setOptions({
@@ -979,7 +1003,7 @@ el.markdownBody.innerHTML = safeHtml;
 el.docTitle.textContent = title;
 el.docFile.textContent = `${DOCS_CONFIG.folder}/${file.name}`;
 el.breadcrumbName.textContent = title;
-document.title = `${title}｜WhereWindMeet Docs`;
+document.title = `${title}｜Minecraft Docs`;
 
         prepareHeadings();
         buildToc();
@@ -1187,32 +1211,35 @@ document.title = `${title}｜WhereWindMeet Docs`;
 
 
     function applyTheme(theme){
-      document.documentElement.dataset.theme = theme;
-      localStorage.setItem("wwm-docs-theme", theme);
+      const finalTheme = theme === "dark" ? "dark" : "light";
 
-      const isDark = theme === "dark";
-      el.themeIcon.textContent = isDark ? "☀" : "☾";
-      el.themeText.textContent = isDark ? "白天模式" : "夜晚模式";
+      document.documentElement.dataset.theme = finalTheme;
+      localStorage.setItem("docs-theme", finalTheme);
+
+      const isDark = finalTheme === "dark";
+
+      el.themeIcon.textContent = isDark ? "☀️" : "🌙";
+      el.themeText.textContent = isDark ? "白天" : "夜晚";
+
       el.themeToggle.setAttribute(
         "aria-label",
-        isDark ? "切換至白天模式" : "切換至夜晚模式"
+        isDark ? "切換到白天模式" : "切換到夜晚模式"
       );
     }
 
     function initTheme(){
-      const saved = localStorage.getItem("wwm-docs-theme");
-      const systemDark = window.matchMedia &&
+      const savedTheme = localStorage.getItem("docs-theme");
+      const systemPrefersDark =
+        window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-      applyTheme(saved || (systemDark ? "dark" : "light"));
+      applyTheme(savedTheme || (systemPrefersDark ? "dark" : "light"));
 
       el.themeToggle.addEventListener("click", () => {
-        const next =
-          document.documentElement.dataset.theme === "dark"
-            ? "light"
-            : "dark";
+        const currentTheme =
+          document.documentElement.dataset.theme || "light";
 
-        applyTheme(next);
+        applyTheme(currentTheme === "dark" ? "light" : "dark");
       });
     }
 
