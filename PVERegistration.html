@@ -7660,6 +7660,154 @@ body {
   }
 }
 
+  
+    /* =========================================================
+       統一深色自訂 Scrollbar
+       套用於整頁、彈窗、導覽列與所有可捲動區域
+       ========================================================= */
+
+    html{
+      color-scheme:dark;
+      scrollbar-width:thin;
+      scrollbar-color:#778097 #11182b;
+      scrollbar-gutter:stable;
+    }
+
+    body,
+    .nav,
+    .batch-modal-scroll,
+    .datetime-modal-box,
+    .custom-select-menu,
+    .member-menu-dropdown,
+    .slot-menu-dropdown,
+    .color-menu,
+    .highlight-menu,
+    .signup-modal-box,
+    .confirm-modal-box{
+      scrollbar-width:thin;
+      scrollbar-color:#778097 #11182b;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .nav::-webkit-scrollbar,
+    .batch-modal-scroll::-webkit-scrollbar,
+    .datetime-modal-box::-webkit-scrollbar,
+    .custom-select-menu::-webkit-scrollbar,
+    .member-menu-dropdown::-webkit-scrollbar,
+    .slot-menu-dropdown::-webkit-scrollbar,
+    .color-menu::-webkit-scrollbar,
+    .highlight-menu::-webkit-scrollbar,
+    .signup-modal-box::-webkit-scrollbar,
+    .confirm-modal-box::-webkit-scrollbar{
+      width:11px;
+      height:11px;
+    }
+
+    html::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track,
+    .nav::-webkit-scrollbar-track,
+    .batch-modal-scroll::-webkit-scrollbar-track,
+    .datetime-modal-box::-webkit-scrollbar-track,
+    .custom-select-menu::-webkit-scrollbar-track,
+    .member-menu-dropdown::-webkit-scrollbar-track,
+    .slot-menu-dropdown::-webkit-scrollbar-track,
+    .color-menu::-webkit-scrollbar-track,
+    .highlight-menu::-webkit-scrollbar-track,
+    .signup-modal-box::-webkit-scrollbar-track,
+    .confirm-modal-box::-webkit-scrollbar-track{
+      background:#11182b;
+      border-radius:999px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.055),
+        inset 0 0 10px rgba(0,0,0,.22);
+    }
+
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb,
+    .nav::-webkit-scrollbar-thumb,
+    .batch-modal-scroll::-webkit-scrollbar-thumb,
+    .datetime-modal-box::-webkit-scrollbar-thumb,
+    .custom-select-menu::-webkit-scrollbar-thumb,
+    .member-menu-dropdown::-webkit-scrollbar-thumb,
+    .slot-menu-dropdown::-webkit-scrollbar-thumb,
+    .color-menu::-webkit-scrollbar-thumb,
+    .highlight-menu::-webkit-scrollbar-thumb,
+    .signup-modal-box::-webkit-scrollbar-thumb,
+    .confirm-modal-box::-webkit-scrollbar-thumb{
+      min-height:46px;
+      border:3px solid transparent;
+      border-radius:999px;
+      background:
+        linear-gradient(
+          180deg,
+          #9299ad,
+          #687086
+        ) padding-box;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 2px 8px rgba(0,0,0,.30);
+    }
+
+    html::-webkit-scrollbar-thumb:hover,
+    body::-webkit-scrollbar-thumb:hover,
+    .nav::-webkit-scrollbar-thumb:hover,
+    .batch-modal-scroll::-webkit-scrollbar-thumb:hover,
+    .datetime-modal-box::-webkit-scrollbar-thumb:hover,
+    .custom-select-menu::-webkit-scrollbar-thumb:hover,
+    .member-menu-dropdown::-webkit-scrollbar-thumb:hover,
+    .slot-menu-dropdown::-webkit-scrollbar-thumb:hover,
+    .color-menu::-webkit-scrollbar-thumb:hover,
+    .highlight-menu::-webkit-scrollbar-thumb:hover,
+    .signup-modal-box::-webkit-scrollbar-thumb:hover,
+    .confirm-modal-box::-webkit-scrollbar-thumb:hover{
+      background:
+        linear-gradient(
+          180deg,
+          #abb2c5,
+          #7d859b
+        ) padding-box;
+    }
+
+    html::-webkit-scrollbar-thumb:active,
+    body::-webkit-scrollbar-thumb:active,
+    .nav::-webkit-scrollbar-thumb:active,
+    .batch-modal-scroll::-webkit-scrollbar-thumb:active,
+    .datetime-modal-box::-webkit-scrollbar-thumb:active,
+    .custom-select-menu::-webkit-scrollbar-thumb:active,
+    .member-menu-dropdown::-webkit-scrollbar-thumb:active,
+    .slot-menu-dropdown::-webkit-scrollbar-thumb:active,
+    .color-menu::-webkit-scrollbar-thumb:active,
+    .highlight-menu::-webkit-scrollbar-thumb:active,
+    .signup-modal-box::-webkit-scrollbar-thumb:active,
+    .confirm-modal-box::-webkit-scrollbar-thumb:active{
+      background:
+        linear-gradient(
+          180deg,
+          #c0c6d5,
+          #8c94a9
+        ) padding-box;
+    }
+
+    html::-webkit-scrollbar-corner,
+    body::-webkit-scrollbar-corner,
+    .nav::-webkit-scrollbar-corner,
+    .batch-modal-scroll::-webkit-scrollbar-corner,
+    .datetime-modal-box::-webkit-scrollbar-corner{
+      background:transparent;
+    }
+
+    /* 手機導覽列保持隱藏橫向捲軸，但仍可滑動 */
+    @media (max-width:768px){
+      .nav{
+        scrollbar-width:none;
+      }
+
+      .nav::-webkit-scrollbar{
+        display:none;
+      }
+    }
+
   </style>
 </head>
 <body>
