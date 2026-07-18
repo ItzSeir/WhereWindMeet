@@ -1089,6 +1089,155 @@
     font-size:12px;
   }
 }
+  
+    /* =========================================================
+       統一深色自訂 Scrollbar
+       套用於整頁、導覽列、上傳彈窗與燈箱資訊區
+       ========================================================= */
+
+    html{
+      color-scheme:dark;
+      scrollbar-width:thin;
+      scrollbar-color:#778097 #11182b;
+      scrollbar-gutter:stable;
+    }
+
+    body,
+    .nav,
+    .upload-card,
+    .upload-grid,
+    .lightbox,
+    .lightbox-inner,
+    .lightbox-image-panel,
+    .lb-meta,
+    .filter-select,
+    .upload-grid select,
+    .upload-grid textarea{
+      scrollbar-width:thin;
+      scrollbar-color:#778097 #11182b;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .nav::-webkit-scrollbar,
+    .upload-card::-webkit-scrollbar,
+    .upload-grid::-webkit-scrollbar,
+    .lightbox::-webkit-scrollbar,
+    .lightbox-inner::-webkit-scrollbar,
+    .lightbox-image-panel::-webkit-scrollbar,
+    .lb-meta::-webkit-scrollbar,
+    .filter-select::-webkit-scrollbar,
+    .upload-grid select::-webkit-scrollbar,
+    .upload-grid textarea::-webkit-scrollbar{
+      width:11px;
+      height:11px;
+    }
+
+    html::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track,
+    .nav::-webkit-scrollbar-track,
+    .upload-card::-webkit-scrollbar-track,
+    .upload-grid::-webkit-scrollbar-track,
+    .lightbox::-webkit-scrollbar-track,
+    .lightbox-inner::-webkit-scrollbar-track,
+    .lightbox-image-panel::-webkit-scrollbar-track,
+    .lb-meta::-webkit-scrollbar-track,
+    .filter-select::-webkit-scrollbar-track,
+    .upload-grid select::-webkit-scrollbar-track,
+    .upload-grid textarea::-webkit-scrollbar-track{
+      background:#11182b;
+      border-radius:999px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.055),
+        inset 0 0 10px rgba(0,0,0,.22);
+    }
+
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb,
+    .nav::-webkit-scrollbar-thumb,
+    .upload-card::-webkit-scrollbar-thumb,
+    .upload-grid::-webkit-scrollbar-thumb,
+    .lightbox::-webkit-scrollbar-thumb,
+    .lightbox-inner::-webkit-scrollbar-thumb,
+    .lightbox-image-panel::-webkit-scrollbar-thumb,
+    .lb-meta::-webkit-scrollbar-thumb,
+    .filter-select::-webkit-scrollbar-thumb,
+    .upload-grid select::-webkit-scrollbar-thumb,
+    .upload-grid textarea::-webkit-scrollbar-thumb{
+      min-height:46px;
+      border:3px solid transparent;
+      border-radius:999px;
+      background:
+        linear-gradient(
+          180deg,
+          #9299ad,
+          #687086
+        ) padding-box;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 2px 8px rgba(0,0,0,.30);
+    }
+
+    html::-webkit-scrollbar-thumb:hover,
+    body::-webkit-scrollbar-thumb:hover,
+    .nav::-webkit-scrollbar-thumb:hover,
+    .upload-card::-webkit-scrollbar-thumb:hover,
+    .upload-grid::-webkit-scrollbar-thumb:hover,
+    .lightbox::-webkit-scrollbar-thumb:hover,
+    .lightbox-inner::-webkit-scrollbar-thumb:hover,
+    .lightbox-image-panel::-webkit-scrollbar-thumb:hover,
+    .lb-meta::-webkit-scrollbar-thumb:hover,
+    .filter-select::-webkit-scrollbar-thumb:hover,
+    .upload-grid select::-webkit-scrollbar-thumb:hover,
+    .upload-grid textarea::-webkit-scrollbar-thumb:hover{
+      background:
+        linear-gradient(
+          180deg,
+          #abb2c5,
+          #7d859b
+        ) padding-box;
+    }
+
+    html::-webkit-scrollbar-thumb:active,
+    body::-webkit-scrollbar-thumb:active,
+    .nav::-webkit-scrollbar-thumb:active,
+    .upload-card::-webkit-scrollbar-thumb:active,
+    .upload-grid::-webkit-scrollbar-thumb:active,
+    .lightbox::-webkit-scrollbar-thumb:active,
+    .lightbox-inner::-webkit-scrollbar-thumb:active,
+    .lightbox-image-panel::-webkit-scrollbar-thumb:active,
+    .lb-meta::-webkit-scrollbar-thumb:active,
+    .filter-select::-webkit-scrollbar-thumb:active,
+    .upload-grid select::-webkit-scrollbar-thumb:active,
+    .upload-grid textarea::-webkit-scrollbar-thumb:active{
+      background:
+        linear-gradient(
+          180deg,
+          #c0c6d5,
+          #8c94a9
+        ) padding-box;
+    }
+
+    html::-webkit-scrollbar-corner,
+    body::-webkit-scrollbar-corner,
+    .nav::-webkit-scrollbar-corner,
+    .upload-card::-webkit-scrollbar-corner,
+    .lightbox::-webkit-scrollbar-corner,
+    .lb-meta::-webkit-scrollbar-corner{
+      background:transparent;
+    }
+
+    /* 手機導覽列保持隱藏橫向 scrollbar，但仍可滑動 */
+    @media (max-width:768px){
+      .nav{
+        scrollbar-width:none;
+      }
+
+      .nav::-webkit-scrollbar{
+        display:none;
+      }
+    }
+
   </style>
 </head>
 
