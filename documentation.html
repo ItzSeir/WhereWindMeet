@@ -2069,7 +2069,7 @@ const safeHtml = DOMPurify.sanitize(rawHtml, {
 el.markdownBody.innerHTML = safeHtml;
 enhanceMarkdownCheckboxes();
 el.docTitle.textContent = title;
-el.docFile.textContent = `${DOCS_CONFIG.folder}/${file.name}`;
+el.docFile.style.display = "none";
 el.breadcrumbName.textContent = title;
 document.title = `${title}｜WhereWindMeet Docs`;
 
