@@ -905,6 +905,53 @@ body{
     font-size:12px;
   }
 }
+
+/* ===== Global Dark Scrollbar ===== */
+html{
+ color-scheme:dark;
+ scrollbar-width:thin;
+ scrollbar-color:#778097 #11182b;
+ scrollbar-gutter:stable;
+}
+body,.nav,.schedule-container{
+ scrollbar-width:thin;
+ scrollbar-color:#778097 #11182b;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.nav::-webkit-scrollbar,
+.schedule-container::-webkit-scrollbar{
+ width:11px;height:11px;
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.nav::-webkit-scrollbar-track,
+.schedule-container::-webkit-scrollbar-track{
+ background:#11182b;border-radius:999px;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.nav::-webkit-scrollbar-thumb,
+.schedule-container::-webkit-scrollbar-thumb{
+ background:linear-gradient(180deg,#9299ad,#687086);
+ border:3px solid transparent;
+ border-radius:999px;
+ min-height:46px;
+ background-clip:padding-box;
+}
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.nav::-webkit-scrollbar-thumb:hover,
+.schedule-container::-webkit-scrollbar-thumb:hover{
+ background:linear-gradient(180deg,#abb2c5,#7d859b);
+ background-clip:padding-box;
+}
+@media(max-width:768px){
+ .nav{scrollbar-width:none;}
+ .nav::-webkit-scrollbar{display:none;}
+}
+
 </style>
 </head>
 
