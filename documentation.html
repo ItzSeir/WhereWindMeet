@@ -1262,6 +1262,408 @@
 
       .docTitle{ font-size:27px; }
     }
+
+    /* =========================================================
+       Markdown 內容完整視覺設計
+       ========================================================= */
+
+    .markdownBody{
+      --md-surface:color-mix(in srgb, var(--panel) 86%, transparent);
+      --md-surface-soft:color-mix(in srgb, var(--panel-soft) 88%, transparent);
+      --md-border:color-mix(in srgb, var(--border) 92%, transparent);
+      --md-accent:var(--site-sea);
+      --md-accent-2:var(--site-teal);
+    }
+
+    .markdownBody a{
+      color:var(--link);
+      font-weight:700;
+      text-decoration:none;
+      text-underline-offset:3px;
+      overflow-wrap:anywhere;
+    }
+
+    .markdownBody a:hover{
+      text-decoration:underline;
+    }
+
+    .markdownBody h1,
+    .markdownBody h2,
+    .markdownBody h3,
+    .markdownBody h4,
+    .markdownBody h5,
+    .markdownBody h6{
+      color:var(--text);
+      letter-spacing:-.018em;
+    }
+
+    .markdownBody h1{
+      margin:0 0 26px;
+      padding:0 0 16px;
+      border-bottom:1px solid var(--md-border);
+      font-size:clamp(27px,3.4vw,36px);
+    }
+
+    .markdownBody h2{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:42px 0 18px;
+      padding:0 0 12px;
+      border-bottom:1px solid var(--md-border);
+      font-size:clamp(22px,2.6vw,27px);
+    }
+
+    .markdownBody h2::before{
+      flex:0 0 auto;
+      width:6px;
+      height:24px;
+      margin-right:0;
+      vertical-align:initial;
+    }
+
+    .markdownBody h3{
+      margin:32px 0 14px;
+      font-size:20px;
+    }
+
+    .markdownBody h3::before{
+      content:"";
+      display:inline-block;
+      width:9px;
+      height:9px;
+      margin-right:9px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--md-accent),var(--md-accent-2));
+      box-shadow:0 0 0 4px color-mix(in srgb,var(--md-accent) 12%,transparent);
+      vertical-align:2px;
+    }
+
+    .markdownBody h4{
+      margin:26px 0 12px;
+      font-size:17px;
+    }
+
+    .markdownBody p{
+      margin:0 0 17px;
+      color:color-mix(in srgb,var(--text) 94%,var(--muted));
+    }
+
+    .markdownBody strong{
+      color:var(--text);
+      font-weight:850;
+    }
+
+    .markdownBody em{
+      color:color-mix(in srgb,var(--text) 86%,var(--site-sea));
+    }
+
+    .markdownBody del{
+      color:var(--muted);
+      text-decoration-thickness:1.5px;
+    }
+
+    .markdownBody ul,
+    .markdownBody ol{
+      margin:0 0 20px;
+      padding-left:1.7rem;
+    }
+
+    .markdownBody li{
+      padding-left:3px;
+    }
+
+    .markdownBody li::marker{
+      color:var(--site-sea);
+      font-weight:900;
+    }
+
+    .markdownBody li + li{
+      margin-top:7px;
+    }
+
+    .markdownBody li > ul,
+    .markdownBody li > ol{
+      margin-top:7px;
+      margin-bottom:4px;
+    }
+
+    .markdownBody input[type="checkbox"]{
+      width:16px;
+      height:16px;
+      margin:0 8px 0 0;
+      accent-color:var(--site-teal);
+      vertical-align:-3px;
+    }
+
+    .markdownBody blockquote{
+      position:relative;
+      margin:22px 0;
+      padding:16px 18px 16px 20px;
+      border:1px solid var(--md-border);
+      border-left:5px solid var(--site-sea);
+      border-radius:0 16px 16px 0;
+      color:var(--muted);
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb,var(--site-sea) 10%,var(--panel)),
+          color-mix(in srgb,var(--site-teal) 7%,var(--panel))
+        );
+    }
+
+    .markdownBody blockquote::before{
+      content:"“";
+      position:absolute;
+      right:16px;
+      top:-10px;
+      color:color-mix(in srgb,var(--site-sea) 20%,transparent);
+      font-size:60px;
+      font-weight:900;
+      line-height:1;
+      pointer-events:none;
+    }
+
+    .markdownBody blockquote > :last-child{
+      margin-bottom:0;
+    }
+
+    .markdownBody code{
+      padding:.18em .45em;
+      border:1px solid color-mix(in srgb,var(--border) 82%,transparent);
+      border-radius:6px;
+      color:color-mix(in srgb,var(--text) 92%,var(--site-sea));
+      background:color-mix(in srgb,var(--panel-soft) 88%,var(--panel));
+      font-size:.88em;
+      font-weight:700;
+      white-space:break-spaces;
+    }
+
+    .markdownBody pre{
+      position:relative;
+      margin:22px 0;
+      padding:20px;
+      border:1px solid var(--md-border);
+      border-radius:16px;
+      background:
+        linear-gradient(180deg,
+          color-mix(in srgb,var(--panel-soft) 80%,transparent),
+          color-mix(in srgb,var(--panel) 96%,transparent)
+        );
+      box-shadow:0 12px 28px rgba(0,0,0,.10);
+      line-height:1.65;
+    }
+
+    .markdownBody pre::before{
+      content:"CODE";
+      display:block;
+      width:max-content;
+      margin:0 0 12px;
+      padding:3px 8px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      color:var(--muted);
+      background:var(--panel-soft);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.08em;
+    }
+
+    .markdownBody pre code{
+      display:block;
+      padding:0;
+      border:0;
+      color:var(--text);
+      background:transparent;
+      font-size:13px;
+      font-weight:500;
+      white-space:pre;
+    }
+
+    .markdownBody table{
+      width:100%;
+      display:table;
+      overflow:hidden;
+      margin:22px 0 28px;
+      border:1px solid var(--md-border);
+      border-collapse:separate;
+      border-spacing:0;
+      border-radius:16px;
+      background:color-mix(in srgb,var(--panel) 76%,transparent);
+      box-shadow:0 12px 28px rgba(0,0,0,.08);
+    }
+
+    .markdownBody thead{
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb,var(--site-sea) 12%,var(--panel)),
+          color-mix(in srgb,var(--site-teal) 9%,var(--panel))
+        );
+    }
+
+    .markdownBody th{
+      color:var(--text);
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+
+    .markdownBody th,
+    .markdownBody td{
+      padding:12px 14px;
+      border:0;
+      border-right:1px solid var(--md-border);
+      border-bottom:1px solid var(--md-border);
+      text-align:left;
+      vertical-align:middle;
+    }
+
+    .markdownBody th:last-child,
+    .markdownBody td:last-child{
+      border-right:0;
+    }
+
+    .markdownBody tbody tr:last-child td{
+      border-bottom:0;
+    }
+
+    .markdownBody tbody tr{
+      background:transparent;
+      transition:background .14s ease;
+    }
+
+    .markdownBody tbody tr:nth-child(even){
+      background:color-mix(in srgb,var(--panel-soft) 72%,transparent);
+    }
+
+    .markdownBody tbody tr:hover{
+      background:color-mix(in srgb,var(--site-sea) 8%,var(--panel-soft));
+    }
+
+    .markdownBody table code{
+      display:inline-block;
+      padding:.15em .42em;
+      border-radius:5px;
+      white-space:nowrap;
+    }
+
+    .markdownBody hr{
+      height:1px;
+      margin:34px 0;
+      border:0;
+      background:
+        linear-gradient(90deg,
+          transparent,
+          color-mix(in srgb,var(--site-sea) 50%,var(--border)),
+          color-mix(in srgb,var(--site-teal) 50%,var(--border)),
+          transparent
+        );
+    }
+
+    .markdownBody img{
+      display:block;
+      max-width:100%;
+      margin:22px auto;
+      border:1px solid var(--md-border);
+      border-radius:16px;
+      background:var(--panel);
+      box-shadow:0 14px 30px rgba(0,0,0,.13);
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info,
+    .markdownBody .warning,
+    .markdownBody .danger{
+      position:relative;
+      margin:22px 0;
+      padding:16px 18px 16px 48px;
+      border-width:1px;
+      border-radius:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,.08);
+    }
+
+    .markdownBody .notice::before,
+    .markdownBody .info::before,
+    .markdownBody .warning::before,
+    .markdownBody .danger::before{
+      position:absolute;
+      left:17px;
+      top:16px;
+      width:22px;
+      height:22px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      color:#fff;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .markdownBody .notice::before,
+    .markdownBody .info::before{
+      content:"i";
+      background:var(--site-sea);
+    }
+
+    .markdownBody .warning::before{
+      content:"!";
+      background:#f59e0b;
+    }
+
+    .markdownBody .danger::before{
+      content:"!";
+      background:#ef476f;
+    }
+
+    .markdownBody .notice > :last-child,
+    .markdownBody .info > :last-child,
+    .markdownBody .warning > :last-child,
+    .markdownBody .danger > :last-child{
+      margin-bottom:0;
+    }
+
+    html[data-theme="light"] .markdownBody code{
+      color:#24324d;
+      background:#edf2f8;
+      border-color:#d9e1ec;
+    }
+
+    html[data-theme="light"] .markdownBody pre{
+      background:linear-gradient(180deg,#f6f8fb,#eef3f8);
+    }
+
+    html[data-theme="light"] .markdownBody table{
+      background:#ffffff;
+    }
+
+    @media (max-width:760px){
+      .markdownBody{
+        font-size:14px;
+      }
+
+      .markdownBody table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+        border-radius:13px;
+      }
+
+      .markdownBody th,
+      .markdownBody td{
+        padding:10px 12px;
+      }
+
+      .markdownBody pre{
+        padding:16px;
+        border-radius:13px;
+      }
+
+      .markdownBody .notice,
+      .markdownBody .info,
+      .markdownBody .warning,
+      .markdownBody .danger{
+        padding:15px 15px 15px 44px;
+      }
+    }
+
   </style>
 </head>
 
