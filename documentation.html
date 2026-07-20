@@ -6,6 +6,27 @@
   <title>夢回花深處｜教學與公告</title>
   <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
+
+  <div class="floatingTools" aria-label="手機閱讀工具">
+    <button class="floatingBtn mobileTocBtn" id="mobileTocBtn" type="button" aria-label="開啟本頁目錄">☷</button>
+    <button class="floatingBtn backToTopBtn" id="backToTopBtn" type="button" aria-label="返回頂部">↑</button>
+  </div>
+
+  <div class="mobileTocBackdrop" id="mobileTocBackdrop"></div>
+  <section class="mobileTocSheet" id="mobileTocSheet" aria-label="本頁內容" aria-hidden="true">
+    <div class="mobileTocHandle"></div>
+    <div class="mobileTocHeader">
+      <strong>本頁內容</strong>
+      <button class="mobileTocClose" id="mobileTocClose" type="button" aria-label="關閉本頁目錄">×</button>
+    </div>
+    <nav class="mobileTocList" id="mobileTocList"></nav>
+  </section>
+
+  <div class="imageLightbox" id="imageLightbox" aria-hidden="true">
+    <button class="imageLightboxClose" id="imageLightboxClose" type="button" aria-label="關閉圖片">×</button>
+    <img id="imageLightboxImage" alt="放大圖片">
+  </div>
+
   <script>
     (function(){
       try{
@@ -2272,6 +2293,500 @@
   }
 }
 
+
+
+/* =========================================================
+   DOCUMENTATION V3 — MOBILE EXPERIENCE
+   ========================================================= */
+.mobileDrawerHeader,
+.mobileDrawerSearch,
+.mobileTocSheet,
+.mobileTocBackdrop,
+.floatingTools,
+.imageLightbox{ display:none; }
+
+@media (max-width:760px){
+  :root{ --mobile-topbar-height:132px; }
+
+  html,body{ overscroll-behavior-y:none; }
+  body.sidebar-open,
+  body.sheet-open,
+  body.lightbox-open{ overflow:hidden !important; touch-action:none; }
+
+  .topbar{
+    position:sticky;
+    top:max(8px, env(safe-area-inset-top));
+    z-index:1200;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:8px;
+    width:calc(100% - 16px);
+    margin:8px auto 0;
+    padding:9px 10px 10px;
+    border-radius:20px;
+  }
+
+  .brand{ min-width:0; overflow:hidden; }
+  .brand img{ width:36px; height:36px; flex:0 0 auto; }
+  .brandText{ min-width:0; }
+  .brandText > span:first-child{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:13px;
+    font-weight:850;
+  }
+
+  .mobileMenuBtn{
+    order:2;
+    display:grid;
+    place-items:center;
+    width:42px;
+    height:42px;
+    margin:0;
+    font-size:19px;
+  }
+
+  .themeToggle{
+    order:3;
+    width:42px;
+    min-width:42px;
+    height:42px;
+    min-height:42px;
+    padding:0;
+  }
+  .themeToggle #themeText{ display:none; }
+
+  .searchWrap{
+    order:4;
+    grid-column:1 / -1;
+    width:100%;
+    margin:0;
+  }
+  .searchInput{ height:42px; font-size:16px; }
+  .searchKey{ display:none; }
+  .searchResults{
+    position:fixed;
+    left:8px;
+    right:8px;
+    top:calc(max(8px, env(safe-area-inset-top)) + 116px);
+    max-height:min(58vh, 520px);
+    z-index:1800;
+    border-radius:18px;
+  }
+
+  .layout{
+    width:calc(100% - 16px);
+    margin:10px auto calc(82px + env(safe-area-inset-bottom));
+    min-height:calc(100dvh - 145px);
+    border-radius:22px;
+    overflow:visible;
+  }
+
+  .content{
+    padding:14px 13px calc(92px + env(safe-area-inset-bottom));
+    background:transparent !important;
+  }
+
+  .docHeader{
+    margin-bottom:18px;
+    padding:18px 16px;
+    border-radius:18px;
+  }
+  .breadcrumb{ margin-bottom:8px; font-size:11px; }
+  .docTitle{ font-size:clamp(24px,7vw,30px) !important; line-height:1.2; }
+  .docHeader::after{ width:110px; height:110px; right:-42px; bottom:-50px; }
+
+  .markdownBody{ font-size:15px; line-height:1.78; }
+  .markdownBody h1{ font-size:26px; }
+  .markdownBody h2{ margin-top:34px; font-size:22px; }
+  .markdownBody h3{ margin-top:26px; font-size:18px; }
+  .markdownBody p{ margin-bottom:15px; }
+  .markdownBody ul,.markdownBody ol{ padding-left:1.45rem; }
+  .markdownBody blockquote{ padding:14px 15px 14px 17px; }
+  .markdownBody pre{ margin-inline:-2px; padding:15px; overflow-x:auto; }
+  .markdownBody img{ border-radius:13px; cursor:zoom-in; }
+
+  .sidebar{
+    position:fixed !important;
+    inset:0 auto 0 0;
+    z-index:2100;
+    width:min(84vw, 304px) !important;
+    max-width:304px;
+    height:100dvh !important;
+    padding:0 12px calc(18px + env(safe-area-inset-bottom));
+    border-right:1px solid var(--border);
+    border-radius:0 24px 24px 0 !important;
+    background:color-mix(in srgb,var(--panel) 98%,#0b1020) !important;
+    box-shadow:24px 0 55px rgba(0,0,0,.34);
+    transform:translate3d(-106%,0,0) scale(.985);
+    transform-origin:left center;
+    opacity:.65;
+    visibility:hidden;
+    transition:transform .28s cubic-bezier(.22,1,.36,1), opacity .22s ease, visibility 0s linear .28s;
+    overflow-y:auto !important;
+    overscroll-behavior:contain;
+  }
+  .sidebar.open{
+    transform:translate3d(0,0,0) scale(1);
+    opacity:1;
+    visibility:visible;
+    transition-delay:0s;
+  }
+
+  .mobileDrawerHeader{
+    position:sticky;
+    top:0;
+    z-index:8;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:0 -12px 10px;
+    padding:calc(14px + env(safe-area-inset-top)) 14px 12px;
+    border-bottom:1px solid var(--border);
+    background:color-mix(in srgb,var(--panel) 96%,transparent);
+    backdrop-filter:blur(18px);
+  }
+  .mobileDrawerTitle{ font-size:15px; font-weight:900; }
+  .mobileDrawerClose{
+    width:40px;
+    height:40px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    color:var(--text);
+    background:var(--panel-soft);
+    cursor:pointer;
+    font-size:20px;
+  }
+
+  .mobileDrawerSearch{
+    position:sticky;
+    top:calc(67px + env(safe-area-inset-top));
+    z-index:7;
+    display:block;
+    margin:0 0 12px;
+    padding:2px 0 10px;
+    background:color-mix(in srgb,var(--panel) 98%,transparent);
+  }
+  .mobileDrawerSearch input{
+    width:100%;
+    height:42px;
+    padding:0 13px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    color:var(--text);
+    background:var(--panel-soft);
+    outline:none;
+    font-size:16px;
+  }
+  .mobileDrawerSearch input:focus{ border-color:var(--site-sea); }
+
+  .sidebarTitle{ display:none; }
+  .sidebarMeta{ display:none; }
+  .docList{ gap:5px; padding-bottom:8px; }
+  .docItem{
+    min-height:48px;
+    padding:11px 12px;
+    border-radius:13px;
+    font-size:14px;
+    touch-action:manipulation;
+  }
+  .docItem:hover{ transform:none; }
+  .docItem:active{ transform:scale(.985); }
+  .statusBox{ margin:12px 0 0; }
+
+  .sidebarBackdrop{
+    position:fixed !important;
+    inset:0 !important;
+    z-index:2050 !important;
+    width:auto !important;
+    display:block !important;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    background:rgba(2,6,16,.62);
+    backdrop-filter:blur(3px);
+    transition:opacity .22s ease, visibility 0s linear .22s;
+  }
+  .sidebarBackdrop.open{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition-delay:0s;
+  }
+
+  .floatingTools{
+    position:fixed;
+    right:14px;
+    bottom:calc(14px + env(safe-area-inset-bottom));
+    z-index:1350;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .floatingBtn{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--border);
+    border-radius:16px;
+    color:var(--text);
+    background:color-mix(in srgb,var(--panel) 88%,transparent);
+    box-shadow:0 12px 28px rgba(0,0,0,.24);
+    backdrop-filter:blur(16px);
+    cursor:pointer;
+    font-size:18px;
+  }
+  .backToTopBtn{
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(8px);
+    transition:.2s ease;
+  }
+  .backToTopBtn.show{ opacity:1; visibility:visible; transform:none; }
+
+  .mobileTocBackdrop{
+    position:fixed;
+    inset:0;
+    z-index:2200;
+    display:block;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    background:rgba(2,6,16,.62);
+    backdrop-filter:blur(3px);
+    transition:.22s ease;
+  }
+  .mobileTocBackdrop.open{ opacity:1; visibility:visible; pointer-events:auto; }
+
+  .mobileTocSheet{
+    position:fixed;
+    left:8px;
+    right:8px;
+    bottom:calc(8px + env(safe-area-inset-bottom));
+    z-index:2250;
+    display:block;
+    max-height:min(70dvh,620px);
+    padding:8px 14px 18px;
+    border:1px solid var(--border);
+    border-radius:24px;
+    color:var(--text);
+    background:color-mix(in srgb,var(--panel) 98%,#0b1020);
+    box-shadow:0 -24px 58px rgba(0,0,0,.34);
+    transform:translateY(calc(100% + 24px));
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
+    overflow:auto;
+  }
+  .mobileTocSheet.open{ transform:translateY(0); }
+  .mobileTocHandle{ width:46px; height:5px; margin:2px auto 12px; border-radius:999px; background:var(--border-soft); }
+  .mobileTocHeader{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; }
+  .mobileTocHeader strong{ font-size:16px; }
+  .mobileTocClose{ width:38px; height:38px; border:1px solid var(--border); border-radius:999px; color:var(--text); background:var(--panel-soft); }
+  .mobileTocList{ display:flex; flex-direction:column; gap:5px; }
+  .mobileTocList .tocLink{ min-height:44px; display:flex; align-items:center; font-size:13px; }
+
+  .copyCodeBtn{
+    position:absolute;
+    top:12px;
+    right:12px;
+    min-height:34px;
+    padding:0 10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text);
+    background:color-mix(in srgb,var(--panel) 92%,transparent);
+    cursor:pointer;
+    font-size:11px;
+    font-weight:850;
+  }
+  .markdownBody pre::before{ margin-right:74px; }
+
+  .imageLightbox{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(10px);
+  }
+  .imageLightbox.open{ display:flex; }
+  .imageLightbox img{ max-width:96vw; max-height:88dvh; object-fit:contain; border-radius:14px; box-shadow:0 24px 70px rgba(0,0,0,.5); }
+  .imageLightboxClose{ position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px; width:44px; height:44px; border:1px solid rgba(255,255,255,.28); border-radius:999px; color:#fff; background:rgba(255,255,255,.12); font-size:22px; }
+}
+
+@media (max-width:390px){
+  .topbar{ grid-template-columns:minmax(0,1fr) 40px 40px; }
+  .content{ padding-inline:10px; }
+  .docHeader{ padding:16px 14px; }
+  .markdownBody{ font-size:14px; }
+}
+
+
+
+/* =========================================================
+   DOCUMENTATION V3.1 — MOBILE DRAWER + SCROLL HOTFIX
+   修正：遮罩蓋住側欄、側欄與頁面無法觸控捲動
+   ========================================================= */
+@media (max-width:760px){
+  /* backdrop-filter 會建立 stacking context，令 fixed sidebar 被外層遮罩壓住 */
+  .layout{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    transform:none !important;
+    isolation:auto !important;
+  }
+
+  /* 鎖住背景即可，不要在 body 使用 touch-action:none，否則側欄也不能滑 */
+  body.sidebar-open,
+  body.sheet-open,
+  body.lightbox-open{
+    overflow:hidden !important;
+  }
+
+  body.sidebar-open{
+    touch-action:auto !important;
+  }
+
+  /* 側欄永遠高於遮罩，並保留獨立的直向捲動 */
+  .layout > .sidebar,
+  .sidebar{
+    z-index:3001 !important;
+    height:100dvh !important;
+    max-height:100dvh !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    overscroll-behavior-y:contain !important;
+    touch-action:pan-y !important;
+    -webkit-overflow-scrolling:touch;
+    pointer-events:auto !important;
+  }
+
+  .sidebarBackdrop{
+    z-index:3000 !important;
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+  }
+
+  /* 側欄開啟時，確保沒有 visibility / opacity 衝突 */
+  .sidebar.open{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    transform:translate3d(0,0,0) scale(1) !important;
+  }
+
+  .docList,
+  .docItem{
+    touch-action:manipulation;
+  }
+
+  /* 一般閱讀狀態維持整頁自然捲動 */
+  body:not(.sidebar-open):not(.sheet-open):not(.lightbox-open){
+    overflow-y:auto !important;
+    touch-action:pan-y !important;
+  }
+}
+
+
+
+/* =========================================================
+   DOCUMENTATION V3.2 — MOBILE SCROLL FINAL FIX
+   ========================================================= */
+@media (max-width:760px){
+  html{
+    height:auto !important;
+    min-height:100% !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    touch-action:pan-y !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body{
+    position:static !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:100dvh !important;
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+    touch-action:pan-y !important;
+    overscroll-behavior-y:auto !important;
+  }
+
+  .layout{
+    position:relative !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  .layout > .content,
+  main.content{
+    position:relative !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:visible !important;
+    touch-action:pan-y !important;
+    pointer-events:auto !important;
+  }
+
+  /* Drawer 本身獨立捲動 */
+  .layout > .sidebar,
+  aside.sidebar{
+    position:fixed !important;
+    inset:0 auto 0 0 !important;
+    z-index:5001 !important;
+    height:100dvh !important;
+    max-height:100dvh !important;
+    overflow-x:hidden !important;
+    overflow-y:scroll !important;
+    touch-action:pan-y !important;
+    overscroll-behavior-y:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+    pointer-events:auto !important;
+  }
+
+  .sidebarBackdrop{
+    z-index:5000 !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    background:rgba(2,6,16,.72) !important;
+  }
+
+  /* 只在浮層開啟時鎖住背景；不禁止側欄的 pan-y */
+  body.sidebar-open,
+  body.sheet-open,
+  body.lightbox-open{
+    overflow:hidden !important;
+    touch-action:pan-y !important;
+  }
+
+  body.sidebar-open .sidebar{
+    overflow-y:scroll !important;
+    touch-action:pan-y !important;
+  }
+
+  .docList{
+    min-height:max-content;
+    overflow:visible !important;
+    touch-action:pan-y !important;
+  }
+
+  .docItem,
+  .docItem *{
+    pointer-events:auto !important;
+  }
+}
 </style>
 </head>
 
@@ -2307,7 +2822,14 @@
   <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
   <div class="layout">
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="手冊文章列表">
+      <div class="mobileDrawerHeader">
+        <span class="mobileDrawerTitle">手冊列表</span>
+        <button class="mobileDrawerClose" id="mobileDrawerClose" type="button" aria-label="關閉文章列表">×</button>
+      </div>
+      <div class="mobileDrawerSearch">
+        <input id="mobileDrawerSearchInput" type="search" placeholder="篩選文章名稱" aria-label="篩選文章名稱">
+      </div>
       <h2 class="sidebarTitle">手冊列表</h2>
       <p class="sidebarMeta">
       </p>
@@ -2846,11 +3368,17 @@ document.title = `${title}｜夢回手冊`;
     function openSidebar(){
       el.sidebar.classList.add("open");
       el.sidebarBackdrop.classList.add("open");
+      el.mobileMenuBtn.setAttribute("aria-expanded", "true");
+      el.sidebar.setAttribute("aria-hidden", "false");
+      if(typeof syncBodyLock === "function") syncBodyLock();
     }
 
     function closeSidebar(){
       el.sidebar.classList.remove("open");
       el.sidebarBackdrop.classList.remove("open");
+      el.mobileMenuBtn.setAttribute("aria-expanded", "false");
+      el.sidebar.setAttribute("aria-hidden", "true");
+      if(typeof syncBodyLock === "function") syncBodyLock();
     }
 
     el.mobileMenuBtn.addEventListener("click", openSidebar);
@@ -2901,9 +3429,211 @@ document.title = `${title}｜夢回手冊`;
       });
     }
 
+
+    /* =========================================================
+       DOCUMENTATION V3 — MOBILE INTERACTIONS
+       ========================================================= */
+    const v3 = {
+      drawerClose: document.getElementById("mobileDrawerClose"),
+      drawerSearch: document.getElementById("mobileDrawerSearchInput"),
+      tocBtn: document.getElementById("mobileTocBtn"),
+      tocSheet: document.getElementById("mobileTocSheet"),
+      tocBackdrop: document.getElementById("mobileTocBackdrop"),
+      tocClose: document.getElementById("mobileTocClose"),
+      tocList: document.getElementById("mobileTocList"),
+      backToTop: document.getElementById("backToTopBtn"),
+      lightbox: document.getElementById("imageLightbox"),
+      lightboxImage: document.getElementById("imageLightboxImage"),
+      lightboxClose: document.getElementById("imageLightboxClose")
+    };
+
+    function syncBodyLock(){
+      const drawerOpen = el.sidebar.classList.contains("open");
+      const sheetOpen = v3.tocSheet.classList.contains("open");
+      const lightboxOpen = v3.lightbox.classList.contains("open");
+      document.body.classList.toggle("sidebar-open", drawerOpen);
+      document.body.classList.toggle("sheet-open", sheetOpen);
+      document.body.classList.toggle("lightbox-open", lightboxOpen);
+    }
+
+    const originalOpenSidebar = openSidebar;
+    openSidebar = function(){
+      originalOpenSidebar();
+      el.mobileMenuBtn.setAttribute("aria-expanded", "true");
+      el.sidebar.setAttribute("aria-hidden", "false");
+      syncBodyLock();
+      setTimeout(() => v3.drawerSearch && v3.drawerSearch.focus(), 280);
+    };
+
+    const originalCloseSidebar = closeSidebar;
+    closeSidebar = function(){
+      originalCloseSidebar();
+      el.mobileMenuBtn.setAttribute("aria-expanded", "false");
+      el.sidebar.setAttribute("aria-hidden", "true");
+      syncBodyLock();
+    };
+
+    el.mobileMenuBtn.setAttribute("aria-expanded", "false");
+    v3.drawerClose.addEventListener("click", closeSidebar);
+
+    v3.drawerSearch.addEventListener("input", () => {
+      const query = v3.drawerSearch.value.trim().toLowerCase();
+      document.querySelectorAll(".docItem").forEach(item => {
+        const name = item.textContent.toLowerCase();
+        item.hidden = query && !name.includes(query);
+      });
+    });
+
+    function openMobileToc(){
+      v3.tocList.innerHTML = el.tocList.innerHTML || '<span style="color:var(--muted);font-size:12px;">目前沒有目錄</span>';
+      v3.tocSheet.classList.add("open");
+      v3.tocBackdrop.classList.add("open");
+      v3.tocSheet.setAttribute("aria-hidden", "false");
+      syncBodyLock();
+      v3.tocList.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => closeMobileToc(), { once:true });
+      });
+    }
+
+    function closeMobileToc(){
+      v3.tocSheet.classList.remove("open");
+      v3.tocBackdrop.classList.remove("open");
+      v3.tocSheet.setAttribute("aria-hidden", "true");
+      syncBodyLock();
+    }
+
+    v3.tocBtn.addEventListener("click", openMobileToc);
+    v3.tocClose.addEventListener("click", closeMobileToc);
+    v3.tocBackdrop.addEventListener("click", closeMobileToc);
+
+    function getScrollTop(){
+      return window.innerWidth <= 760 ? window.scrollY : el.content.scrollTop;
+    }
+
+    function updateBackToTop(){
+      v3.backToTop.classList.toggle("show", getScrollTop() > 480);
+    }
+
+    window.addEventListener("scroll", updateBackToTop, { passive:true });
+    el.content.addEventListener("scroll", updateBackToTop, { passive:true });
+    v3.backToTop.addEventListener("click", () => {
+      if(window.innerWidth <= 760){
+        window.scrollTo({ top:0, behavior:"smooth" });
+      }else{
+        el.content.scrollTo({ top:0, behavior:"smooth" });
+      }
+    });
+
+    function enhanceRenderedContentV3(){
+      el.markdownBody.querySelectorAll("pre").forEach(pre => {
+        if(pre.querySelector(".copyCodeBtn")) return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "copyCodeBtn";
+        button.textContent = "複製";
+        button.addEventListener("click", async () => {
+          const code = pre.querySelector("code")?.innerText || pre.innerText;
+          try{
+            await navigator.clipboard.writeText(code);
+            button.textContent = "已複製";
+          }catch(error){
+            button.textContent = "失敗";
+          }
+          setTimeout(() => button.textContent = "複製", 1400);
+        });
+        pre.appendChild(button);
+      });
+
+      el.markdownBody.querySelectorAll("img").forEach(img => {
+        img.tabIndex = 0;
+        img.setAttribute("role", "button");
+        img.setAttribute("aria-label", "點擊放大圖片");
+        const open = () => {
+          v3.lightboxImage.src = img.currentSrc || img.src;
+          v3.lightboxImage.alt = img.alt || "放大圖片";
+          v3.lightbox.classList.add("open");
+          v3.lightbox.setAttribute("aria-hidden", "false");
+          syncBodyLock();
+        };
+        img.addEventListener("click", open);
+        img.addEventListener("keydown", event => {
+          if(event.key === "Enter" || event.key === " "){
+            event.preventDefault();
+            open();
+          }
+        });
+      });
+    }
+
+    function closeLightbox(){
+      v3.lightbox.classList.remove("open");
+      v3.lightbox.setAttribute("aria-hidden", "true");
+      v3.lightboxImage.removeAttribute("src");
+      syncBodyLock();
+    }
+
+    v3.lightboxClose.addEventListener("click", closeLightbox);
+    v3.lightbox.addEventListener("click", event => {
+      if(event.target === v3.lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", event => {
+      if(event.key !== "Escape") return;
+      if(v3.lightbox.classList.contains("open")) closeLightbox();
+      else if(v3.tocSheet.classList.contains("open")) closeMobileToc();
+      else if(el.sidebar.classList.contains("open")) closeSidebar();
+    });
+
+    const markdownObserver = new MutationObserver(() => enhanceRenderedContentV3());
+    markdownObserver.observe(el.markdownBody, { childList:true, subtree:true });
+    updateBackToTop();
+
     initTheme();
 
     loadFolder();
   </script>
+
+<script>
+/* Documentation v3.2 mobile scroll safety */
+(function(){
+  const mq = window.matchMedia('(max-width:760px)');
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function repairMobileScroll(){
+    if(!mq.matches) return;
+    const drawerOpen = sidebar && sidebar.classList.contains('open');
+    document.body.classList.toggle('sidebar-open', !!drawerOpen);
+
+    if(!drawerOpen &&
+       !document.body.classList.contains('sheet-open') &&
+       !document.body.classList.contains('lightbox-open')){
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('position');
+      document.body.style.removeProperty('top');
+      document.body.style.removeProperty('width');
+    }
+  }
+
+  if(sidebar){
+    new MutationObserver(repairMobileScroll).observe(sidebar, {
+      attributes:true,
+      attributeFilter:['class']
+    });
+  }
+
+  if(backdrop){
+    backdrop.addEventListener('click', function(){
+      setTimeout(repairMobileScroll, 0);
+    }, {passive:true});
+  }
+
+  window.addEventListener('pageshow', repairMobileScroll, {passive:true});
+  window.addEventListener('resize', repairMobileScroll, {passive:true});
+  document.addEventListener('visibilitychange', repairMobileScroll, {passive:true});
+  repairMobileScroll();
+})();
+</script>
 </body>
 </html>
