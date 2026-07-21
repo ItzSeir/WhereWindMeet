@@ -2787,7 +2787,36 @@
     pointer-events:auto !important;
   }
 }
-</style>
+
+
+    /* =========================================================
+       DOCUMENTATION V4 — METADATA / PINNED / CONTENT COMPONENTS
+       Backward compatible: articles without front matter still work.
+       ========================================================= */
+    .docMetaPanel{position:relative;z-index:1;margin-top:18px;display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;color:var(--muted);font-size:12px}
+    .docMetaItem{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:4px 9px;border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--panel) 66%,transparent)}
+    .docMetaItem strong{color:var(--text);font-weight:800}
+    .docDescription{position:relative;z-index:1;margin:12px 0 0;max-width:760px;color:color-mix(in srgb,var(--text) 82%,var(--muted));font-size:14px;line-height:1.65}
+    .docBadges{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+    .pill,.badge{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:max-content;max-width:100%;padding:4px 9px;border:1px solid color-mix(in srgb,var(--pill-color,var(--site-sea)) 42%,var(--border));border-radius:999px;color:color-mix(in srgb,var(--pill-color,var(--site-sea)) 78%,var(--text));background:color-mix(in srgb,var(--pill-color,var(--site-sea)) 13%,var(--panel));font-size:11px;font-weight:900;line-height:1.2;vertical-align:middle}
+    .badge{padding:3px 8px;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+    .pill.blue,.badge.blue{--pill-color:#60a5fa}.pill.purple,.badge.purple{--pill-color:#a78bfa}.pill.green,.badge.green{--pill-color:#34d399}.pill.gold,.badge.gold,.pill.yellow,.badge.yellow{--pill-color:#fbbf24}.pill.red,.badge.red{--pill-color:#fb7185}.pill.gray,.badge.gray{--pill-color:#94a3b8}.pill.cyan,.badge.cyan{--pill-color:#22d3ee}
+    .sidebarSection{margin:0 0 15px}.sidebarSectionTitle{display:flex;align-items:center;gap:7px;margin:4px 8px 7px;color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.sidebarSectionTitle::after{content:"";height:1px;flex:1;background:var(--border)}
+    .docItemMeta{display:flex;min-width:0;flex:1;flex-direction:column;gap:2px}.docItemTop{display:flex;align-items:center;gap:6px;min-width:0}.docItemMini{color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.docItemPin{font-size:11px;flex:0 0 auto}.docItem.active .docItemMini{color:rgba(255,255,255,.78)}
+    .markdownBody .callout,.markdownBody .success,.markdownBody .tip,.markdownBody .important,.markdownBody .question,.markdownBody .download,.markdownBody .example,.markdownBody .update,.markdownBody .boss,.markdownBody .reward,.markdownBody .requirement,.markdownBody .discord{--callout:#60a5fa;position:relative;margin:22px 0;padding:16px 18px 16px 50px;border:1px solid color-mix(in srgb,var(--callout) 42%,var(--border));border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--callout) 12%,var(--panel)),color-mix(in srgb,var(--callout) 5%,var(--panel)));box-shadow:0 10px 24px rgba(0,0,0,.07)}
+    .markdownBody .callout::before,.markdownBody .success::before,.markdownBody .tip::before,.markdownBody .important::before,.markdownBody .question::before,.markdownBody .download::before,.markdownBody .example::before,.markdownBody .update::before,.markdownBody .boss::before,.markdownBody .reward::before,.markdownBody .requirement::before,.markdownBody .discord::before{content:attr(data-icon);position:absolute;left:16px;top:15px;display:grid;place-items:center;width:24px;height:24px;border-radius:8px;color:#fff;background:var(--callout);font-size:13px;font-weight:900}
+    .markdownBody .success{--callout:#22c55e}.markdownBody .success::before{content:"✓"}.markdownBody .tip{--callout:#eab308}.markdownBody .tip::before{content:"💡"}.markdownBody .important{--callout:#a855f7}.markdownBody .important::before{content:"★"}.markdownBody .question{--callout:#06b6d4}.markdownBody .question::before{content:"?"}.markdownBody .download{--callout:#3b82f6}.markdownBody .download::before{content:"↓"}.markdownBody .example{--callout:#64748b}.markdownBody .example::before{content:"例"}.markdownBody .update{--callout:#8b5cf6}.markdownBody .update::before{content:"新"}.markdownBody .boss{--callout:#ef4444}.markdownBody .boss::before{content:"王"}.markdownBody .reward{--callout:#f59e0b}.markdownBody .reward::before{content:"賞"}.markdownBody .requirement{--callout:#14b8a6}.markdownBody .requirement::before{content:"需"}.markdownBody .discord{--callout:#5865f2}.markdownBody .discord::before{content:"D"}
+    .markdownBody .callout-title{display:block;margin:0 0 5px;color:var(--text);font-weight:900}.markdownBody .callout > :last-child,.markdownBody .success > :last-child,.markdownBody .tip > :last-child,.markdownBody .important > :last-child,.markdownBody .question > :last-child,.markdownBody .download > :last-child,.markdownBody .example > :last-child,.markdownBody .update > :last-child,.markdownBody .boss > :last-child,.markdownBody .reward > :last-child,.markdownBody .requirement > :last-child,.markdownBody .discord > :last-child{margin-bottom:0}
+    .markdownBody .pill-row,.markdownBody .badge-row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 18px}
+    .markdownBody .card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0}.markdownBody .content-card{padding:17px;border:1px solid var(--border);border-radius:16px;background:var(--panel-soft);box-shadow:0 8px 18px rgba(0,0,0,.06)}.markdownBody .content-card > :last-child{margin-bottom:0}
+    .markdownBody .steps{counter-reset:docstep;margin:22px 0}.markdownBody .step{counter-increment:docstep;position:relative;margin:0 0 13px;padding:15px 16px 15px 52px;border:1px solid var(--border);border-radius:15px;background:var(--panel-soft)}.markdownBody .step::before{content:counter(docstep);position:absolute;left:15px;top:14px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--site-sea),var(--site-teal));font-size:12px;font-weight:900}.markdownBody .step > :last-child{margin-bottom:0}
+    .markdownBody .timeline{position:relative;margin:22px 0;padding-left:26px}.markdownBody .timeline::before{content:"";position:absolute;left:7px;top:7px;bottom:7px;width:2px;background:linear-gradient(var(--site-sea),var(--site-teal))}.markdownBody .timeline-item{position:relative;margin:0 0 18px;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:var(--panel-soft)}.markdownBody .timeline-item::before{content:"";position:absolute;left:-25px;top:18px;width:11px;height:11px;border:3px solid var(--panel);border-radius:50%;background:var(--site-sea);box-shadow:0 0 0 2px var(--site-sea)}
+    .markdownBody details{margin:14px 0;border:1px solid var(--border);border-radius:14px;background:var(--panel-soft);overflow:hidden}.markdownBody summary{padding:14px 16px;cursor:pointer;color:var(--text);font-weight:850;list-style:none}.markdownBody summary::-webkit-details-marker{display:none}.markdownBody summary::after{content:"＋";float:right;color:var(--muted)}.markdownBody details[open] summary::after{content:"－"}.markdownBody details > :not(summary){margin-left:16px;margin-right:16px}.markdownBody details > :last-child{margin-bottom:16px}
+    .markdownBody kbd{display:inline-block;padding:2px 7px;border:1px solid var(--border-soft);border-bottom-width:2px;border-radius:6px;color:var(--text);background:var(--panel-soft);font:700 11px ui-monospace,SFMono-Regular,Consolas,monospace}
+    .articleFooterNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:42px;padding-top:22px;border-top:1px solid var(--border)}.articleNavBtn{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border:1px solid var(--border);border-radius:15px;color:var(--text);background:var(--panel-soft);text-decoration:none;cursor:pointer}.articleNavBtn:hover{border-color:var(--site-sea);transform:translateY(-1px)}.articleNavBtn.next{text-align:right}.articleNavBtn small{color:var(--muted)}
+    @media(max-width:760px){.docMetaPanel{gap:7px}.docMetaItem{font-size:11px}.markdownBody .card-grid{grid-template-columns:1fr}.articleFooterNav{grid-template-columns:1fr}.articleNavBtn.next{text-align:left}}
+
+  </style>
 </head>
 
 <body class="wherewindmeet-docs-page">
@@ -2856,6 +2885,9 @@
 
         <h1 class="docTitle" id="docTitle">使用教學與公告</h1>
         <div class="docFile" id="docFile" hidden></div>
+        <div class="docBadges" id="docBadges" hidden></div>
+        <p class="docDescription" id="docDescription" hidden></p>
+        <div class="docMetaPanel" id="docMetaPanel" hidden></div>
       </header>
 
       <article class="markdownBody" id="markdownBody">
@@ -2901,7 +2933,8 @@
     const state = {
       files: [],
       documents: new Map(),
-      activeFile: ""
+      activeFile: "",
+      metadata: new Map()
     };
 
     const el = {
@@ -2910,6 +2943,9 @@
       markdownBody: document.getElementById("markdownBody"),
       docTitle: document.getElementById("docTitle"),
       docFile: document.getElementById("docFile"),
+      docBadges: document.getElementById("docBadges"),
+      docDescription: document.getElementById("docDescription"),
+      docMetaPanel: document.getElementById("docMetaPanel"),
       breadcrumbName: document.getElementById("breadcrumbName"),
       tocList: document.getElementById("tocList"),
       searchInput: document.getElementById("searchInput"),
@@ -2950,6 +2986,86 @@
     function titleFromMarkdown(markdown, fallback){
       const match = markdown.match(/^#\s+(.+)$/m);
       return match ? match[1].trim() : cleanFilename(fallback);
+    }
+
+
+    function parseScalar(value){
+      const trimmed = String(value ?? "").trim();
+      if(!trimmed) return "";
+      if(/^true$/i.test(trimmed)) return true;
+      if(/^false$/i.test(trimmed)) return false;
+      if(/^null$/i.test(trimmed)) return null;
+      if(/^[-+]?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
+      if((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))){
+        return trimmed.slice(1,-1);
+      }
+      if(trimmed.startsWith("[") && trimmed.endsWith("]")){
+        return trimmed.slice(1,-1).split(",").map(item => parseScalar(item)).filter(Boolean);
+      }
+      return trimmed;
+    }
+
+    function parseFrontMatter(markdown, filename){
+      const normalized = markdown.replace(/^\uFEFF/, "");
+      const match = normalized.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/);
+      const meta = {};
+      let body = normalized;
+      if(match){
+        body = normalized.slice(match[0].length);
+        const lines = match[1].split(/\r?\n/);
+        let currentKey = "";
+        for(const rawLine of lines){
+          if(!rawLine.trim() || /^\s*#/.test(rawLine)) continue;
+          const listMatch = rawLine.match(/^\s*-\s+(.+)$/);
+          if(listMatch && currentKey){
+            if(!Array.isArray(meta[currentKey])) meta[currentKey] = meta[currentKey] ? [meta[currentKey]] : [];
+            meta[currentKey].push(parseScalar(listMatch[1]));
+            continue;
+          }
+          const keyMatch = rawLine.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+          if(!keyMatch) continue;
+          currentKey = keyMatch[1];
+          meta[currentKey] = keyMatch[2] === "" ? [] : parseScalar(keyMatch[2]);
+        }
+      }
+      meta.title = meta.title || titleFromMarkdown(body, filename);
+      meta.icon = meta.icon || "▤";
+      meta.category = meta.category || "其他";
+      meta.tags = Array.isArray(meta.tags) ? meta.tags : (meta.tags ? [meta.tags] : []);
+      meta.aliases = Array.isArray(meta.aliases) ? meta.aliases : (meta.aliases ? [meta.aliases] : []);
+      meta.pills = Array.isArray(meta.pills) ? meta.pills : (meta.pills ? [meta.pills] : []);
+      if(meta.pill) meta.pills.unshift(meta.pill);
+      meta.order = Number.isFinite(Number(meta.order)) ? Number(meta.order) : fileOrder(filename);
+      return { meta, body };
+    }
+
+    function calculateReadingTime(text){
+      const clean = text
+        .replace(/^---[\s\S]*?---\s*/," ")
+        .replace(/```[\s\S]*?```/g," ")
+        .replace(/<[^>]+>/g," ")
+        .replace(/https?:\/\/\S+/g," ");
+      const cjk = (clean.match(/[\u3400-\u9fff\uf900-\ufaff]/g) || []).length;
+      const latin = clean.replace(/[\u3400-\u9fff\uf900-\ufaff]/g," ").match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) || [];
+      return Math.max(1, Math.ceil(cjk / 400 + latin.length / 220));
+    }
+
+    function formatDateValue(value){
+      if(!value) return "";
+      const text = String(value).trim();
+      const date = new Date(text.length === 10 ? `${text}T00:00:00` : text);
+      if(Number.isNaN(date.getTime())) return text;
+      return new Intl.DateTimeFormat("zh-Hant", {year:"numeric",month:"2-digit",day:"2-digit"}).format(date);
+    }
+
+    function normalizeColor(value){
+      const allowed = ["blue","purple","green","gold","yellow","red","gray","cyan"];
+      const color = String(value || "blue").toLowerCase();
+      return allowed.includes(color) ? color : "blue";
+    }
+
+    function metadataFor(file){
+      return state.metadata.get(file.name) || {title:cleanFilename(file.name),icon:"▤",category:"其他",tags:[],pinned:false,order:fileOrder(file.name)};
     }
 
     function fileOrder(name){
@@ -2994,9 +3110,33 @@
           throw new Error("資料夾內沒有找到 Markdown 文件");
         }
 
+        await Promise.all(state.files.map(async file => {
+          try{
+            const markdown = await fetchMarkdown(file);
+            const parsed = parseFrontMatter(markdown, file.name);
+            parsed.meta.readingMinutes = calculateReadingTime(parsed.body);
+            state.metadata.set(file.name, parsed.meta);
+          }catch(error){
+            console.warn("Metadata skipped:", file.name, error);
+          }
+        }));
+
+        state.files = state.files.filter(file => {
+          const meta = metadataFor(file);
+          return !meta.hidden && !meta.draft;
+        });
+
+        state.files.sort((a,b) => {
+          const ma = metadataFor(a);
+          const mb = metadataFor(b);
+          return Number(Boolean(mb.pinned)) - Number(Boolean(ma.pinned)) ||
+                 Number(ma.order) - Number(mb.order) ||
+                 a.name.localeCompare(b.name, "zh-Hant");
+        });
+
         renderFileList();
 
-        el.statusBox.textContent = `已找到 ${state.files.length} 篇文章。`;
+        el.statusBox.textContent = `已找到 ${state.files.length} 篇文章，其中 ${state.files.filter(file => metadataFor(file).pinned).length} 篇置頂。`;
 
         const hashFile = decodeURIComponent(location.hash.replace(/^#doc=/, ""));
         const firstFile =
@@ -3027,20 +3167,43 @@
 
     function renderFileList(){
       el.docList.innerHTML = "";
+      const pinned = state.files.filter(file => Boolean(metadataFor(file).pinned));
+      const normal = state.files.filter(file => !Boolean(metadataFor(file).pinned));
+      const groups = [];
+      if(pinned.length) groups.push({title:"📌 置頂文章", files:pinned});
+      const categories = new Map();
+      normal.forEach(file => {
+        const category = metadataFor(file).category || "其他";
+        if(!categories.has(category)) categories.set(category, []);
+        categories.get(category).push(file);
+      });
+      categories.forEach((files,title) => groups.push({title:`📂 ${title}`,files}));
 
-      state.files.forEach(file => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "docItem";
-        button.dataset.file = file.name;
-
-        button.innerHTML = `
-          <span class="docIcon">▤</span>
-          <span class="docName">${escapeHtml(cleanFilename(file.name))}</span>
-        `;
-
-        button.addEventListener("click", () => openDocument(file.name));
-        el.docList.appendChild(button);
+      groups.forEach(group => {
+        const section = document.createElement("section");
+        section.className = "sidebarSection";
+        const heading = document.createElement("div");
+        heading.className = "sidebarSectionTitle";
+        heading.textContent = group.title;
+        section.appendChild(heading);
+        group.files.forEach(file => {
+          const meta = metadataFor(file);
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "docItem";
+          button.dataset.file = file.name;
+          const mini = [meta.category, ...(meta.tags || []).slice(0,2)].filter(Boolean).join(" · ");
+          button.innerHTML = `
+            <span class="docIcon">${escapeHtml(meta.icon || "▤")}</span>
+            <span class="docItemMeta">
+              <span class="docItemTop"><span class="docName">${escapeHtml(meta.title)}</span>${meta.pinned ? '<span class="docItemPin" title="置頂文章">📌</span>' : ''}</span>
+              ${mini ? `<span class="docItemMini">${escapeHtml(mini)}</span>` : ""}
+            </span>
+          `;
+          button.addEventListener("click", () => openDocument(file.name));
+          section.appendChild(button);
+        });
+        el.docList.appendChild(section);
       });
     }
 
@@ -3079,9 +3242,13 @@
 
       try{
         const markdown = await fetchMarkdown(file);
-const title = titleFromMarkdown(markdown, file.name);
+const parsed = parseFrontMatter(markdown, file.name);
+const meta = parsed.meta;
+meta.readingMinutes = meta.readingTime && meta.readingTime !== "auto" ? Number(meta.readingTime) || calculateReadingTime(parsed.body) : calculateReadingTime(parsed.body);
+state.metadata.set(file.name, meta);
+const title = meta.title;
 
-const markdownWithoutFirstTitle = markdown.replace(
+const markdownWithoutFirstTitle = parsed.body.replace(
   /^#\s+.+(?:\r?\n)+/,
   ""
 );
@@ -3094,12 +3261,14 @@ const safeHtml = DOMPurify.sanitize(rawHtml, {
 
 el.markdownBody.innerHTML = safeHtml;
 enhanceMarkdownCheckboxes();
-el.docTitle.textContent = title;
+el.docTitle.textContent = `${meta.icon && meta.icon !== "▤" ? `${meta.icon} ` : ""}${title}`;
 el.docFile.textContent = "";
 el.breadcrumbName.textContent = title;
+renderDocumentMetadata(meta);
 document.title = `${title}｜夢回手冊`;
 
         prepareHeadings();
+        appendArticleNavigation();
         buildToc();
         updateActiveToc();
 
@@ -3117,6 +3286,56 @@ document.title = `${title}｜夢回手冊`;
           </div>
         `;
       }
+    }
+
+
+    function renderDocumentMetadata(meta){
+      const badges = [];
+      const color = normalizeColor(meta.pillColor || meta.color);
+      (meta.pills || []).filter(Boolean).forEach(text => badges.push(`<span class="pill ${color}">${escapeHtml(text)}</span>`));
+      if(meta.featured) badges.push('<span class="badge gold">★ 精選</span>');
+      if(meta.new) badges.push('<span class="badge green">NEW</span>');
+      if(meta.hot || meta.popular) badges.push('<span class="badge red">HOT</span>');
+      if(meta.status) badges.push(`<span class="badge purple">${escapeHtml(meta.status)}</span>`);
+      if(meta.version) badges.push(`<span class="badge blue">版本 ${escapeHtml(meta.version)}</span>`);
+      if(meta.difficulty) badges.push(`<span class="badge cyan">${escapeHtml(meta.difficulty)}</span>`);
+      el.docBadges.innerHTML = badges.join("");
+      el.docBadges.hidden = !badges.length;
+
+      el.docDescription.textContent = meta.description || "";
+      el.docDescription.hidden = !meta.description;
+
+      const items = [];
+      if(meta.author) items.push(`<span class="docMetaItem">👤 <strong>${escapeHtml(meta.author)}</strong></span>`);
+      if(meta.created) items.push(`<span class="docMetaItem">📅 建立 <strong>${escapeHtml(formatDateValue(meta.created))}</strong></span>`);
+      if(meta.updated) items.push(`<span class="docMetaItem">✏️ 更新 <strong>${escapeHtml(formatDateValue(meta.updated))}</strong></span>`);
+      items.push(`<span class="docMetaItem">⏱️ 約 <strong>${escapeHtml(meta.readingMinutes)}</strong> 分鐘</span>`);
+      if(meta.category) items.push(`<span class="docMetaItem">📂 <strong>${escapeHtml(meta.category)}</strong></span>`);
+      if((meta.tags || []).length) items.push(`<span class="docMetaItem">🏷️ <strong>${escapeHtml(meta.tags.join(" · "))}</strong></span>`);
+      el.docMetaPanel.innerHTML = items.join("");
+      el.docMetaPanel.hidden = !items.length;
+    }
+
+    function appendArticleNavigation(){
+      const visible = state.files.filter(file => !metadataFor(file).hidden && !metadataFor(file).draft);
+      const index = visible.findIndex(file => file.name === state.activeFile);
+      if(index < 0) return;
+      const prev = visible[index-1];
+      const next = visible[index+1];
+      if(!prev && !next) return;
+      const nav = document.createElement("nav");
+      nav.className = "articleFooterNav";
+      nav.setAttribute("aria-label","上一篇與下一篇");
+      if(prev){
+        const m = metadataFor(prev);
+        nav.innerHTML += `<a class="articleNavBtn" href="#doc=${encodeURIComponent(prev.name)}" data-file="${escapeHtml(prev.name)}"><small>← 上一篇</small><strong>${escapeHtml(m.icon || "▤")} ${escapeHtml(m.title)}</strong></a>`;
+      }else nav.innerHTML += '<span></span>';
+      if(next){
+        const m = metadataFor(next);
+        nav.innerHTML += `<a class="articleNavBtn next" href="#doc=${encodeURIComponent(next.name)}" data-file="${escapeHtml(next.name)}"><small>下一篇 →</small><strong>${escapeHtml(m.icon || "▤")} ${escapeHtml(m.title)}</strong></a>`;
+      }
+      nav.querySelectorAll("[data-file]").forEach(link => link.addEventListener("click", event => {event.preventDefault();openDocument(link.dataset.file);}));
+      el.markdownBody.appendChild(nav);
     }
 
     function enhanceMarkdownCheckboxes(){
@@ -3257,13 +3476,16 @@ document.title = `${title}｜夢回手冊`;
       for(const file of state.files){
         try{
           const markdown = await fetchMarkdown(file);
-          const title = titleFromMarkdown(markdown, file.name);
-          const plain = markdown
+          const parsed = parseFrontMatter(markdown, file.name);
+          const meta = parsed.meta;
+          const title = meta.title;
+          const plain = parsed.body
             .replace(/```[\s\S]*?```/g, " ")
             .replace(/[#>*_`\[\]()!-]/g, " ")
             .replace(/\s+/g, " ");
 
-          const haystack = `${title} ${plain}`.toLowerCase();
+          const metadataText = [meta.category, meta.description, meta.author, meta.version, ...(meta.tags || []), ...(meta.aliases || [])].filter(Boolean).join(" ");
+          const haystack = `${title} ${metadataText} ${plain}`.toLowerCase();
 
           if(haystack.includes(query)){
             const position = haystack.indexOf(query);
