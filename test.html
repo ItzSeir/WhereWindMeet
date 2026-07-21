@@ -1,0 +1,4277 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>夢回花深處｜教學與公告</title>
+  <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
+
+  <div class="floatingTools" aria-label="手機閱讀工具">
+    <button class="floatingBtn mobileTocBtn" id="mobileTocBtn" type="button" aria-label="開啟本頁目錄">☷</button>
+    <button class="floatingBtn backToTopBtn" id="backToTopBtn" type="button" aria-label="返回頂部">↑</button>
+  </div>
+
+  <div class="mobileTocBackdrop" id="mobileTocBackdrop"></div>
+  <section class="mobileTocSheet" id="mobileTocSheet" aria-label="本頁內容" aria-hidden="true">
+    <div class="mobileTocHandle"></div>
+    <div class="mobileTocHeader">
+      <strong>本頁內容</strong>
+      <button class="mobileTocClose" id="mobileTocClose" type="button" aria-label="關閉本頁目錄">×</button>
+    </div>
+    <nav class="mobileTocList" id="mobileTocList"></nav>
+  </section>
+
+  <div class="imageLightbox" id="imageLightbox" aria-hidden="true">
+    <button class="imageLightboxClose" id="imageLightboxClose" type="button" aria-label="關閉圖片">×</button>
+    <img id="imageLightboxImage" alt="放大圖片">
+  </div>
+
+  <script>
+    (function(){
+      try{
+        const saved = localStorage.getItem("wwm-docs-theme-v2");
+        document.documentElement.dataset.theme = saved || "dark";
+      }catch(error){
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(17,25,48,.86);
+      --panel-soft:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --border-soft:rgba(255,255,255,.18);
+      --text:#eef2ff;
+      --muted:#a8b3cf;
+      --link:#7db5ff;
+      --green:#34d399;
+      --green-soft:rgba(52,211,153,.12);
+      --orange:#fbbf24;
+      --orange-soft:rgba(251,191,36,.12);
+      --red:#ff6b81;
+      --red-soft:rgba(255,107,129,.12);
+      --purple:#a78bfa;
+      --purple-soft:rgba(139,92,246,.14);
+      --shadow:0 18px 40px rgba(0,0,0,.28);
+      --site-sea:#6ea8ff;
+      --site-teal:#8b5cf6;
+      --site-ice:#60a5fa;
+      --site-warm:#f59e0b;
+      --sidebar:286px;
+      --toc:230px;
+      --max:1500px;
+    }
+
+
+    html[data-theme="dark"]{
+      --bg:#0b1020;
+      --panel:rgba(17,25,48,.90);
+      --panel-soft:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --border-soft:rgba(255,255,255,.18);
+      --text:#eef2ff;
+      --muted:#a8b3cf;
+      --link:#7db5ff;
+      --green:#34d399;
+      --green-soft:rgba(52,211,153,.12);
+      --orange:#fbbf24;
+      --orange-soft:rgba(251,191,36,.12);
+      --red:#ff6b81;
+      --red-soft:rgba(255,107,129,.12);
+      --purple:#a78bfa;
+      --purple-soft:rgba(139,92,246,.14);
+      --shadow:0 18px 40px rgba(0,0,0,.32);
+      --site-sea:#6ea8ff;
+      --site-teal:#8b5cf6;
+      --site-ice:#60a5fa;
+      --site-warm:#f59e0b;
+    }
+
+
+    html[data-theme="light"]{
+      --bg:#eef3fb;
+      --panel:rgba(255,255,255,.86);
+      --panel-soft:rgba(91,120,180,.08);
+      --border:rgba(67,89,130,.16);
+      --border-soft:rgba(67,89,130,.22);
+      --text:#17233c;
+      --muted:#64748b;
+      --link:#2563eb;
+      --green:#059669;
+      --green-soft:rgba(16,185,129,.11);
+      --orange:#b7791f;
+      --orange-soft:rgba(245,158,11,.11);
+      --red:#dc3958;
+      --red-soft:rgba(255,107,129,.10);
+      --purple:#7c3aed;
+      --purple-soft:rgba(139,92,246,.11);
+      --shadow:0 18px 40px rgba(65,86,125,.16);
+      --site-sea:#4f8ef7;
+      --site-teal:#7c3aed;
+      --site-ice:#60a5fa;
+      --site-warm:#f59e0b;
+    }
+
+
+    .themeToggle{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:38px;
+      padding:0 12px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--text);
+      background:var(--panel);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:800;
+      white-space:nowrap;
+      transition:.16s ease;
+    }
+
+    .themeToggle:hover{
+      color:var(--link);
+      border-color:var(--link);
+      transform:translateY(-1px);
+    }
+
+    .themeIcon{
+      font-size:16px;
+      line-height:1;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html{ scroll-behavior:smooth; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:var(--bg);
+      font-family:"Noto Sans TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    button,input{ font:inherit; }
+    a{ color:var(--link); }
+
+    .topbar{
+      color:var(--text);
+      position:sticky;
+      top:0;
+      z-index:1000;
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:10px 20px;
+      border-bottom:1px solid var(--border);
+      background:color-mix(in srgb, var(--panel) 96%, transparent);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:max-content;
+      color:var(--text);
+      text-decoration:none;
+      font-weight:800;
+    }
+
+    .brand img{
+      width:34px;
+      height:34px;
+      border-radius:8px;
+      object-fit:cover;
+      border:1px solid var(--border);
+    }
+
+    .brandText{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:14px;
+    }
+
+    .brandText .slash{ color:var(--muted); font-weight:500; }
+    .brandText strong{ font-weight:800; }
+
+    .searchWrap{
+      flex:1;
+      max-width:680px;
+      margin-left:auto;
+      position:relative;
+    }
+
+    .searchInput{
+      width:100%;
+      height:38px;
+      padding:0 42px 0 36px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      color:var(--text);
+      background:var(--panel-soft);
+      outline:none;
+      transition:.15s ease;
+    }
+
+    .searchInput:focus{
+      border-color:#54aeff;
+      background:var(--panel);
+      box-shadow:0 0 0 3px rgba(84,174,255,.25);
+    }
+
+    .searchIcon{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--muted);
+      pointer-events:none;
+    }
+
+    .searchKey{
+      position:absolute;
+      right:9px;
+      top:50%;
+      transform:translateY(-50%);
+      padding:2px 7px;
+      border:1px solid var(--border);
+      border-radius:5px;
+      color:var(--muted);
+      background:var(--panel);
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .topLink{
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .topLink:hover{ color:var(--link); }
+
+    .mobileMenuBtn{
+      display:none;
+      width:38px;
+      height:38px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:var(--panel);
+      cursor:pointer;
+    }
+
+    .layout{
+      width:min(100%, var(--max));
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:var(--sidebar) minmax(0,1fr) var(--toc);
+      min-height:calc(100vh - 64px);
+    }
+
+    .sidebar{
+      color:var(--text);
+      position:sticky;
+      top:64px;
+      height:calc(100vh - 64px);
+      overflow:auto;
+      padding:24px 18px 40px;
+      border-right:1px solid var(--border);
+      background:var(--panel);
+    }
+
+    .sidebarTitle{
+      margin:0 0 14px;
+      padding:0 8px;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .sidebarMeta{
+      margin:0 8px 18px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .docList{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+
+    .docItem{
+      display:flex;
+      align-items:flex-start;
+      gap:9px;
+      width:100%;
+      padding:9px 10px;
+      border:0;
+      border-radius:7px;
+      color:var(--text);
+      background:transparent;
+      text-align:left;
+      cursor:pointer;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .docItem:hover{ background:var(--panel-soft); }
+
+    .docItem.active{
+      color:#fff;
+      background:#0969da;
+      font-weight:700;
+    }
+
+    .docIcon{
+      margin-top:1px;
+      flex:0 0 auto;
+      opacity:.8;
+    }
+
+    .docName{
+      min-width:0;
+      overflow-wrap:anywhere;
+    }
+
+    .statusBox{
+      margin:14px 8px 0;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      color:var(--muted);
+      background:var(--panel-soft);
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    .content{
+    padding:34px clamp(24px,4vw,64px) 80px;
+    overflow-y: auto;
+    height: calc(100vh - 118px);
+}
+
+    .docHeader{
+      margin-bottom:24px;
+      padding-bottom:18px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .breadcrumb{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      margin-bottom:12px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .docTitle{
+      margin:0;
+      font-size:32px;
+      line-height:1.25;
+      letter-spacing:-.025em;
+      font-weight:800;
+    }
+
+    .docFile{
+      margin-top:9px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .markdownBody{
+      max-width:920px;
+      font-size:15px;
+      line-height:1.78;
+      word-wrap:break-word;
+    }
+
+    .markdownBody > :first-child{ margin-top:0; }
+    .markdownBody > :last-child{ margin-bottom:0; }
+
+    .markdownBody h1,
+    .markdownBody h2,
+    .markdownBody h3,
+    .markdownBody h4{
+      scroll-margin-top:86px;
+      line-height:1.3;
+      font-weight:800;
+    }
+
+    .markdownBody h1{
+      margin:0 0 22px;
+      padding-bottom:10px;
+      border-bottom:1px solid var(--border);
+      font-size:30px;
+    }
+
+    .markdownBody h2{
+      margin:38px 0 16px;
+      padding-bottom:8px;
+      border-bottom:1px solid var(--border);
+      font-size:23px;
+    }
+
+    .markdownBody h3{
+      margin:28px 0 12px;
+      font-size:19px;
+    }
+
+    .markdownBody p{ margin:0 0 16px; }
+
+    .markdownBody ul,
+    .markdownBody ol{
+      margin:0 0 16px;
+      padding-left:28px;
+    }
+
+    .markdownBody li + li{ margin-top:5px; }
+
+    .markdownBody blockquote{
+      margin:18px 0;
+      padding:10px 16px;
+      border-left:4px solid var(--border);
+      color:var(--muted);
+      background:var(--panel-soft);
+    }
+
+    .markdownBody code{
+      padding:.18em .38em;
+      border-radius:5px;
+      background:color-mix(in srgb, var(--muted) 22%, transparent);
+      font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+      font-size:85%;
+    }
+
+    .markdownBody pre{
+      overflow:auto;
+      margin:18px 0;
+      padding:16px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:var(--panel-soft);
+      line-height:1.5;
+    }
+
+    .markdownBody pre code{
+      padding:0;
+      background:transparent;
+      font-size:13px;
+    }
+
+    .markdownBody table{
+      width:100%;
+      display:block;
+      overflow:auto;
+      border-collapse:collapse;
+      margin:18px 0;
+    }
+
+    .markdownBody th,
+    .markdownBody td{
+      padding:8px 12px;
+      border:1px solid var(--border);
+      text-align:left;
+    }
+
+    .markdownBody tr:nth-child(2n){ background:var(--panel-soft); }
+
+    .markdownBody img{
+      max-width:100%;
+      height:auto;
+      border-radius:8px;
+      border:1px solid var(--border);
+    }
+
+    .markdownBody hr{
+      height:1px;
+      margin:28px 0;
+      border:0;
+      background:var(--border);
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info,
+    .markdownBody .warning,
+    .markdownBody .danger{
+      margin:18px 0;
+      padding:14px 16px;
+      border:1px solid;
+      border-radius:7px;
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info{
+      border-color:#54aeff;
+      background:color-mix(in srgb, var(--link) 14%, var(--panel));
+    }
+
+    .markdownBody .warning{
+      border-color:#d4a72c;
+      background:var(--orange-soft);
+    }
+
+    .markdownBody .danger{
+      border-color:#ff8182;
+      background:var(--red-soft);
+    }
+
+    .emptyState{
+      padding:60px 20px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .emptyState strong{
+      display:block;
+      margin-bottom:8px;
+      color:var(--text);
+      font-size:20px;
+    }
+
+    .toc{
+      color:var(--text);
+      position:sticky;
+      top:64px;
+      height:calc(100vh - 64px);
+      overflow:auto;
+      padding:30px 20px;
+      border-left:1px solid var(--border);
+      background:var(--panel);
+    }
+
+    .tocTitle{
+      margin:0 0 12px;
+      color:var(--text);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .tocList{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .tocLink{
+      padding:5px 8px;
+      border-left:2px solid transparent;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .tocLink:hover{
+      color:var(--link);
+      border-left-color:var(--link);
+    }
+
+    .tocLink.level3{ padding-left:20px; }
+
+    .loading{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .spinner{
+      width:18px;
+      height:18px;
+      border:2px solid var(--border);
+      border-top-color:var(--link);
+      border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    .searchResults{
+      position:absolute;
+      left:0;
+      right:0;
+      top:44px;
+      display:none;
+      max-height:420px;
+      overflow:auto;
+      padding:7px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+
+    .searchResults.open{ display:block; }
+
+    .searchResult{
+      display:block;
+      width:100%;
+      padding:10px 11px;
+      border:0;
+      border-radius:6px;
+      color:var(--text);
+      background:transparent;
+      text-align:left;
+      cursor:pointer;
+    }
+
+    .searchResult:hover{ background:var(--panel-soft); }
+
+    .searchResult strong{
+      display:block;
+      margin-bottom:3px;
+      font-size:13px;
+    }
+
+    .searchResult span{
+      color:var(--muted);
+      font-size:11px;
+    }
+
+
+    .searchInput::placeholder{
+      color:var(--muted);
+      opacity:.92;
+    }
+
+    mark{
+      color:inherit;
+      background:#fff1a8;
+      border-radius:3px;
+      padding:0 .08em;
+    }
+
+    html[data-theme="dark"] mark{
+      color:#0d1117;
+      background:#f2cc60;
+    }
+
+    html[data-theme="dark"] .docItem.active{
+      color:#ffffff;
+      background:#1f6feb;
+    }
+
+    html[data-theme="dark"] .markdownBody .notice,
+    html[data-theme="dark"] .markdownBody .info{
+      border-color:#1f6feb;
+      background:#0c2d4a;
+    }
+
+    html[data-theme="dark"] .markdownBody .warning{
+      border-color:#9e6a03;
+      background:#332701;
+    }
+
+    html[data-theme="dark"] .markdownBody .danger{
+      border-color:#da3633;
+      background:#3c1518;
+    }
+
+    html[data-theme="dark"] .markdownBody img{
+      background:#ffffff;
+    }
+
+
+    /* =========================
+       葉離／WhereWindMeet 風格
+    ========================= */
+
+    body{
+      background:
+        radial-gradient(circle at 10% -10%, color-mix(in srgb, var(--site-teal) 16%, transparent), transparent 34%),
+        radial-gradient(circle at 88% 6%, color-mix(in srgb, var(--site-ice) 15%, transparent), transparent 30%),
+        var(--bg);
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background-image:
+        linear-gradient(color-mix(in srgb, var(--site-sea) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--site-sea) 5%, transparent) 1px, transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.7), transparent 78%);
+    }
+
+    .topbar{
+      margin:12px 14px 0;
+      min-height:66px;
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand img{
+      border-radius:12px;
+      box-shadow:0 8px 18px color-mix(in srgb, var(--site-sea) 18%, transparent);
+    }
+
+    .brandText strong{
+      color:var(--site-sea);
+    }
+
+    .searchInput{
+      border-radius:999px;
+      padding-left:40px;
+    }
+
+    .searchInput:focus{
+      border-color:var(--site-teal);
+      box-shadow:0 0 0 3px color-mix(in srgb, var(--site-teal) 20%, transparent);
+    }
+
+    .themeToggle,
+    .mobileMenuBtn{
+      border-radius:999px;
+    }
+
+    .themeToggle:hover{
+      color:var(--site-sea);
+      border-color:var(--site-teal);
+      background:color-mix(in srgb, var(--site-teal) 10%, var(--panel));
+    }
+
+    .layout{
+      width:min(calc(100% - 28px), var(--max));
+      margin:14px auto 28px;
+      min-height:calc(100vh - 96px);
+      border:1px solid var(--border);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:var(--panel);
+    }
+
+    .sidebar,
+    .content,
+    .toc{
+      top:94px;
+      height:calc(100vh - 108px);
+    }
+
+    .sidebarTitle{
+      color:var(--site-sea);
+      letter-spacing:.02em;
+    }
+
+    .docItem{
+      border-radius:12px;
+      transition:.16s ease;
+    }
+
+    .docItem:hover{
+      transform:translateX(3px);
+      background:color-mix(in srgb, var(--site-teal) 9%, var(--panel-soft));
+    }
+
+    .docItem.active{
+      color:#fff;
+      background:linear-gradient(135deg, var(--site-sea), var(--site-teal));
+      box-shadow:0 10px 22px color-mix(in srgb, var(--site-sea) 24%, transparent);
+    }
+
+    .statusBox{
+      border-style:dashed;
+      border-radius:14px;
+    }
+
+    .docHeader{
+      position:relative;
+      padding:22px 24px;
+      border:1px solid var(--border);
+      border-radius:20px;
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb, var(--site-sea) 7%, var(--panel)),
+          color-mix(in srgb, var(--site-teal) 7%, var(--panel))
+        );
+      overflow:hidden;
+    }
+
+    .docHeader::after{
+      content:"";
+      position:absolute;
+      right:-48px;
+      bottom:-62px;
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      border:24px solid color-mix(in srgb, var(--site-sea) 7%, transparent);
+      pointer-events:none;
+    }
+
+    .docTitle{
+      position:relative;
+      z-index:1;
+      color:var(--text);
+    }
+
+    .breadcrumb,
+    .docFile{
+      position:relative;
+      z-index:1;
+    }
+
+    .markdownBody h2{
+      border-bottom-color:color-mix(in srgb, var(--site-teal) 30%, var(--border));
+    }
+
+    .markdownBody h2::before{
+      content:"";
+      display:inline-block;
+      width:6px;
+      height:20px;
+      margin-right:10px;
+      border-radius:999px;
+      vertical-align:-2px;
+      background:linear-gradient(180deg, var(--site-sea), var(--site-teal));
+    }
+
+    .markdownBody blockquote{
+      border-left-color:var(--site-teal);
+      border-radius:0 12px 12px 0;
+    }
+
+    .tocLink{
+      border-radius:8px;
+      transition:.15s ease;
+    }
+
+    .tocLink:hover{
+      color:var(--site-sea);
+      border-left-color:var(--site-teal);
+      background:color-mix(in srgb, var(--site-teal) 7%, transparent);
+    }
+
+
+    .tocLink.active{
+      color:var(--site-sea);
+      font-weight:900;
+      border-left-color:var(--site-teal);
+      background:color-mix(in srgb, var(--site-teal) 12%, transparent);
+    }
+
+    .tocLink.active::before{
+      content:"●";
+      display:inline-block;
+      margin-right:7px;
+      color:var(--site-teal);
+      font-size:8px;
+      vertical-align:2px;
+    }
+
+    .searchResults{
+      border-radius:16px;
+    }
+
+    .searchResult{
+      border-radius:10px;
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        margin:8px 8px 0;
+        border-radius:18px;
+      }
+
+      .layout{
+        width:calc(100% - 16px);
+        margin:10px auto 18px;
+        border-radius:20px;
+      }
+
+      .sidebar{
+        top:0;
+        height:100vh;
+        border-radius:0 20px 20px 0;
+      }
+
+      .content{
+        height:auto;
+      }
+
+      .docHeader{
+        padding:18px;
+        border-radius:18px;
+      }
+    }
+
+
+    /* =========================================
+       WhereWindMeet / PVERegistration Theme
+       ========================================= */
+
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 24%),
+        linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 88%, #18233f));
+      background-attachment:fixed;
+    }
+
+    body::before{
+      display:none;
+    }
+
+    .topbar{
+      position:sticky;
+      top:12px;
+      width:min(calc(100% - 40px), 1100px);
+      min-height:64px;
+      margin:12px auto 0;
+      padding:10px 14px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:color-mix(in srgb, var(--panel) 76%, transparent);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+    }
+
+    .brand img{
+      width:38px;
+      height:38px;
+      border-radius:13px;
+      border-color:var(--border);
+      box-shadow:0 8px 18px rgba(110,168,255,.20);
+    }
+
+    .brandText{
+      color:var(--text);
+    }
+
+    .brandText strong{
+      color:var(--muted);
+    }
+
+    .searchInput{
+      height:40px;
+      border-radius:999px;
+      background:var(--panel-soft);
+      border-color:var(--border);
+    }
+
+    .searchInput:focus{
+      border-color:rgba(110,168,255,.65);
+      box-shadow:0 0 0 3px rgba(110,168,255,.15);
+    }
+
+    .searchKey{
+      border-radius:8px;
+      background:var(--panel-soft);
+    }
+
+    .themeToggle{
+      border-radius:999px;
+      background:var(--panel-soft);
+    }
+
+    .topLink{
+      padding:8px 13px;
+      border-radius:999px;
+      color:var(--muted);
+    }
+
+    .topLink:hover{
+      color:var(--text);
+      background:var(--panel-soft);
+    }
+
+    .layout{
+      width:min(calc(100% - 40px), var(--max));
+      margin:20px auto 34px;
+      min-height:calc(100vh - 118px);
+      border:1px solid var(--border);
+      border-radius:28px;
+      overflow:hidden;
+      background:color-mix(in srgb, var(--panel) 88%, transparent);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+
+    .sidebar,
+    .content,
+    .toc{
+      top:96px;
+      height:calc(100vh - 118px);
+      background:transparent;
+    }
+
+    .sidebar{
+      border-right-color:var(--border);
+    }
+
+    .toc{
+      border-left-color:var(--border);
+    }
+
+    .sidebarTitle,
+    .tocTitle{
+      color:var(--text);
+    }
+
+    .sidebarMeta,
+    .statusBox,
+    .docFile,
+    .breadcrumb,
+    .tocLink{
+      color:var(--muted);
+    }
+
+    .docItem{
+      border:1px solid transparent;
+      border-radius:14px;
+      transition:.18s ease;
+    }
+
+    .docItem:hover{
+      transform:translateX(3px);
+      color:var(--text);
+      background:rgba(255,255,255,.07);
+      border-color:rgba(255,255,255,.08);
+    }
+
+    .docItem.active,
+    html[data-theme="dark"] .docItem.active{
+      color:#fff;
+      background:linear-gradient(135deg, var(--site-sea), var(--site-teal));
+      border-color:rgba(255,255,255,.18);
+      box-shadow:0 10px 24px rgba(110,168,255,.20);
+    }
+
+    .statusBox{
+      border-radius:16px;
+      background:var(--panel-soft);
+      border-color:var(--border);
+    }
+
+    .content{
+      padding:34px clamp(24px,4vw,64px) 80px;
+    }
+
+    .docHeader{
+      padding:26px;
+      border:1px solid var(--border);
+      border-radius:24px;
+      background:
+        radial-gradient(circle at top right, rgba(139,92,246,.16), transparent 38%),
+        linear-gradient(135deg, rgba(110,168,255,.12), rgba(139,92,246,.08));
+      box-shadow:0 14px 30px rgba(0,0,0,.12);
+    }
+
+    .docHeader::after{
+      border-color:rgba(110,168,255,.08);
+    }
+
+    .docTitle{
+      color:var(--text);
+      font-size:clamp(28px,4vw,40px);
+    }
+
+    .markdownBody{
+      color:var(--text);
+    }
+
+    .markdownBody h2{
+      border-bottom-color:var(--border);
+    }
+
+    .markdownBody h2::before{
+      background:linear-gradient(180deg, var(--site-sea), var(--site-teal));
+    }
+
+    .markdownBody blockquote,
+    .markdownBody pre,
+    .markdownBody tr:nth-child(2n){
+      background:var(--panel-soft);
+    }
+
+    .markdownBody blockquote{
+      border-left-color:var(--site-sea);
+    }
+
+    .markdownBody code{
+      background:rgba(255,255,255,.09);
+    }
+
+    .markdownBody table{
+      border-radius:16px;
+    }
+
+    .markdownBody th,
+    .markdownBody td{
+      border-color:var(--border);
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info{
+      border-color:rgba(110,168,255,.38);
+      background:rgba(110,168,255,.11);
+    }
+
+    .markdownBody .warning{
+      border-color:rgba(245,158,11,.42);
+      background:rgba(245,158,11,.10);
+    }
+
+    .markdownBody .danger{
+      border-color:rgba(255,107,129,.42);
+      background:rgba(255,107,129,.10);
+    }
+
+    .tocLink{
+      border-radius:10px;
+    }
+
+    .tocLink:hover{
+      color:var(--text);
+      border-left-color:var(--site-sea);
+      background:rgba(255,255,255,.06);
+    }
+
+    .tocLink.active{
+      color:var(--text);
+      border-left-color:var(--site-teal);
+      background:linear-gradient(135deg, rgba(110,168,255,.20), rgba(139,92,246,.16));
+      font-weight:900;
+    }
+
+    .tocLink.active::before{
+      color:var(--text);
+    }
+
+    html[data-theme="dark"] .tocLink.active,
+    html[data-theme="dark"] .tocLink.active::before{
+      color:#ffffff;
+    }
+
+    html[data-theme="light"] .tocLink.active,
+    html[data-theme="light"] .tocLink.active::before{
+      color:#17233c;
+    }
+
+    .searchResults{
+      border-radius:18px;
+      background:color-mix(in srgb, var(--panel) 96%, transparent);
+      border-color:var(--border);
+      backdrop-filter:blur(18px);
+    }
+
+    .searchResult{
+      border-radius:12px;
+    }
+
+    .searchResult:hover{
+      background:var(--panel-soft);
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        top:8px;
+        width:calc(100% - 20px);
+        margin-top:8px;
+        border-radius:24px;
+      }
+
+      .layout{
+        width:calc(100% - 20px);
+        margin-top:12px;
+        border-radius:24px;
+      }
+
+      .sidebar{
+        top:0;
+        height:100vh;
+        background:color-mix(in srgb, var(--panel) 98%, transparent);
+        border-radius:0 22px 22px 0;
+      }
+
+      .content{
+        height:auto;
+      }
+    }
+
+    @media (max-width:1100px){
+      .layout{
+        grid-template-columns:var(--sidebar) minmax(0,1fr);
+      }
+      .toc{ display:none; }
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        flex-wrap:wrap;
+        gap:10px;
+      }
+
+      .brandText .slash,
+      .brandText strong{ display:none; }
+
+      .searchWrap{
+        order:3;
+        width:100%;
+        max-width:none;
+      }
+
+      .topLink{ display:none; }
+      .mobileMenuBtn{ display:grid; place-items:center; margin-left:auto; }
+
+      .layout{
+        display:block;
+      }
+
+      .sidebar{
+        position:fixed;
+        top:0;
+        left:0;
+        z-index:1500;
+        width:min(88vw, 320px);
+        height:100vh;
+        transform:translateX(-105%);
+        transition:transform .2s ease;
+        box-shadow:var(--shadow);
+      }
+
+      .sidebar.open{ transform:translateX(0); }
+
+      .sidebarBackdrop{
+        position:fixed;
+        inset:0;
+        z-index:1400;
+        display:none;
+        background:rgba(31,35,40,.35);
+      }
+
+      .sidebarBackdrop.open{ display:block; }
+
+      .content{
+        padding:26px 18px 60px;
+      }
+
+      .docTitle{ font-size:27px; }
+    }
+
+    /* =========================================================
+       Markdown 內容完整視覺設計
+       ========================================================= */
+
+    .markdownBody{
+      --md-surface:color-mix(in srgb, var(--panel) 86%, transparent);
+      --md-surface-soft:color-mix(in srgb, var(--panel-soft) 88%, transparent);
+      --md-border:color-mix(in srgb, var(--border) 92%, transparent);
+      --md-accent:var(--site-sea);
+      --md-accent-2:var(--site-teal);
+    }
+
+    .markdownBody a{
+      color:var(--link);
+      font-weight:700;
+      text-decoration:none;
+      text-underline-offset:3px;
+      overflow-wrap:anywhere;
+    }
+
+    .markdownBody a:hover{
+      text-decoration:underline;
+    }
+
+    .markdownBody h1,
+    .markdownBody h2,
+    .markdownBody h3,
+    .markdownBody h4,
+    .markdownBody h5,
+    .markdownBody h6{
+      color:var(--text);
+      letter-spacing:-.018em;
+    }
+
+    .markdownBody h1{
+      margin:0 0 26px;
+      padding:0 0 16px;
+      border-bottom:1px solid var(--md-border);
+      font-size:clamp(27px,3.4vw,36px);
+    }
+
+    .markdownBody h2{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:42px 0 18px;
+      padding:0 0 12px;
+      border-bottom:1px solid var(--md-border);
+      font-size:clamp(22px,2.6vw,27px);
+    }
+
+    .markdownBody h2::before{
+      flex:0 0 auto;
+      width:6px;
+      height:24px;
+      margin-right:0;
+      vertical-align:initial;
+    }
+
+    .markdownBody h3{
+      margin:32px 0 14px;
+      font-size:20px;
+    }
+
+    .markdownBody h3::before{
+      content:"";
+      display:inline-block;
+      width:9px;
+      height:9px;
+      margin-right:9px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--md-accent),var(--md-accent-2));
+      box-shadow:0 0 0 4px color-mix(in srgb,var(--md-accent) 12%,transparent);
+      vertical-align:2px;
+    }
+
+    .markdownBody h4{
+      margin:26px 0 12px;
+      font-size:17px;
+    }
+
+    .markdownBody p{
+      margin:0 0 17px;
+      color:color-mix(in srgb,var(--text) 94%,var(--muted));
+    }
+
+    .markdownBody strong{
+      color:var(--text);
+      font-weight:850;
+    }
+
+    .markdownBody em{
+      color:color-mix(in srgb,var(--text) 86%,var(--site-sea));
+    }
+
+    .markdownBody del{
+      color:var(--muted);
+      text-decoration-thickness:1.5px;
+    }
+
+    .markdownBody ul,
+    .markdownBody ol{
+      margin:0 0 20px;
+      padding-left:1.7rem;
+    }
+
+    .markdownBody li{
+      padding-left:3px;
+    }
+
+    .markdownBody li::marker{
+      color:var(--site-sea);
+      font-weight:900;
+    }
+
+    .markdownBody li + li{
+      margin-top:7px;
+    }
+
+    .markdownBody li > ul,
+    .markdownBody li > ol{
+      margin-top:7px;
+      margin-bottom:4px;
+    }
+
+    .markdownBody input[type="checkbox"]{
+      width:16px;
+      height:16px;
+      margin:0 8px 0 0;
+      accent-color:var(--site-teal);
+      vertical-align:-3px;
+    }
+
+    .markdownBody blockquote{
+      position:relative;
+      margin:22px 0;
+      padding:16px 18px 16px 20px;
+      border:1px solid var(--md-border);
+      border-left:5px solid var(--site-sea);
+      border-radius:0 16px 16px 0;
+      color:var(--muted);
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb,var(--site-sea) 10%,var(--panel)),
+          color-mix(in srgb,var(--site-teal) 7%,var(--panel))
+        );
+    }
+
+    .markdownBody blockquote::before{
+      content:"“";
+      position:absolute;
+      right:16px;
+      top:-10px;
+      color:color-mix(in srgb,var(--site-sea) 20%,transparent);
+      font-size:60px;
+      font-weight:900;
+      line-height:1;
+      pointer-events:none;
+    }
+
+    .markdownBody blockquote > :last-child{
+      margin-bottom:0;
+    }
+
+    .markdownBody code{
+      padding:.18em .45em;
+      border:1px solid color-mix(in srgb,var(--border) 82%,transparent);
+      border-radius:6px;
+      color:color-mix(in srgb,var(--text) 92%,var(--site-sea));
+      background:color-mix(in srgb,var(--panel-soft) 88%,var(--panel));
+      font-size:.88em;
+      font-weight:700;
+      white-space:break-spaces;
+    }
+
+    .markdownBody pre{
+      position:relative;
+      margin:22px 0;
+      padding:20px;
+      border:1px solid var(--md-border);
+      border-radius:16px;
+      background:
+        linear-gradient(180deg,
+          color-mix(in srgb,var(--panel-soft) 80%,transparent),
+          color-mix(in srgb,var(--panel) 96%,transparent)
+        );
+      box-shadow:0 12px 28px rgba(0,0,0,.10);
+      line-height:1.65;
+    }
+
+    .markdownBody pre::before{
+      content:"CODE";
+      display:block;
+      width:max-content;
+      margin:0 0 12px;
+      padding:3px 8px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      color:var(--muted);
+      background:var(--panel-soft);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.08em;
+    }
+
+    .markdownBody pre code{
+      display:block;
+      padding:0;
+      border:0;
+      color:var(--text);
+      background:transparent;
+      font-size:13px;
+      font-weight:500;
+      white-space:pre;
+    }
+
+    .markdownBody table{
+      width:100%;
+      display:table;
+      overflow:hidden;
+      margin:22px 0 28px;
+      border:1px solid var(--md-border);
+      border-collapse:separate;
+      border-spacing:0;
+      border-radius:16px;
+      background:color-mix(in srgb,var(--panel) 76%,transparent);
+      box-shadow:0 12px 28px rgba(0,0,0,.08);
+    }
+
+    .markdownBody thead{
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb,var(--site-sea) 12%,var(--panel)),
+          color-mix(in srgb,var(--site-teal) 9%,var(--panel))
+        );
+    }
+
+    .markdownBody th{
+      color:var(--text);
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+
+    .markdownBody th,
+    .markdownBody td{
+      padding:12px 14px;
+      border:0;
+      border-right:1px solid var(--md-border);
+      border-bottom:1px solid var(--md-border);
+      text-align:left;
+      vertical-align:middle;
+    }
+
+    .markdownBody th:last-child,
+    .markdownBody td:last-child{
+      border-right:0;
+    }
+
+    .markdownBody tbody tr:last-child td{
+      border-bottom:0;
+    }
+
+    .markdownBody tbody tr{
+      background:transparent;
+      transition:background .14s ease;
+    }
+
+    .markdownBody tbody tr:nth-child(even){
+      background:color-mix(in srgb,var(--panel-soft) 72%,transparent);
+    }
+
+    .markdownBody tbody tr:hover{
+      background:color-mix(in srgb,var(--site-sea) 8%,var(--panel-soft));
+    }
+
+    .markdownBody table code{
+      display:inline-block;
+      padding:.15em .42em;
+      border-radius:5px;
+      white-space:nowrap;
+    }
+
+    .markdownBody hr{
+      height:1px;
+      margin:34px 0;
+      border:0;
+      background:
+        linear-gradient(90deg,
+          transparent,
+          color-mix(in srgb,var(--site-sea) 50%,var(--border)),
+          color-mix(in srgb,var(--site-teal) 50%,var(--border)),
+          transparent
+        );
+    }
+
+    .markdownBody img{
+      display:block;
+      max-width:100%;
+      margin:22px auto;
+      border:1px solid var(--md-border);
+      border-radius:16px;
+      background:var(--panel);
+      box-shadow:0 14px 30px rgba(0,0,0,.13);
+    }
+
+    .markdownBody .notice,
+    .markdownBody .info,
+    .markdownBody .warning,
+    .markdownBody .danger{
+      position:relative;
+      margin:22px 0;
+      padding:16px 18px 16px 48px;
+      border-width:1px;
+      border-radius:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,.08);
+    }
+
+    .markdownBody .notice::before,
+    .markdownBody .info::before,
+    .markdownBody .warning::before,
+    .markdownBody .danger::before{
+      position:absolute;
+      left:17px;
+      top:16px;
+      width:22px;
+      height:22px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      color:#fff;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .markdownBody .notice::before,
+    .markdownBody .info::before{
+      content:"i";
+      background:var(--site-sea);
+    }
+
+    .markdownBody .warning::before{
+      content:"!";
+      background:#f59e0b;
+    }
+
+    .markdownBody .danger::before{
+      content:"!";
+      background:#ef476f;
+    }
+
+    .markdownBody .notice > :last-child,
+    .markdownBody .info > :last-child,
+    .markdownBody .warning > :last-child,
+    .markdownBody .danger > :last-child{
+      margin-bottom:0;
+    }
+
+    html[data-theme="light"] .markdownBody code{
+      color:#24324d;
+      background:#edf2f8;
+      border-color:#d9e1ec;
+    }
+
+    html[data-theme="light"] .markdownBody pre{
+      background:linear-gradient(180deg,#f6f8fb,#eef3f8);
+    }
+
+    html[data-theme="light"] .markdownBody table{
+      background:#ffffff;
+    }
+
+    @media (max-width:760px){
+      .markdownBody{
+        font-size:14px;
+      }
+
+      .markdownBody table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+        border-radius:13px;
+      }
+
+      .markdownBody th,
+      .markdownBody td{
+        padding:10px 12px;
+      }
+
+      .markdownBody pre{
+        padding:16px;
+        border-radius:13px;
+      }
+
+      .markdownBody .notice,
+      .markdownBody .info,
+      .markdownBody .warning,
+      .markdownBody .danger{
+        padding:15px 15px 15px 44px;
+      }
+    }
+
+
+    /* Markdown 表格內 [x] / [ ] Checkbox */
+    .markdownBody .mdCheck{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:24px;
+      min-height:24px;
+      margin:0;
+      cursor:default;
+      vertical-align:middle;
+    }
+
+    .markdownBody .mdCheck input{
+      position:absolute;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .markdownBody .mdCheckBox{
+      position:relative;
+      display:inline-grid;
+      place-items:center;
+      width:18px;
+      height:18px;
+      border:2px solid color-mix(in srgb,var(--muted) 72%,var(--border));
+      border-radius:5px;
+      background:color-mix(in srgb,var(--panel) 88%,transparent);
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.08);
+    }
+
+    .markdownBody .mdCheck input:checked + .mdCheckBox{
+      border-color:var(--site-teal);
+      background:linear-gradient(135deg,var(--site-sea),var(--site-teal));
+      box-shadow:0 4px 10px color-mix(in srgb,var(--site-teal) 25%,transparent);
+    }
+
+    .markdownBody .mdCheck input:checked + .mdCheckBox::after{
+      content:"";
+      width:8px;
+      height:4px;
+      border-left:2px solid #fff;
+      border-bottom:2px solid #fff;
+      transform:translateY(-1px) rotate(-45deg);
+    }
+
+    html[data-theme="light"] .markdownBody .mdCheckBox{
+      background:#fff;
+    }
+
+    /* =========================================================
+       FIX：移除左右側欄上方空白及切換時跳動
+       ========================================================= */
+
+    /*
+      layout 本身已經位於頂部導覽列下方，因此 sidebar / toc
+      不可以再使用 top:96px，否則 sticky 會把它們向下推 96px。
+    */
+    .layout{
+      align-items:stretch;
+    }
+
+    .layout > .sidebar,
+    .layout > .content,
+    .layout > .toc{
+      top:0 !important;
+      min-height:0;
+      height:calc(100vh - 118px);
+    }
+
+    .layout > .sidebar,
+    .layout > .toc{
+      position:sticky;
+      align-self:start;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      scrollbar-gutter:stable;
+    }
+
+    .layout > .content{
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      scrollbar-gutter:stable;
+    }
+
+    html{
+      scrollbar-gutter:stable;
+    }
+
+    @media (max-width:760px){
+      .layout > .sidebar{
+        position:fixed;
+        top:0 !important;
+        height:100vh;
+      }
+
+      .layout > .content{
+        height:auto;
+        overflow:visible;
+      }
+    }
+
+    /* =========================================================
+       統一自訂 Scrollbar：左欄、正文、右欄
+       使用瀏覽器原生捲動機制，不會卡住
+       ========================================================= */
+
+    .sidebar,
+    .content,
+    .toc{
+      scrollbar-width:thin;
+      scrollbar-color:
+        color-mix(in srgb, var(--site-sea) 78%, white)
+        color-mix(in srgb, var(--surface-2) 86%, transparent);
+      overscroll-behavior:contain;
+    }
+
+    .sidebar::-webkit-scrollbar,
+    .content::-webkit-scrollbar,
+    .toc::-webkit-scrollbar{
+      width:11px;
+      height:11px;
+    }
+
+    .sidebar::-webkit-scrollbar-track,
+    .content::-webkit-scrollbar-track,
+    .toc::-webkit-scrollbar-track{
+      background:
+        color-mix(in srgb, var(--surface-2) 88%, transparent);
+      border-radius:999px;
+      margin-block:10px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb,
+    .content::-webkit-scrollbar-thumb,
+    .toc::-webkit-scrollbar-thumb{
+      min-height:48px;
+      border:3px solid transparent;
+      border-radius:999px;
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--site-sea) 86%, white),
+          color-mix(in srgb, var(--site-teal) 84%, white)
+        ) padding-box;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.15);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover,
+    .content::-webkit-scrollbar-thumb:hover,
+    .toc::-webkit-scrollbar-thumb:hover{
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--site-sea) 96%, white),
+          color-mix(in srgb, var(--site-teal) 94%, white)
+        ) padding-box;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:active,
+    .content::-webkit-scrollbar-thumb:active,
+    .toc::-webkit-scrollbar-thumb:active{
+      background:
+        linear-gradient(
+          180deg,
+          var(--site-sea),
+          var(--site-teal)
+        ) padding-box;
+    }
+
+    .sidebar::-webkit-scrollbar-corner,
+    .content::-webkit-scrollbar-corner,
+    .toc::-webkit-scrollbar-corner{
+      background:transparent;
+    }
+
+    /* 防止 scrollbar 出現/消失時造成左右跳動 */
+    .sidebar,
+    .content,
+    .toc{
+      scrollbar-gutter:stable;
+    }
+
+    /* =========================================================
+       Scrollbar 跟隨 HTML 內建黑暗／明亮模式
+       ========================================================= */
+
+    /* 明亮模式 */
+    html[data-theme="light"] .sidebar,
+    html[data-theme="light"] .content,
+    html[data-theme="light"] .toc{
+      scrollbar-color:#8f7cff #edf1f8;
+    }
+
+    html[data-theme="light"] .sidebar::-webkit-scrollbar-track,
+    html[data-theme="light"] .content::-webkit-scrollbar-track,
+    html[data-theme="light"] .toc::-webkit-scrollbar-track{
+      background:#edf1f8;
+      box-shadow:inset 0 0 0 1px rgba(35,45,75,.08);
+    }
+
+    html[data-theme="light"] .sidebar::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .content::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .toc::-webkit-scrollbar-thumb{
+      background:linear-gradient(180deg,#9b8cff,#6f7dff) padding-box;
+      border:3px solid transparent;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.55),
+        0 2px 8px rgba(87,76,196,.18);
+    }
+
+    html[data-theme="light"] .sidebar::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .content::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .toc::-webkit-scrollbar-thumb:hover{
+      background:linear-gradient(180deg,#8e7dff,#586aff) padding-box;
+    }
+
+    /* 黑暗模式 */
+    html[data-theme="dark"] .sidebar,
+    html[data-theme="dark"] .content,
+    html[data-theme="dark"] .toc{
+      scrollbar-color:#747b8f #141a2c;
+    }
+
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-track,
+    html[data-theme="dark"] .content::-webkit-scrollbar-track,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-track{
+      background:#141a2c;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.055),
+        inset 0 0 10px rgba(0,0,0,.18);
+    }
+
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .content::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-thumb{
+      background:linear-gradient(180deg,#83899b,#636a7d) padding-box;
+      border:3px solid transparent;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 2px 8px rgba(0,0,0,.28);
+    }
+
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .content::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-thumb:hover{
+      background:linear-gradient(180deg,#9aa1b4,#747c91) padding-box;
+    }
+
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb:active,
+    html[data-theme="dark"] .content::-webkit-scrollbar-thumb:active,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-thumb:active{
+      background:linear-gradient(180deg,#b0b6c7,#858da2) padding-box;
+    }
+
+    /* =========================================================
+       FINAL：一次修正所有捲軸
+       - 左側文件欄
+       - 中央文章
+       - 右側目錄
+       - 最右側瀏覽器頁面捲軸
+       ========================================================= */
+
+    /* 桌面版只允許三個欄位內部捲動，移除最右側多餘頁面捲軸 */
+    @media (min-width:761px){
+      html,
+      body{
+        width:100%;
+        height:100%;
+        overflow:hidden !important;
+      }
+
+      body{
+        min-height:0;
+      }
+
+      .topbar{
+        position:relative;
+        flex:0 0 auto;
+      }
+
+      .layout{
+        height:calc(100vh - 118px);
+        min-height:0 !important;
+        margin-bottom:0;
+      }
+
+      .layout > .sidebar,
+      .layout > .content,
+      .layout > .toc{
+        height:100% !important;
+        max-height:100%;
+        min-height:0;
+        overflow-y:auto !important;
+      }
+    }
+
+    /* 所有可能滾動的區域使用同一套尺寸 */
+    html,
+    body,
+    .sidebar,
+    .content,
+    .toc,
+    .tocList,
+    .docList{
+      scrollbar-width:thin;
+      scrollbar-gutter:stable;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .sidebar::-webkit-scrollbar,
+    .content::-webkit-scrollbar,
+    .toc::-webkit-scrollbar,
+    .tocList::-webkit-scrollbar,
+    .docList::-webkit-scrollbar{
+      width:11px;
+      height:11px;
+    }
+
+    /* 黑暗模式 */
+    html[data-theme="dark"],
+    html[data-theme="dark"] body,
+    html[data-theme="dark"] .sidebar,
+    html[data-theme="dark"] .content,
+    html[data-theme="dark"] .toc,
+    html[data-theme="dark"] .tocList,
+    html[data-theme="dark"] .docList{
+      scrollbar-color:#747c91 #12182a;
+    }
+
+    html[data-theme="dark"]::-webkit-scrollbar-track,
+    html[data-theme="dark"] body::-webkit-scrollbar-track,
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-track,
+    html[data-theme="dark"] .content::-webkit-scrollbar-track,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-track,
+    html[data-theme="dark"] .tocList::-webkit-scrollbar-track,
+    html[data-theme="dark"] .docList::-webkit-scrollbar-track{
+      background:#12182a;
+      border-radius:999px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.055),
+        inset 0 0 10px rgba(0,0,0,.22);
+    }
+
+    html[data-theme="dark"]::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] body::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .content::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .tocList::-webkit-scrollbar-thumb,
+    html[data-theme="dark"] .docList::-webkit-scrollbar-thumb{
+      min-height:46px;
+      border:3px solid transparent;
+      border-radius:999px;
+      background:linear-gradient(180deg,#9299ad,#687086) padding-box;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 2px 8px rgba(0,0,0,.3);
+    }
+
+    html[data-theme="dark"]::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] body::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .content::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .toc::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .tocList::-webkit-scrollbar-thumb:hover,
+    html[data-theme="dark"] .docList::-webkit-scrollbar-thumb:hover{
+      background:linear-gradient(180deg,#abb2c5,#7d859b) padding-box;
+    }
+
+    /* 明亮模式 */
+    html[data-theme="light"],
+    html[data-theme="light"] body,
+    html[data-theme="light"] .sidebar,
+    html[data-theme="light"] .content,
+    html[data-theme="light"] .toc,
+    html[data-theme="light"] .tocList,
+    html[data-theme="light"] .docList{
+      scrollbar-color:#756dff #e9eef7;
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-track,
+    html[data-theme="light"] body::-webkit-scrollbar-track,
+    html[data-theme="light"] .sidebar::-webkit-scrollbar-track,
+    html[data-theme="light"] .content::-webkit-scrollbar-track,
+    html[data-theme="light"] .toc::-webkit-scrollbar-track,
+    html[data-theme="light"] .tocList::-webkit-scrollbar-track,
+    html[data-theme="light"] .docList::-webkit-scrollbar-track{
+      background:#e9eef7;
+      border-radius:999px;
+      box-shadow:inset 0 0 0 1px rgba(38,50,82,.08);
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-thumb,
+    html[data-theme="light"] body::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .sidebar::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .content::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .toc::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .tocList::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .docList::-webkit-scrollbar-thumb{
+      min-height:46px;
+      border:3px solid transparent;
+      border-radius:999px;
+      background:linear-gradient(180deg,#9b8cff,#6675ff) padding-box;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.55),
+        0 2px 8px rgba(88,75,190,.2);
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] body::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .sidebar::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .content::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .toc::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .tocList::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .docList::-webkit-scrollbar-thumb:hover{
+      background:linear-gradient(180deg,#8979ff,#5267ff) padding-box;
+    }
+
+    html::-webkit-scrollbar-corner,
+    body::-webkit-scrollbar-corner,
+    .sidebar::-webkit-scrollbar-corner,
+    .content::-webkit-scrollbar-corner,
+    .toc::-webkit-scrollbar-corner{
+      background:transparent;
+    }
+
+    /* 手機版恢復整頁自然捲動 */
+    @media (max-width:760px){
+      html,
+      body{
+        height:auto;
+        overflow-y:auto !important;
+        overflow-x:hidden;
+      }
+
+      .layout{
+        height:auto;
+        min-height:calc(100vh - 78px);
+        margin-bottom:18px;
+      }
+
+      .layout > .content{
+        height:auto !important;
+        max-height:none;
+        overflow:visible !important;
+      }
+    }
+
+    /* =========================================================
+       FINAL DARK MODE
+       ========================================================= */
+
+    html{
+      color-scheme:dark;
+    }
+
+    html[data-theme="dark"]{
+      color-scheme:dark;
+      background:#080d1a;
+    }
+
+    html[data-theme="light"]{
+      color-scheme:light;
+      background:#eef3fb;
+    }
+
+    html[data-theme="dark"] body{
+      background:
+        radial-gradient(circle at 92% 3%, rgba(139,92,246,.15), transparent 25%),
+        radial-gradient(circle at 7% 0%, rgba(96,165,250,.10), transparent 24%),
+        #080d1a !important;
+      color:#eef2ff;
+    }
+
+    html[data-theme="dark"] .topbar,
+    html[data-theme="dark"] .layout,
+    html[data-theme="dark"] .sidebar,
+    html[data-theme="dark"] .content,
+    html[data-theme="dark"] .toc{
+      color:#eef2ff;
+    }
+
+    html[data-theme="dark"] .layout{
+      background:rgba(12,19,37,.92);
+      border-color:rgba(255,255,255,.11);
+    }
+
+    html[data-theme="dark"] .sidebar,
+    html[data-theme="dark"] .toc{
+      background:rgba(13,21,40,.78);
+    }
+
+    html[data-theme="dark"] .content{
+      background:#0d162b;
+    }
+
+    html[data-theme="dark"] .searchBox,
+    html[data-theme="dark"] .themeToggle,
+    html[data-theme="dark"] .mobileMenuButton{
+      background:rgba(255,255,255,.055);
+      color:#eef2ff;
+      border-color:rgba(255,255,255,.12);
+    }
+
+    html[data-theme="dark"] .docItem{
+      color:#b8c2dc;
+    }
+
+    html[data-theme="dark"] .docItem:hover{
+      background:rgba(255,255,255,.065);
+      color:#ffffff;
+    }
+
+    html[data-theme="dark"] .docItem.active{
+      color:#ffffff;
+      background:linear-gradient(135deg,#7188ff,#935eea);
+    }
+
+    html[data-theme="dark"] .docHero{
+      background:
+        radial-gradient(circle at 91% 70%, rgba(139,92,246,.17) 0 13%, transparent 13.4%),
+        radial-gradient(circle at 91% 70%, rgba(139,92,246,.10) 0 21%, transparent 21.4%),
+        linear-gradient(135deg,#1b2948,#1d214b);
+      border-color:rgba(148,163,255,.20);
+    }
+
+    html[data-theme="dark"] .markdownBody{
+      color:#dce5f8;
+    }
+
+    html[data-theme="dark"] .markdownBody h1,
+    html[data-theme="dark"] .markdownBody h2,
+    html[data-theme="dark"] .markdownBody h3,
+    html[data-theme="dark"] .markdownBody h4,
+    html[data-theme="dark"] .markdownBody strong{
+      color:#f4f7ff;
+    }
+
+    html[data-theme="dark"] .markdownBody table{
+      background:#111c35;
+      border-color:rgba(255,255,255,.11);
+    }
+
+    html[data-theme="dark"] .markdownBody th{
+      background:linear-gradient(135deg,#1c2d51,#211f50);
+      color:#f4f7ff;
+    }
+
+    html[data-theme="dark"] .markdownBody td{
+      border-color:rgba(255,255,255,.09);
+    }
+
+    html[data-theme="dark"] .tocLink{
+      color:#9eabc9;
+    }
+
+    html[data-theme="dark"] .tocLink:hover{
+      color:#ffffff;
+      background:rgba(255,255,255,.055);
+    }
+
+    html[data-theme="dark"] ::selection{
+      background:rgba(139,92,246,.42);
+      color:#ffffff;
+    }
+
+  
+/* =========================================================
+   MOBILE FIX：側邊文章列表可正常點擊
+   原因：sidebarBackdrop 位於 layout 外層，可能覆蓋 sidebar 的觸控區域。
+   ========================================================= */
+@media (max-width:760px){
+  .sidebar{
+    pointer-events:auto !important;
+    touch-action:pan-y;
+  }
+
+  .docList,
+  .docItem,
+  .docItem *{
+    pointer-events:auto !important;
+  }
+
+  .docItem{
+    position:relative;
+    z-index:2;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:rgba(110,168,255,.16);
+  }
+
+  /* Backdrop 只覆蓋側欄右方，不再擋住側欄內的按鈕 */
+  .sidebarBackdrop{
+    left:min(88vw, 320px) !important;
+    right:0 !important;
+    top:0 !important;
+    bottom:0 !important;
+    width:auto !important;
+  }
+
+  .sidebarBackdrop.open{
+    display:block;
+  }
+}
+
+
+
+/* =========================================================
+   DOCUMENTATION V3 — MOBILE EXPERIENCE
+   ========================================================= */
+.mobileDrawerHeader,
+.mobileDrawerSearch,
+.mobileTocSheet,
+.mobileTocBackdrop,
+.floatingTools,
+.imageLightbox{ display:none; }
+
+@media (max-width:760px){
+  :root{ --mobile-topbar-height:132px; }
+
+  html,body{ overscroll-behavior-y:none; }
+  body.sidebar-open,
+  body.sheet-open,
+  body.lightbox-open{ overflow:hidden !important; touch-action:none; }
+
+  .topbar{
+    position:sticky;
+    top:max(8px, env(safe-area-inset-top));
+    z-index:1200;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:8px;
+    width:calc(100% - 16px);
+    margin:8px auto 0;
+    padding:9px 10px 10px;
+    border-radius:20px;
+  }
+
+  .brand{ min-width:0; overflow:hidden; }
+  .brand img{ width:36px; height:36px; flex:0 0 auto; }
+  .brandText{ min-width:0; }
+  .brandText > span:first-child{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:13px;
+    font-weight:850;
+  }
+
+  .mobileMenuBtn{
+    order:2;
+    display:grid;
+    place-items:center;
+    width:42px;
+    height:42px;
+    margin:0;
+    font-size:19px;
+  }
+
+  .themeToggle{
+    order:3;
+    width:42px;
+    min-width:42px;
+    height:42px;
+    min-height:42px;
+    padding:0;
+  }
+  .themeToggle #themeText{ display:none; }
+
+  .searchWrap{
+    order:4;
+    grid-column:1 / -1;
+    width:100%;
+    margin:0;
+  }
+  .searchInput{ height:42px; font-size:16px; }
+  .searchKey{ display:none; }
+  .searchResults{
+    position:fixed;
+    left:8px;
+    right:8px;
+    top:calc(max(8px, env(safe-area-inset-top)) + 116px);
+    max-height:min(58vh, 520px);
+    z-index:1800;
+    border-radius:18px;
+  }
+
+  .layout{
+    width:calc(100% - 16px);
+    margin:10px auto calc(82px + env(safe-area-inset-bottom));
+    min-height:calc(100dvh - 145px);
+    border-radius:22px;
+    overflow:visible;
+  }
+
+  .content{
+    padding:14px 13px calc(92px + env(safe-area-inset-bottom));
+    background:transparent !important;
+  }
+
+  .docHeader{
+    margin-bottom:18px;
+    padding:18px 16px;
+    border-radius:18px;
+  }
+  .breadcrumb{ margin-bottom:8px; font-size:11px; }
+  .docTitle{ font-size:clamp(24px,7vw,30px) !important; line-height:1.2; }
+  .docHeader::after{ width:110px; height:110px; right:-42px; bottom:-50px; }
+
+  .markdownBody{ font-size:15px; line-height:1.78; }
+  .markdownBody h1{ font-size:26px; }
+  .markdownBody h2{ margin-top:34px; font-size:22px; }
+  .markdownBody h3{ margin-top:26px; font-size:18px; }
+  .markdownBody p{ margin-bottom:15px; }
+  .markdownBody ul,.markdownBody ol{ padding-left:1.45rem; }
+  .markdownBody blockquote{ padding:14px 15px 14px 17px; }
+  .markdownBody pre{ margin-inline:-2px; padding:15px; overflow-x:auto; }
+  .markdownBody img{ border-radius:13px; cursor:zoom-in; }
+
+  .sidebar{
+    position:fixed !important;
+    inset:0 auto 0 0;
+    z-index:2100;
+    width:min(84vw, 304px) !important;
+    max-width:304px;
+    height:100dvh !important;
+    padding:0 12px calc(18px + env(safe-area-inset-bottom));
+    border-right:1px solid var(--border);
+    border-radius:0 24px 24px 0 !important;
+    background:color-mix(in srgb,var(--panel) 98%,#0b1020) !important;
+    box-shadow:24px 0 55px rgba(0,0,0,.34);
+    transform:translate3d(-106%,0,0) scale(.985);
+    transform-origin:left center;
+    opacity:.65;
+    visibility:hidden;
+    transition:transform .28s cubic-bezier(.22,1,.36,1), opacity .22s ease, visibility 0s linear .28s;
+    overflow-y:auto !important;
+    overscroll-behavior:contain;
+  }
+  .sidebar.open{
+    transform:translate3d(0,0,0) scale(1);
+    opacity:1;
+    visibility:visible;
+    transition-delay:0s;
+  }
+
+  .mobileDrawerHeader{
+    position:sticky;
+    top:0;
+    z-index:8;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:0 -12px 10px;
+    padding:calc(14px + env(safe-area-inset-top)) 14px 12px;
+    border-bottom:1px solid var(--border);
+    background:color-mix(in srgb,var(--panel) 96%,transparent);
+    backdrop-filter:blur(18px);
+  }
+  .mobileDrawerTitle{ font-size:15px; font-weight:900; }
+  .mobileDrawerClose{
+    width:40px;
+    height:40px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    color:var(--text);
+    background:var(--panel-soft);
+    cursor:pointer;
+    font-size:20px;
+  }
+
+  .mobileDrawerSearch{
+    position:sticky;
+    top:calc(67px + env(safe-area-inset-top));
+    z-index:7;
+    display:block;
+    margin:0 0 12px;
+    padding:2px 0 10px;
+    background:color-mix(in srgb,var(--panel) 98%,transparent);
+  }
+  .mobileDrawerSearch input{
+    width:100%;
+    height:42px;
+    padding:0 13px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    color:var(--text);
+    background:var(--panel-soft);
+    outline:none;
+    font-size:16px;
+  }
+  .mobileDrawerSearch input:focus{ border-color:var(--site-sea); }
+
+  .sidebarTitle{ display:none; }
+  .sidebarMeta{ display:none; }
+  .docList{ gap:5px; padding-bottom:8px; }
+  .docItem{
+    min-height:48px;
+    padding:11px 12px;
+    border-radius:13px;
+    font-size:14px;
+    touch-action:manipulation;
+  }
+  .docItem:hover{ transform:none; }
+  .docItem:active{ transform:scale(.985); }
+  .statusBox{ margin:12px 0 0; }
+
+  .sidebarBackdrop{
+    position:fixed !important;
+    inset:0 !important;
+    z-index:2050 !important;
+    width:auto !important;
+    display:block !important;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    background:rgba(2,6,16,.62);
+    backdrop-filter:blur(3px);
+    transition:opacity .22s ease, visibility 0s linear .22s;
+  }
+  .sidebarBackdrop.open{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition-delay:0s;
+  }
+
+  .floatingTools{
+    position:fixed;
+    right:14px;
+    bottom:calc(14px + env(safe-area-inset-bottom));
+    z-index:1350;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .floatingBtn{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--border);
+    border-radius:16px;
+    color:var(--text);
+    background:color-mix(in srgb,var(--panel) 88%,transparent);
+    box-shadow:0 12px 28px rgba(0,0,0,.24);
+    backdrop-filter:blur(16px);
+    cursor:pointer;
+    font-size:18px;
+  }
+  .backToTopBtn{
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(8px);
+    transition:.2s ease;
+  }
+  .backToTopBtn.show{ opacity:1; visibility:visible; transform:none; }
+
+  .mobileTocBackdrop{
+    position:fixed;
+    inset:0;
+    z-index:2200;
+    display:block;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    background:rgba(2,6,16,.62);
+    backdrop-filter:blur(3px);
+    transition:.22s ease;
+  }
+  .mobileTocBackdrop.open{ opacity:1; visibility:visible; pointer-events:auto; }
+
+  .mobileTocSheet{
+    position:fixed;
+    left:8px;
+    right:8px;
+    bottom:calc(8px + env(safe-area-inset-bottom));
+    z-index:2250;
+    display:block;
+    max-height:min(70dvh,620px);
+    padding:8px 14px 18px;
+    border:1px solid var(--border);
+    border-radius:24px;
+    color:var(--text);
+    background:color-mix(in srgb,var(--panel) 98%,#0b1020);
+    box-shadow:0 -24px 58px rgba(0,0,0,.34);
+    transform:translateY(calc(100% + 24px));
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
+    overflow:auto;
+  }
+  .mobileTocSheet.open{ transform:translateY(0); }
+  .mobileTocHandle{ width:46px; height:5px; margin:2px auto 12px; border-radius:999px; background:var(--border-soft); }
+  .mobileTocHeader{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; }
+  .mobileTocHeader strong{ font-size:16px; }
+  .mobileTocClose{ width:38px; height:38px; border:1px solid var(--border); border-radius:999px; color:var(--text); background:var(--panel-soft); }
+  .mobileTocList{ display:flex; flex-direction:column; gap:5px; }
+  .mobileTocList .tocLink{ min-height:44px; display:flex; align-items:center; font-size:13px; }
+
+  .copyCodeBtn{
+    position:absolute;
+    top:12px;
+    right:12px;
+    min-height:34px;
+    padding:0 10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text);
+    background:color-mix(in srgb,var(--panel) 92%,transparent);
+    cursor:pointer;
+    font-size:11px;
+    font-weight:850;
+  }
+  .markdownBody pre::before{ margin-right:74px; }
+
+  .imageLightbox{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(10px);
+  }
+  .imageLightbox.open{ display:flex; }
+  .imageLightbox img{ max-width:96vw; max-height:88dvh; object-fit:contain; border-radius:14px; box-shadow:0 24px 70px rgba(0,0,0,.5); }
+  .imageLightboxClose{ position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px; width:44px; height:44px; border:1px solid rgba(255,255,255,.28); border-radius:999px; color:#fff; background:rgba(255,255,255,.12); font-size:22px; }
+}
+
+@media (max-width:390px){
+  .topbar{ grid-template-columns:minmax(0,1fr) 40px 40px; }
+  .content{ padding-inline:10px; }
+  .docHeader{ padding:16px 14px; }
+  .markdownBody{ font-size:14px; }
+}
+
+
+
+/* =========================================================
+   DOCUMENTATION V3.1 — MOBILE DRAWER + SCROLL HOTFIX
+   修正：遮罩蓋住側欄、側欄與頁面無法觸控捲動
+   ========================================================= */
+@media (max-width:760px){
+  /* backdrop-filter 會建立 stacking context，令 fixed sidebar 被外層遮罩壓住 */
+  .layout{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    transform:none !important;
+    isolation:auto !important;
+  }
+
+  /* 鎖住背景即可，不要在 body 使用 touch-action:none，否則側欄也不能滑 */
+  body.sidebar-open,
+  body.sheet-open,
+  body.lightbox-open{
+    overflow:hidden !important;
+  }
+
+  body.sidebar-open{
+    touch-action:auto !important;
+  }
+
+  /* 側欄永遠高於遮罩，並保留獨立的直向捲動 */
+  .layout > .sidebar,
+  .sidebar{
+    z-index:3001 !important;
+    height:100dvh !important;
+    max-height:100dvh !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    overscroll-behavior-y:contain !important;
+    touch-action:pan-y !important;
+    -webkit-overflow-scrolling:touch;
+    pointer-events:auto !important;
+  }
+
+  .sidebarBackdrop{
+    z-index:3000 !important;
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+  }
+
+  /* 側欄開啟時，確保沒有 visibility / opacity 衝突 */
+  .sidebar.open{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+    transform:translate3d(0,0,0) scale(1) !important;
+  }
+
+  .docList,
+  .docItem{
+    touch-action:manipulation;
+  }
+
+  /* 一般閱讀狀態維持整頁自然捲動 */
+  body:not(.sidebar-open):not(.sheet-open):not(.lightbox-open){
+    overflow-y:auto !important;
+    touch-action:pan-y !important;
+  }
+}
+
+
+
+/* =========================================================
+   DOCUMENTATION V3.2 — MOBILE SCROLL FINAL FIX
+   ========================================================= */
+@media (max-width:760px){
+  html{
+    height:auto !important;
+    min-height:100% !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    touch-action:pan-y !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body{
+    position:static !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:100dvh !important;
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+    touch-action:pan-y !important;
+    overscroll-behavior-y:auto !important;
+  }
+
+  .layout{
+    position:relative !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  .layout > .content,
+  main.content{
+    position:relative !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:visible !important;
+    touch-action:pan-y !important;
+    pointer-events:auto !important;
+  }
+
+  /* Drawer 本身獨立捲動 */
+  .layout > .sidebar,
+  aside.sidebar{
+    position:fixed !important;
+    inset:0 auto 0 0 !important;
+    z-index:5001 !important;
+    height:100dvh !important;
+    max-height:100dvh !important;
+    overflow-x:hidden !important;
+    overflow-y:scroll !important;
+    touch-action:pan-y !important;
+    overscroll-behavior-y:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+    pointer-events:auto !important;
+  }
+
+  .sidebarBackdrop{
+    z-index:5000 !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    background:rgba(2,6,16,.72) !important;
+  }
+
+  /* 只在浮層開啟時鎖住背景；不禁止側欄的 pan-y */
+  body.sidebar-open,
+  body.sheet-open,
+  body.lightbox-open{
+    overflow:hidden !important;
+    touch-action:pan-y !important;
+  }
+
+  body.sidebar-open .sidebar{
+    overflow-y:scroll !important;
+    touch-action:pan-y !important;
+  }
+
+  .docList{
+    min-height:max-content;
+    overflow:visible !important;
+    touch-action:pan-y !important;
+  }
+
+  .docItem,
+  .docItem *{
+    pointer-events:auto !important;
+  }
+}
+
+
+    /* =========================================================
+       DOCUMENTATION V4 — METADATA / PINNED / CONTENT COMPONENTS
+       Backward compatible: articles without front matter still work.
+       ========================================================= */
+    .docMetaPanel{position:relative;z-index:1;margin-top:18px;display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;color:var(--muted);font-size:12px}
+    .docMetaItem{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:4px 9px;border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--panel) 66%,transparent)}
+    .docMetaItem strong{color:var(--text);font-weight:800}
+    .docDescription{position:relative;z-index:1;margin:12px 0 0;max-width:760px;color:color-mix(in srgb,var(--text) 82%,var(--muted));font-size:14px;line-height:1.65}
+    .docBadges{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+    .pill,.badge{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:max-content;max-width:100%;padding:4px 9px;border:1px solid color-mix(in srgb,var(--pill-color,var(--site-sea)) 42%,var(--border));border-radius:999px;color:color-mix(in srgb,var(--pill-color,var(--site-sea)) 78%,var(--text));background:color-mix(in srgb,var(--pill-color,var(--site-sea)) 13%,var(--panel));font-size:11px;font-weight:900;line-height:1.2;vertical-align:middle}
+    .badge{padding:3px 8px;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+    .pill.blue,.badge.blue{--pill-color:#60a5fa}.pill.purple,.badge.purple{--pill-color:#a78bfa}.pill.green,.badge.green{--pill-color:#34d399}.pill.gold,.badge.gold,.pill.yellow,.badge.yellow{--pill-color:#fbbf24}.pill.red,.badge.red{--pill-color:#fb7185}.pill.gray,.badge.gray{--pill-color:#94a3b8}.pill.cyan,.badge.cyan{--pill-color:#22d3ee}
+    .sidebarSection{margin:0 0 15px}.sidebarSectionTitle{display:flex;align-items:center;gap:7px;margin:4px 8px 7px;color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.sidebarSectionTitle::after{content:"";height:1px;flex:1;background:var(--border)}
+    .docItemMeta{display:flex;min-width:0;flex:1;flex-direction:column;gap:2px}.docItemTop{display:flex;align-items:center;gap:6px;min-width:0}.docItemMini{color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.docItemPin{font-size:11px;flex:0 0 auto}.docItem.active .docItemMini{color:rgba(255,255,255,.78)}
+    .markdownBody .callout,.markdownBody .success,.markdownBody .tip,.markdownBody .important,.markdownBody .question,.markdownBody .download,.markdownBody .example,.markdownBody .update,.markdownBody .boss,.markdownBody .reward,.markdownBody .requirement,.markdownBody .discord{--callout:#60a5fa;position:relative;margin:22px 0;padding:16px 18px 16px 50px;border:1px solid color-mix(in srgb,var(--callout) 42%,var(--border));border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--callout) 12%,var(--panel)),color-mix(in srgb,var(--callout) 5%,var(--panel)));box-shadow:0 10px 24px rgba(0,0,0,.07)}
+    .markdownBody .callout::before,.markdownBody .success::before,.markdownBody .tip::before,.markdownBody .important::before,.markdownBody .question::before,.markdownBody .download::before,.markdownBody .example::before,.markdownBody .update::before,.markdownBody .boss::before,.markdownBody .reward::before,.markdownBody .requirement::before,.markdownBody .discord::before{content:attr(data-icon);position:absolute;left:16px;top:15px;display:grid;place-items:center;width:24px;height:24px;border-radius:8px;color:#fff;background:var(--callout);font-size:13px;font-weight:900}
+    .markdownBody .success{--callout:#22c55e}.markdownBody .success::before{content:"✓"}.markdownBody .tip{--callout:#eab308}.markdownBody .tip::before{content:"💡"}.markdownBody .important{--callout:#a855f7}.markdownBody .important::before{content:"★"}.markdownBody .question{--callout:#06b6d4}.markdownBody .question::before{content:"?"}.markdownBody .download{--callout:#3b82f6}.markdownBody .download::before{content:"↓"}.markdownBody .example{--callout:#64748b}.markdownBody .example::before{content:"例"}.markdownBody .update{--callout:#8b5cf6}.markdownBody .update::before{content:"新"}.markdownBody .boss{--callout:#ef4444}.markdownBody .boss::before{content:"王"}.markdownBody .reward{--callout:#f59e0b}.markdownBody .reward::before{content:"賞"}.markdownBody .requirement{--callout:#14b8a6}.markdownBody .requirement::before{content:"需"}.markdownBody .discord{--callout:#5865f2}.markdownBody .discord::before{content:"D"}
+    .markdownBody .callout-title{display:block;margin:0 0 5px;color:var(--text);font-weight:900}.markdownBody .callout > :last-child,.markdownBody .success > :last-child,.markdownBody .tip > :last-child,.markdownBody .important > :last-child,.markdownBody .question > :last-child,.markdownBody .download > :last-child,.markdownBody .example > :last-child,.markdownBody .update > :last-child,.markdownBody .boss > :last-child,.markdownBody .reward > :last-child,.markdownBody .requirement > :last-child,.markdownBody .discord > :last-child{margin-bottom:0}
+    .markdownBody .pill-row,.markdownBody .badge-row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 18px}
+    .markdownBody .card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0}.markdownBody .content-card{padding:17px;border:1px solid var(--border);border-radius:16px;background:var(--panel-soft);box-shadow:0 8px 18px rgba(0,0,0,.06)}.markdownBody .content-card > :last-child{margin-bottom:0}
+    .markdownBody .steps{counter-reset:docstep;margin:22px 0}.markdownBody .step{counter-increment:docstep;position:relative;margin:0 0 13px;padding:15px 16px 15px 52px;border:1px solid var(--border);border-radius:15px;background:var(--panel-soft)}.markdownBody .step::before{content:counter(docstep);position:absolute;left:15px;top:14px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--site-sea),var(--site-teal));font-size:12px;font-weight:900}.markdownBody .step > :last-child{margin-bottom:0}
+    .markdownBody .timeline{position:relative;margin:22px 0;padding-left:26px}.markdownBody .timeline::before{content:"";position:absolute;left:7px;top:7px;bottom:7px;width:2px;background:linear-gradient(var(--site-sea),var(--site-teal))}.markdownBody .timeline-item{position:relative;margin:0 0 18px;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:var(--panel-soft)}.markdownBody .timeline-item::before{content:"";position:absolute;left:-25px;top:18px;width:11px;height:11px;border:3px solid var(--panel);border-radius:50%;background:var(--site-sea);box-shadow:0 0 0 2px var(--site-sea)}
+    .markdownBody details{margin:14px 0;border:1px solid var(--border);border-radius:14px;background:var(--panel-soft);overflow:hidden}.markdownBody summary{padding:14px 16px;cursor:pointer;color:var(--text);font-weight:850;list-style:none}.markdownBody summary::-webkit-details-marker{display:none}.markdownBody summary::after{content:"＋";float:right;color:var(--muted)}.markdownBody details[open] summary::after{content:"－"}.markdownBody details > :not(summary){margin-left:16px;margin-right:16px}.markdownBody details > :last-child{margin-bottom:16px}
+    .markdownBody kbd{display:inline-block;padding:2px 7px;border:1px solid var(--border-soft);border-bottom-width:2px;border-radius:6px;color:var(--text);background:var(--panel-soft);font:700 11px ui-monospace,SFMono-Regular,Consolas,monospace}
+    .articleFooterNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:42px;padding-top:22px;border-top:1px solid var(--border)}.articleNavBtn{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border:1px solid var(--border);border-radius:15px;color:var(--text);background:var(--panel-soft);text-decoration:none;cursor:pointer}.articleNavBtn:hover{border-color:var(--site-sea);transform:translateY(-1px)}.articleNavBtn.next{text-align:right}.articleNavBtn small{color:var(--muted)}
+    @media(max-width:760px){.docMetaPanel{gap:7px}.docMetaItem{font-size:11px}.markdownBody .card-grid{grid-template-columns:1fr}.articleFooterNav{grid-template-columns:1fr}.articleNavBtn.next{text-align:left}}
+
+  
+
+    /* =========================================================
+       V4.1：H4 錨點、章節跳轉與內容元件視覺優化
+       ========================================================= */
+    .markdownBody h2,
+    .markdownBody h3,
+    .markdownBody h4{
+      position:relative;
+      scroll-margin-top:26px;
+      border-radius:10px;
+      transition:background .22s ease, box-shadow .22s ease, color .22s ease;
+    }
+
+    .markdownBody h4{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      margin:29px 0 13px;
+      padding:10px 13px;
+      border:1px solid color-mix(in srgb,var(--site-sea) 18%,var(--border));
+      border-left:4px solid var(--site-teal);
+      border-radius:12px;
+      background:linear-gradient(135deg,
+        color-mix(in srgb,var(--site-sea) 7%,transparent),
+        color-mix(in srgb,var(--site-teal) 5%,transparent));
+      font-size:17px;
+      line-height:1.45;
+    }
+
+    .markdownBody h4::before{
+      content:"§";
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      width:24px;
+      height:24px;
+      border-radius:8px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--site-sea),var(--site-teal));
+      font-size:12px;
+      font-weight:900;
+      box-shadow:0 5px 12px color-mix(in srgb,var(--site-teal) 20%,transparent);
+    }
+
+    .markdownBody .linkableHeading{
+      cursor:pointer;
+    }
+
+    .markdownBody .linkableHeading::after{
+      content:"#";
+      margin-left:auto;
+      color:var(--muted);
+      font-size:.78em;
+      font-weight:900;
+      opacity:0;
+      transform:translateX(-4px);
+      transition:opacity .16s ease, transform .16s ease;
+    }
+
+    .markdownBody .linkableHeading:hover::after{
+      opacity:.72;
+      transform:translateX(0);
+    }
+
+    .markdownBody .headingFlash{
+      animation:headingFlash 1.8s ease;
+    }
+
+    @keyframes headingFlash{
+      0%,100%{background-color:transparent;box-shadow:none}
+      18%,68%{
+        background-color:color-mix(in srgb,var(--site-sea) 16%,var(--panel));
+        box-shadow:0 0 0 4px color-mix(in srgb,var(--site-teal) 12%,transparent);
+      }
+    }
+
+    .markdownBody .sectionJumpLink{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:2px 7px;
+      border:1px solid color-mix(in srgb,var(--site-sea) 28%,var(--border));
+      border-radius:7px;
+      color:color-mix(in srgb,var(--link) 88%,var(--text));
+      background:color-mix(in srgb,var(--site-sea) 8%,transparent);
+      text-decoration:none !important;
+      font-weight:800;
+      transition:.16s ease;
+    }
+
+    .markdownBody .sectionJumpLink::before{
+      content:"↳";
+      color:var(--site-teal);
+      font-weight:900;
+    }
+
+    .markdownBody .sectionJumpLink:hover{
+      transform:translateY(-1px);
+      border-color:var(--site-sea);
+      background:color-mix(in srgb,var(--site-sea) 14%,transparent);
+      box-shadow:0 6px 15px color-mix(in srgb,var(--site-sea) 12%,transparent);
+    }
+
+    .tocLink.level4{
+      padding-left:34px;
+      font-size:11px;
+      opacity:.9;
+    }
+
+    /* Callout：修正正文貼太近、標題不明顯與長連結擁擠 */
+    .markdownBody .callout,
+    .markdownBody .success,
+    .markdownBody .tip,
+    .markdownBody .important,
+    .markdownBody .question,
+    .markdownBody .download,
+    .markdownBody .example,
+    .markdownBody .update,
+    .markdownBody .boss,
+    .markdownBody .reward,
+    .markdownBody .requirement,
+    .markdownBody .discord{
+      padding:18px 20px 18px 56px;
+      border-radius:18px;
+      line-height:1.72;
+      overflow:hidden;
+    }
+
+    .markdownBody .tip{
+      --callout:#f2b84b;
+      background:
+        radial-gradient(circle at 100% 0,color-mix(in srgb,var(--callout) 16%,transparent),transparent 38%),
+        linear-gradient(135deg,color-mix(in srgb,var(--callout) 12%,var(--panel)),color-mix(in srgb,var(--site-teal) 4%,var(--panel)));
+    }
+
+    .markdownBody .callout-title{
+      margin-bottom:8px;
+      font-size:15px;
+      letter-spacing:.01em;
+    }
+
+    .markdownBody .tip::before{
+      left:17px;
+      top:17px;
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      box-shadow:0 7px 16px color-mix(in srgb,var(--callout) 25%,transparent);
+    }
+
+    /* Steps：更清楚的步驟卡與連接線 */
+    .markdownBody .steps{
+      position:relative;
+      display:grid;
+      gap:12px;
+      margin:24px 0 28px;
+    }
+
+    .markdownBody .step{
+      margin:0;
+      padding:17px 18px 17px 62px;
+      border-color:color-mix(in srgb,var(--site-sea) 18%,var(--border));
+      border-radius:17px;
+      background:linear-gradient(135deg,color-mix(in srgb,var(--panel-soft) 85%,transparent),color-mix(in srgb,var(--site-teal) 4%,transparent));
+      transition:transform .17s ease,border-color .17s ease,box-shadow .17s ease;
+    }
+
+    .markdownBody .step:hover{
+      transform:translateY(-1px);
+      border-color:color-mix(in srgb,var(--site-sea) 46%,var(--border));
+      box-shadow:0 10px 24px rgba(0,0,0,.08);
+    }
+
+    .markdownBody .step::before{
+      left:17px;
+      top:16px;
+      width:30px;
+      height:30px;
+      border:3px solid color-mix(in srgb,var(--panel) 84%,transparent);
+      box-shadow:0 7px 15px color-mix(in srgb,var(--site-teal) 22%,transparent);
+    }
+
+    .markdownBody .step strong:first-child{
+      display:block;
+      margin-bottom:5px;
+      font-size:15px;
+    }
+
+    .markdownBody .step p{
+      color:color-mix(in srgb,var(--text) 88%,var(--muted));
+    }
+
+    .markdownBody kbd{
+      display:inline-flex;
+      align-items:center;
+      min-height:25px;
+      padding:2px 8px;
+      border:1px solid color-mix(in srgb,var(--site-sea) 26%,var(--border));
+      border-bottom-width:2px;
+      border-radius:7px;
+      color:var(--text);
+      background:color-mix(in srgb,var(--panel-soft) 88%,var(--panel));
+      box-shadow:0 2px 0 color-mix(in srgb,var(--border) 85%,transparent);
+      font-family:inherit;
+      font-size:.9em;
+      font-weight:800;
+      line-height:1.35;
+    }
+
+    @media (max-width:760px){
+      .markdownBody h4{padding:9px 10px;font-size:15px}
+      .markdownBody .callout,
+      .markdownBody .success,
+      .markdownBody .tip,
+      .markdownBody .important,
+      .markdownBody .question,
+      .markdownBody .download,
+      .markdownBody .example,
+      .markdownBody .update,
+      .markdownBody .boss,
+      .markdownBody .reward,
+      .markdownBody .requirement,
+      .markdownBody .discord{padding:16px 14px 16px 50px;border-radius:15px}
+      .markdownBody .step{padding:15px 14px 15px 56px}
+      .markdownBody .sectionJumpLink{margin:2px 1px;padding:3px 7px}
+    }
+
+
+
+    /* =========================================================
+       LEGACY MARKDOWN COMPONENT FIX
+       保留原本 HTML 元件寫法，修正第二次更新造成的過大間距與分離
+       ========================================================= */
+    .markdownBody .steps{
+      display:flex !important;
+      flex-direction:column;
+      gap:14px !important;
+      margin:18px 0 22px !important;
+    }
+
+    .markdownBody .step{
+      margin:0 !important;
+      padding:18px 18px 18px 60px !important;
+      overflow:hidden;
+    }
+
+    .markdownBody .step > p{
+      margin:5px 0 10px !important;
+    }
+
+    .markdownBody .step > p:last-child{
+      margin-bottom:0 !important;
+    }
+
+    .markdownBody .step > img,
+    .markdownBody .step > p:has(> img:only-child){
+      width:100%;
+      margin:14px 0 0 !important;
+    }
+
+    .markdownBody .step > p:has(> img:only-child){
+      padding:0;
+      line-height:0;
+    }
+
+    .markdownBody .step > p:has(> img:only-child) img{
+      margin:0 !important;
+    }
+
+    .markdownBody .steps > p:empty,
+    .markdownBody .step > p:empty,
+    .markdownBody .tip > p:empty{
+      display:none !important;
+    }
+
+    .markdownBody .steps + .tip,
+    .markdownBody .steps + .warning,
+    .markdownBody .steps + .info{
+      margin-top:14px !important;
+    }
+
+    .markdownBody .tip,
+    .markdownBody .info,
+    .markdownBody .warning,
+    .markdownBody .danger{
+      margin:18px 0 !important;
+      line-height:1.65;
+    }
+
+    .markdownBody .tip a.sectionJumpLink{
+      margin:2px 3px;
+      padding:4px 9px;
+      border-radius:8px;
+      vertical-align:baseline;
+    }
+
+    .markdownBody h4{
+      margin:24px 0 14px !important;
+    }
+
+    .markdownBody h4 + .steps,
+    .markdownBody h4 + p:has(> img:only-child){
+      margin-top:12px !important;
+    }
+
+    @media (max-width:760px){
+      .markdownBody .steps{gap:11px !important;margin:15px 0 19px !important}
+      .markdownBody .step{padding:16px 14px 16px 54px !important}
+      .markdownBody .step > img,
+      .markdownBody .step > p:has(> img:only-child){margin-top:12px !important}
+    }
+</style>
+</head>
+
+<body class="wherewindmeet-docs-page">
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
+      <span class="brandText">
+        <span>夢回花深處</span>
+        <span class="slash">/</span>
+        <strong>手冊</strong>
+      </span>
+    </a>
+
+    <button class="mobileMenuBtn" id="mobileMenuBtn" type="button" aria-label="開啟文章列表">☰</button>
+
+    <div class="searchWrap">
+      <span class="searchIcon">⌕</span>
+      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋教學、資訊或公告">
+      <span class="searchKey">/</span>
+      <div class="searchResults" id="searchResults"></div>
+    </div>
+
+    <button class="themeToggle" id="themeToggle" type="button" aria-label="切換顯示主題">
+      <span class="themeIcon" id="themeIcon">🌙</span>
+      <span id="themeText">夜晚</span>
+    </button>
+
+    <a class="topLink" href="index">返回首頁</a>
+    <a class="topLink" href="PVERegistration">副本報名</a>
+  </header>
+
+  <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="手冊文章列表">
+      <div class="mobileDrawerHeader">
+        <span class="mobileDrawerTitle">手冊列表</span>
+        <button class="mobileDrawerClose" id="mobileDrawerClose" type="button" aria-label="關閉文章列表">×</button>
+      </div>
+      <div class="mobileDrawerSearch">
+        <input id="mobileDrawerSearchInput" type="search" placeholder="篩選文章名稱" aria-label="篩選文章名稱">
+      </div>
+      <h2 class="sidebarTitle">手冊列表</h2>
+      <p class="sidebarMeta">
+      </p>
+
+      <div class="docList" id="docList">
+        <div class="loading">
+          <span class="spinner"></span>
+          正在讀取文章…
+        </div>
+      </div>
+
+      <div class="statusBox" id="statusBox">
+        準備載入文件。
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="docHeader">
+        <div class="breadcrumb">
+          <span>夢回花深處</span>
+          <span>›</span>
+          <span id="breadcrumbName">Documentation</span>
+        </div>
+
+        <h1 class="docTitle" id="docTitle">使用教學與公告</h1>
+        <div class="docFile" id="docFile" hidden></div>
+        <div class="docBadges" id="docBadges" hidden></div>
+        <p class="docDescription" id="docDescription" hidden></p>
+        <div class="docMetaPanel" id="docMetaPanel" hidden></div>
+      </header>
+
+      <article class="markdownBody" id="markdownBody">
+        <div class="emptyState">
+          <strong>正在讀取文章列表</strong>
+          請稍候，系統會自動載入資料夾內的 Markdown 文件。
+        </div>
+      </article>
+    </main>
+
+    <aside class="toc">
+      <h2 class="tocTitle">本頁內容</h2>
+      <nav class="tocList" id="tocList">
+        <span style="color:var(--muted);font-size:12px;">尚未選擇文章</span>
+      </nav>
+    </aside>
+  </div>
+
+  <script>
+    /* =========================================================
+       ONLY CHANGE THIS CONFIG
+       ========================================================= */
+    const DOCS_CONFIG = {
+      // GitHub account name
+      owner: "ItzSeir",
+
+      // Repository name, for example: ItzSeir or WhereWindMeet
+      repo: "WhereWindMeet",
+
+      // Branch name
+      branch: "main",
+
+      // Folder containing all .md files
+      folder: "data/wherewindmeet-docs",
+
+      // Open this file first. Leave empty to open the first file.
+      defaultFile: "01-start.md"
+    };
+
+    /* =========================================================
+       APPLICATION
+       ========================================================= */
+    const state = {
+      files: [],
+      documents: new Map(),
+      activeFile: "",
+      metadata: new Map()
+    };
+
+    const el = {
+      docList: document.getElementById("docList"),
+      statusBox: document.getElementById("statusBox"),
+      markdownBody: document.getElementById("markdownBody"),
+      docTitle: document.getElementById("docTitle"),
+      docFile: document.getElementById("docFile"),
+      docBadges: document.getElementById("docBadges"),
+      docDescription: document.getElementById("docDescription"),
+      docMetaPanel: document.getElementById("docMetaPanel"),
+      breadcrumbName: document.getElementById("breadcrumbName"),
+      tocList: document.getElementById("tocList"),
+      searchInput: document.getElementById("searchInput"),
+      searchResults: document.getElementById("searchResults"),
+      sidebar: document.getElementById("sidebar"),
+      mobileMenuBtn: document.getElementById("mobileMenuBtn"),
+      sidebarBackdrop: document.getElementById("sidebarBackdrop"),
+      themeToggle: document.getElementById("themeToggle"),
+      themeIcon: document.getElementById("themeIcon"),
+      themeText: document.getElementById("themeText"),
+      content: document.querySelector(".content")
+    };
+
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      headerIds: false,
+      mangle: false
+    });
+
+    function apiFolderUrl(){
+      const path = DOCS_CONFIG.folder
+        .split("/")
+        .map(encodeURIComponent)
+        .join("/");
+
+      return `https://api.github.com/repos/${encodeURIComponent(DOCS_CONFIG.owner)}/${encodeURIComponent(DOCS_CONFIG.repo)}/contents/${path}?ref=${encodeURIComponent(DOCS_CONFIG.branch)}`;
+    }
+
+    function cleanFilename(filename){
+      return filename
+        .replace(/\.md$/i, "")
+        .replace(/^\d+[-_. ]*/, "")
+        .replace(/[-_]+/g, " ")
+        .trim();
+    }
+
+    function titleFromMarkdown(markdown, fallback){
+      const match = markdown.match(/^#\s+(.+)$/m);
+      return match ? match[1].trim() : cleanFilename(fallback);
+    }
+
+
+    function parseScalar(value){
+      const trimmed = String(value ?? "").trim();
+      if(!trimmed) return "";
+      if(/^true$/i.test(trimmed)) return true;
+      if(/^false$/i.test(trimmed)) return false;
+      if(/^null$/i.test(trimmed)) return null;
+      if(/^[-+]?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
+      if((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))){
+        return trimmed.slice(1,-1);
+      }
+      if(trimmed.startsWith("[") && trimmed.endsWith("]")){
+        return trimmed.slice(1,-1).split(",").map(item => parseScalar(item)).filter(Boolean);
+      }
+      return trimmed;
+    }
+
+    function parseFrontMatter(markdown, filename){
+      const normalized = markdown.replace(/^\uFEFF/, "");
+      const match = normalized.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/);
+      const meta = {};
+      let body = normalized;
+      if(match){
+        body = normalized.slice(match[0].length);
+        const lines = match[1].split(/\r?\n/);
+        let currentKey = "";
+        for(const rawLine of lines){
+          if(!rawLine.trim() || /^\s*#/.test(rawLine)) continue;
+          const listMatch = rawLine.match(/^\s*-\s+(.+)$/);
+          if(listMatch && currentKey){
+            if(!Array.isArray(meta[currentKey])) meta[currentKey] = meta[currentKey] ? [meta[currentKey]] : [];
+            meta[currentKey].push(parseScalar(listMatch[1]));
+            continue;
+          }
+          const keyMatch = rawLine.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+          if(!keyMatch) continue;
+          currentKey = keyMatch[1];
+          meta[currentKey] = keyMatch[2] === "" ? [] : parseScalar(keyMatch[2]);
+        }
+      }
+      meta.title = meta.title || titleFromMarkdown(body, filename);
+      meta.icon = meta.icon || "▤";
+      meta.category = meta.category || "其他";
+      meta.tags = Array.isArray(meta.tags) ? meta.tags : (meta.tags ? [meta.tags] : []);
+      meta.aliases = Array.isArray(meta.aliases) ? meta.aliases : (meta.aliases ? [meta.aliases] : []);
+      meta.pills = Array.isArray(meta.pills) ? meta.pills : (meta.pills ? [meta.pills] : []);
+      if(meta.pill) meta.pills.unshift(meta.pill);
+      meta.order = Number.isFinite(Number(meta.order)) ? Number(meta.order) : fileOrder(filename);
+      return { meta, body };
+    }
+
+    function calculateReadingTime(text){
+      const clean = text
+        .replace(/^---[\s\S]*?---\s*/," ")
+        .replace(/```[\s\S]*?```/g," ")
+        .replace(/<[^>]+>/g," ")
+        .replace(/https?:\/\/\S+/g," ");
+      const cjk = (clean.match(/[\u3400-\u9fff\uf900-\ufaff]/g) || []).length;
+      const latin = clean.replace(/[\u3400-\u9fff\uf900-\ufaff]/g," ").match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) || [];
+      return Math.max(1, Math.ceil(cjk / 400 + latin.length / 220));
+    }
+
+    function formatDateValue(value){
+      if(!value) return "";
+      const text = String(value).trim();
+      const date = new Date(text.length === 10 ? `${text}T00:00:00` : text);
+      if(Number.isNaN(date.getTime())) return text;
+      return new Intl.DateTimeFormat("zh-Hant", {year:"numeric",month:"2-digit",day:"2-digit"}).format(date);
+    }
+
+    function normalizeColor(value){
+      const allowed = ["blue","purple","green","gold","yellow","red","gray","cyan"];
+      const color = String(value || "blue").toLowerCase();
+      return allowed.includes(color) ? color : "blue";
+    }
+
+    function metadataFor(file){
+      return state.metadata.get(file.name) || {title:cleanFilename(file.name),icon:"▤",category:"其他",tags:[],pinned:false,order:fileOrder(file.name)};
+    }
+
+    function fileOrder(name){
+      const match = name.match(/^(\d+)/);
+      return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+    }
+
+    function slugify(text, index){
+      const base = text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\p{L}\p{N}\s-]/gu, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
+      return base || `section-${index}`;
+    }
+
+    async function loadFolder(){
+      try{
+        el.statusBox.textContent = "正在從 GitHub 讀取文件資料夾…";
+
+        const response = await fetch(apiFolderUrl(), {
+          headers: { "Accept": "application/vnd.github+json" },
+          cache: "no-store"
+        });
+
+        if(!response.ok){
+          throw new Error(`GitHub API ${response.status}`);
+        }
+
+        const items = await response.json();
+
+        state.files = items
+          .filter(item => item.type === "file" && /\.md$/i.test(item.name))
+          .sort((a,b) => {
+            const orderDiff = fileOrder(a.name) - fileOrder(b.name);
+            return orderDiff || a.name.localeCompare(b.name, "zh-Hant");
+          });
+
+        if(!state.files.length){
+          throw new Error("資料夾內沒有找到 Markdown 文件");
+        }
+
+        await Promise.all(state.files.map(async file => {
+          try{
+            const markdown = await fetchMarkdown(file);
+            const parsed = parseFrontMatter(markdown, file.name);
+            parsed.meta.readingMinutes = calculateReadingTime(parsed.body);
+            state.metadata.set(file.name, parsed.meta);
+          }catch(error){
+            console.warn("Metadata skipped:", file.name, error);
+          }
+        }));
+
+        state.files = state.files.filter(file => {
+          const meta = metadataFor(file);
+          return !meta.hidden && !meta.draft;
+        });
+
+        state.files.sort((a,b) => {
+          const ma = metadataFor(a);
+          const mb = metadataFor(b);
+          return Number(Boolean(mb.pinned)) - Number(Boolean(ma.pinned)) ||
+                 Number(ma.order) - Number(mb.order) ||
+                 a.name.localeCompare(b.name, "zh-Hant");
+        });
+
+        renderFileList();
+
+        el.statusBox.textContent = `已找到 ${state.files.length} 篇文章，其中 ${state.files.filter(file => metadataFor(file).pinned).length} 篇置頂。`;
+
+        const hashFile = decodeURIComponent(location.hash.replace(/^#doc=/, ""));
+        const firstFile =
+          state.files.find(file => file.name === hashFile) ||
+          state.files.find(file => file.name === DOCS_CONFIG.defaultFile) ||
+          state.files[0];
+
+        await openDocument(firstFile.name, false);
+      }catch(error){
+        console.error(error);
+
+        el.docList.innerHTML = `
+          <div class="statusBox">
+            無法載入文件列表。請檢查 owner、repo、branch 和 folder 設定。
+          </div>
+        `;
+
+        el.markdownBody.innerHTML = `
+          <div class="emptyState">
+            <strong>文件載入失敗</strong>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
+
+        el.statusBox.textContent = `錯誤：${error.message}`;
+      }
+    }
+
+    function renderFileList(){
+      el.docList.innerHTML = "";
+      const pinned = state.files.filter(file => Boolean(metadataFor(file).pinned));
+      const normal = state.files.filter(file => !Boolean(metadataFor(file).pinned));
+      const groups = [];
+      if(pinned.length) groups.push({title:"📌 置頂文章", files:pinned});
+      const categories = new Map();
+      normal.forEach(file => {
+        const category = metadataFor(file).category || "其他";
+        if(!categories.has(category)) categories.set(category, []);
+        categories.get(category).push(file);
+      });
+      categories.forEach((files,title) => groups.push({title:`📂 ${title}`,files}));
+
+      groups.forEach(group => {
+        const section = document.createElement("section");
+        section.className = "sidebarSection";
+        const heading = document.createElement("div");
+        heading.className = "sidebarSectionTitle";
+        heading.textContent = group.title;
+        section.appendChild(heading);
+        group.files.forEach(file => {
+          const meta = metadataFor(file);
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "docItem";
+          button.dataset.file = file.name;
+          const mini = [meta.category, ...(meta.tags || []).slice(0,2)].filter(Boolean).join(" · ");
+          button.innerHTML = `
+            <span class="docIcon">${escapeHtml(meta.icon || "▤")}</span>
+            <span class="docItemMeta">
+              <span class="docItemTop"><span class="docName">${escapeHtml(meta.title)}</span>${meta.pinned ? '<span class="docItemPin" title="置頂文章">📌</span>' : ''}</span>
+              ${mini ? `<span class="docItemMini">${escapeHtml(mini)}</span>` : ""}
+            </span>
+          `;
+          button.addEventListener("click", () => openDocument(file.name));
+          section.appendChild(button);
+        });
+        el.docList.appendChild(section);
+      });
+    }
+
+    async function fetchMarkdown(file){
+      if(state.documents.has(file.name)){
+        return state.documents.get(file.name);
+      }
+
+      const response = await fetch(file.download_url, { cache:"no-store" });
+
+      if(!response.ok){
+        throw new Error(`無法讀取 ${file.name}`);
+      }
+
+      const markdown = await response.text();
+      state.documents.set(file.name, markdown);
+      return markdown;
+    }
+
+    async function openDocument(filename, updateHash = true){
+      const file = state.files.find(item => item.name === filename);
+      if(!file) return;
+
+      state.activeFile = filename;
+
+      document.querySelectorAll(".docItem").forEach(item => {
+        item.classList.toggle("active", item.dataset.file === filename);
+      });
+
+      el.markdownBody.innerHTML = `
+        <div class="loading">
+          <span class="spinner"></span>
+          正在讀取 ${escapeHtml(filename)}…
+        </div>
+      `;
+
+      try{
+        const markdown = await fetchMarkdown(file);
+const parsed = parseFrontMatter(markdown, file.name);
+const meta = parsed.meta;
+meta.readingMinutes = meta.readingTime && meta.readingTime !== "auto" ? Number(meta.readingTime) || calculateReadingTime(parsed.body) : calculateReadingTime(parsed.body);
+state.metadata.set(file.name, meta);
+const title = meta.title;
+
+const markdownWithoutFirstTitle = parsed.body.replace(
+  /^#\s+.+(?:\r?\n)+/,
+  ""
+);
+
+const rawHtml = marked.parse(markdownWithoutFirstTitle);
+
+const safeHtml = DOMPurify.sanitize(rawHtml, {
+  ADD_ATTR: ["target"]
+});
+
+el.markdownBody.innerHTML = safeHtml;
+normalizeLegacyMarkdownComponents();
+enhanceMarkdownCheckboxes();
+el.docTitle.textContent = `${meta.icon && meta.icon !== "▤" ? `${meta.icon} ` : ""}${title}`;
+el.docFile.textContent = "";
+el.breadcrumbName.textContent = title;
+renderDocumentMetadata(meta);
+document.title = `${title}｜夢回手冊`;
+
+        prepareHeadings();
+        setupInternalHeadingLinks();
+        appendArticleNavigation();
+        buildToc();
+        updateActiveToc();
+
+        if(updateHash){
+          history.replaceState(null, "", `#doc=${encodeURIComponent(file.name)}`);
+        }
+
+        closeSidebar();
+        el.content.scrollTo({ top:0, behavior:"auto" });
+
+        const sectionMatch = window.location.hash.match(/(?:^#|&)section=([^&]+)/);
+        if(sectionMatch){
+          let sectionId = sectionMatch[1];
+          try{ sectionId = decodeURIComponent(sectionId); }catch(error){}
+          window.setTimeout(() => scrollToHeading(document.getElementById(sectionId), false), 80);
+        }
+      }catch(error){
+        el.markdownBody.innerHTML = `
+          <div class="emptyState">
+            <strong>文章載入失敗</strong>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
+      }
+    }
+
+
+    function renderDocumentMetadata(meta){
+      const badges = [];
+      const color = normalizeColor(meta.pillColor || meta.color);
+      (meta.pills || []).filter(Boolean).forEach(text => badges.push(`<span class="pill ${color}">${escapeHtml(text)}</span>`));
+      if(meta.featured) badges.push('<span class="badge gold">★ 精選</span>');
+      if(meta.new) badges.push('<span class="badge green">NEW</span>');
+      if(meta.hot || meta.popular) badges.push('<span class="badge red">HOT</span>');
+      if(meta.status) badges.push(`<span class="badge purple">${escapeHtml(meta.status)}</span>`);
+      if(meta.version) badges.push(`<span class="badge blue">版本 ${escapeHtml(meta.version)}</span>`);
+      if(meta.difficulty) badges.push(`<span class="badge cyan">${escapeHtml(meta.difficulty)}</span>`);
+      el.docBadges.innerHTML = badges.join("");
+      el.docBadges.hidden = !badges.length;
+
+      el.docDescription.textContent = meta.description || "";
+      el.docDescription.hidden = !meta.description;
+
+      const items = [];
+      if(meta.author) items.push(`<span class="docMetaItem">👤 <strong>${escapeHtml(meta.author)}</strong></span>`);
+      if(meta.created) items.push(`<span class="docMetaItem">📅 建立 <strong>${escapeHtml(formatDateValue(meta.created))}</strong></span>`);
+      if(meta.updated) items.push(`<span class="docMetaItem">✏️ 更新 <strong>${escapeHtml(formatDateValue(meta.updated))}</strong></span>`);
+      items.push(`<span class="docMetaItem">⏱️ 約 <strong>${escapeHtml(meta.readingMinutes)}</strong> 分鐘</span>`);
+      if(meta.category) items.push(`<span class="docMetaItem">📂 <strong>${escapeHtml(meta.category)}</strong></span>`);
+      if((meta.tags || []).length) items.push(`<span class="docMetaItem">🏷️ <strong>${escapeHtml(meta.tags.join(" · "))}</strong></span>`);
+      el.docMetaPanel.innerHTML = items.join("");
+      el.docMetaPanel.hidden = !items.length;
+    }
+
+    function appendArticleNavigation(){
+      const visible = state.files.filter(file => !metadataFor(file).hidden && !metadataFor(file).draft);
+      const index = visible.findIndex(file => file.name === state.activeFile);
+      if(index < 0) return;
+      const prev = visible[index-1];
+      const next = visible[index+1];
+      if(!prev && !next) return;
+      const nav = document.createElement("nav");
+      nav.className = "articleFooterNav";
+      nav.setAttribute("aria-label","上一篇與下一篇");
+      if(prev){
+        const m = metadataFor(prev);
+        nav.innerHTML += `<a class="articleNavBtn" href="#doc=${encodeURIComponent(prev.name)}" data-file="${escapeHtml(prev.name)}"><small>← 上一篇</small><strong>${escapeHtml(m.icon || "▤")} ${escapeHtml(m.title)}</strong></a>`;
+      }else nav.innerHTML += '<span></span>';
+      if(next){
+        const m = metadataFor(next);
+        nav.innerHTML += `<a class="articleNavBtn next" href="#doc=${encodeURIComponent(next.name)}" data-file="${escapeHtml(next.name)}"><small>下一篇 →</small><strong>${escapeHtml(m.icon || "▤")} ${escapeHtml(m.title)}</strong></a>`;
+      }
+      nav.querySelectorAll("[data-file]").forEach(link => link.addEventListener("click", event => {event.preventDefault();openDocument(link.dataset.file);}));
+      el.markdownBody.appendChild(nav);
+    }
+
+
+    function normalizeLegacyMarkdownComponents(){
+      // 清除 marked 在 HTML 元件附近產生的空白段落。
+      el.markdownBody.querySelectorAll(".steps p, .step p, .tip p, .info p, .warning p, .danger p").forEach(p => {
+        if(!p.textContent.trim() && !p.querySelector("img, a, button, code")) p.remove();
+      });
+
+      // 舊寫法常把 Markdown 圖片放在兩個 .step 之間。
+      // 將圖片自動歸入它前面的步驟卡，避免圖片與卡片分開及產生巨大空白。
+      el.markdownBody.querySelectorAll(".steps").forEach(steps => {
+        let currentStep = null;
+        Array.from(steps.children).forEach(child => {
+          if(child.classList?.contains("step")){
+            currentStep = child;
+            return;
+          }
+
+          const isImageParagraph = child.tagName === "P" && child.children.length === 1 && child.firstElementChild?.tagName === "IMG";
+          const isDirectImage = child.tagName === "IMG";
+
+          if(currentStep && (isImageParagraph || isDirectImage)){
+            currentStep.appendChild(child);
+          }
+        });
+      });
+
+      // 圖片段落不再保留瀏覽器預設行高。
+      el.markdownBody.querySelectorAll("p").forEach(p => {
+        if(p.children.length === 1 && p.firstElementChild?.tagName === "IMG") p.classList.add("imageOnlyParagraph");
+      });
+    }
+
+    function enhanceMarkdownCheckboxes(){
+      const cells = el.markdownBody.querySelectorAll("td, th");
+
+      cells.forEach(cell => {
+        const html = cell.innerHTML;
+        const match = html.match(/^\s*\[(x|X| )\]\s*/);
+
+        if(!match) return;
+
+        const checked = match[1].toLowerCase() === "x";
+
+        cell.innerHTML = html.replace(
+          /^\s*\[(x|X| )\]\s*/,
+          `<label class="mdCheck">
+             <input type="checkbox" ${checked ? "checked" : ""} disabled>
+             <span class="mdCheckBox" aria-hidden="true"></span>
+           </label>`
+        );
+      });
+    }
+
+
+    function prepareHeadings(){
+      const headings = Array.from(
+        el.markdownBody.querySelectorAll("h1, h2, h3, h4")
+      );
+
+      const used = new Set();
+
+      headings.forEach((heading, index) => {
+        let id = slugify(heading.textContent, index);
+
+        while(used.has(id)){
+          id = `${id}-${index}`;
+        }
+
+        used.add(id);
+        heading.id = id;
+      });
+
+      el.markdownBody.querySelectorAll("a[href]").forEach(link => {
+        const href = link.getAttribute("href");
+
+        if(href && /^https?:\/\//i.test(href)){
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
+      });
+    }
+
+    function scrollToHeading(target, updateUrl = false){
+      if(!target) return;
+
+      const contentTop = el.content.getBoundingClientRect().top;
+      const targetTop = target.getBoundingClientRect().top;
+      const destination = el.content.scrollTop + targetTop - contentTop - 24;
+
+      el.content.scrollTo({
+        top: Math.max(0, destination),
+        behavior: "smooth"
+      });
+
+      target.classList.remove("headingFlash");
+      void target.offsetWidth;
+      target.classList.add("headingFlash");
+      window.setTimeout(() => target.classList.remove("headingFlash"), 1800);
+
+      if(updateUrl){
+        const url = new URL(window.location.href);
+        url.hash = `doc=${encodeURIComponent(state.activeFile)}&section=${encodeURIComponent(target.id)}`;
+        history.replaceState(null, "", url);
+      }
+    }
+
+    function setupInternalHeadingLinks(){
+      el.markdownBody.querySelectorAll('a[href^="#"]').forEach(link => {
+        const raw = link.getAttribute("href").slice(1);
+        let id = raw;
+        try{ id = decodeURIComponent(raw); }catch(error){}
+
+        const target = document.getElementById(id);
+        if(!target) return;
+
+        link.classList.add("sectionJumpLink");
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          scrollToHeading(target, true);
+        });
+      });
+
+      el.markdownBody.querySelectorAll("h2, h3, h4").forEach(heading => {
+        heading.classList.add("linkableHeading");
+        heading.title = "點擊複製此章節連結";
+        heading.addEventListener("click", event => {
+          if(event.target.closest("a, button, code")) return;
+          const link = `${window.location.href.split("#")[0]}#doc=${encodeURIComponent(state.activeFile)}&section=${encodeURIComponent(heading.id)}`;
+          navigator.clipboard?.writeText(link).then(() => {
+            heading.classList.remove("headingFlash");
+            void heading.offsetWidth;
+            heading.classList.add("headingFlash");
+            window.setTimeout(() => heading.classList.remove("headingFlash"), 1200);
+          }).catch(() => {});
+        });
+      });
+    }
+
+    function buildToc(){
+      const headings = Array.from(
+        el.markdownBody.querySelectorAll("h2, h3, h4")
+      );
+
+      if(!headings.length){
+        el.tocList.innerHTML = `
+          <span style="color:var(--muted);font-size:12px;">
+            此文章沒有小標題
+          </span>
+        `;
+        return;
+      }
+
+      el.tocList.innerHTML = headings.map(heading => `
+        <a class="tocLink ${heading.tagName === "H3" ? "level3" : heading.tagName === "H4" ? "level4" : ""}"
+           href="#${heading.id}">
+          ${escapeHtml(heading.textContent)}
+        </a>
+      `).join("");
+
+      el.tocList.querySelectorAll(".tocLink").forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          const target = document.getElementById(link.getAttribute("href").slice(1));
+          scrollToHeading(target, true);
+        });
+      });
+    }
+
+
+    function updateActiveToc(){
+      const headings = Array.from(
+        el.markdownBody.querySelectorAll("h2, h3, h4")
+      );
+
+      const links = Array.from(
+        el.tocList.querySelectorAll(".tocLink")
+      );
+
+      if(!headings.length || !links.length) return;
+
+      let currentId = headings[0].id;
+
+      const contentTop = el.content.getBoundingClientRect().top;
+
+      for(const heading of headings){
+        const top = heading.getBoundingClientRect().top - contentTop;
+
+        if(top <= 120){
+          currentId = heading.id;
+        }else{
+          break;
+        }
+      }
+
+      links.forEach(link => {
+        const isActive =
+          link.getAttribute("href") === `#${currentId}`;
+
+        link.classList.toggle("active", isActive);
+
+        if(isActive){
+          const tocPanel = link.closest(".toc");
+
+          if(tocPanel){
+            const linkTop = link.offsetTop;
+            const linkBottom = linkTop + link.offsetHeight;
+            const visibleTop = tocPanel.scrollTop;
+            const visibleBottom = visibleTop + tocPanel.clientHeight;
+
+            if(linkTop < visibleTop + 18){
+              tocPanel.scrollTop = Math.max(0, linkTop - 18);
+            }else if(linkBottom > visibleBottom - 18){
+              tocPanel.scrollTop =
+                linkBottom - tocPanel.clientHeight + 18;
+            }
+          }
+        }
+      });
+    }
+
+    async function searchDocuments(keyword){
+      const query = keyword.trim().toLowerCase();
+
+      if(!query){
+        el.searchResults.classList.remove("open");
+        el.searchResults.innerHTML = "";
+        return;
+      }
+
+      const results = [];
+
+      for(const file of state.files){
+        try{
+          const markdown = await fetchMarkdown(file);
+          const parsed = parseFrontMatter(markdown, file.name);
+          const meta = parsed.meta;
+          const title = meta.title;
+          const plain = parsed.body
+            .replace(/```[\s\S]*?```/g, " ")
+            .replace(/[#>*_`\[\]()!-]/g, " ")
+            .replace(/\s+/g, " ");
+
+          const metadataText = [meta.category, meta.description, meta.author, meta.version, ...(meta.tags || []), ...(meta.aliases || [])].filter(Boolean).join(" ");
+          const haystack = `${title} ${metadataText} ${plain}`.toLowerCase();
+
+          if(haystack.includes(query)){
+            const position = haystack.indexOf(query);
+            const start = Math.max(0, position - 45);
+            const snippet = plain.slice(start, start + 120);
+
+            results.push({
+              file: file.name,
+              title,
+              snippet
+            });
+          }
+        }catch(error){
+          console.warn("Search skipped:", file.name, error);
+        }
+      }
+
+      renderSearchResults(results, query);
+    }
+
+    function renderSearchResults(results, query){
+      if(!results.length){
+        el.searchResults.innerHTML = `
+          <div style="padding:14px;color:var(--muted);font-size:12px;">
+            找不到「${escapeHtml(query)}」
+          </div>
+        `;
+      }else{
+        el.searchResults.innerHTML = results.map(result => `
+          <button class="searchResult" type="button"
+                  data-file="${escapeHtml(result.file)}">
+            <strong>${highlight(result.title, query)}</strong>
+            <span>${highlight(result.snippet, query)}</span>
+          </button>
+        `).join("");
+      }
+
+      el.searchResults.classList.add("open");
+
+      el.searchResults.querySelectorAll(".searchResult").forEach(button => {
+        button.addEventListener("click", async () => {
+          await openDocument(button.dataset.file);
+          el.searchResults.classList.remove("open");
+          el.searchInput.value = "";
+        });
+      });
+    }
+
+    function highlight(text, query){
+      const safeText = escapeHtml(text);
+      const safeQuery = escapeRegExp(escapeHtml(query));
+
+      return safeText.replace(
+        new RegExp(`(${safeQuery})`, "ig"),
+        "<mark>$1</mark>"
+      );
+    }
+
+    function escapeHtml(value){
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeRegExp(value){
+      return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    let searchTimer;
+
+    el.searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(
+        () => searchDocuments(el.searchInput.value),
+        260
+      );
+    });
+
+    el.searchInput.addEventListener("keydown", event => {
+      if(event.key === "Escape"){
+        el.searchInput.value = "";
+        el.searchResults.classList.remove("open");
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if(event.key === "/" && document.activeElement !== el.searchInput){
+        event.preventDefault();
+        el.searchInput.focus();
+      }
+    });
+
+    document.addEventListener("click", event => {
+      if(!event.target.closest(".searchWrap")){
+        el.searchResults.classList.remove("open");
+      }
+    });
+
+    function openSidebar(){
+      el.sidebar.classList.add("open");
+      el.sidebarBackdrop.classList.add("open");
+      el.mobileMenuBtn.setAttribute("aria-expanded", "true");
+      el.sidebar.setAttribute("aria-hidden", "false");
+      if(typeof syncBodyLock === "function") syncBodyLock();
+    }
+
+    function closeSidebar(){
+      el.sidebar.classList.remove("open");
+      el.sidebarBackdrop.classList.remove("open");
+      el.mobileMenuBtn.setAttribute("aria-expanded", "false");
+      el.sidebar.setAttribute("aria-hidden", "true");
+      if(typeof syncBodyLock === "function") syncBodyLock();
+    }
+
+    el.mobileMenuBtn.addEventListener("click", openSidebar);
+    el.sidebarBackdrop.addEventListener("click", closeSidebar);
+
+
+    el.content.addEventListener(
+      "scroll",
+      updateActiveToc,
+      { passive:true }
+    );
+
+    window.addEventListener(
+      "resize",
+      updateActiveToc,
+      { passive:true }
+    );
+
+
+    function applyTheme(theme){
+      const finalTheme = theme === "dark" ? "dark" : "light";
+
+      document.documentElement.dataset.theme = finalTheme;
+      localStorage.setItem("wwm-docs-theme-v2", finalTheme);
+
+      const isDark = finalTheme === "dark";
+
+      el.themeIcon.textContent = isDark ? "🌙" : "☀️";
+      el.themeText.textContent = isDark ? "黑夜" : "白天";
+
+      el.themeToggle.setAttribute(
+        "aria-label",
+        isDark ? "切換到白天模式" : "切換到夜晚模式"
+      );
+    }
+
+    function initTheme(){
+      const savedTheme = localStorage.getItem("wwm-docs-theme-v2");
+
+      // 預設使用黑夜模式；使用者切換後仍會記住選擇。
+      applyTheme(savedTheme || "dark");
+
+      el.themeToggle.addEventListener("click", () => {
+        const currentTheme =
+          document.documentElement.dataset.theme || "light";
+
+        applyTheme(currentTheme === "dark" ? "light" : "dark");
+      });
+    }
+
+
+    /* =========================================================
+       DOCUMENTATION V3 — MOBILE INTERACTIONS
+       ========================================================= */
+    const v3 = {
+      drawerClose: document.getElementById("mobileDrawerClose"),
+      drawerSearch: document.getElementById("mobileDrawerSearchInput"),
+      tocBtn: document.getElementById("mobileTocBtn"),
+      tocSheet: document.getElementById("mobileTocSheet"),
+      tocBackdrop: document.getElementById("mobileTocBackdrop"),
+      tocClose: document.getElementById("mobileTocClose"),
+      tocList: document.getElementById("mobileTocList"),
+      backToTop: document.getElementById("backToTopBtn"),
+      lightbox: document.getElementById("imageLightbox"),
+      lightboxImage: document.getElementById("imageLightboxImage"),
+      lightboxClose: document.getElementById("imageLightboxClose")
+    };
+
+    function syncBodyLock(){
+      const drawerOpen = el.sidebar.classList.contains("open");
+      const sheetOpen = v3.tocSheet.classList.contains("open");
+      const lightboxOpen = v3.lightbox.classList.contains("open");
+      document.body.classList.toggle("sidebar-open", drawerOpen);
+      document.body.classList.toggle("sheet-open", sheetOpen);
+      document.body.classList.toggle("lightbox-open", lightboxOpen);
+    }
+
+    const originalOpenSidebar = openSidebar;
+    openSidebar = function(){
+      originalOpenSidebar();
+      el.mobileMenuBtn.setAttribute("aria-expanded", "true");
+      el.sidebar.setAttribute("aria-hidden", "false");
+      syncBodyLock();
+      setTimeout(() => v3.drawerSearch && v3.drawerSearch.focus(), 280);
+    };
+
+    const originalCloseSidebar = closeSidebar;
+    closeSidebar = function(){
+      originalCloseSidebar();
+      el.mobileMenuBtn.setAttribute("aria-expanded", "false");
+      el.sidebar.setAttribute("aria-hidden", "true");
+      syncBodyLock();
+    };
+
+    el.mobileMenuBtn.setAttribute("aria-expanded", "false");
+    v3.drawerClose.addEventListener("click", closeSidebar);
+
+    v3.drawerSearch.addEventListener("input", () => {
+      const query = v3.drawerSearch.value.trim().toLowerCase();
+      document.querySelectorAll(".docItem").forEach(item => {
+        const name = item.textContent.toLowerCase();
+        item.hidden = query && !name.includes(query);
+      });
+    });
+
+    function openMobileToc(){
+      v3.tocList.innerHTML = el.tocList.innerHTML || '<span style="color:var(--muted);font-size:12px;">目前沒有目錄</span>';
+      v3.tocSheet.classList.add("open");
+      v3.tocBackdrop.classList.add("open");
+      v3.tocSheet.setAttribute("aria-hidden", "false");
+      syncBodyLock();
+      v3.tocList.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => closeMobileToc(), { once:true });
+      });
+    }
+
+    function closeMobileToc(){
+      v3.tocSheet.classList.remove("open");
+      v3.tocBackdrop.classList.remove("open");
+      v3.tocSheet.setAttribute("aria-hidden", "true");
+      syncBodyLock();
+    }
+
+    v3.tocBtn.addEventListener("click", openMobileToc);
+    v3.tocClose.addEventListener("click", closeMobileToc);
+    v3.tocBackdrop.addEventListener("click", closeMobileToc);
+
+    function getScrollTop(){
+      return window.innerWidth <= 760 ? window.scrollY : el.content.scrollTop;
+    }
+
+    function updateBackToTop(){
+      v3.backToTop.classList.toggle("show", getScrollTop() > 480);
+    }
+
+    window.addEventListener("scroll", updateBackToTop, { passive:true });
+    el.content.addEventListener("scroll", updateBackToTop, { passive:true });
+    v3.backToTop.addEventListener("click", () => {
+      if(window.innerWidth <= 760){
+        window.scrollTo({ top:0, behavior:"smooth" });
+      }else{
+        el.content.scrollTo({ top:0, behavior:"smooth" });
+      }
+    });
+
+    function enhanceRenderedContentV3(){
+      el.markdownBody.querySelectorAll("pre").forEach(pre => {
+        if(pre.querySelector(".copyCodeBtn")) return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "copyCodeBtn";
+        button.textContent = "複製";
+        button.addEventListener("click", async () => {
+          const code = pre.querySelector("code")?.innerText || pre.innerText;
+          try{
+            await navigator.clipboard.writeText(code);
+            button.textContent = "已複製";
+          }catch(error){
+            button.textContent = "失敗";
+          }
+          setTimeout(() => button.textContent = "複製", 1400);
+        });
+        pre.appendChild(button);
+      });
+
+      el.markdownBody.querySelectorAll("img").forEach(img => {
+        img.tabIndex = 0;
+        img.setAttribute("role", "button");
+        img.setAttribute("aria-label", "點擊放大圖片");
+        const open = () => {
+          v3.lightboxImage.src = img.currentSrc || img.src;
+          v3.lightboxImage.alt = img.alt || "放大圖片";
+          v3.lightbox.classList.add("open");
+          v3.lightbox.setAttribute("aria-hidden", "false");
+          syncBodyLock();
+        };
+        img.addEventListener("click", open);
+        img.addEventListener("keydown", event => {
+          if(event.key === "Enter" || event.key === " "){
+            event.preventDefault();
+            open();
+          }
+        });
+      });
+    }
+
+    function closeLightbox(){
+      v3.lightbox.classList.remove("open");
+      v3.lightbox.setAttribute("aria-hidden", "true");
+      v3.lightboxImage.removeAttribute("src");
+      syncBodyLock();
+    }
+
+    v3.lightboxClose.addEventListener("click", closeLightbox);
+    v3.lightbox.addEventListener("click", event => {
+      if(event.target === v3.lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", event => {
+      if(event.key !== "Escape") return;
+      if(v3.lightbox.classList.contains("open")) closeLightbox();
+      else if(v3.tocSheet.classList.contains("open")) closeMobileToc();
+      else if(el.sidebar.classList.contains("open")) closeSidebar();
+    });
+
+    const markdownObserver = new MutationObserver(() => enhanceRenderedContentV3());
+    markdownObserver.observe(el.markdownBody, { childList:true, subtree:true });
+    updateBackToTop();
+
+    initTheme();
+
+    loadFolder();
+  </script>
+
+<script>
+/* Documentation v3.2 mobile scroll safety */
+(function(){
+  const mq = window.matchMedia('(max-width:760px)');
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function repairMobileScroll(){
+    if(!mq.matches) return;
+    const drawerOpen = sidebar && sidebar.classList.contains('open');
+    document.body.classList.toggle('sidebar-open', !!drawerOpen);
+
+    if(!drawerOpen &&
+       !document.body.classList.contains('sheet-open') &&
+       !document.body.classList.contains('lightbox-open')){
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('position');
+      document.body.style.removeProperty('top');
+      document.body.style.removeProperty('width');
+    }
+  }
+
+  if(sidebar){
+    new MutationObserver(repairMobileScroll).observe(sidebar, {
+      attributes:true,
+      attributeFilter:['class']
+    });
+  }
+
+  if(backdrop){
+    backdrop.addEventListener('click', function(){
+      setTimeout(repairMobileScroll, 0);
+    }, {passive:true});
+  }
+
+  window.addEventListener('pageshow', repairMobileScroll, {passive:true});
+  window.addEventListener('resize', repairMobileScroll, {passive:true});
+  document.addEventListener('visibilitychange', repairMobileScroll, {passive:true});
+  repairMobileScroll();
+})();
+</script>
+</body>
+</html>
