@@ -575,3 +575,772 @@ Ctrl + F5
 ```
 
 強制重新載入。
+
+---
+
+# 23. Documentation v4 新功能
+
+Documentation v4 仍然直接讀取 GitHub 資料夾中的 `.md` 文件，不需要 JSON、Firebase 或其他資料庫。
+
+舊文章可以保持原樣。只有需要使用分類、置頂、日期、作者、Pill 或其他進階功能時，才需要在 Markdown 最上方加入 Front Matter。
+
+新增功能包括：
+
+- Markdown Front Matter Metadata
+- 置頂文章區域
+- 依分類自動整理左側文章列表
+- 自動閱讀時間
+- 建立時間及更新時間
+- 作者、版本、難度與狀態
+- Pill、Badge 與 Tags
+- 精選、NEW、HOT 標記
+- 草稿與隱藏文章
+- 上一篇及下一篇
+- 搜尋 Metadata、分類、標籤與別名
+- 更多資訊框與內容高亮元件
+- 卡片、步驟、時間線與可收合內容
+
+---
+
+# 24. Front Matter 基本格式
+
+Front Matter 必須放在 Markdown 文件的最上方，並使用兩組 `---` 包住。
+
+```md
+---
+title: 新手快速開始
+icon: 🚀
+category: 新手教學
+author: Seir
+created: 2026-07-20
+updated: 2026-07-22
+pinned: true
+order: 1
+---
+
+# 新手快速開始
+
+這裡開始寫文章內容。
+```
+
+注意：
+
+- Front Matter 必須位於文件第一行。
+- Front Matter 結束後才放 Markdown 標題與文章內容。
+- 第一個 `#` 仍然會從正文移除，避免與頁面頂部標題重複。
+- 沒有 Front Matter 的舊文章仍會正常顯示。
+
+---
+
+# 25. 完整 Metadata 說明
+
+| 欄位 | 用途 | 範例 |
+|---|---|---|
+| `title` | 頁面及側欄顯示名稱 | `百業介紹` |
+| `icon` | 標題及側欄圖示 | `🌾` |
+| `description` | 標題下方摘要及搜尋內容 | `五分鐘了解百業玩法` |
+| `category` | 左側文章分類 | `百業` |
+| `tags` | 文章標籤及搜尋關鍵字 | `新手`、`百業` |
+| `aliases` | 額外搜尋別名 | `生活職業` |
+| `author` | 作者名稱 | `Seir` |
+| `created` | 建立日期 | `2026-07-18` |
+| `updated` | 最後更新日期 | `2026-07-22` |
+| `readingTime` | 閱讀分鐘數；省略或使用 `auto` 會自動計算 | `auto` |
+| `pinned` | 是否放入置頂文章區 | `true` |
+| `featured` | 顯示精選 Badge | `true` |
+| `new` | 顯示 NEW Badge | `true` |
+| `hot` | 顯示 HOT Badge | `true` |
+| `status` | 文章狀態 | `最新` |
+| `version` | 適用版本 | `96` |
+| `difficulty` | 難度 | `新手` |
+| `pill` | 顯示一個主要 Pill | `必看` |
+| `pills` | 顯示多個 Pill | `新手`、`副本` |
+| `pillColor` | Pill 顏色 | `gold` |
+| `order` | 分類內排序；數字越小越前 | `1` |
+| `draft` | 草稿文章，不顯示 | `true` |
+| `hidden` | 隱藏文章，不顯示 | `true` |
+
+支援的 Pill 顏色：
+
+```text
+blue
+purple
+green
+gold
+yellow
+red
+gray
+cyan
+```
+
+---
+
+# 26. 完整文章設定範例
+
+```md
+---
+title: 百業介紹
+icon: 🌾
+description: 新手五分鐘了解百業系統、養成方向與常見玩法。
+category: 百業
+
+tags:
+  - 新手
+  - 百業
+  - 養成
+
+aliases:
+  - 生活職業
+  - 百業玩法
+
+pills:
+  - 必看
+  - 新手推薦
+
+pillColor: gold
+author: Seir
+created: 2026-07-18
+updated: 2026-07-22
+readingTime: auto
+version: 96
+difficulty: 新手
+status: 最新
+pinned: true
+featured: true
+new: true
+hot: false
+order: 2
+draft: false
+hidden: false
+---
+
+# 百業介紹
+
+這裡放文章內容。
+```
+
+---
+
+# 27. 置頂文章
+
+在 Front Matter 使用：
+
+```yaml
+pinned: true
+```
+
+文章會自動出現在左側的「📌 置頂文章」區域。
+
+不需要置頂時：
+
+```yaml
+pinned: false
+```
+
+置頂文章仍然可以設定 `category`，但側欄只會顯示一次，不會在分類中重複出現。
+
+---
+
+# 28. 文章分類
+
+使用：
+
+```yaml
+category: 副本攻略
+```
+
+左側列表會自動建立：
+
+```text
+📂 副本攻略
+```
+
+同一個分類名稱的文章會放在同一區域。
+
+例如：
+
+```yaml
+category: 新手教學
+```
+
+```yaml
+category: 百業
+```
+
+```yaml
+category: 副本攻略
+```
+
+```yaml
+category: 系統公告
+```
+
+沒有設定分類的文章會放入：
+
+```text
+📂 其他
+```
+
+---
+
+# 29. 文章排序
+
+每篇文章可以設定：
+
+```yaml
+order: 1
+```
+
+數字越小，位置越前。
+
+如果沒有設定 `order`，系統會繼續使用檔名前面的數字：
+
+```text
+01-start.md
+02-rules.md
+03-announcements.md
+```
+
+推薦同時保留檔名編號，方便 GitHub 資料夾本身也維持整齊。
+
+---
+
+# 30. 自動閱讀時間
+
+系統會根據中文字符與英文單詞數量，自動估算閱讀時間。
+
+可以省略：
+
+```yaml
+readingTime:
+```
+
+或使用：
+
+```yaml
+readingTime: auto
+```
+
+頁面會顯示：
+
+```text
+⏱️ 約 6 分鐘
+```
+
+也可以手動指定：
+
+```yaml
+readingTime: 10
+```
+
+---
+
+# 31. 建立與更新時間
+
+```yaml
+created: 2026-07-18
+updated: 2026-07-22
+```
+
+頁面會顯示：
+
+```text
+📅 建立 2026/07/18
+✏️ 更新 2026/07/22
+```
+
+建議使用：
+
+```text
+YYYY-MM-DD
+```
+
+---
+
+# 32. Pill 與 Badge
+
+## 單一 Pill
+
+```yaml
+pill: 必看
+pillColor: gold
+```
+
+## 多個 Pill
+
+```yaml
+pills:
+  - 新手
+  - 副本
+  - 必看
+pillColor: purple
+```
+
+## 自動 Badge
+
+```yaml
+featured: true
+new: true
+hot: true
+status: 最新
+version: 96
+difficulty: 高難度
+```
+
+會自動顯示精選、NEW、HOT、狀態、版本及難度標籤。
+
+---
+
+# 33. 正文內 Pill
+
+在 Markdown 內可以直接使用 HTML：
+
+```html
+<div class="pill-row">
+  <span class="pill blue">新手</span>
+  <span class="pill purple">副本</span>
+  <span class="pill green">已開放</span>
+  <span class="pill gold">必看</span>
+  <span class="pill red">高難度</span>
+</div>
+```
+
+單獨使用：
+
+```html
+<span class="pill cyan">96級</span>
+```
+
+適合高亮：
+
+- 遊戲版本
+- 副本類型
+- 難度
+- 開放狀態
+- 推薦程度
+- 職業分類
+- 平台
+
+---
+
+# 34. 正文內 Badge
+
+```html
+<div class="badge-row">
+  <span class="badge green">NEW</span>
+  <span class="badge red">HOT</span>
+  <span class="badge purple">BETA</span>
+  <span class="badge blue">PVE</span>
+  <span class="badge gold">推薦</span>
+</div>
+```
+
+Badge 比 Pill 小，適合放在句子、標題附近或卡片內。
+
+---
+
+# 35. 成功提示框
+
+```html
+<div class="success">
+<strong class="callout-title">完成</strong>
+設定已成功儲存。
+</div>
+```
+
+適合：
+
+- 操作完成
+- 報名成功
+- 驗證通過
+- 已開放功能
+
+---
+
+# 36. 小技巧提示框
+
+```html
+<div class="tip">
+<strong class="callout-title">小技巧</strong>
+可以按下 <kbd>/</kbd> 快速聚焦搜尋框。
+</div>
+```
+
+---
+
+# 37. 重要提示框
+
+```html
+<div class="important">
+<strong class="callout-title">重要</strong>
+請先確認隊伍時間，再提交報名。
+</div>
+```
+
+---
+
+# 38. 問題與 FAQ 提示框
+
+```html
+<div class="question">
+<strong class="callout-title">常見問題</strong>
+報名後是否可以更換職業？
+</div>
+```
+
+---
+
+# 39. 下載提示框
+
+```html
+<div class="download">
+<strong class="callout-title">下載文件</strong>
+<a href="https://example.com/file.zip">下載最新版本</a>
+</div>
+```
+
+---
+
+# 40. 範例提示框
+
+```html
+<div class="example">
+<strong class="callout-title">範例</strong>
+隊伍名稱可以填寫「週六十人俠境團」。
+</div>
+```
+
+---
+
+# 41. 更新提示框
+
+```html
+<div class="update">
+<strong class="callout-title">版本更新</strong>
+7 月 23 日新增兩個 96 級俠境副本。
+</div>
+```
+
+---
+
+# 42. Boss 提示框
+
+```html
+<div class="boss">
+<strong class="callout-title">Boss 機制</strong>
+Boss 進入第二階段後會召喚範圍技能。
+</div>
+```
+
+---
+
+# 43. 獎勵提示框
+
+```html
+<div class="reward">
+<strong class="callout-title">獎勵</strong>
+完成後可以獲得裝備、貨幣及成就進度。
+</div>
+```
+
+---
+
+# 44. 需求提示框
+
+```html
+<div class="requirement">
+<strong class="callout-title">進入需求</strong>
+角色等級需要達到 96 級。
+</div>
+```
+
+---
+
+# 45. Discord 提示框
+
+```html
+<div class="discord">
+<strong class="callout-title">Discord</strong>
+建立隊伍後，可以前往 Discord 宣傳頻道分享報名連結。
+</div>
+```
+
+---
+
+# 46. 自訂 Callout
+
+```html
+<div class="callout" data-icon="遊" style="--callout:#22c55e;">
+<strong class="callout-title">自訂提示</strong>
+可以自行指定圖示及顏色。
+</div>
+```
+
+可修改：
+
+```html
+style="--callout:#22c55e;"
+```
+
+`data-icon` 建議放一個中文字、英文字母或簡短符號。
+
+---
+
+# 47. 內容卡片
+
+```html
+<div class="card-grid">
+  <div class="content-card">
+    <h3>普通副本</h3>
+    <p>適合日常快速完成。</p>
+    <span class="pill green">簡單</span>
+  </div>
+
+  <div class="content-card">
+    <h3>俠境副本</h3>
+    <p>需要隊伍合作與機制處理。</p>
+    <span class="pill red">高難度</span>
+  </div>
+</div>
+```
+
+桌面版會顯示兩欄，手機版會自動變成一欄。
+
+---
+
+# 48. 步驟元件
+
+```html
+<div class="steps">
+  <div class="step">
+    <strong>選擇日期</strong>
+    <p>先選擇預計進行副本的日期。</p>
+  </div>
+
+  <div class="step">
+    <strong>選擇職業</strong>
+    <p>選擇輸出、坦克或治療。</p>
+  </div>
+
+  <div class="step">
+    <strong>提交報名</strong>
+    <p>確認資料後送出。</p>
+  </div>
+</div>
+```
+
+編號會自動產生。
+
+---
+
+# 49. 時間線元件
+
+```html
+<div class="timeline">
+  <div class="timeline-item">
+    <strong>7 月 20 日</strong>
+    <p>開放副本預先報名。</p>
+  </div>
+
+  <div class="timeline-item">
+    <strong>7 月 23 日</strong>
+    <p>新副本正式開放。</p>
+  </div>
+</div>
+```
+
+---
+
+# 50. 可收合內容與 FAQ
+
+使用 HTML 原生 `details`：
+
+```html
+<details>
+  <summary>報名後可以取消嗎？</summary>
+  <p>可以在隊伍頁面內取消自己的報名。</p>
+</details>
+
+<details>
+  <summary>為什麼找不到自己的隊伍？</summary>
+  <p>請先確認日期篩選及副本類型。</p>
+</details>
+```
+
+不需要額外 JavaScript，桌面及手機都可以使用。
+
+---
+
+# 51. 鍵盤按鍵樣式
+
+```html
+按下 <kbd>Ctrl</kbd> + <kbd>F5</kbd> 強制重新載入。
+```
+
+---
+
+# 52. 草稿與隱藏文章
+
+草稿：
+
+```yaml
+draft: true
+```
+
+隱藏：
+
+```yaml
+hidden: true
+```
+
+兩者都不會出現在左側列表，也不會被搜尋。
+
+完成文章後記得改成：
+
+```yaml
+draft: false
+hidden: false
+```
+
+---
+
+# 53. 搜尋 Metadata
+
+Documentation v4 除了搜尋文章正文，也會搜尋：
+
+- 標題 `title`
+- 摘要 `description`
+- 分類 `category`
+- 標籤 `tags`
+- 搜尋別名 `aliases`
+- 作者 `author`
+- 版本 `version`
+
+例如：
+
+```yaml
+aliases:
+  - 十人本
+  - 十人副本
+  - 團本
+```
+
+使用者搜尋任何一個名稱都可以找到該文章。
+
+---
+
+# 54. 上一篇與下一篇
+
+文章底部會自動顯示：
+
+```text
+← 上一篇
+下一篇 →
+```
+
+順序會按照：
+
+1. `pinned`
+2. `order`
+3. 檔名前面的數字
+4. 檔名
+
+不需要在 Markdown 內另外設定。
+
+---
+
+# 55. 推薦的文章模板
+
+````md
+---
+title: 文章名稱
+icon: 📘
+description: 一句簡短文章摘要。
+category: 教學
+tags:
+  - 新手
+  - 必看
+aliases:
+  - 其他搜尋名稱
+pills:
+  - 新手
+pillColor: blue
+author: Seir
+created: 2026-07-22
+updated: 2026-07-22
+readingTime: auto
+version: 96
+difficulty: 新手
+status: 最新
+pinned: false
+featured: false
+new: true
+hot: false
+order: 10
+draft: false
+hidden: false
+---
+
+# 文章名稱
+
+<div class="info">
+<strong>資訊：</strong>
+這裡放文章開場提示。
+</div>
+
+<div class="pill-row">
+  <span class="pill blue">新手</span>
+  <span class="pill green">已開放</span>
+  <span class="pill gold">推薦</span>
+</div>
+
+## 第一個章節
+
+這裡放一般 Markdown 內容。
+
+<div class="steps">
+  <div class="step">
+    <strong>第一步</strong>
+    <p>步驟說明。</p>
+  </div>
+
+  <div class="step">
+    <strong>第二步</strong>
+    <p>步驟說明。</p>
+  </div>
+</div>
+
+<div class="warning">
+<strong>注意：</strong>
+這裡放需要注意的內容。
+</div>
+
+<details>
+  <summary>常見問題</summary>
+  <p>這裡放答案。</p>
+</details>
+````
+
+---
+
+# 56. 相容性說明
+
+Documentation v4 保留原本功能：
+
+- GitHub `.md` 文件自動讀取
+- 左側文章列表
+- 全文搜尋
+- 右側本頁目錄
+- 手機文章抽屜
+- 手機本頁目錄 Bottom Sheet
+- 白天及夜晚模式
+- 主題選擇記憶
+- Markdown 表格、圖片、清單及程式碼
+- 程式碼複製按鈕
+- 圖片點擊放大
+- 返回頂部按鈕
+- Checkbox 顯示
+- 外部連結新分頁開啟
+
+因此可以直接以 v4 HTML 取代原本 HTML，再逐篇替需要進階功能的 `.md` 加上 Front Matter。
+
