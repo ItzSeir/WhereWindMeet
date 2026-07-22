@@ -6,26 +6,6 @@
   <title>夢回花深處｜教學與公告</title>
   <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
-  <div class="floatingTools" aria-label="手機閱讀工具">
-    <button class="floatingBtn mobileTocBtn" id="mobileTocBtn" type="button" aria-label="開啟本頁目錄">☷</button>
-    <button class="floatingBtn backToTopBtn" id="backToTopBtn" type="button" aria-label="返回頂部">↑</button>
-  </div>
-
-  <div class="mobileTocBackdrop" id="mobileTocBackdrop"></div>
-  <section class="mobileTocSheet" id="mobileTocSheet" aria-label="本頁內容" aria-hidden="true">
-    <div class="mobileTocHandle"></div>
-    <div class="mobileTocHeader">
-      <strong>本頁內容</strong>
-      <button class="mobileTocClose" id="mobileTocClose" type="button" aria-label="關閉本頁目錄">×</button>
-    </div>
-    <nav class="mobileTocList" id="mobileTocList"></nav>
-  </section>
-
-  <div class="imageLightbox" id="imageLightbox" aria-hidden="true">
-    <button class="imageLightboxClose" id="imageLightboxClose" type="button" aria-label="關閉圖片">×</button>
-    <img id="imageLightboxImage" alt="放大圖片">
-  </div>
-
   <script>
     (function(){
       try{
@@ -2998,7 +2978,7 @@
       box-shadow:0 7px 15px color-mix(in srgb,var(--site-teal) 22%,transparent);
     }
 
-    .markdownBody .step strong:first-child{
+    .markdownBody .step > strong:first-child{
       display:block;
       margin-bottom:5px;
       font-size:15px;
@@ -3043,10 +3023,120 @@
       .markdownBody .sectionJumpLink{margin:2px 1px;padding:3px 7px}
     }
 
+
+    /* =========================================================
+       LEGACY MARKDOWN / HTML COMPONENT SAFETY FIX
+       Keeps existing <div class="steps"> and callout markup stable.
+       ========================================================= */
+    .markdownBody .step > strong:first-child{
+      display:block !important;
+      margin:0 0 6px !important;
+      font-size:15px !important;
+      line-height:1.5 !important;
+    }
+
+    .markdownBody .step p strong,
+    .markdownBody .step li strong,
+    .markdownBody .step span strong,
+    .markdownBody .step a strong,
+    .markdownBody .step small strong,
+    .markdownBody .step em strong{
+      display:inline !important;
+      margin:0 !important;
+      padding:0 !important;
+      font-size:inherit !important;
+      line-height:inherit !important;
+    }
+
+    .markdownBody .step > p{
+      margin:0 0 8px !important;
+      line-height:1.72;
+    }
+    .markdownBody .step > p:last-child{ margin-bottom:0 !important; }
+
+    .markdownBody .step > ul,
+    .markdownBody .step > ol{
+      margin:8px 0 10px !important;
+    }
+
+    .markdownBody .step > img,
+    .markdownBody .step > p > img{
+      width:100%;
+      margin:14px 0 2px !important;
+    }
+
+    .markdownBody .step > .tip,
+    .markdownBody .step > .info,
+    .markdownBody .step > .notice,
+    .markdownBody .step > .warning,
+    .markdownBody .step > .danger,
+    .markdownBody .step > details,
+    .markdownBody .step > blockquote{
+      margin:12px 0 4px !important;
+    }
+
+    .markdownBody .step a{ display:inline; }
+    .markdownBody .step br{ line-height:1; }
+    .markdownBody .step > :empty{ display:none !important; }
+
+    /* Callout titles are block-level; ordinary bold text remains inline. */
+    .markdownBody .callout-title,
+    .markdownBody .tip > strong:first-child,
+    .markdownBody .info > strong:first-child,
+    .markdownBody .notice > strong:first-child,
+    .markdownBody .warning > strong:first-child,
+    .markdownBody .danger > strong:first-child,
+    .markdownBody .success > strong:first-child,
+    .markdownBody .important > strong:first-child,
+    .markdownBody .question > strong:first-child,
+    .markdownBody .download > strong:first-child,
+    .markdownBody .boss > strong:first-child,
+    .markdownBody .reward > strong:first-child,
+    .markdownBody .requirement > strong:first-child,
+    .markdownBody .discord > strong:first-child{
+      display:block;
+      margin:0 0 5px;
+    }
+
+    .markdownBody .tip p,
+    .markdownBody .info p,
+    .markdownBody .notice p,
+    .markdownBody .warning p,
+    .markdownBody .danger p{
+      margin:0 0 8px;
+    }
+    .markdownBody .tip > :last-child,
+    .markdownBody .info > :last-child,
+    .markdownBody .notice > :last-child,
+    .markdownBody .warning > :last-child,
+    .markdownBody .danger > :last-child{
+      margin-bottom:0 !important;
+    }
+
 </style>
 </head>
 
 <body class="wherewindmeet-docs-page">
+  <div class="floatingTools" aria-label="手機閱讀工具">
+    <button class="floatingBtn mobileTocBtn" id="mobileTocBtn" type="button" aria-label="開啟本頁目錄">☷</button>
+    <button class="floatingBtn backToTopBtn" id="backToTopBtn" type="button" aria-label="返回頂部">↑</button>
+  </div>
+
+  <div class="mobileTocBackdrop" id="mobileTocBackdrop"></div>
+  <section class="mobileTocSheet" id="mobileTocSheet" aria-label="本頁內容" aria-hidden="true">
+    <div class="mobileTocHandle"></div>
+    <div class="mobileTocHeader">
+      <strong>本頁內容</strong>
+      <button class="mobileTocClose" id="mobileTocClose" type="button" aria-label="關閉本頁目錄">×</button>
+    </div>
+    <nav class="mobileTocList" id="mobileTocList"></nav>
+  </section>
+
+  <div class="imageLightbox" id="imageLightbox" aria-hidden="true">
+    <button class="imageLightboxClose" id="imageLightboxClose" type="button" aria-label="關閉圖片">×</button>
+    <img id="imageLightboxImage" alt="放大圖片">
+  </div>
+
   <header class="topbar">
     <a class="brand" href="index.html">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
@@ -3488,6 +3578,7 @@ const safeHtml = DOMPurify.sanitize(rawHtml, {
 
 el.markdownBody.innerHTML = safeHtml;
 enhanceMarkdownCheckboxes();
+normalizeLegacyComponents();
 el.docTitle.textContent = `${meta.icon && meta.icon !== "▤" ? `${meta.icon} ` : ""}${title}`;
 el.docFile.textContent = "";
 el.breadcrumbName.textContent = title;
@@ -3572,6 +3663,45 @@ document.title = `${title}｜夢回手冊`;
       nav.querySelectorAll("[data-file]").forEach(link => link.addEventListener("click", event => {event.preventDefault();openDocument(link.dataset.file);}));
       el.markdownBody.appendChild(nav);
     }
+
+    function normalizeLegacyComponents(){
+      if(!el.markdownBody) return;
+
+      // Remove empty paragraphs created when Markdown and raw HTML meet.
+      el.markdownBody.querySelectorAll("p").forEach(paragraph => {
+        const hasMedia = paragraph.querySelector("img, video, iframe, audio, svg");
+        const text = paragraph.textContent.replace(/\u00a0/g, " ").trim();
+        if(!hasMedia && !text && paragraph.children.length === 0){
+          paragraph.remove();
+        }
+      });
+
+      // A Markdown image placed directly between legacy step cards is attached
+      // to the previous step so the image and explanation stay together.
+      el.markdownBody.querySelectorAll(".steps").forEach(steps => {
+        Array.from(steps.children).forEach(child => {
+          const image = child.matches("img")
+            ? child
+            : (child.matches("p") && child.children.length === 1 ? child.querySelector(":scope > img") : null);
+          if(!image) return;
+
+          let previous = child.previousElementSibling;
+          while(previous && !previous.classList.contains("step")){
+            previous = previous.previousElementSibling;
+          }
+          if(previous){
+            previous.appendChild(image);
+            if(child !== image) child.remove();
+          }
+        });
+      });
+
+      // Repair inline bold content if an older CSS rule changed it to block.
+      el.markdownBody.querySelectorAll(".step p strong, .step li strong, .step a strong").forEach(strong => {
+        strong.style.removeProperty("display");
+      });
+    }
+
 
     function enhanceMarkdownCheckboxes(){
       const cells = el.markdownBody.querySelectorAll("td, th");
