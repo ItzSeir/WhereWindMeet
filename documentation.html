@@ -3737,7 +3737,8 @@ const markdownWithoutFirstTitle = parsed.body.replace(
   ""
 );
 
-const rawHtml = marked.parse(markdownWithoutFirstTitle);
+const normalizedMarkdown = normalizeLegacyMarkdownSource(markdownWithoutFirstTitle);
+const rawHtml = marked.parse(normalizedMarkdown);
 
 const safeHtml = DOMPurify.sanitize(rawHtml, {
   ADD_ATTR: ["target"]
@@ -3829,6 +3830,64 @@ document.title = `${title}｜夢回手冊`;
       }
       nav.querySelectorAll("[data-file]").forEach(link => link.addEventListener("click", event => {event.preventDefault();openDocument(link.dataset.file);}));
       el.markdownBody.appendChild(nav);
+    }
+
+    function normalizeLegacyMarkdownSource(markdown){
+      /*
+        marked/CommonMark ends a raw HTML block at a blank line. If the next
+        line inside a legacy <div> is indented by four spaces, it is then
+        interpreted as a code block. Older documents commonly use indented
+        HTML, so normalise indentation only while inside supported legacy
+        containers. Fenced code blocks are left untouched.
+      */
+      const supportedClasses = new Set([
+        "steps", "step", "tip", "info", "notice", "warning", "danger",
+        "success", "important", "question", "download", "boss", "reward",
+        "requirement", "discord", "callout", "accordion", "tabs", "timeline",
+        "gallery", "image-grid", "card", "cards", "pill-row"
+      ]);
+
+      const lines = String(markdown || "").replace(/\r\n?/g, "\n").split("\n");
+      let legacyDepth = 0;
+      let inFence = false;
+      let fenceMarker = "";
+
+      return lines.map(line => {
+        const fenceMatch = line.match(/^\s*(```+|~~~+)/);
+        if(fenceMatch){
+          const marker = fenceMatch[1][0];
+          if(!inFence){
+            inFence = true;
+            fenceMarker = marker;
+          }else if(marker === fenceMarker){
+            inFence = false;
+            fenceMarker = "";
+          }
+          return line;
+        }
+        if(inFence) return line;
+
+        const openingTags = [...line.matchAll(/<div\b([^>]*)>/gi)];
+        const closingCount = (line.match(/<\/div\s*>/gi) || []).length;
+        const startsSupportedLegacy = openingTags.some(match => {
+          const attrs = match[1] || "";
+          const classMatch = attrs.match(/\bclass\s*=\s*["']([^"']+)["']/i);
+          if(!classMatch) return false;
+          return classMatch[1].split(/\s+/).some(name => supportedClasses.has(name));
+        });
+
+        const shouldDedent = legacyDepth > 0 || startsSupportedLegacy;
+        let output = shouldDedent ? line.replace(/^[\t ]+/, "") : line;
+
+        if(startsSupportedLegacy && legacyDepth === 0) legacyDepth = 1;
+        else if(legacyDepth > 0) legacyDepth += openingTags.length;
+
+        if(legacyDepth > 0){
+          legacyDepth = Math.max(0, legacyDepth - closingCount);
+        }
+
+        return output;
+      }).join("\n");
     }
 
     function normalizeLegacyComponents(){
