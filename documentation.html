@@ -3113,6 +3113,173 @@
       margin-bottom:0 !important;
     }
 
+
+
+    /* =========================================================
+       FINAL VISUAL SEPARATION — H4 SECTION VS STEP CARD
+       Keeps legacy Markdown/HTML syntax unchanged.
+       ========================================================= */
+
+    /* #### headings: compact section bars */
+    .markdownBody h4{
+      position:relative;
+      display:block;
+      margin:34px 0 16px !important;
+      padding:11px 16px 11px 20px !important;
+      border:0 !important;
+      border-left:5px solid var(--site-teal) !important;
+      border-radius:9px !important;
+      color:var(--text) !important;
+      background:color-mix(in srgb,var(--site-teal) 7%,transparent) !important;
+      box-shadow:none !important;
+      font-size:19px !important;
+      font-weight:900 !important;
+      line-height:1.45 !important;
+    }
+
+    .markdownBody h4::before{
+      content:none !important;
+    }
+
+    /* Steps: clearly separate content cards with numbered rail */
+    .markdownBody .steps{
+      counter-reset:doc-step;
+      position:relative;
+      display:flex !important;
+      flex-direction:column;
+      gap:16px !important;
+      margin:18px 0 28px !important;
+    }
+
+    .markdownBody .step{
+      counter-increment:doc-step;
+      position:relative;
+      overflow:visible;
+      margin:0 !important;
+      padding:18px 20px 18px 76px !important;
+      border:1px solid color-mix(in srgb,var(--site-sea) 20%,var(--border)) !important;
+      border-radius:16px !important;
+      background:color-mix(in srgb,var(--panel) 94%,transparent) !important;
+      box-shadow:0 8px 20px rgba(0,0,0,.055) !important;
+      transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+    }
+
+    .markdownBody .step:hover{
+      transform:translateY(-1px);
+      border-color:color-mix(in srgb,var(--site-sea) 42%,var(--border)) !important;
+      box-shadow:0 12px 26px rgba(0,0,0,.08) !important;
+    }
+
+    .markdownBody .step::before{
+      content:counter(doc-step) !important;
+      position:absolute !important;
+      left:20px !important;
+      top:18px !important;
+      width:36px !important;
+      height:36px !important;
+      display:grid !important;
+      place-items:center !important;
+      border:0 !important;
+      border-radius:11px !important;
+      color:#fff !important;
+      background:linear-gradient(135deg,var(--site-sea),var(--site-teal)) !important;
+      box-shadow:0 7px 16px color-mix(in srgb,var(--site-teal) 28%,transparent) !important;
+      font-size:14px !important;
+      font-weight:900 !important;
+      line-height:1 !important;
+    }
+
+    .markdownBody .step:not(:last-child)::after{
+      content:"";
+      position:absolute;
+      left:37px;
+      bottom:-17px;
+      width:2px;
+      height:17px;
+      border-radius:999px;
+      background:color-mix(in srgb,var(--site-teal) 28%,var(--border));
+    }
+
+    .markdownBody .step > strong:first-child{
+      display:block !important;
+      margin:0 0 5px !important;
+      padding:0 !important;
+      color:var(--text) !important;
+      font-size:16px !important;
+      font-weight:900 !important;
+      line-height:1.45 !important;
+    }
+
+    /* Inline emphasis inside step content must never become a heading */
+    .markdownBody .step p strong,
+    .markdownBody .step li strong,
+    .markdownBody .step td strong,
+    .markdownBody .step a strong,
+    .markdownBody .step span strong,
+    .markdownBody .step em strong,
+    .markdownBody .step small strong{
+      display:inline !important;
+      margin:0 !important;
+      padding:0 !important;
+      color:inherit;
+      font-size:inherit !important;
+      font-weight:850 !important;
+      line-height:inherit !important;
+    }
+
+    .markdownBody .step > p{
+      margin:0 0 8px !important;
+      color:color-mix(in srgb,var(--text) 86%,var(--muted)) !important;
+      line-height:1.75 !important;
+    }
+
+    .markdownBody .step > p:last-child{
+      margin-bottom:0 !important;
+    }
+
+    .markdownBody .step img{
+      display:block;
+      width:100%;
+      height:auto;
+      margin:15px 0 2px !important;
+      border-radius:14px !important;
+    }
+
+    @media (max-width:760px){
+      .markdownBody h4{
+        margin:28px 0 14px !important;
+        padding:10px 13px 10px 16px !important;
+        font-size:17px !important;
+      }
+
+      .markdownBody .steps{
+        gap:13px !important;
+      }
+
+      .markdownBody .step{
+        padding:16px 14px 16px 64px !important;
+        border-radius:14px !important;
+      }
+
+      .markdownBody .step::before{
+        left:16px !important;
+        top:16px !important;
+        width:32px !important;
+        height:32px !important;
+        border-radius:10px !important;
+        font-size:13px !important;
+      }
+
+      .markdownBody .step:not(:last-child)::after{
+        left:31px;
+        bottom:-14px;
+        height:14px;
+      }
+
+      .markdownBody .step > strong:first-child{
+        font-size:15px !important;
+      }
+    }
 </style>
 </head>
 
