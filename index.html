@@ -55,7 +55,7 @@ body{
   position:fixed;
   border-radius:50%;
   filter:blur(70px);
-  opacity:.28;
+  opacity:.18;
   pointer-events:none;
   z-index:0;
   animation:floatOrb 10s ease-in-out infinite;
@@ -413,7 +413,7 @@ body{
 .schedule-grid{
   display:grid;
   grid-template-columns:64px repeat(7, minmax(0, 1fr));
-  grid-template-rows:auto 64px 110px 110px;
+  grid-template-rows:auto 64px 105px 105px 105px 42px;
   gap:10px;
   width:100%;
   min-width:0;
@@ -720,7 +720,7 @@ body{
 
   .schedule-grid{
     grid-template-columns:56px repeat(7, 96px);
-    grid-template-rows:auto 60px 102px 102px;
+    grid-template-rows:auto 60px 96px 96px 96px 40px;
     gap:8px;
     width:max-content;
     min-width:780px;
@@ -952,6 +952,267 @@ body::-webkit-scrollbar-thumb:hover,
  .nav::-webkit-scrollbar{display:none;}
 }
 
+
+/* ===== Optimized homepage enhancements ===== */
+.topbar{
+  transition:top .25s ease,width .25s ease,background .25s ease,box-shadow .25s ease,border-color .25s ease;
+}
+.topbar.scrolled{
+  top:10px;
+  background:rgba(11,16,32,.88);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:0 14px 36px rgba(0,0,0,.42);
+}
+
+.hero-side{
+  align-self:stretch;
+}
+
+.leader-members{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:2px;
+}
+.member-tag{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--text);
+  font-size:12px;
+  font-weight:700;
+}
+
+.today-panel{
+  background:linear-gradient(135deg,rgba(110,168,255,.10),rgba(139,92,246,.08));
+}
+.today-summary{
+  display:grid;
+  gap:8px;
+}
+.today-empty{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+.today-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+}
+.today-item-main{
+  min-width:0;
+}
+.today-item-name{
+  font-size:13px;
+  font-weight:800;
+  color:#fff;
+}
+.today-item-time{
+  margin-top:3px;
+  font-size:11px;
+  color:var(--muted);
+}
+.today-status{
+  flex:0 0 auto;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.2px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.07);
+  color:var(--muted);
+}
+.today-status.live{
+  color:#fff;
+  background:rgba(255,107,129,.22);
+  border-color:rgba(255,107,129,.35);
+  box-shadow:0 0 0 3px rgba(255,107,129,.08);
+}
+.today-status.soon{
+  color:#161a26;
+  background:var(--gold);
+  border-color:rgba(255,215,106,.65);
+}
+.today-status.done{
+  opacity:.7;
+}
+
+.event-card.is-live{
+  outline:2px solid rgba(110,168,255,.95);
+  box-shadow:
+    0 0 0 4px rgba(110,168,255,.10),
+    0 12px 28px rgba(110,168,255,.14),
+    0 8px 20px rgba(0,0,0,.25);
+}
+.event-card.is-next{
+  outline:2px solid rgba(255,215,106,.9);
+  box-shadow:0 0 0 4px rgba(255,215,106,.12),0 14px 34px rgba(255,215,106,.14),0 8px 20px rgba(0,0,0,.25);
+}
+.event-state{
+  margin-top:2px;
+  padding:3px 7px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+  background:rgba(255,255,255,.11);
+  color:#fff;
+}
+.event-card.is-live .event-state{ background:rgba(110,168,255,.95); color:#fff; }
+.event-card.is-next .event-state{ background:rgba(255,215,106,.92); color:#161a26; }
+
+.portal-card.featured{
+  min-height:200px;
+}
+.portal-card .portal-kicker{
+  display:inline-flex;
+  margin-bottom:10px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.09);
+  color:var(--gold);
+  font-size:11px;
+  font-weight:900;
+}
+
+.rules-more{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+@media (max-width:768px){
+  .topbar.scrolled{ top:8px; }
+  .today-item{ align-items:flex-start; }
+  .hero-today-wide .today-summary{ grid-template-columns:1fr; }
+}
+
+
+
+/* ===== Today / Tomorrow activity split ===== */
+.hero-activity-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:24px;
+}
+.day-activity-panel{
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.10);
+  min-width:0;
+}
+.day-activity-panel.tomorrow-panel{
+  background:linear-gradient(135deg,rgba(139,92,246,.075),rgba(255,255,255,.03));
+}
+.day-activity-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.day-activity-title{
+  margin:0;
+  font-size:15px;
+  font-weight:900;
+  color:#fff;
+}
+.day-activity-date{
+  flex:0 0 auto;
+  font-size:11px;
+  font-weight:800;
+  color:var(--muted);
+}
+.day-activity-panel .today-summary{
+  display:grid;
+  gap:10px;
+}
+.day-activity-panel .today-item{
+  padding:12px 13px;
+}
+
+/* ===== Schedule helper row ===== */
+.schedule-topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:-3px 0 12px;
+}
+.schedule-legend{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px 12px;
+}
+.legend-item{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+}
+.legend-dot{
+  width:9px;
+  height:9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+}
+.legend-dot.party{background:var(--color-party)}
+.legend-dot.boss{background:var(--color-boss)}
+.legend-dot.duel{background:var(--color-duel)}
+.legend-dot.war{background:var(--color-war)}
+.schedule-now{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(110,168,255,.10);
+  border:1px solid rgba(110,168,255,.20);
+  color:#cfe0ff;
+  font-size:11px;
+  font-weight:900;
+}
+.schedule-now::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:var(--accent);
+  box-shadow:0 0 0 4px rgba(110,168,255,.12);
+}
+.grid-header .header-date{
+  display:block;
+  margin-top:4px;
+  color:rgba(255,255,255,.50);
+  font-size:10px;
+  font-weight:700;
+}
+.grid-header.today .header-date{color:rgba(255,255,255,.82)}
+
+@media (max-width:768px){
+  .hero-activity-grid{grid-template-columns:1fr;gap:12px;margin-top:18px}
+  .day-activity-panel{padding:14px}
+  .schedule-topline{align-items:flex-start}
+  .schedule-now{order:-1}
+}
+
 </style>
 </head>
 
@@ -987,7 +1248,7 @@ body::-webkit-scrollbar-thumb:hover,
     </div>
 
     <div class="hero-grid">
-      <div>
+      <div class="hero-copy">
         <h1>這裡是我們在江湖中的落腳處。</h1>
         <p>
           不論你是想找人一起活動、清日常、參與百業安排，還是只是想看看最近有哪些事情可以一起做，
@@ -999,6 +1260,7 @@ body::-webkit-scrollbar-thumb:hover,
           <a href="#portal" class="btn btn-primary">查看其他頁面</a>
           <a href="#rules" class="btn btn-secondary">查看百業規則</a>
         </div>
+
       </div>
 
       <div class="hero-side">
@@ -1015,10 +1277,36 @@ body::-webkit-scrollbar-thumb:hover,
             </div>
             <div class="leader-item">
               <div class="leader-role">執法長老</div>
-              <div class="leader-name">白凡 紫凜冬 雙鱼 似水 曲絡寧</div>
+              <div class="leader-members">
+                <span class="member-tag">白凡</span>
+                <span class="member-tag">紫凜冬</span>
+                <span class="member-tag">雙鱼</span>
+                <span class="member-tag">似水</span>
+                <span class="member-tag">曲絡寧</span>
+                <span class="member-tag">星天羽</span>
+              </div>
             </div>
           </div>
         </div>
+
+      </div>
+    </div>
+
+    <div class="hero-activity-grid">
+      <div class="day-activity-panel today-panel">
+        <div class="day-activity-head">
+          <h3 class="day-activity-title" id="todayPanelTitle">今日活動</h3>
+          <span class="day-activity-date" id="todayPanelDate"></span>
+        </div>
+        <div class="today-summary" id="todaySummary"></div>
+      </div>
+
+      <div class="day-activity-panel tomorrow-panel">
+        <div class="day-activity-head">
+          <h3 class="day-activity-title" id="tomorrowPanelTitle">明日活動</h3>
+          <span class="day-activity-date" id="tomorrowPanelDate"></span>
+        </div>
+        <div class="today-summary" id="tomorrowSummary"></div>
       </div>
     </div>
   </section>
@@ -1028,18 +1316,18 @@ body::-webkit-scrollbar-thumb:hover,
 
     <div class="cards-3">
       <div class="card">
-        <h3>同門互濟</h3>
-        <p>彼此扶持、共襄義舉，對初入門者更應和善指點，讓大家都能慢慢融入這個地方。</p>
+        <h3>輕鬆遊玩</h3>
+        <p>不強迫高強度遊玩，日常、副本與百業活動依照自己的時間參與，一起玩得舒服更重要。</p>
       </div>
 
       <div class="card">
-        <h3>敬重同道</h3>
-        <p>彼此扶持、不要騷擾他人。</p>
+        <h3>同門互助</h3>
+        <p>不論是新人、副本、任務或遊戲問題，都歡迎彼此協助，讓每位同門更容易融入。</p>
       </div>
 
       <div class="card">
-        <h3>重視氣氛</h3>
-        <p>希望大家能舒服相處、願意久留，讓百業真正成為可以依靠的地方。</p>
+        <h3>長久相伴</h3>
+        <p>比起單純追求人數，更希望建立一個大家願意長期留下、能自在相處的百業。</p>
       </div>
     </div>
   </section>
@@ -1048,78 +1336,76 @@ body::-webkit-scrollbar-thumb:hover,
     <h2 class="section-title">百業週程表</h2>
     <div class="schedule-hint">手機版可左右滑動查看完整週程表</div>
 
+    <div class="schedule-topline">
+      <div class="schedule-legend" aria-label="活動圖例">
+        <span class="legend-item"><span class="legend-dot party"></span>百業派對</span>
+        <span class="legend-item"><span class="legend-dot boss"></span>破軍殺將</span>
+        <span class="legend-item"><span class="legend-dot duel"></span>一決高下</span>
+        <span class="legend-item"><span class="legend-dot war"></span>百業戰</span>
+      </div>
+      <div class="schedule-now" id="scheduleNow">現在</div>
+    </div>
+
     <div class="schedule-container" id="scheduleScroll">
       <div class="schedule-grid">
 
-        <div class="time-col">Time</div>
-        <div class="grid-header" data-day="1">週一</div>
-        <div class="grid-header" data-day="2">週二</div>
-        <div class="grid-header" data-day="3">週三</div>
-        <div class="grid-header" data-day="4">週四</div>
-        <div class="grid-header" data-day="5">週五</div>
-        <div class="grid-header" data-day="6">週六</div>
-        <div class="grid-header" data-day="0">週日</div>
+        <div class="time-col" style="grid-column:1;grid-row:1">Time</div>
+        <div class="grid-header" data-day="1" style="grid-column:2;grid-row:1">週一</div>
+        <div class="grid-header" data-day="2" style="grid-column:3;grid-row:1">週二</div>
+        <div class="grid-header" data-day="3" style="grid-column:4;grid-row:1">週三</div>
+        <div class="grid-header" data-day="4" style="grid-column:5;grid-row:1">週四</div>
+        <div class="grid-header" data-day="5" style="grid-column:6;grid-row:1">週五</div>
+        <div class="grid-header" data-day="6" style="grid-column:7;grid-row:1">週六</div>
+        <div class="grid-header" data-day="0" style="grid-column:8;grid-row:1">週日</div>
 
-        <div class="time-col">19:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:2">19:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:3">20:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:4">21:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:5">22:00</div>
+        <div class="time-col schedule-end-row" style="grid-column:1;grid-row:6">23:00</div>
 
-        <div class="event-card party span-all-days" data-days="1,2,3,4,5,6,0">
+        <div class="event-card party" data-days="1,2,3,4,5,6,0" data-start="19:30" data-end="19:43" style="grid-column:2 / 9;grid-row:2">
           <span class="event-name">百業派對</span>
           <span class="event-time">每日 19:30 - 19:43</span>
         </div>
 
-        <div class="time-col">20:00</div>
-
-        <div></div>
-
-        <div class="event-card boss span-2-rows" data-days="2">
+        <div class="event-card boss" data-days="2" data-start="20:00" data-end="22:00" style="grid-column:3;grid-row:3 / span 2">
           <span class="event-day">週二</span>
           <span class="event-name">破軍殺將</span>
           <span class="event-time">20:00 - 22:00</span>
         </div>
 
-        <div></div>
-
-        <div class="event-card boss span-2-rows" data-days="4">
+        <div class="event-card boss" data-days="4" data-start="20:00" data-end="22:00" style="grid-column:5;grid-row:3 / span 2">
           <span class="event-day">週四</span>
           <span class="event-name">破軍殺將</span>
           <span class="event-time">20:00 - 22:00</span>
         </div>
 
-        <div></div>
-
-        <div class="event-card war" data-days="6">
+        <div class="event-card war" data-days="6" data-start="20:30" data-end="21:05" style="grid-column:7;grid-row:3">
           <span class="event-day">週六</span>
           <span class="event-name">百業戰</span>
           <span class="event-time">20:30 - 21:05</span>
         </div>
 
-        <div class="event-card war" data-days="0">
+        <div class="event-card war" data-days="0" data-start="20:30" data-end="21:05" style="grid-column:8;grid-row:3">
           <span class="event-day">週日</span>
           <span class="event-name">百業戰</span>
           <span class="event-time">20:30 - 21:05</span>
         </div>
 
-        <div class="time-col">21:00</div>
-
-        <div></div>
-
-        <div class="event-card duel" data-days="3">
+        <div class="event-card duel" data-days="3" data-start="21:00" data-end="23:00" style="grid-column:4;grid-row:4 / span 2">
           <span class="event-day">週三</span>
           <span class="event-name">一決高下</span>
-          <span class="event-time">21:00 - 22:00</span>
+          <span class="event-time">21:00 - 23:00</span>
         </div>
 
-        <div class="event-card duel" data-days="5">
+        <div class="event-card duel" data-days="5" data-start="21:00" data-end="23:00" style="grid-column:6;grid-row:4 / span 2">
           <span class="event-day">週五</span>
           <span class="event-name">一決高下</span>
-          <span class="event-time">21:00 - 22:00</span>
+          <span class="event-time">21:00 - 23:00</span>
         </div>
 
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-
+        <div class="schedule-end-cell" style="grid-column:2 / 9;grid-row:6"></div>
       </div>
     </div>
   </section>
@@ -1128,44 +1414,21 @@ body::-webkit-scrollbar-thumb:hover,
     <h2 class="section-title">頁面入口</h2>
 
     <div class="portal-grid">
-      <div class="portal-card">
+      <div class="portal-card featured">
+        <div class="portal-kicker">副本與組隊</div>
         <h3>俠境活動</h3>
-        <p>
-          目前常用活動入口之一。可在此查看開團時段、隊伍配置與報名情況。
-          若要參與近期安排，可由此進入。
-        </p>
-
+        <p>查看近期開團時段、隊伍配置與報名情況。想參與副本或百業活動，可以直接從這裡進入。</p>
         <div class="portal-actions">
           <a href="PVERegistration" class="btn btn-primary">前往報名</a>
         </div>
       </div>
 
-      <div class="portal-card">
-        <h3>圖片展示</h3>
-        <p>
-          展示百業小夥伴分享的各種照片。
-        </p>
-
+      <div class="portal-card featured">
+        <div class="portal-kicker">百業紀錄</div>
+        <h3>江湖回憶錄</h3>
+        <p>收錄百業小夥伴分享的照片與共同回憶，記下我們一路同行的江湖片段。</p>
         <div class="portal-actions">
           <a href="gallery" class="btn btn-primary">前往瀏覽</a>
-        </div>
-      </div>
-
-      <div class="portal-card">
-        <h3>預留區塊</h3>
-        <p>尚未開放，敬請期待。</p>
-
-        <div class="portal-actions">
-          <a href="#" class="btn btn-secondary">尚未開放</a>
-        </div>
-      </div>
-
-      <div class="portal-card">
-        <h3>預留區塊</h3>
-        <p>尚未開放，敬請期待。</p>
-
-        <div class="portal-actions">
-          <a href="#" class="btn btn-secondary">尚未開放</a>
         </div>
       </div>
     </div>
@@ -1178,55 +1441,55 @@ body::-webkit-scrollbar-thumb:hover,
       <div class="rule-card">
         <div class="rule-number">1</div>
         <h4>和氣為上</h4>
-        <p>諸位社眾切莫與其他百業之人起紛爭，若有衝突，先說明事由，由 @社主𓇼 @ꗯ̤̮ 副社主 @執法長老 ˙ᵕ˙ 秉公調解。</p>
+        <p>諸位社眾切莫與其他百業之人起紛爭，若有衝突，先說明事由，由社主、副社主或執法長老協助調解。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">2</div>
         <h4>敬重同道</h4>
-        <p>避免任何形式的騷擾與不當行為，只要對方覺得不舒服，皆屬騷擾。</p>
+        <p>避免任何形式的騷擾與不當行為。若對方已明確表示不舒服或拒絕，應立即停止並尊重彼此界線。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">3</div>
         <h4>社眾之責</h4>
-        <p>每位社眾每週當積累 2000 活耀度，週日夜九為結算日。倘遇私務或不便，得預告請假。</p>
+        <p>每位社眾每週應累積 2000 活躍度，週日晚上九時結算。倘遇私務或不便，可提前告知並請假。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">4</div>
         <h4>廣納賢士</h4>
-        <p>若有江湖好友欲入我夢回門牆，可先稟告管理層，由他們協助加入。</p>
+        <p>若有江湖好友欲加入夢回花深處，可先告知管理層，由管理層協助確認與加入。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">5</div>
         <h4>同門互濟</h4>
-        <p>同門應當彼此扶持、共襄義舉，對初入門者更宜和善指點。</p>
+        <p>同門應當彼此扶持、共襄義舉，對初入門者更宜和善指點，讓大家都能順利融入。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">6</div>
         <h4>廳堂清規</h4>
-        <p>嚴禁胡亂喧嘩、私下兜售、惡語相向、污言穢語及淫詞笑語，以免壞百業門風。</p>
+        <p>嚴禁惡意洗頻、私下兜售、惡語相向、污言穢語及過度不當內容，以免影響百業內的相處氣氛。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">7</div>
         <h4>承諾守信</h4>
-        <p>報名參與百業活動、行俠任務、副本等等，若臨時無法參加，請提前告知以利安排或調整。</p>
+        <p>報名參與百業活動、行俠任務或副本後，若臨時無法參加，請提前告知，以利隊伍安排與調整。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">8</div>
         <h4>慎用傳音</h4>
-        <p>請勿在他派或公開之地洩露百業內機密、謀略或同門隱私，以免禍起蕭牆。</p>
+        <p>請勿在其他百業或公開場合洩露百業內部資訊、活動安排或同門隱私，避免造成不必要的爭議。</p>
       </div>
 
       <div class="rule-card">
         <div class="rule-number">9</div>
         <h4>禮尚往來</h4>
-        <p>交易、贈與或委託，務必誠信為先，不得欺瞞同門。</p>
+        <p>交易、贈與或委託務必誠信為先，不得欺瞞同門；若有爭議，請保留相關紀錄並交由管理層協助處理。</p>
       </div>
     </div>
   </section>
@@ -1251,38 +1514,138 @@ window.addEventListener('scroll', () => {
   }
 }, { passive:true });
 
-/* ===== 自動高亮今天 ===== */
-(function highlightToday(){
-  const today = new Date().getDay();
+/* ===== 自動高亮今天 + 今日 / 明日活動 + 進行中 / 下一場 ===== */
+(function enhanceSchedule(){
+  const now = new Date();
+  const today = now.getDay();
+  const tomorrow = (today + 1) % 7;
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const dayNames = ['週日','週一','週二','週三','週四','週五','週六'];
 
+  function toMinutes(time){
+    const [h,m] = String(time || '').split(':').map(Number);
+    return Number.isFinite(h) && Number.isFinite(m) ? h * 60 + m : null;
+  }
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function dateLabel(date){ return `${date.getMonth()+1}/${date.getDate()}`; }
+
+  const tomorrowDate = new Date(now);
+  tomorrowDate.setDate(now.getDate() + 1);
+
+  /* Header weekday + actual date */
   document.querySelectorAll('.grid-header').forEach(header => {
-    if(Number(header.dataset.day) === today){
-      header.classList.add('today');
-    }
+    const targetDay = Number(header.dataset.day);
+    if(targetDay === today) header.classList.add('today');
+
+    const delta = (targetDay - today + 7) % 7;
+    const d = new Date(now);
+    d.setDate(now.getDate() + delta);
+    const dateSpan = document.createElement('span');
+    dateSpan.className = 'header-date';
+    dateSpan.textContent = dateLabel(d);
+    header.appendChild(dateSpan);
   });
 
+  const allEvents = [];
   document.querySelectorAll('.event-card').forEach(card => {
     const days = card.dataset.days;
     if(!days) return;
 
     const dayList = days.split(',').map(Number);
-
-    if(dayList.includes(today)){
-      card.classList.add('today-event');
-    }
+    const name = card.querySelector('.event-name')?.textContent?.trim() || '活動';
+    const start = card.dataset.start;
+    const end = card.dataset.end;
+    allEvents.push({
+      card, dayList, name, start, end,
+      startMin:toMinutes(start), endMin:toMinutes(end)
+    });
   });
+
+  const todayEvents = allEvents.filter(item => item.dayList.includes(today)).sort((a,b)=>a.startMin-b.startMin);
+  const tomorrowEvents = allEvents.filter(item => item.dayList.includes(tomorrow)).sort((a,b)=>a.startMin-b.startMin);
+
+  todayEvents.forEach(item => item.card.classList.add('today-event'));
+
+  const live = todayEvents.find(item => currentMinutes >= item.startMin && currentMinutes <= item.endMin);
+  const next = todayEvents.find(item => item.startMin > currentMinutes);
+
+  if(live){
+    live.card.classList.remove('today-event');
+    live.card.classList.add('is-live');
+    const badge = document.createElement('span');
+    badge.className = 'event-state';
+    badge.textContent = '進行中';
+    live.card.appendChild(badge);
+  }else if(next){
+    next.card.classList.remove('today-event');
+    next.card.classList.add('is-next');
+    const badge = document.createElement('span');
+    badge.className = 'event-state';
+    badge.textContent = '下一場';
+    next.card.appendChild(badge);
+  }
+
+  const title = document.getElementById('todayPanelTitle');
+  const todayDateEl = document.getElementById('todayPanelDate');
+  const tomorrowTitle = document.getElementById('tomorrowPanelTitle');
+  const tomorrowDateEl = document.getElementById('tomorrowPanelDate');
+  const summary = document.getElementById('todaySummary');
+  const tomorrowSummary = document.getElementById('tomorrowSummary');
+
+  if(title) title.textContent = `今日活動 · ${dayNames[today]}`;
+  if(todayDateEl) todayDateEl.textContent = dateLabel(now);
+  if(tomorrowTitle) tomorrowTitle.textContent = `明日活動 · ${dayNames[tomorrow]}`;
+  if(tomorrowDateEl) tomorrowDateEl.textContent = dateLabel(tomorrowDate);
+
+  function renderToday(events){
+    if(!events.length) return '<div class="today-empty">今天沒有固定百業活動。</div>';
+    return events.map(item => {
+      let label = '稍後';
+      let cls = '';
+      if(currentMinutes > item.endMin){
+        label = '已結束'; cls = 'done';
+      }else if(currentMinutes >= item.startMin && currentMinutes <= item.endMin){
+        label = '進行中'; cls = 'live';
+      }else if(item.startMin > currentMinutes && item.startMin - currentMinutes <= 60){
+        label = `${item.startMin-currentMinutes} 分鐘後`; cls = 'soon';
+      }else if(item === next){
+        label = '下一場'; cls = 'soon';
+      }
+      return `<div class="today-item">
+        <div class="today-item-main">
+          <div class="today-item-name">${item.name}</div>
+          <div class="today-item-time">${item.start} - ${item.end}</div>
+        </div>
+        <span class="today-status ${cls}">${label}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderTomorrow(events){
+    if(!events.length) return '<div class="today-empty">明天沒有固定百業活動。</div>';
+    return events.map(item => `<div class="today-item">
+      <div class="today-item-main">
+        <div class="today-item-name">${item.name}</div>
+        <div class="today-item-time">${item.start} - ${item.end}</div>
+      </div>
+      <span class="today-status">明日</span>
+    </div>`).join('');
+  }
+
+  if(summary) summary.innerHTML = renderToday(todayEvents);
+  if(tomorrowSummary) tomorrowSummary.innerHTML = renderTomorrow(tomorrowEvents);
+
+  const nowEl = document.getElementById('scheduleNow');
+  if(nowEl) nowEl.textContent = `現在 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
   const todayHeader = document.querySelector('.grid-header.today');
   const scrollBox = document.getElementById('scheduleScroll');
-
   if(todayHeader && scrollBox && window.innerWidth <= 768){
     setTimeout(() => {
       const offset = todayHeader.offsetLeft - 80;
-      scrollBox.scrollTo({
-        left: Math.max(offset, 0),
-        behavior: 'smooth'
-      });
-    }, 400);
+      scrollBox.scrollTo({left:Math.max(offset,0),behavior:'smooth'});
+    },400);
   }
 })();
 </script>
