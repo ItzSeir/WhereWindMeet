@@ -1813,6 +1813,27 @@ body {
       border-color:rgba(196,181,253,.42);
     }
 
+
+    .time-preset.recommended{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .time-preset.recommended span{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:2px 6px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:900;
+      line-height:1;
+      color:#ffd76a;
+      background:rgba(255,215,106,.12);
+      border:1px solid rgba(255,215,106,.28);
+    }
+
     .datetime-modal-box .confirm-modal-actions{
       margin-top:20px;
     }
@@ -8055,11 +8076,10 @@ body {
         <input id="customTimeInput" class="signup-input" type="time" step="300" />
       </div>
       <div class="time-preset-list">
-        <button type="button" class="time-preset" onclick="selectQuickTime('16:00')">16:00</button>
-        <button type="button" class="time-preset" onclick="selectQuickTime('19:45')">19:45</button>
-        <button type="button" class="time-preset" onclick="selectQuickTime('20:30')">20:30</button>
-        <button type="button" class="time-preset" onclick="selectQuickTime('21:30')">21:30</button>
-        <button type="button" class="time-preset" onclick="selectQuickTime('22:00')">22:00</button>
+        <button type="button" class="time-preset recommended" data-time="20:30" onclick="selectQuickTime('20:30')">20:30 <span>推薦</span></button>
+        <button type="button" class="time-preset recommended" data-time="21:15" onclick="selectQuickTime('21:15')">21:15 <span>推薦</span></button>
+        <button type="button" class="time-preset recommended" data-time="21:30" onclick="selectQuickTime('21:30')">21:30 <span>推薦</span></button>
+        <button type="button" class="time-preset recommended" data-time="22:00" onclick="selectQuickTime('22:00')">22:00 <span>推薦</span></button>
       </div>
 
       <div id="dateTimeLimitText" class="date-limit-note"></div>
@@ -9101,29 +9121,11 @@ body {
       const slots = [];
       const day = dateObj.getDay();
 
+      // 每週一只預設建立 21:15 的隊伍。
+      // 20:30、21:30、22:00 仍屬推薦時段，但不會在這裡自動建立。
       if(day === 1){
         slots.push({
-          time:"19:45",
-          instance:1,
-          members:[],
-          isCustom:false,
-          teamType:"普通團",
-          teamSize:10,
-          description:""
-        });
-
-        slots.push({
-          time:"20:30",
-          instance:1,
-          members:[],
-          isCustom:false,
-          teamType:"普通團",
-          teamSize:10,
-          description:""
-        });
-
-        slots.push({
-          time:"22:00",
+          time:"21:15",
           instance:1,
           members:[],
           isCustom:false,
@@ -10069,7 +10071,7 @@ body {
       const timeInput = document.getElementById("customTimeInput");
       if(timeInput) timeInput.value = time;
       document.querySelectorAll(".time-preset").forEach(btn => {
-        btn.classList.toggle("active", btn.textContent.trim() === time);
+        btn.classList.toggle("active", btn.dataset.time === time);
       });
     };
 
@@ -10084,7 +10086,7 @@ body {
       currentDateTimeEdit = null;
       dateInput.value = todayKey;
       renderDateChoices(todayKey);
-      selectQuickTime("19:45");
+      selectQuickTime("21:15");
       setDateTimeTeamTypeDefault();
       document.getElementById("dateTimeTeamSizeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
       document.getElementById("dateTimeTeamTypeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
@@ -10767,7 +10769,7 @@ body {
 
       dateInput.value = dateKey;
       renderDateChoices(dateKey);
-      selectQuickTime("19:45");
+      selectQuickTime("21:15");
       setDateTimeTeamTypeDefault();
       document.getElementById("dateTimeTeamSizeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
       document.getElementById("dateTimeTeamTypeSelect").onchange = () => syncTowerOptions("dateTime", { towerFloor:1, towerDifficulty:"普通" });
@@ -10875,7 +10877,7 @@ body {
             const allowedRoles = getAllowedRoles(members, slot);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
-            const isRecommended = !isWeekend(date) && slot.time === "19:45";
+            const isRecommended = ["20:30", "21:15", "21:30", "22:00"].includes(slot.time);
             const isMyTeam = !!savedName && members.some(m => normalizeName(m.name) === normalizeName(savedName));
             const quickProfile = getMyProfile();
             const quickName = normalizeName(quickProfile.name);
