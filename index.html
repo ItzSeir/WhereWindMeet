@@ -6,7 +6,7 @@
 <title>夢回花深處｜首頁</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
+<link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
 <style>
 :root{
@@ -30,9 +30,7 @@
   --color-war:rgba(180,120,255,.25);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 html,body{
   margin:0;
@@ -47,9 +45,7 @@ html,body{
   overflow-x:clip;
 }
 
-body{
-  padding-top:100px;
-}
+body{padding-top:100px;}
 
 .bg-orb{
   position:fixed;
@@ -62,28 +58,22 @@ body{
 }
 
 .orb1{
-  width:260px;
-  height:260px;
+  width:260px;height:260px;
   background:rgba(110,168,255,.28);
-  top:4%;
-  left:4%;
+  top:4%;left:4%;
 }
 
 .orb2{
-  width:320px;
-  height:320px;
+  width:320px;height:320px;
   background:rgba(139,92,246,.24);
-  top:18%;
-  right:2%;
+  top:18%;right:2%;
   animation-delay:-2s;
 }
 
 .orb3{
-  width:240px;
-  height:240px;
+  width:240px;height:240px;
   background:rgba(255,215,106,.16);
-  bottom:8%;
-  left:12%;
+  bottom:8%;left:12%;
   animation-delay:-4s;
 }
 
@@ -119,6 +109,14 @@ body{
   -webkit-backdrop-filter:blur(20px);
   border:1px solid rgba(255,255,255,.1);
   box-shadow:0 10px 30px rgba(0,0,0,.3);
+  transition:top .25s ease,width .25s ease,background .25s ease,box-shadow .25s ease,border-color .25s ease;
+}
+
+.topbar.scrolled{
+  top:10px;
+  background:rgba(11,16,32,.88);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:0 14px 36px rgba(0,0,0,.42);
 }
 
 .topbar-content{
@@ -128,10 +126,7 @@ body{
   align-items:center;
 }
 
-.brand-group{
-  display:flex;
-  gap:8px;
-}
+.brand-group{display:flex;gap:8px;}
 
 .brand-badge{
   padding:6px 14px;
@@ -144,14 +139,9 @@ body{
   white-space:nowrap;
 }
 
-.brand-badge.sub{
-  color:var(--muted);
-}
+.brand-badge.sub{color:var(--muted);}
 
-.nav{
-  display:flex;
-  gap:8px;
-}
+.nav{display:flex;gap:8px;}
 
 .nav a{
   text-decoration:none;
@@ -276,9 +266,7 @@ body{
   border:1px solid transparent;
 }
 
-.btn:hover{
-  transform:translateY(-1px);
-}
+.btn:hover{transform:translateY(-1px);}
 
 .btn-primary{
   color:#fff;
@@ -295,6 +283,7 @@ body{
 .hero-side{
   display:grid;
   gap:12px;
+  align-self:stretch;
 }
 
 .mini-panel{
@@ -310,10 +299,7 @@ body{
   font-weight:800;
 }
 
-.leader-list{
-  display:grid;
-  gap:10px;
-}
+.leader-list{display:grid;gap:10px;}
 
 .leader-item{
   display:flex;
@@ -336,10 +322,133 @@ body{
   font-weight:700;
 }
 
-/* ===== Common Section ===== */
-.section{
-  margin-top:18px;
+.leader-members{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:2px;
 }
+
+.member-tag{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--text);
+  font-size:12px;
+  font-weight:700;
+}
+
+/* ===== Today / Tomorrow ===== */
+.hero-activity-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:24px;
+}
+
+.day-activity-panel{
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.10);
+  min-width:0;
+}
+
+.day-activity-panel.today-panel{
+  background:linear-gradient(135deg,rgba(110,168,255,.10),rgba(139,92,246,.08));
+}
+
+.day-activity-panel.tomorrow-panel{
+  background:linear-gradient(135deg,rgba(139,92,246,.075),rgba(255,255,255,.03));
+}
+
+.day-activity-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.day-activity-title{
+  margin:0;
+  font-size:15px;
+  font-weight:900;
+  color:#fff;
+}
+
+.day-activity-date{
+  flex:0 0 auto;
+  font-size:11px;
+  font-weight:800;
+  color:var(--muted);
+}
+
+.today-summary{display:grid;gap:10px;}
+
+.today-empty{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.today-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 13px;
+  border-radius:14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.today-item-main{min-width:0;}
+
+.today-item-name{
+  font-size:13px;
+  font-weight:800;
+  color:#fff;
+}
+
+.today-item-time{
+  margin-top:3px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.today-status{
+  flex:0 0 auto;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.2px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.07);
+  color:var(--muted);
+}
+
+.today-status.live{
+  color:#fff;
+  background:rgba(255,107,129,.22);
+  border-color:rgba(255,107,129,.35);
+  box-shadow:0 0 0 3px rgba(255,107,129,.08);
+}
+
+.today-status.soon{
+  color:#161a26;
+  background:var(--gold);
+  border-color:rgba(255,215,106,.65);
+}
+
+.today-status.done{opacity:.7;}
+
+/* ===== Common Section ===== */
+.section{margin-top:18px;}
 
 .section-title{
   margin:0 0 14px;
@@ -388,6 +497,221 @@ body{
   font-size:12px;
 }
 
+.schedule-topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:-3px 0 12px;
+}
+
+.schedule-legend{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px 12px;
+}
+
+.legend-item{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+}
+
+.legend-dot{
+  width:9px;
+  height:9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+}
+
+.legend-dot.party{background:var(--color-party)}
+.legend-dot.boss{background:var(--color-boss)}
+.legend-dot.duel{background:var(--color-duel)}
+.legend-dot.war{background:var(--color-war)}
+
+.schedule-now{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(110,168,255,.10);
+  border:1px solid rgba(110,168,255,.20);
+  color:#cfe0ff;
+  font-size:11px;
+  font-weight:900;
+}
+
+.schedule-now::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:var(--accent);
+  box-shadow:0 0 0 4px rgba(110,168,255,.12);
+}
+
+/* ===== 21:00 daily party banner inside timetable ===== */
+.party-timetable-strip{
+  grid-column:2 / 9;
+  grid-row:3;
+  align-self:start;
+  z-index:20;
+
+  /* 保留較大的視覺高度，回到原本百業派對卡片的感覺 */
+  height:58px;
+  margin:5px 5px 0;
+  padding:8px 18px;
+  border-radius:17px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+
+  /* 完全不透明，避免後方活動顏色混進百業派對 */
+  background:#74645e;
+
+  border:1.5px solid rgba(255,215,106,.88);
+  box-shadow:
+    0 0 0 2px rgba(255,215,106,.10),
+    0 10px 24px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.16);
+
+  color:#fff;
+  overflow:hidden;
+}
+
+.party-timetable-strip .event-name{
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.15;
+  text-shadow:0 1px 2px rgba(0,0,0,.26);
+}
+
+.party-timetable-strip .event-time{
+  color:rgba(255,255,255,.78);
+  font-size:10px;
+  font-weight:800;
+  line-height:1.15;
+}
+
+.party-timetable-strip.today-event{
+  outline:2px solid rgba(255,215,106,.92);
+  box-shadow:
+    0 0 0 4px rgba(255,215,106,.12),
+    0 12px 28px rgba(0,0,0,.26),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.party-timetable-strip.is-live{
+  background:#806b60;
+
+  outline:2px solid rgba(255,244,205,.98);
+  box-shadow:
+    0 0 0 4px rgba(255,215,106,.16),
+    0 12px 30px rgba(255,190,120,.18),
+    0 12px 28px rgba(0,0,0,.26),
+    inset 0 1px 0 rgba(255,255,255,.24);
+}
+
+.party-timetable-strip.is-next{
+  outline:2px solid rgba(255,215,106,.95);
+  box-shadow:
+    0 0 0 4px rgba(255,215,106,.13),
+    0 12px 28px rgba(0,0,0,.26),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.party-timetable-strip .event-state{
+  margin-top:1px;
+  padding:3px 8px;
+  border-radius:999px;
+  background:var(--gold);
+  color:#171923;
+  font-size:9px;
+  font-weight:900;
+}
+
+/* ===== Split events around the 21:00 party ===== */
+.split-event{
+  position:relative;
+  z-index:8;
+  min-width:0;
+}
+
+.split-segment{
+  position:absolute;
+  left:0;
+  right:0;
+  border-radius:16px;
+  padding:8px 6px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 8px 20px rgba(0,0,0,.22);
+  overflow:hidden;
+}
+
+.split-event.boss .split-segment{background:var(--color-boss);}
+.split-event.duel .split-segment{background:var(--color-duel);}
+
+/* 21:00 這一列特別加高，讓百業派對保有完整卡片高度，
+   同時讓破軍 / 一決在派對上下分裂，不互相覆蓋。 */
+.split-event.boss .split-before{
+  top:0;
+  height:105px;
+}
+
+.split-event.boss .split-after{
+  /* row2 105 + gap 10 + party reserve 68 */
+  top:183px;
+  bottom:0;
+}
+
+.split-event.duel .split-after{
+  /* 21:00 row top 留出 party banner 空間 */
+  top:68px;
+  bottom:0;
+}
+
+.split-event .event-name{font-size:13px;}
+.split-event .event-time{font-size:10px;}
+.split-event .event-day{font-size:9px;}
+
+.split-event.today-event .split-segment{
+  outline:2px solid rgba(255,215,106,.85);
+  box-shadow:0 0 0 3px rgba(255,215,106,.10),0 10px 24px rgba(0,0,0,.24);
+}
+
+.split-event.is-live .split-segment{
+  outline:2px solid rgba(110,168,255,.95);
+  box-shadow:0 0 0 3px rgba(110,168,255,.10),0 10px 24px rgba(0,0,0,.24);
+}
+
+.split-event.is-next .split-segment{
+  outline:2px solid rgba(255,215,106,.9);
+  box-shadow:0 0 0 3px rgba(255,215,106,.12),0 10px 24px rgba(0,0,0,.24);
+}
+
+.split-event > .event-state{
+  position:absolute;
+  right:6px;
+  bottom:6px;
+  z-index:3;
+}
+
 .schedule-container{
   width:100%;
   overflow-x:auto;
@@ -401,19 +725,10 @@ body{
   box-shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
-.schedule-container::-webkit-scrollbar{
-  height:6px;
-}
-
-.schedule-container::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.22);
-  border-radius:999px;
-}
-
 .schedule-grid{
   display:grid;
   grid-template-columns:64px repeat(7, minmax(0, 1fr));
-  grid-template-rows:auto 64px 105px 105px 105px 42px;
+  grid-template-rows:auto 105px 150px 105px 42px;
   gap:10px;
   width:100%;
   min-width:0;
@@ -447,6 +762,16 @@ body{
   letter-spacing:1px;
 }
 
+.grid-header .header-date{
+  display:block;
+  margin-top:4px;
+  color:rgba(255,255,255,.50);
+  font-size:10px;
+  font-weight:700;
+}
+
+.grid-header.today .header-date{color:rgba(255,255,255,.82)}
+
 .time-col{
   position:sticky;
   left:0;
@@ -476,22 +801,12 @@ body{
   transition:.25s ease;
 }
 
-.event-card:hover{
-  transform:translateY(-3px);
-}
+.event-card:hover{transform:translateY(-3px);}
 
-.party{ background:var(--color-party); }
-.boss{ background:var(--color-boss); }
-.duel{ background:var(--color-duel); }
-.war{ background:var(--color-war); }
-
-.span-all-days{
-  grid-column:2 / 9;
-}
-
-.span-2-rows{
-  grid-row:span 2;
-}
+.party{background:var(--color-party);}
+.boss{background:var(--color-boss);}
+.duel{background:var(--color-duel);}
+.war{background:var(--color-war);}
 
 .event-day{
   font-size:10px;
@@ -521,6 +836,51 @@ body{
 .event-card.today-event .event-name::before{
   content:"今日 · ";
   color:var(--gold);
+}
+
+.event-card.is-live{
+  outline:2px solid rgba(110,168,255,.95);
+  box-shadow:
+    0 0 0 4px rgba(110,168,255,.10),
+    0 12px 28px rgba(110,168,255,.14),
+    0 8px 20px rgba(0,0,0,.25);
+}
+
+.event-card.is-next{
+  outline:2px solid rgba(255,215,106,.9);
+  box-shadow:
+    0 0 0 4px rgba(255,215,106,.12),
+    0 14px 34px rgba(255,215,106,.14),
+    0 8px 20px rgba(0,0,0,.25);
+}
+
+.event-state{
+  margin-top:2px;
+  padding:3px 7px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+  background:rgba(255,255,255,.11);
+  color:#fff;
+}
+
+.event-card.is-live .event-state{background:rgba(110,168,255,.95);color:#fff;}
+.event-card.is-next .event-state{background:rgba(255,215,106,.92);color:#161a26;}
+
+.daily-event-strip .event-state{
+  margin-left:auto;
+  flex:0 0 auto;
+}
+
+.daily-event-strip.is-live .event-state{
+  background:rgba(110,168,255,.95);
+  color:#fff;
+}
+
+.daily-event-strip.is-next .event-state{
+  background:rgba(255,215,106,.92);
+  color:#161a26;
 }
 
 /* ===== Portal ===== */
@@ -560,6 +920,20 @@ body{
   color:var(--muted);
   line-height:1.8;
   font-size:14px;
+}
+
+.portal-card.featured{min-height:200px;}
+
+.portal-card .portal-kicker{
+  display:inline-flex;
+  margin-bottom:10px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.09);
+  color:var(--gold);
+  font-size:11px;
+  font-weight:900;
 }
 
 .portal-actions{
@@ -644,111 +1018,16 @@ body{
   font-size:13px;
 }
 
-/* ===== Responsive ===== */
-@media (max-width:1080px){
-  .hero-grid,
-  .cards-3,
-  .rules-grid,
-  .portal-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-@media (max-width:768px){
-  body{
-    padding-top:150px !important;
-  }
-
-  .topbar{
-    top:10px;
-    height:auto;
-    padding:10px 16px;
-    width:calc(100% - 20px);
-    border-radius:24px;
-    z-index:9999;
-  }
-
-  .topbar-content{
-    flex-direction:column;
-    gap:8px;
-  }
-
-  .brand-group{
-    justify-content:center;
-  }
-
-  .nav{
-    width:100%;
-    justify-content:flex-start;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    padding:5px 0;
-    gap:4px;
-  }
-
-  .nav::-webkit-scrollbar{
-    display:none;
-  }
-
-  .nav a{
-    padding:6px 12px !important;
-    font-size:11px !important;
-    font-weight:700 !important;
-    white-space:nowrap;
-  }
-
-  .container{
-    padding:16px 10px 30px;
-  }
-
-  .hero{
-    padding:22px 18px;
-  }
-
-  .hero h1{
-    font-size:36px;
-  }
-
-  .schedule-hint{
-    display:block;
-  }
-
-  .schedule-container{
-    padding:12px;
-    border-radius:24px;
-  }
-
-  .schedule-grid{
-    grid-template-columns:56px repeat(7, 96px);
-    grid-template-rows:auto 60px 96px 96px 96px 40px;
-    gap:8px;
-    width:max-content;
-    min-width:780px;
-  }
-
-  .event-name{
-    font-size:12px;
-  }
-
-  .event-time{
-    font-size:10px;
-  }
-
-  .event-day{
-    font-size:9px;
-  }
-}
-/* ===== WhereWindMeet Announcement Banner ===== */
+/* ===== Announcement Banner ===== */
 #siteAnnouncement{
-    max-width:1280px;
-    margin:0 auto 18px;
-    padding:0 20px;
-    box-sizing:border-box;
+  max-width:1280px;
+  margin:0 auto 18px;
+  padding:0 20px;
+  box-sizing:border-box;
 }
 
-#siteAnnouncement .announcementBar{
-    width:100%;
-}
+#siteAnnouncement .announcementBar{width:100%;}
+
 .announcementBar{
   position:relative;
   display:flex;
@@ -766,8 +1045,8 @@ body{
 }
 
 @keyframes announcementSlideIn{
-  from{ opacity:0; transform:translateY(8px); }
-  to{ opacity:1; transform:translateY(0); }
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 .announcementIcon{
@@ -782,10 +1061,7 @@ body{
   font-size:20px;
 }
 
-.announcementContent{
-  flex:1;
-  min-width:0;
-}
+.announcementContent{flex:1;min-width:0;}
 
 .announcementTitle{
   margin:1px 0 8px;
@@ -844,9 +1120,7 @@ body{
   cursor:pointer;
 }
 
-.announcementArrow:hover{
-  background:rgba(255,255,255,.18);
-}
+.announcementArrow:hover{background:rgba(255,255,255,.18);}
 
 .announcementDots{
   position:absolute;
@@ -871,7 +1145,163 @@ body{
   background:#fff;
 }
 
+/* ===== Dark Scrollbar ===== */
+html{
+  color-scheme:dark;
+  scrollbar-width:thin;
+  scrollbar-color:#778097 #11182b;
+  scrollbar-gutter:stable;
+}
+
+body,.nav,.schedule-container{
+  scrollbar-width:thin;
+  scrollbar-color:#778097 #11182b;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.nav::-webkit-scrollbar,
+.schedule-container::-webkit-scrollbar{
+  width:11px;
+  height:11px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.nav::-webkit-scrollbar-track,
+.schedule-container::-webkit-scrollbar-track{
+  background:#11182b;
+  border-radius:999px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.nav::-webkit-scrollbar-thumb,
+.schedule-container::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#9299ad,#687086);
+  border:3px solid transparent;
+  border-radius:999px;
+  min-height:46px;
+  background-clip:padding-box;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.nav::-webkit-scrollbar-thumb:hover,
+.schedule-container::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,#abb2c5,#7d859b);
+  background-clip:padding-box;
+}
+
+/* ===== Responsive ===== */
+@media (max-width:1080px){
+  .hero-grid,
+  .cards-3,
+  .rules-grid,
+  .portal-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 @media (max-width:768px){
+  body{padding-top:150px !important;}
+
+  .topbar{
+    top:10px;
+    height:auto;
+    padding:10px 16px;
+    width:calc(100% - 20px);
+    border-radius:24px;
+    z-index:9999;
+  }
+
+  .topbar.scrolled{top:8px;}
+
+  .topbar-content{
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .brand-group{justify-content:center;}
+
+  .nav{
+    width:100%;
+    justify-content:flex-start;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:5px 0;
+    gap:4px;
+    scrollbar-width:none;
+  }
+
+  .nav::-webkit-scrollbar{display:none;}
+
+  .nav a{
+    padding:6px 12px !important;
+    font-size:11px !important;
+    font-weight:700 !important;
+    white-space:nowrap;
+  }
+
+  .container{padding:16px 10px 30px;}
+
+  .hero{padding:22px 18px;}
+
+  .hero h1{font-size:36px;}
+
+  .hero-activity-grid{
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:18px;
+  }
+
+  .day-activity-panel{padding:14px;}
+
+  .today-item{align-items:flex-start;}
+
+  .schedule-hint{display:block;}
+
+  .schedule-topline{align-items:flex-start;}
+
+  .schedule-now{order:-1;}
+
+  .party-timetable-strip{
+    height:50px;
+    margin:5px 4px 0;
+    padding:6px 10px;
+    border-radius:14px;
+    gap:2px;
+  }
+
+  .party-timetable-strip .event-name{font-size:12px;}
+  .party-timetable-strip .event-time{font-size:9px;}
+  .party-timetable-strip .event-state{font-size:8px;padding:3px 6px;}
+
+  .split-event.boss .split-before{height:96px;}
+  .split-event.boss .split-after{top:164px;}
+  .split-event.duel .split-after{top:60px;}
+  .split-event .event-name{font-size:11px;}
+  .split-event .event-time{font-size:9px;}
+  .split-event .event-day{font-size:8px;}
+
+  .schedule-container{
+    padding:12px;
+    border-radius:24px;
+  }
+
+  .schedule-grid{
+    grid-template-columns:56px repeat(7, 96px);
+    grid-template-rows:auto 96px 132px 96px 40px;
+    gap:8px;
+    width:max-content;
+    min-width:780px;
+  }
+
+  .event-name{font-size:12px;}
+  .event-time{font-size:10px;}
+  .event-day{font-size:9px;}
+
   .announcementBar{
     padding:14px 14px 42px;
     gap:12px;
@@ -897,322 +1327,9 @@ body{
     bottom:23px;
   }
 
-  .announcementTitle{
-    font-size:14px;
-  }
-
-  .announcementText{
-    font-size:12px;
-  }
+  .announcementTitle{font-size:14px;}
+  .announcementText{font-size:12px;}
 }
-
-/* ===== Global Dark Scrollbar ===== */
-html{
- color-scheme:dark;
- scrollbar-width:thin;
- scrollbar-color:#778097 #11182b;
- scrollbar-gutter:stable;
-}
-body,.nav,.schedule-container{
- scrollbar-width:thin;
- scrollbar-color:#778097 #11182b;
-}
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.nav::-webkit-scrollbar,
-.schedule-container::-webkit-scrollbar{
- width:11px;height:11px;
-}
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track,
-.nav::-webkit-scrollbar-track,
-.schedule-container::-webkit-scrollbar-track{
- background:#11182b;border-radius:999px;
- box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
-}
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
-.nav::-webkit-scrollbar-thumb,
-.schedule-container::-webkit-scrollbar-thumb{
- background:linear-gradient(180deg,#9299ad,#687086);
- border:3px solid transparent;
- border-radius:999px;
- min-height:46px;
- background-clip:padding-box;
-}
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
-.nav::-webkit-scrollbar-thumb:hover,
-.schedule-container::-webkit-scrollbar-thumb:hover{
- background:linear-gradient(180deg,#abb2c5,#7d859b);
- background-clip:padding-box;
-}
-@media(max-width:768px){
- .nav{scrollbar-width:none;}
- .nav::-webkit-scrollbar{display:none;}
-}
-
-
-/* ===== Optimized homepage enhancements ===== */
-.topbar{
-  transition:top .25s ease,width .25s ease,background .25s ease,box-shadow .25s ease,border-color .25s ease;
-}
-.topbar.scrolled{
-  top:10px;
-  background:rgba(11,16,32,.88);
-  border-color:rgba(255,255,255,.14);
-  box-shadow:0 14px 36px rgba(0,0,0,.42);
-}
-
-.hero-side{
-  align-self:stretch;
-}
-
-.leader-members{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:2px;
-}
-.member-tag{
-  display:inline-flex;
-  align-items:center;
-  padding:5px 9px;
-  border-radius:999px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.08);
-  color:var(--text);
-  font-size:12px;
-  font-weight:700;
-}
-
-.today-panel{
-  background:linear-gradient(135deg,rgba(110,168,255,.10),rgba(139,92,246,.08));
-}
-.today-summary{
-  display:grid;
-  gap:8px;
-}
-.today-empty{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
-}
-.today-item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:10px 12px;
-  border-radius:14px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08);
-}
-.today-item-main{
-  min-width:0;
-}
-.today-item-name{
-  font-size:13px;
-  font-weight:800;
-  color:#fff;
-}
-.today-item-time{
-  margin-top:3px;
-  font-size:11px;
-  color:var(--muted);
-}
-.today-status{
-  flex:0 0 auto;
-  padding:5px 8px;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.2px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.07);
-  color:var(--muted);
-}
-.today-status.live{
-  color:#fff;
-  background:rgba(255,107,129,.22);
-  border-color:rgba(255,107,129,.35);
-  box-shadow:0 0 0 3px rgba(255,107,129,.08);
-}
-.today-status.soon{
-  color:#161a26;
-  background:var(--gold);
-  border-color:rgba(255,215,106,.65);
-}
-.today-status.done{
-  opacity:.7;
-}
-
-.event-card.is-live{
-  outline:2px solid rgba(110,168,255,.95);
-  box-shadow:
-    0 0 0 4px rgba(110,168,255,.10),
-    0 12px 28px rgba(110,168,255,.14),
-    0 8px 20px rgba(0,0,0,.25);
-}
-.event-card.is-next{
-  outline:2px solid rgba(255,215,106,.9);
-  box-shadow:0 0 0 4px rgba(255,215,106,.12),0 14px 34px rgba(255,215,106,.14),0 8px 20px rgba(0,0,0,.25);
-}
-.event-state{
-  margin-top:2px;
-  padding:3px 7px;
-  border-radius:999px;
-  font-size:9px;
-  font-weight:900;
-  line-height:1;
-  background:rgba(255,255,255,.11);
-  color:#fff;
-}
-.event-card.is-live .event-state{ background:rgba(110,168,255,.95); color:#fff; }
-.event-card.is-next .event-state{ background:rgba(255,215,106,.92); color:#161a26; }
-
-.portal-card.featured{
-  min-height:200px;
-}
-.portal-card .portal-kicker{
-  display:inline-flex;
-  margin-bottom:10px;
-  padding:5px 9px;
-  border-radius:999px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.09);
-  color:var(--gold);
-  font-size:11px;
-  font-weight:900;
-}
-
-.rules-more{
-  margin-top:14px;
-  display:flex;
-  justify-content:flex-end;
-}
-
-@media (max-width:768px){
-  .topbar.scrolled{ top:8px; }
-  .today-item{ align-items:flex-start; }
-  .hero-today-wide .today-summary{ grid-template-columns:1fr; }
-}
-
-
-
-/* ===== Today / Tomorrow activity split ===== */
-.hero-activity-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:18px;
-  margin-top:24px;
-}
-.day-activity-panel{
-  padding:18px;
-  border-radius:22px;
-  background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.035));
-  border:1px solid rgba(255,255,255,.10);
-  min-width:0;
-}
-.day-activity-panel.tomorrow-panel{
-  background:linear-gradient(135deg,rgba(139,92,246,.075),rgba(255,255,255,.03));
-}
-.day-activity-head{
-  display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:12px;
-}
-.day-activity-title{
-  margin:0;
-  font-size:15px;
-  font-weight:900;
-  color:#fff;
-}
-.day-activity-date{
-  flex:0 0 auto;
-  font-size:11px;
-  font-weight:800;
-  color:var(--muted);
-}
-.day-activity-panel .today-summary{
-  display:grid;
-  gap:10px;
-}
-.day-activity-panel .today-item{
-  padding:12px 13px;
-}
-
-/* ===== Schedule helper row ===== */
-.schedule-topline{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:12px;
-  margin:-3px 0 12px;
-}
-.schedule-legend{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px 12px;
-}
-.legend-item{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:800;
-}
-.legend-dot{
-  width:9px;
-  height:9px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.18);
-}
-.legend-dot.party{background:var(--color-party)}
-.legend-dot.boss{background:var(--color-boss)}
-.legend-dot.duel{background:var(--color-duel)}
-.legend-dot.war{background:var(--color-war)}
-.schedule-now{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:6px 10px;
-  border-radius:999px;
-  background:rgba(110,168,255,.10);
-  border:1px solid rgba(110,168,255,.20);
-  color:#cfe0ff;
-  font-size:11px;
-  font-weight:900;
-}
-.schedule-now::before{
-  content:"";
-  width:7px;
-  height:7px;
-  border-radius:999px;
-  background:var(--accent);
-  box-shadow:0 0 0 4px rgba(110,168,255,.12);
-}
-.grid-header .header-date{
-  display:block;
-  margin-top:4px;
-  color:rgba(255,255,255,.50);
-  font-size:10px;
-  font-weight:700;
-}
-.grid-header.today .header-date{color:rgba(255,255,255,.82)}
-
-@media (max-width:768px){
-  .hero-activity-grid{grid-template-columns:1fr;gap:12px;margin-top:18px}
-  .day-activity-panel{padding:14px}
-  .schedule-topline{align-items:flex-start}
-  .schedule-now{order:-1}
-}
-
 </style>
 </head>
 
@@ -1236,7 +1353,8 @@ body::-webkit-scrollbar-thumb:hover,
     </div>
   </div>
 </nav>
-              <div id="siteAnnouncement"></div>
+
+<div id="siteAnnouncement"></div>
 
 <div class="container">
 
@@ -1260,7 +1378,6 @@ body::-webkit-scrollbar-thumb:hover,
           <a href="#portal" class="btn btn-primary">查看其他頁面</a>
           <a href="#rules" class="btn btn-secondary">查看百業規則</a>
         </div>
-
       </div>
 
       <div class="hero-side">
@@ -1271,23 +1388,24 @@ body::-webkit-scrollbar-thumb:hover,
               <div class="leader-role">社長</div>
               <div class="leader-name">姜澈</div>
             </div>
+
             <div class="leader-item">
               <div class="leader-role">副社長</div>
               <div class="leader-name">花臻茵</div>
             </div>
+
             <div class="leader-item">
               <div class="leader-role">執法長老</div>
               <div class="leader-members">
                 <span class="member-tag">白凡</span>
-                <span class="member-tag">紫凜冬</span>
                 <span class="member-tag">雙鱼</span>
                 <span class="member-tag">曲絡寧</span>
                 <span class="member-tag">星天羽</span>
+                <span class="member-tag">婁震戒</span>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -1357,53 +1475,112 @@ body::-webkit-scrollbar-thumb:hover,
         <div class="grid-header" data-day="6" style="grid-column:7;grid-row:1">週六</div>
         <div class="grid-header" data-day="0" style="grid-column:8;grid-row:1">週日</div>
 
-        <div class="time-col" style="grid-column:1;grid-row:3">20:00</div>
-        <div class="time-col" style="grid-column:1;grid-row:4">21:00</div>
-        <div class="time-col" style="grid-column:1;grid-row:5">22:00</div>
-        <div class="time-col schedule-end-row" style="grid-column:1;grid-row:6">23:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:2">20:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:3">21:00</div>
+        <div class="time-col" style="grid-column:1;grid-row:4">22:00</div>
 
-        <div class="event-card party" data-days="1,2,3,4,5,6,0" data-start="19:30" data-end="21:00" style="grid-column:2 / 9;grid-row:2">
+        <!-- 百業派對：置於 21:00 時段內，使用完全不透明背景；其他活動僅視覺讓位 -->
+        <div
+          class="party-timetable-strip party schedule-event"
+          data-days="1,2,3,4,5,6,0"
+          data-start="21:00"
+          data-end="21:13"
+        >
           <span class="event-name">百業派對</span>
-          <span class="event-time">每日 19:30 - 19:43</span>
+          <span class="event-time">每日 21:00 - 21:13</span>
         </div>
 
-        <div class="event-card boss" data-days="2" data-start="20:00" data-end="22:00" style="grid-column:3;grid-row:3 / span 2">
-          <span class="event-day">週二</span>
-          <span class="event-name">破軍殺將</span>
-          <span class="event-time">20:00 - 22:00</span>
+        <!-- 破軍殺將：實際時間維持 20:00 - 22:00，僅在視覺上為百業派對讓出空間 -->
+        <div
+          class="split-event boss schedule-event"
+          data-days="2"
+          data-start="20:00"
+          data-end="22:00"
+          style="grid-column:3;grid-row:2 / span 2"
+        >
+          <div class="split-segment split-before">
+            <span class="event-day">週二</span>
+            <span class="event-name">破軍殺將</span>
+            <span class="event-time">20:00 - 22:00</span>
+          </div>
+          <div class="split-segment split-after">
+            <span class="event-name">破軍殺將</span>
+            <span class="event-time">持續至 22:00</span>
+          </div>
         </div>
 
-        <div class="event-card boss" data-days="4" data-start="20:00" data-end="22:00" style="grid-column:5;grid-row:3 / span 2">
-          <span class="event-day">週四</span>
-          <span class="event-name">破軍殺將</span>
-          <span class="event-time">20:00 - 22:00</span>
+        <div
+          class="split-event boss schedule-event"
+          data-days="4"
+          data-start="20:00"
+          data-end="22:00"
+          style="grid-column:5;grid-row:2 / span 2"
+        >
+          <div class="split-segment split-before">
+            <span class="event-day">週四</span>
+            <span class="event-name">破軍殺將</span>
+            <span class="event-time">20:00 - 22:00</span>
+          </div>
+          <div class="split-segment split-after">
+            <span class="event-name">破軍殺將</span>
+            <span class="event-time">持續至 22:00</span>
+          </div>
         </div>
 
-        <div class="event-card war" data-days="6" data-start="20:30" data-end="21:05" style="grid-column:7;grid-row:3">
+        <div
+          class="event-card war schedule-event"
+          data-days="6"
+          data-start="20:30"
+          data-end="21:05"
+          style="grid-column:7;grid-row:2"
+        >
           <span class="event-day">週六</span>
           <span class="event-name">百業戰</span>
           <span class="event-time">20:30 - 21:05</span>
         </div>
 
-        <div class="event-card war" data-days="0" data-start="20:30" data-end="21:05" style="grid-column:8;grid-row:3">
+        <div
+          class="event-card war schedule-event"
+          data-days="0"
+          data-start="20:30"
+          data-end="21:05"
+          style="grid-column:8;grid-row:2"
+        >
           <span class="event-day">週日</span>
           <span class="event-name">百業戰</span>
           <span class="event-time">20:30 - 21:05</span>
         </div>
 
-        <div class="event-card duel" data-days="3" data-start="21:00" data-end="23:00" style="grid-column:4;grid-row:4 / span 2">
-          <span class="event-day">週三</span>
-          <span class="event-name">一決高下</span>
-          <span class="event-time">21:00 - 23:00</span>
+        <!-- 一決高下：實際時間維持 21:00 - 23:00，僅在視覺上為百業派對讓出空間 -->
+        <div
+          class="split-event duel schedule-event"
+          data-days="3"
+          data-start="21:00"
+          data-end="23:00"
+          style="grid-column:4;grid-row:3 / span 2"
+        >
+          <div class="split-segment split-after">
+            <span class="event-day">週三</span>
+            <span class="event-name">一決高下</span>
+            <span class="event-time">21:00 - 23:00</span>
+          </div>
         </div>
 
-        <div class="event-card duel" data-days="5" data-start="21:00" data-end="23:00" style="grid-column:6;grid-row:4 / span 2">
-          <span class="event-day">週五</span>
-          <span class="event-name">一決高下</span>
-          <span class="event-time">21:00 - 23:00</span>
+        <div
+          class="split-event duel schedule-event"
+          data-days="5"
+          data-start="21:00"
+          data-end="23:00"
+          style="grid-column:6;grid-row:3 / span 2"
+        >
+          <div class="split-segment split-after">
+            <span class="event-day">週五</span>
+            <span class="event-name">一決高下</span>
+            <span class="event-time">21:00 - 23:00</span>
+          </div>
         </div>
 
-        <div class="schedule-end-cell" style="grid-column:2 / 9;grid-row:6"></div>
+        <div style="grid-column:2 / 9;grid-row:5"></div>
       </div>
     </div>
   </section>
@@ -1525,8 +1702,13 @@ window.addEventListener('scroll', () => {
     return Number.isFinite(h) && Number.isFinite(m) ? h * 60 + m : null;
   }
 
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function dateLabel(date){ return `${date.getMonth()+1}/${date.getDate()}`; }
+  function pad(n){
+    return String(n).padStart(2,'0');
+  }
+
+  function dateLabel(date){
+    return `${date.getMonth()+1}/${date.getDate()}`;
+  }
 
   const tomorrowDate = new Date(now);
   tomorrowDate.setDate(now.getDate() + 1);
@@ -1534,43 +1716,73 @@ window.addEventListener('scroll', () => {
   /* Header weekday + actual date */
   document.querySelectorAll('.grid-header').forEach(header => {
     const targetDay = Number(header.dataset.day);
-    if(targetDay === today) header.classList.add('today');
+
+    if(targetDay === today){
+      header.classList.add('today');
+    }
 
     const delta = (targetDay - today + 7) % 7;
     const d = new Date(now);
     d.setDate(now.getDate() + delta);
+
     const dateSpan = document.createElement('span');
     dateSpan.className = 'header-date';
     dateSpan.textContent = dateLabel(d);
     header.appendChild(dateSpan);
   });
 
+  /* Collect every scheduled activity, including the 21:00 party strip */
   const allEvents = [];
-  document.querySelectorAll('.event-card').forEach(card => {
+
+  document.querySelectorAll('.schedule-event').forEach(card => {
     const days = card.dataset.days;
     if(!days) return;
 
     const dayList = days.split(',').map(Number);
-    const name = card.querySelector('.event-name')?.textContent?.trim() || '活動';
+    const name =
+      card.querySelector('.event-name')?.textContent?.trim() ||
+      card.querySelector('.daily-event-name')?.textContent?.trim() ||
+      '活動';
+
     const start = card.dataset.start;
     const end = card.dataset.end;
+
     allEvents.push({
-      card, dayList, name, start, end,
-      startMin:toMinutes(start), endMin:toMinutes(end)
+      card,
+      dayList,
+      name,
+      start,
+      end,
+      startMin:toMinutes(start),
+      endMin:toMinutes(end)
     });
   });
 
-  const todayEvents = allEvents.filter(item => item.dayList.includes(today)).sort((a,b)=>a.startMin-b.startMin);
-  const tomorrowEvents = allEvents.filter(item => item.dayList.includes(tomorrow)).sort((a,b)=>a.startMin-b.startMin);
+  const todayEvents = allEvents
+    .filter(item => item.dayList.includes(today))
+    .sort((a,b) => a.startMin - b.startMin);
 
-  todayEvents.forEach(item => item.card.classList.add('today-event'));
+  const tomorrowEvents = allEvents
+    .filter(item => item.dayList.includes(tomorrow))
+    .sort((a,b) => a.startMin - b.startMin);
 
-  const live = todayEvents.find(item => currentMinutes >= item.startMin && currentMinutes <= item.endMin);
-  const next = todayEvents.find(item => item.startMin > currentMinutes);
+  todayEvents.forEach(item => {
+    item.card.classList.add('today-event');
+  });
+
+  const live = todayEvents.find(item =>
+    currentMinutes >= item.startMin &&
+    currentMinutes < item.endMin
+  );
+
+  const next = todayEvents.find(item =>
+    item.startMin > currentMinutes
+  );
 
   if(live){
     live.card.classList.remove('today-event');
     live.card.classList.add('is-live');
+
     const badge = document.createElement('span');
     badge.className = 'event-state';
     badge.textContent = '進行中';
@@ -1578,6 +1790,7 @@ window.addEventListener('scroll', () => {
   }else if(next){
     next.card.classList.remove('today-event');
     next.card.classList.add('is-next');
+
     const badge = document.createElement('span');
     badge.className = 'event-state';
     badge.textContent = '下一場';
@@ -1591,25 +1804,45 @@ window.addEventListener('scroll', () => {
   const summary = document.getElementById('todaySummary');
   const tomorrowSummary = document.getElementById('tomorrowSummary');
 
-  if(title) title.textContent = `今日活動 · ${dayNames[today]}`;
-  if(todayDateEl) todayDateEl.textContent = dateLabel(now);
-  if(tomorrowTitle) tomorrowTitle.textContent = `明日活動 · ${dayNames[tomorrow]}`;
-  if(tomorrowDateEl) tomorrowDateEl.textContent = dateLabel(tomorrowDate);
+  if(title){
+    title.textContent = `今日活動 · ${dayNames[today]}`;
+  }
+
+  if(todayDateEl){
+    todayDateEl.textContent = dateLabel(now);
+  }
+
+  if(tomorrowTitle){
+    tomorrowTitle.textContent = `明日活動 · ${dayNames[tomorrow]}`;
+  }
+
+  if(tomorrowDateEl){
+    tomorrowDateEl.textContent = dateLabel(tomorrowDate);
+  }
 
   function renderToday(events){
-    if(!events.length) return '<div class="today-empty">今天沒有固定百業活動。</div>';
+    if(!events.length){
+      return '<div class="today-empty">今天沒有固定百業活動。</div>';
+    }
+
     return events.map(item => {
       let label = '稍後';
       let cls = '';
-      if(currentMinutes > item.endMin){
-        label = '已結束'; cls = 'done';
-      }else if(currentMinutes >= item.startMin && currentMinutes <= item.endMin){
-        label = '進行中'; cls = 'live';
+
+      if(currentMinutes >= item.endMin){
+        label = '已結束';
+        cls = 'done';
+      }else if(currentMinutes >= item.startMin && currentMinutes < item.endMin){
+        label = '進行中';
+        cls = 'live';
       }else if(item.startMin > currentMinutes && item.startMin - currentMinutes <= 60){
-        label = `${item.startMin-currentMinutes} 分鐘後`; cls = 'soon';
+        label = `${item.startMin-currentMinutes} 分鐘後`;
+        cls = 'soon';
       }else if(item === next){
-        label = '下一場'; cls = 'soon';
+        label = '下一場';
+        cls = 'soon';
       }
+
       return `<div class="today-item">
         <div class="today-item-main">
           <div class="today-item-name">${item.name}</div>
@@ -1621,7 +1854,10 @@ window.addEventListener('scroll', () => {
   }
 
   function renderTomorrow(events){
-    if(!events.length) return '<div class="today-empty">明天沒有固定百業活動。</div>';
+    if(!events.length){
+      return '<div class="today-empty">明天沒有固定百業活動。</div>';
+    }
+
     return events.map(item => `<div class="today-item">
       <div class="today-item-main">
         <div class="today-item-name">${item.name}</div>
@@ -1631,75 +1867,90 @@ window.addEventListener('scroll', () => {
     </div>`).join('');
   }
 
-  if(summary) summary.innerHTML = renderToday(todayEvents);
-  if(tomorrowSummary) tomorrowSummary.innerHTML = renderTomorrow(tomorrowEvents);
+  if(summary){
+    summary.innerHTML = renderToday(todayEvents);
+  }
+
+  if(tomorrowSummary){
+    tomorrowSummary.innerHTML = renderTomorrow(tomorrowEvents);
+  }
 
   const nowEl = document.getElementById('scheduleNow');
-  if(nowEl) nowEl.textContent = `現在 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+  if(nowEl){
+    nowEl.textContent = `現在 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
 
   const todayHeader = document.querySelector('.grid-header.today');
   const scrollBox = document.getElementById('scheduleScroll');
+
   if(todayHeader && scrollBox && window.innerWidth <= 768){
     setTimeout(() => {
       const offset = todayHeader.offsetLeft - 80;
-      scrollBox.scrollTo({left:Math.max(offset,0),behavior:'smooth'});
+      scrollBox.scrollTo({
+        left:Math.max(offset,0),
+        behavior:'smooth'
+      });
     },400);
   }
 })();
 </script>
+
 <script>
 (async () => {
 
-const box = document.getElementById("siteAnnouncement");
-if(!box) return;
+  const box = document.getElementById("siteAnnouncement");
+  if(!box) return;
 
-try{
+  try{
 
-const res = await fetch("/WhereWindMeet/data/announcement.json?t=" + Date.now());
-const data = await res.json();
+    const res = await fetch("/WhereWindMeet/data/announcement.json?t=" + Date.now());
+    const data = await res.json();
 
-if(!data.enabled){
-    box.remove();
-    return;
-}
+    if(!data.enabled){
+      box.remove();
+      return;
+    }
 
-const announcements = Array.isArray(data.announcements) ? data.announcements : [];
+    const announcements = Array.isArray(data.announcements)
+      ? data.announcements
+      : [];
 
-if(!announcements.length){
-    box.remove();
-    return;
-}
+    if(!announcements.length){
+      box.remove();
+      return;
+    }
 
-let current = 0;
-let timer = null;
+    let current = 0;
+    let timer = null;
 
-function render(index){
-    const item = announcements[index];
+    function render(index){
+      const item = announcements[index];
 
-    box.innerHTML = `
-    <div class="announcementBar">
+      box.innerHTML = `
+      <div class="announcementBar">
 
         <div class="announcementIcon">📢</div>
 
         <div class="announcementContent">
 
-            <div class="announcementTitle">
-                ${escapeHtml(item.title || "重要公告")}
-            </div>
+          <div class="announcementTitle">
+            ${escapeHtml(item.title || "重要公告")}
+          </div>
 
-            ${item.pill ? `
-            <div class="announcementPill">
-                ${escapeHtml(item.pill)}
-            </div>
-            ` : ""}
+          ${item.pill ? `
+          <div class="announcementPill">
+            ${escapeHtml(item.pill)}
+          </div>
+          ` : ""}
 
-            <div class="announcementText">
-                ${escapeHtml(item.text || item.content || item.message || "")}
-            </div>
+          <div class="announcementText">
+            ${escapeHtml(item.text || item.content || item.message || "")}
+          </div>
 
-            <div class="announcementTime">
-                更新時間：${escapeHtml(item.updated || "")}
-            </div>
+          <div class="announcementTime">
+            更新時間：${escapeHtml(item.updated || "")}
+          </div>
 
         </div>
 
@@ -1712,65 +1963,77 @@ function render(index){
 
           <div class="announcementDots">
             ${announcements.map((_, i) => `
-              <button class="announcementDot ${i === current ? "active" : ""}" data-index="${i}" type="button"></button>
+              <button
+                class="announcementDot ${i === current ? "active" : ""}"
+                data-index="${i}"
+                type="button">
+              </button>
             `).join("")}
           </div>
           ` : ""
         }
 
-    </div>
-    `;
+      </div>
+      `;
 
-    const prev = box.querySelector("#annPrev");
-    const next = box.querySelector("#annNext");
-    const dots = box.querySelectorAll(".announcementDot");
+      const prev = box.querySelector("#annPrev");
+      const next = box.querySelector("#annNext");
+      const dots = box.querySelectorAll(".announcementDot");
 
-    if(prev) prev.onclick = () => manualGo(current - 1);
-    if(next) next.onclick = () => manualGo(current + 1);
+      if(prev){
+        prev.onclick = () => manualGo(current - 1);
+      }
 
-    dots.forEach(dot => {
-      dot.onclick = () => manualGo(Number(dot.dataset.index));
-    });
-}
+      if(next){
+        next.onclick = () => manualGo(current + 1);
+      }
 
-function go(index){
-    current = (index + announcements.length) % announcements.length;
-    render(current);
-}
-
-function manualGo(index){
-    go(index);
-    restartTimer();
-}
-
-function restartTimer(){
-    if(timer) clearInterval(timer);
-
-    if(announcements.length > 1){
-        timer = setInterval(() => {
-            go(current + 1);
-        }, 5000);
+      dots.forEach(dot => {
+        dot.onclick = () => manualGo(Number(dot.dataset.index));
+      });
     }
-}
 
-render(current);
-restartTimer();
+    function go(index){
+      current = (index + announcements.length) % announcements.length;
+      render(current);
+    }
 
-}catch(e){
+    function manualGo(index){
+      go(index);
+      restartTimer();
+    }
+
+    function restartTimer(){
+      if(timer){
+        clearInterval(timer);
+      }
+
+      if(announcements.length > 1){
+        timer = setInterval(() => {
+          go(current + 1);
+        }, 5000);
+      }
+    }
+
+    render(current);
+    restartTimer();
+
+  }catch(e){
     console.log(e);
     box.remove();
-}
+  }
 
-function escapeHtml(text){
-  return String(text || "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
+  function escapeHtml(text){
+    return String(text || "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
 
 })();
 </script>
+
 </body>
 </html>
