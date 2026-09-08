@@ -1,0 +1,425 @@
+# 夢回花深處 Website Design README
+
+> **用途**：這份 README 是「夢回花深處」網站的共用視覺與前端結構規範。未來要新增、修改或重構頁面時，請先讀這份文件，再依照這裡的規則延伸。這樣可以避免首頁、副本報名、江湖回憶錄各自長出不同版本的 Navbar、Light/Dark Theme、公告與間距。
+
+## 1. 目前統一的頁面
+
+- `index.html`：首頁
+- `PVERegistration.html`：副本報名
+- `gallery.html`：江湖回憶錄
+- `assets/site-shell.css`：所有頁面共用的 Site Shell 樣式
+
+這三頁仍然可以保留自己的內容版型與功能，但**網站外殼（Site Shell）必須一致**。
+
+---
+
+## 2. 設計方向
+
+整體風格是：
+
+- 深色為預設，支援 Light / Dark Theme。
+- 以深藍黑背景搭配藍色 `#6ea8ff` 與紫色 `#8b5cf6` 作為主要識別色。
+- 大量使用柔和 surface、細邊框、玻璃感 blur、圓角與低對比陰影。
+- 不走純 GitHub / 純 Dashboard 風格，仍保留「燕雲十六聲 / 江湖」的柔和、帶氛圍感視覺。
+- 字體統一使用 `Noto Sans TC`。
+- 全站背景使用同一套藍黑 / 淺灰漸層；不要在單一頁另外疊 Grid 背景。
+- Scrollbar 也跟隨共用 Accent / Surface token。
+- 所有共用元件優先使用 CSS Variables，不要在不同頁面重新寫一組顏色。
+
+---
+
+## 3. 共用 Design Tokens
+
+共用 token 全部由 `assets/site-shell.css` 最後覆蓋，頁面自己的 CSS 可以使用它們，但不要重新定義另一套相同用途的顏色。
+
+### Dark Theme
+
+```css
+--bg: #0b1020;
+--bg-2: #111a31;
+--surface: #111930;
+--surface-2: #16213b;
+--surface-3: #1b2948;
+--line: rgba(255,255,255,.11);
+--line-strong: rgba(255,255,255,.18);
+--text: #eef2ff;
+--muted: #a8b3cf;
+--soft: #7888aa;
+--accent: #6ea8ff;
+--accent-2: #8b5cf6;
+--warm: #f59e0b;
+--pink: #d96ba7;
+--danger: #ff6b81;
+```
+
+### Light Theme
+
+```css
+--bg: #eef3fb;
+--bg-2: #f8faff;
+--surface: #ffffff;
+--surface-2: #f7f9fd;
+--surface-3: #eef3fb;
+--line: rgba(67,89,130,.16);
+--line-strong: rgba(67,89,130,.24);
+--text: #17233c;
+--muted: #64748b;
+--soft: #8794a8;
+--accent: #4f8ef7;
+--accent-2: #7c3aed;
+```
+
+### 相容 Alias
+
+副本報名舊程式曾使用：
+
+```css
+--bg2
+--accent2
+--ui-panel
+--ui-panel-2
+--ui-panel-3
+--ui-line
+--ui-text
+--ui-muted
+--ui-accent
+--ui-shadow
+```
+
+`site-shell.css` 已經將它們 alias 到新的共用 tokens。未來新增 CSS 時，**優先使用標準名稱**，不要再新增第三套 token。
+
+---
+
+## 4. Navbar 是固定共用元件
+
+### 標準 HTML
+
+每一頁都使用相同結構，只改第二個 `brand-badge sub` 與目前頁面的 `active` / `aria-current`。
+
+```html
+<nav class="topbar" id="floatingNav" aria-label="主要導覽">
+  <div class="topbar-content">
+    <div class="brand-group">
+      <span class="brand-badge">夢回花深處</span>
+      <span class="brand-badge sub">目前頁面名稱</span>
+    </div>
+
+    <div class="nav-wrap">
+      <div class="nav">
+        <a href="index">首頁</a>
+        <a href="PVERegistration">副本報名</a>
+        <a href="gallery">江湖回憶錄</a>
+        <a href="documentation">手冊（測試）</a>
+      </div>
+
+      <button
+        type="button"
+        class="theme-toggle"
+        id="themeToggleBtn"
+        aria-label="切換白天或夜間模式"
+      >☀ 白天</button>
+    </div>
+  </div>
+</nav>
+```
+
+目前頁面要加：
+
+```html
+class="active" aria-current="page"
+```
+
+### Navbar 尺寸
+
+Desktop：
+
+- `top: 20px`
+- scroll 後 `top: 10px`
+- `max-width: 1100px`
+- `min-height: 64px`
+- 圓角 `999px`
+- `backdrop-filter: blur(20px)`
+
+Mobile `<= 768px`：
+
+- `top: 10px`
+- Navbar 變成上下兩列。
+- Brand 在上，Nav + Theme Toggle 在下。
+- Nav 允許水平滑動，**不要硬壓縮文字**。
+- Body 頂部空間統一為 `150px`，避免固定 Navbar 蓋到內容。
+
+### Active 狀態
+
+Active 頁面固定使用：
+
+```css
+background: linear-gradient(135deg, var(--accent), var(--accent-2));
+color: #fff;
+```
+
+不要再使用：
+
+- `home-btn` 讓首頁永遠保持漸層。
+- 不同頁面各自定義 active 顏色。
+- 用 inline style 改 Navbar。
+
+---
+
+## 5. Theme 規則
+
+目前三頁都沿用相同 localStorage key：
+
+```js
+registration_theme
+wwm-home-theme-v2
+```
+
+讀取順序以 `registration_theme` 為主，舊 key 保留相容性。
+
+Theme 值只有：
+
+```text
+dark
+light
+```
+
+Theme 套在：
+
+```html
+<html data-theme="dark">
+```
+
+或：
+
+```html
+<html data-theme="light">
+```
+
+切換按鈕文字：
+
+- Dark mode 時顯示 `☀ 白天`
+- Light mode 時顯示 `☾ 夜間`
+
+### 未來修改注意
+
+不要在某一個頁面改成新的 storage key，否則使用者從首頁切換到副本報名時 Theme 會不同步。
+
+---
+
+## 6. Announcement 公告元件
+
+三頁的公告容器固定放在 Navbar 後面：
+
+```html
+<div id="siteAnnouncement"></div>
+```
+
+共用視覺由 `site-shell.css` 管理：
+
+- 最大寬度 `1320px`
+- Desktop 左右 padding `18px`
+- Mobile 左右 padding `10px`
+- 公告 Card `20px` 圓角
+- Icon 使用 Accent 藍紫漸層
+- Light / Dark 自動跟著 Theme 變化
+- 多則公告的左右箭頭與 dots 必須使用同一套樣式
+
+公告資料 / fetch 邏輯可以保留在各頁原本程式，**但是 HTML class 名稱不要改**：
+
+```text
+announcementBar
+announcementIcon
+announcementContent
+announcementTitle
+announcementPill
+announcementText
+announcementTime
+announcementControls
+announcementArrow
+announcementDots
+announcementDot
+```
+
+未來如果要真正完全抽離共用 JS，可以再把三頁重複的 announcement fetch/render 搬到 `assets/site-shell.js`，但搬移時要一次三頁一起改，不要只改其中一頁。
+
+---
+
+## 7. 共用排版規則
+
+### 圓角
+
+建議層級：
+
+```text
+大型 Hero / Workspace card : 24–28px
+一般 Section / Panel       : 18–22px
+Input / Button / 小 Card   : 12–15px
+Pill / Badge               : 999px
+```
+
+### Border
+
+一般使用：
+
+```css
+border: 1px solid var(--line);
+```
+
+需要更明顯時：
+
+```css
+border-color: var(--line-strong);
+```
+
+避免大量使用純白 `rgba(255,255,255,.3+)` 的粗邊框。
+
+### Shadow
+
+一般卡片：
+
+```css
+box-shadow: var(--shadow-soft);
+```
+
+Hero / 主要 Panel：
+
+```css
+box-shadow: var(--shadow);
+```
+
+不要每個小元件都加很重的 glow。
+
+---
+
+## 8. 頁面可以不同的部分
+
+以下內容**不需要為了統一而硬做成完全一樣**：
+
+### 首頁
+
+- Hero Dashboard
+- 今日 / 明日活動
+- 周程表
+- 百業規則與首頁資訊卡
+
+### 副本報名
+
+- Workspace Topline
+- 我的隊伍
+- 未來隊伍
+- 日期選擇
+- 報名 Card / Modal / PIN / Form
+- 因資料密度較高，內容最大寬度可以比首頁寬
+
+### 江湖回憶錄
+
+- Memory Archive Hero
+- 搜尋 / Filter Toolbar
+- Masonry Gallery
+- Lightbox
+- Upload Modal
+
+也就是：**統一 Site Shell，不要把所有頁面內容都做成同一個 Dashboard。**
+
+---
+
+## 9. 新增頁面的標準做法
+
+新增例如 `events.html` 時：
+
+1. 引入 `Noto Sans TC`。
+2. 在 `<head>` 最後引入：
+
+```html
+<link rel="stylesheet" href="assets/site-shell.css">
+```
+
+3. 使用標準 Navbar HTML。
+4. `brand-badge sub` 改成新頁名稱。
+5. 新頁 Nav Link 加 `class="active" aria-current="page"`。
+6. Navbar 後方保留：
+
+```html
+<div id="siteAnnouncement"></div>
+```
+
+7. 自己頁面的內容 CSS 可以獨立寫，但顏色要使用共用 variables。
+8. 手機版 breakpoint 優先沿用：
+
+```css
+@media (max-width: 768px)
+```
+
+9. 不要重新複製一整份 `.topbar` / `.announcementBar` CSS 到新頁。
+
+---
+
+## 10. CSS 載入順序非常重要
+
+目前策略是：
+
+```text
+頁面原有 CSS
+↓
+assets/site-shell.css
+```
+
+`site-shell.css` 必須放在 `<head>` 的最後面，讓共用 Navbar / Theme / Announcement 可以覆蓋舊頁面累積的樣式。
+
+如果未來慢慢清理舊 CSS，可以把各頁重複的 Navbar / Announcement CSS 刪掉，但在確認三頁外觀一致之前，不要直接大量刪除。
+
+---
+
+## 11. 不要做的事情
+
+未來修改時避免：
+
+- 只修改其中一頁 Navbar。
+- 新增另一組 `--primary`, `--mainBlue`, `--purple2` 來做相同用途。
+- 在 Gallery 使用 `home-btn`，但其他頁不用。
+- Light mode 寫死白色背景，Dark mode 又寫另一套 selector，而不用 variables。
+- 手機 Navbar 使用 `transform: scale(...)` 壓小整個元件。
+- 因為某頁比較寬，就把 Navbar 也跟著拉到 1400px。
+- 用 `!important` 修改頁面內容，除非是為了處理舊 legacy override；新的 page-specific CSS 應盡量正常使用 specificity。
+
+---
+
+## 12. 未來給 ChatGPT 的工作指令
+
+未來你可以把這個 README 和要修改的 HTML 一起提供，並直接說：
+
+> 先讀 `README.md`，保持「夢回花深處」既有 Site Shell 規範。Navbar、Theme、公告、Design Tokens、Mobile breakpoint 不要另做一套。只修改這次指定的頁面功能，若新增共用設計則同步更新 `assets/site-shell.css` 和 README。
+
+如果你要求「統一全站」，應先檢查：
+
+1. Navbar 結構是否相同。
+2. Active link 是否只出現在目前頁。
+3. Theme storage key 是否一致。
+4. `site-shell.css` 是否最後載入。
+5. 公告 class 名稱是否一致。
+6. Mobile `<=768px` 是否沒有被頁面後續 CSS 覆蓋。
+7. 共用顏色是否都回到 design tokens。
+
+---
+
+## 13. 本次整理的核心原則
+
+這次不是把三頁內容做成一模一樣，而是建立「同一個網站、不同功能頁」的感覺：
+
+```text
+夢回花深處
+├─ 共用 Site Shell
+│  ├─ Design Tokens
+│  ├─ Font / Background
+│  ├─ Navbar
+│  ├─ Theme
+│  ├─ Announcement
+│  ├─ Focus / Accessibility
+│  └─ Mobile shell
+│
+├─ 首頁自己的內容系統
+├─ 副本報名自己的功能系統
+└─ 江湖回憶錄自己的 Gallery 系統
+```
+
+**未來所有共用設計優先改 `assets/site-shell.css`，不要分別去三個 HTML 各改一次。**
