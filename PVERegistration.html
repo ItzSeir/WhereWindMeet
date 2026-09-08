@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>夢回花深處｜副本編成</title>
+  <title>夢回花深處｜副本組隊</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
@@ -11824,9 +11824,11 @@ body {
     document.documentElement.dataset.theme = "dark";
   }
 </script>
+  <!-- Shared Site Shell: common design tokens / navbar / announcement -->
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
-<body>
-<nav class="topbar" id="floatingNav">
+<body data-site-page="PVERegistration">
+<nav class="topbar" id="floatingNav" aria-label="主要導覽">
   <div class="topbar-content">
     <div class="brand-group">
       <span class="brand-badge">夢回花深處</span>
@@ -11835,7 +11837,7 @@ body {
     <div class="nav-wrap">
       <div class="nav">
         <a href="index">首頁</a>
-        <a href="PVERegistration" class="active">副本報名</a>
+        <a href="PVERegistration" class="active" aria-current="page">副本報名</a>
         <a href="gallery">江湖回憶錄</a>
         <a href="documentation">手冊（測試）</a>
       </div>
@@ -15558,7 +15560,7 @@ body {
         return `<button type="button" class="team-intro-card ${typeClass}${isMine ? " is-my-preview" : ""}" data-jump-date="${dateKey}" data-jump-slot="${slotIndex}" title="前往 ${escapeHtml(dateLabel)} ${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")} 報名">
           <div class="team-intro-date-row"><div class="team-intro-date">${escapeHtml(dateLabel)}</div>${isMine ? `<span class="team-intro-mine">我的隊伍</span>` : ``}</div>
           <div class="team-intro-top"><span class="team-intro-time">${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")}</span><span class="team-intro-type">${escapeHtml(teamTypeLabel(slot))}</span></div>
-          <div class="team-intro-name">${escapeHtml(instanceText)} · ${maxPeople} 人編成</div>
+          <div class="team-intro-name">${escapeHtml(instanceText)} · ${maxPeople} 人組隊</div>
           <div class="team-intro-meta">
             <span>${confirmedCount}/${maxPeople} 人</span>
             ${missing.missingHeal > 0 ? `<span class="need-heal">缺補 ${missing.missingHeal}</span>` : `<span>補師達標</span>`}
