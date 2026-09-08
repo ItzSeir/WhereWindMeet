@@ -202,10 +202,12 @@ html[data-theme="light"] .archive-wall .item{border-color:#d9e2ef!important;box-
   }catch(e){document.documentElement.dataset.theme="dark";}
 })();
 </script>
+  <!-- Shared Site Shell: common design tokens / navbar / announcement -->
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
 
-<body>
-  <nav class="topbar" id="floatingNav">
+<body data-site-page="gallery">
+  <nav class="topbar" id="floatingNav" aria-label="主要導覽">
   <div class="topbar-content">
     <div class="brand-group">
       <span class="brand-badge">夢回花深處</span>
@@ -213,9 +215,9 @@ html[data-theme="light"] .archive-wall .item{border-color:#d9e2ef!important;box-
     </div>
     <div class="nav-wrap">
       <div class="nav">
-        <a href="index" class="home-btn">首頁</a>
+        <a href="index">首頁</a>
         <a href="PVERegistration">副本報名</a>
-        <a href="gallery" class="active">江湖回憶錄</a>
+        <a href="gallery" class="active" aria-current="page">江湖回憶錄</a>
         <a href="documentation">手冊（測試）</a>
       </div>
       <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="切換白天或夜間模式">☀ 白天</button>
