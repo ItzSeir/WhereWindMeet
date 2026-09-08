@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>夢回花深處｜副本組隊</title>
+  <title>夢回花深處｜副本編成</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
@@ -9226,7 +9226,7 @@ body {
       border-color:rgba(124,156,255,.24);
     }
     .date-nav-btn.is-pinned-monday .date-nav-main strong::after{
-      content:"置頂";
+      content:"固定";
       display:inline-flex;
       align-items:center;
       margin-left:6px;
@@ -11398,10 +11398,431 @@ body {
       .day-card .day-title{ font-size:22px !important; }
     }
 
-  </style>
+  
+
+    /* =========================================================
+       v28 — Homepage navbar + light announcement + compact overview
+       ========================================================= */
+
+    /* Navbar copied from the redesigned homepage */
+    .topbar{
+      position:fixed !important;
+      top:20px !important;
+      left:50% !important;
+      transform:translateX(-50%) !important;
+      width:calc(100% - 40px) !important;
+      max-width:1100px !important;
+      min-height:64px !important;
+      height:auto !important;
+      z-index:10000 !important;
+      display:flex !important;
+      align-items:center !important;
+      padding:0 12px !important;
+      border-radius:999px !important;
+      background:color-mix(in srgb,var(--ui-panel) 72%,transparent) !important;
+      border:1px solid var(--ui-line) !important;
+      box-shadow:0 10px 30px rgba(0,0,0,.26) !important;
+      backdrop-filter:blur(20px) !important;
+      -webkit-backdrop-filter:blur(20px) !important;
+      transition:.25s ease !important;
+    }
+    .topbar.scrolled{
+      top:10px !important;
+      background:color-mix(in srgb,var(--ui-panel) 91%,transparent) !important;
+      box-shadow:var(--ui-shadow) !important;
+    }
+    .topbar-content{
+      width:100% !important;
+      display:flex !important;
+      justify-content:space-between !important;
+      align-items:center !important;
+      gap:10px !important;
+    }
+    .brand-group{
+      display:flex !important;
+      gap:8px !important;
+      align-items:center !important;
+      min-width:max-content !important;
+    }
+    .brand-badge{
+      padding:6px 14px !important;
+      border-radius:999px !important;
+      background:var(--ui-panel-2) !important;
+      border:1px solid var(--ui-line) !important;
+      color:var(--ui-text) !important;
+      font-size:12px !important;
+      font-weight:800 !important;
+      white-space:nowrap !important;
+    }
+    .brand-badge.sub{ color:var(--ui-muted) !important; }
+    .nav-wrap{
+      display:flex !important;
+      align-items:center !important;
+      gap:8px !important;
+      min-width:0 !important;
+    }
+    .nav{
+      display:flex !important;
+      gap:6px !important;
+      align-items:center !important;
+      min-width:0 !important;
+    }
+    .nav a,
+    .nav a.home-btn{
+      text-decoration:none !important;
+      color:var(--ui-muted) !important;
+      padding:8px 15px !important;
+      border-radius:999px !important;
+      font-size:13px !important;
+      font-weight:700 !important;
+      white-space:nowrap !important;
+      transition:.18s ease !important;
+      background:transparent !important;
+      box-shadow:none !important;
+    }
+    .nav a:hover{
+      color:var(--ui-text) !important;
+      background:var(--ui-panel-2) !important;
+    }
+    .nav a.active{
+      color:#fff !important;
+      background:linear-gradient(135deg,#6ea8ff,#8b5cf6) !important;
+      box-shadow:0 6px 16px rgba(110,168,255,.24) !important;
+      font-weight:800 !important;
+    }
+    .theme-toggle{
+      flex:0 0 auto !important;
+      min-height:38px !important;
+      padding:0 12px !important;
+      border:1px solid var(--ui-line) !important;
+      border-radius:999px !important;
+      background:var(--ui-panel-2) !important;
+      color:var(--ui-text) !important;
+      font-size:12px !important;
+      font-weight:900 !important;
+      cursor:pointer !important;
+      box-shadow:none !important;
+      transition:.18s ease !important;
+    }
+    .theme-toggle:hover{
+      transform:translateY(-1px) !important;
+      border-color:color-mix(in srgb,var(--ui-accent) 55%,var(--ui-line)) !important;
+    }
+    html[data-theme="light"] .topbar{
+      background:rgba(255,255,255,.84) !important;
+      border-color:rgba(67,89,130,.16) !important;
+      box-shadow:0 14px 36px rgba(65,86,125,.14) !important;
+    }
+    html[data-theme="light"] .topbar.scrolled{ background:rgba(255,255,255,.95) !important; }
+
+    /* Announcement follows the page theme instead of staying dark in light mode */
+    #siteAnnouncement{
+      max-width:1380px !important;
+      margin:0 auto 16px !important;
+      padding:0 18px !important;
+    }
+    .announcementBar{
+      border-radius:20px !important;
+      border:1px solid color-mix(in srgb,var(--ui-accent) 26%,var(--ui-line)) !important;
+      background:linear-gradient(135deg,
+        color-mix(in srgb,var(--ui-accent) 9%,var(--ui-panel)),
+        color-mix(in srgb,#8b5cf6 10%,var(--ui-panel))) !important;
+      box-shadow:0 12px 30px rgba(0,0,0,.12) !important;
+      color:var(--ui-text) !important;
+    }
+    .announcementIcon{
+      border-radius:13px !important;
+      background:linear-gradient(135deg,#6ea8ff,#8b5cf6) !important;
+      color:#fff !important;
+      box-shadow:0 9px 20px rgba(110,168,255,.20) !important;
+    }
+    .announcementTitle,
+    .announcementText{ color:var(--ui-text) !important; }
+    .announcementTime{ color:var(--ui-muted) !important; }
+    .announcementPill{
+      color:#d9ceff !important;
+      background:rgba(139,92,246,.14) !important;
+      border:1px solid rgba(139,92,246,.24) !important;
+      box-shadow:none !important;
+    }
+    .announcementArrow{
+      border-color:var(--ui-line) !important;
+      background:var(--ui-panel-2) !important;
+      color:var(--ui-text) !important;
+    }
+    .announcementArrow:hover{ background:var(--ui-panel-3) !important; }
+    .announcementDot{ background:color-mix(in srgb,var(--ui-muted) 36%,transparent) !important; }
+    .announcementDot.active{ background:var(--ui-accent) !important; }
+    html[data-theme="light"] .announcementBar{
+      background:linear-gradient(135deg,#ffffff 0%,#f7f9ff 54%,#f7f3ff 100%) !important;
+      border-color:#d9e2f2 !important;
+      box-shadow:0 14px 32px rgba(65,86,125,.10) !important;
+    }
+    html[data-theme="light"] .announcementPill{
+      color:#6d4ac6 !important;
+      background:#f3efff !important;
+      border-color:#ddd2f7 !important;
+    }
+
+    /* Native select menu: ensure options remain readable in both themes */
+    html[data-theme="dark"]{ color-scheme:dark; }
+    html[data-theme="light"]{ color-scheme:light; }
+    html[data-theme="dark"] select,
+    html[data-theme="dark"] .signup-select{
+      color:#eef2ff !important;
+      background-color:#0c1422 !important;
+      border-color:rgba(255,255,255,.13) !important;
+    }
+    html[data-theme="dark"] select option,
+    html[data-theme="dark"] select optgroup,
+    html[data-theme="dark"] .signup-select option{
+      color:#eef2ff !important;
+      background:#0c1422 !important;
+    }
+    html[data-theme="dark"] select option:checked{
+      color:#07111f !important;
+      background:#8bb8f2 !important;
+    }
+    html[data-theme="light"] select,
+    html[data-theme="light"] .signup-select{
+      color:#17233c !important;
+      background-color:#f8faff !important;
+      border-color:#d8e1ed !important;
+    }
+    html[data-theme="light"] select option,
+    html[data-theme="light"] select optgroup,
+    html[data-theme="light"] .signup-select option{
+      color:#17233c !important;
+      background:#ffffff !important;
+    }
+    html[data-theme="light"] select option:checked{
+      color:#17356d !important;
+      background:#dceaff !important;
+    }
+
+    /* My teams left + future active teams right, both compact */
+    .team-overview-grid{
+      display:grid !important;
+      grid-template-columns:minmax(270px,330px) minmax(0,1fr) !important;
+      gap:14px !important;
+      align-items:stretch !important;
+      margin:14px 0 16px !important;
+    }
+    .team-overview-grid .my-teams-panel,
+    .team-overview-grid .top-active-teams{
+      margin:0 !important;
+      min-width:0 !important;
+      height:100% !important;
+    }
+    .team-overview-grid .my-teams-panel{
+      padding:16px !important;
+      border-radius:18px !important;
+      overflow:hidden !important;
+    }
+    .team-overview-grid .my-teams-head{
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr) auto !important;
+      align-items:start !important;
+      gap:8px !important;
+      margin-bottom:11px !important;
+    }
+    .team-overview-grid .my-teams-head h2{
+      font-size:23px !important;
+      line-height:1.1 !important;
+    }
+    .team-overview-grid .my-teams-head p{
+      max-width:220px !important;
+      font-size:11px !important;
+      line-height:1.5 !important;
+    }
+    .team-overview-grid .my-teams-edit{
+      width:34px !important;
+      min-width:34px !important;
+      height:34px !important;
+      min-height:34px !important;
+      padding:0 !important;
+      border-radius:10px !important;
+      font-size:0 !important;
+      display:grid !important;
+      place-items:center !important;
+    }
+    .team-overview-grid .my-teams-edit::before{
+      content:"✎";
+      font-size:15px;
+      line-height:1;
+    }
+    .team-overview-grid .my-teams-grid{
+      display:grid !important;
+      grid-template-columns:1fr !important;
+      gap:8px !important;
+      max-height:228px !important;
+      overflow-y:auto !important;
+      overflow-x:hidden !important;
+      padding-right:2px !important;
+    }
+    .team-overview-grid .my-team-card{
+      width:100% !important;
+      max-width:none !important;
+      min-width:0 !important;
+      min-height:112px !important;
+      flex-basis:auto !important;
+      padding:11px !important;
+      border-radius:13px !important;
+    }
+
+    .team-overview-grid .top-active-teams{
+      padding:16px !important;
+      border-radius:18px !important;
+    }
+    .team-overview-grid .top-active-teams .selected-day-heading-row{
+      align-items:center !important;
+      gap:12px !important;
+    }
+    .team-overview-grid .top-active-teams .selected-day-heading-row h2{
+      font-size:24px !important;
+      line-height:1.15 !important;
+    }
+    .team-overview-grid .top-active-teams .selected-day-heading-row p{
+      font-size:11px !important;
+      line-height:1.5 !important;
+      max-width:700px !important;
+    }
+    .team-overview-grid .top-active-teams .selected-day-add{
+      min-height:36px !important;
+      padding:7px 11px !important;
+      font-size:12px !important;
+      border-radius:10px !important;
+    }
+    .team-overview-grid .top-active-teams .team-intro-grid{
+      display:grid !important;
+      grid-template-columns:repeat(auto-fill,minmax(176px,1fr)) !important;
+      gap:8px !important;
+      max-height:228px !important;
+      overflow-y:auto !important;
+      overflow-x:hidden !important;
+      margin-top:11px !important;
+      padding-right:2px !important;
+    }
+    .team-overview-grid .top-active-teams .team-intro-card{
+      width:auto !important;
+      min-width:0 !important;
+      max-width:none !important;
+      min-height:112px !important;
+      flex-basis:auto !important;
+      padding:11px !important;
+      border-radius:13px !important;
+    }
+    .team-overview-grid .top-active-teams .team-intro-time{ font-size:19px !important; }
+    .team-overview-grid .top-active-teams .team-intro-name{ font-size:12px !important; }
+    .team-overview-grid .top-active-teams .team-intro-meta span{ font-size:10px !important; }
+    .team-overview-grid .top-active-teams .team-intro-go{ font-size:10px !important; }
+
+    /* When no profile exists, the active-teams panel uses the full row */
+    .team-overview-grid:has(.my-teams-panel[hidden]) .top-active-teams{
+      grid-column:1 / -1 !important;
+    }
+
+    /* Reduce redundant vertical space now that the overview is side-by-side */
+    .workspace-topline{ margin-bottom:0 !important; }
+    .workspace-quick-strip{ margin-top:0 !important; }
+
+    @media (max-width:980px){
+      .team-overview-grid{
+        grid-template-columns:minmax(230px,290px) minmax(0,1fr) !important;
+      }
+      .team-overview-grid .top-active-teams .team-intro-grid{
+        grid-template-columns:repeat(auto-fill,minmax(165px,1fr)) !important;
+      }
+    }
+
+    @media (max-width:768px){
+      body{ padding-top:150px !important; }
+      .topbar{
+        top:10px !important;
+        height:auto !important;
+        min-height:0 !important;
+        padding:10px 14px !important;
+        width:calc(100% - 20px) !important;
+        border-radius:24px !important;
+      }
+      .topbar.scrolled{ top:8px !important; }
+      .topbar-content{ flex-direction:column !important; gap:8px !important; }
+      .brand-group{ justify-content:center !important; }
+      .nav-wrap{ width:100% !important; gap:6px !important; }
+      .nav{
+        flex:1 !important;
+        width:100% !important;
+        justify-content:flex-start !important;
+        overflow-x:auto !important;
+        -webkit-overflow-scrolling:touch !important;
+        padding:4px 0 !important;
+        scrollbar-width:none !important;
+      }
+      .nav::-webkit-scrollbar{ display:none !important; }
+      .nav a,
+      .nav a.home-btn{ padding:6px 11px !important; font-size:11px !important; }
+      .theme-toggle{ min-height:34px !important; padding:0 10px !important; font-size:11px !important; }
+
+      #siteAnnouncement{ padding:0 10px !important; margin-bottom:12px !important; }
+      .announcementBar{ padding:13px 13px 42px !important; gap:10px !important; border-radius:17px !important; }
+      .announcementIcon{ width:34px !important; height:34px !important; border-radius:11px !important; font-size:16px !important; }
+      .announcementControls{ top:auto !important; right:12px !important; bottom:10px !important; }
+      .announcementDots{ left:58px !important; right:auto !important; bottom:20px !important; }
+
+      .team-overview-grid{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        gap:10px !important;
+        margin:10px 0 12px !important;
+      }
+      .team-overview-grid .my-teams-panel,
+      .team-overview-grid .top-active-teams{
+        grid-column:1 !important;
+        padding:13px !important;
+        border-radius:16px !important;
+      }
+      .team-overview-grid .my-teams-head{
+        display:flex !important;
+        flex-direction:row !important;
+        align-items:flex-start !important;
+      }
+      .team-overview-grid .my-teams-head h2{ font-size:20px !important; }
+      .team-overview-grid .my-teams-head p{ max-width:none !important; }
+      .team-overview-grid .my-teams-grid,
+      .team-overview-grid .top-active-teams .team-intro-grid{
+        display:flex !important;
+        gap:8px !important;
+        max-height:none !important;
+        overflow-x:auto !important;
+        overflow-y:hidden !important;
+        padding:0 0 4px !important;
+        scrollbar-width:none !important;
+      }
+      .team-overview-grid .my-teams-grid::-webkit-scrollbar,
+      .team-overview-grid .top-active-teams .team-intro-grid::-webkit-scrollbar{ display:none !important; }
+      .team-overview-grid .my-team-card{
+        flex:0 0 180px !important;
+        width:180px !important;
+        min-width:180px !important;
+        max-width:180px !important;
+      }
+      .team-overview-grid .top-active-teams .team-intro-card{
+        flex:0 0 190px !important;
+        width:190px !important;
+        min-width:190px !important;
+        max-width:190px !important;
+      }
+    }
+
+</style>
 
 <script>
-  try{ document.documentElement.dataset.theme = localStorage.getItem("registration_theme") === "light" ? "light" : "dark"; }catch(e){}
+  try{
+    const savedTheme = localStorage.getItem("registration_theme") || localStorage.getItem("wwm-home-theme-v2") || "dark";
+    document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+  }catch(e){
+    document.documentElement.dataset.theme = "dark";
+  }
 </script>
 </head>
 <body>
@@ -11411,13 +11832,14 @@ body {
       <span class="brand-badge">夢回花深處</span>
       <span class="brand-badge sub">副本報名</span>
     </div>
-
-    <div class="nav">
-      <a href="index" class="home-btn">首頁</a>
-      <a href="PVERegistration" class="active">副本報名</a>
-      <a href="gallery">江湖回憶錄</a>
-      <a href="documentation">手冊（測試）</a>
-
+    <div class="nav-wrap">
+      <div class="nav">
+        <a href="index">首頁</a>
+        <a href="PVERegistration" class="active">副本報名</a>
+        <a href="gallery">江湖回憶錄</a>
+        <a href="documentation">手冊（測試）</a>
+      </div>
+      <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="切換白天或夜間模式">☀ 白天</button>
     </div>
   </div>
 </nav>
@@ -11430,14 +11852,14 @@ body {
       <div>
         <div class="workspace-kicker">PVE REGISTRATION</div>
         <h1 class="workspace-title">副本報名</h1>
-        <p class="workspace-subtitle">支持5人本以及10人本組隊的地方。</p>
+        <p class="workspace-subtitle">選日期、看隊伍、直接報名。天賦與競速團的申請由團長使用 PIN 確認。</p>
       </div>
       <div class="workspace-top-actions">
-        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="切換白天／夜間模式">☀ 白天模式</button>
         <button type="button" class="workspace-primary-btn" id="addDateTimeBtn">＋ 建立隊伍</button>
       </div>
     </section>
 
+    <section class="team-overview-grid" id="teamOverviewGrid" aria-label="隊伍速覽">
     <section class="my-teams-panel" id="myTeamsPanel" hidden aria-label="我的隊伍">
       <div class="my-teams-head">
         <div>
@@ -11455,13 +11877,14 @@ body {
         <span class="side-kicker">ACTIVE TEAMS</span>
         <div class="selected-day-heading-row">
           <div>
-            <h2 id="selectedDayTitle">目前有人隊伍</h2>
+            <h2 id="selectedDayTitle">未來隊伍</h2>
             <p id="selectedDayMeta">載入未來兩週有人報名的隊伍…</p>
           </div>
           <button type="button" class="selected-day-add" id="selectedDayAddBtn">＋ 新增隊伍</button>
         </div>
       </div>
       <div id="selectedDayIntro" class="team-intro-grid"></div>
+    </section>
     </section>
 
     <section class="workspace-quick-strip" aria-label="快速操作捷徑">
@@ -15110,7 +15533,7 @@ body {
       const people = populated.reduce((n,item) => n + item.confirmedCount, 0);
       const pending = populated.reduce((n,item) => n + item.pendingCount, 0);
 
-      if(title) title.textContent = "目前有人隊伍";
+      if(title) title.textContent = "未來隊伍";
       if(meta){
         meta.textContent = populated.length
           ? `未來兩週共 ${populated.length} 隊有人報名 · ${people} 位已確認${pending ? ` · ${pending} 位待確認` : ""} · 點擊可直接前往報名`
@@ -15153,13 +15576,17 @@ body {
     function applyTheme(theme){
       const next = theme === "light" ? "light" : "dark";
       document.documentElement.dataset.theme = next;
-      localStorage.setItem("registration_theme", next);
+      try{
+        localStorage.setItem("registration_theme", next);
+        localStorage.setItem("wwm-home-theme-v2", next);
+      }catch(e){}
       const btn = document.getElementById("themeToggleBtn");
-      if(btn) btn.textContent = next === "light" ? "☾ 夜間模式" : "☀ 白天模式";
+      if(btn) btn.textContent = next === "light" ? "☾ 夜間" : "☀ 白天";
     }
 
     function bindThemeToggle(){
-      applyTheme(localStorage.getItem("registration_theme") || "dark");
+      const saved = localStorage.getItem("registration_theme") || localStorage.getItem("wwm-home-theme-v2") || "dark";
+      applyTheme(saved);
       const btn = document.getElementById("themeToggleBtn");
       if(btn){
         btn.onclick = () => applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
