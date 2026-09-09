@@ -150,7 +150,7 @@ function formatTime(time = "") {
     return normalizedTime;
   }
 
-  let hour = Number(match[1]);
+  const hour = Number(match[1]);
   const minute = Number(match[2]);
 
   if (
@@ -164,22 +164,13 @@ function formatTime(time = "") {
     return normalizedTime;
   }
 
-  const suffix =
-    hour >= 12 ? "PM" : "AM";
-
-  hour %= 12;
-
-  if (hour === 0) {
-    hour = 12;
-  }
-
   return `${String(hour).padStart(
     2,
     "0"
   )}:${String(minute).padStart(
     2,
     "0"
-  )}${suffix}`;
+  )}`;
 }
 
 function parseTimeToMinutes(time = "") {
@@ -435,14 +426,14 @@ function getStatusLine(slot = {}) {
     getSlotStatus(slot);
 
   if (status === "取消") {
-    return "> 狀態：**已取消**";
+    return "❌ **狀態**　已取消";
   }
 
   if (status === "時間更改") {
-    return "> 狀態：**時間更改**";
+    return "🕒 **狀態**　時間已更改";
   }
 
-  return "> 狀態：**準時**";
+  return "✅ **狀態**　準時";
 }
 
 function getTeamLabel(
@@ -480,37 +471,42 @@ function getSlotText(team) {
   const type =
     getTeamType(slot);
 
-  const lines = [
-    `> **${getDisplayTime(
-      slot
-    )}｜${getTeamLabel(
+  const lines = [];
+
+  lines.push(
+    `### 🕘 ${getDisplayTime(slot)}　${getTeamLabel(
       slot,
       members
-    )}**`,
-    getStatusLine(slot),
-  ];
+    )}`
+  );
+
+  lines.push(
+    `👤 **隊長**　${leader}`
+  );
+
+  lines.push(
+    `👥 **隊伍人數**　${memberCount}/${maximum} 人`
+  );
+
+  lines.push(
+    `⚔️ 輸出 **${roleCount.dps}**　` +
+    `🛡️ 承傷 **${roleCount.tank}**　` +
+    `💚 治療 **${roleCount.heal}**`
+  );
 
   if (type === "爬塔") {
     lines.push(
-      `> 難度：**${getTowerDifficulty(
-        slot
-      )}**`
-    );
-
-    lines.push(
-      `> 層數：**${getTowerFloor(
+      `🏯 **層數**　${getTowerFloor(
         slot,
         members
-      )}**`
+      )}　｜　⚙️ **難度**　${getTowerDifficulty(
+        slot
+      )}`
     );
   }
 
   lines.push(
-    `> 開團：**${leader}**`
-  );
-
-  lines.push(
-    `> 輸出 ${roleCount.dps}｜承傷 ${roleCount.tank}｜治療 ${roleCount.heal} ｜ 👥 \`${memberCount}/${maximum}\``
+    getStatusLine(slot)
   );
 
   return lines.join("\n");
@@ -729,9 +725,9 @@ function buildDescription(
           .join("\n\n");
 
       description +=
-        `## ${formatDateTitle(
+        `## 📅 ${formatDateTitle(
           dateId
-        )}\n\n${teamsText}\n\n`;
+        )}\n${teamsText}\n\n`;
     });
 
   if (description.length > 3800) {
@@ -740,7 +736,7 @@ function buildDescription(
         0,
         3600
       ) +
-      "\n\n隊伍數量較多，請到報名頁查看完整列表。";
+      "\n\n隊伍較多，請前往報名頁查看完整內容。";
   }
 
   return description.trim();
@@ -786,8 +782,8 @@ async function sendRecruitmentMessage({
         color: 13326982,
         fields: [
           {
-            name: "報名連結",
-            value: `[點此進入報名頁](${SITE_URL})`,
+            name: "🔗 查看隊伍與報名",
+            value: `[前往副本報名頁](${SITE_URL})`,
             inline: false,
           },
         ],
@@ -837,17 +833,25 @@ async function runDailyAnnouncement(
     return;
   }
 
-  const description =
+  const teamList =
     buildDescription(
       teams,
-      "今天及明天中午前暫時沒有已報名的隊伍。"
+      "今天暫時沒有需要提醒的副本隊伍。"
     );
 
+  const description = [
+    "早安！以下是今天的 **副本組隊安排**。",
+    "同時列出 **明天中午前** 已有成員的隊伍，方便大家提前確認時間。",
+    "",
+    teamList,
+  ].join("\n");
+
   await sendRecruitmentMessage({
-    title: "今日及明早副本招募",
+    title:
+      "☀️ 今日副本組隊提醒",
     description,
     footerText:
-      "夢回花深處｜每日自動公告",
+      "夢回花深處｜每日 08:00 組隊提醒",
   });
 
   console.log(
@@ -876,17 +880,25 @@ async function runWeeklyAnnouncement(
     `Future teams found: ${teams.length}`
   );
 
-  const description =
+  const teamList =
     buildDescription(
       teams,
       "目前暫時沒有已報名的未來隊伍。"
     );
 
+  const description = [
+    "以下整理目前已建立並有成員報名的 **未來副本隊伍**。",
+    "如有時間更改或取消，請以報名頁最新狀態為準。",
+    "",
+    teamList,
+  ].join("\n");
+
   await sendRecruitmentMessage({
-    title: "未來副本招募清單",
+    title:
+      "📅 未來副本組隊一覽",
     description,
     footerText:
-      "夢回花深處｜每週六未來隊伍公告",
+      "夢回花深處｜每週六組隊整理",
   });
 
   console.log(
