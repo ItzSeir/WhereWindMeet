@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>夢回花深處｜副本組隊</title>
+  <title>夢回花深處｜副本編成</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
 
@@ -11814,6 +11814,626 @@ body {
       }
     }
 
+    /* ===== Mobile PVE compact controls patch ===== */
+    @media (max-width:768px){
+      /* 快速操作在手機維持一列，但縮成真正的工具按鈕 */
+      .workspace-quick-strip{
+        grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+        gap:6px !important;
+        margin:0 0 10px !important;
+      }
+      .quick-strip-btn{
+        min-height:40px !important;
+        padding:6px 5px !important;
+        border-radius:11px !important;
+        font-size:11.5px !important;
+        line-height:1.2 !important;
+        text-align:center !important;
+        white-space:nowrap !important;
+        box-shadow:none !important;
+      }
+
+      /* 手機不再讓日期選擇器黏在 Navbar 下方，避免佔住大半個畫面 */
+      .date-sidebar{
+        position:relative !important;
+        z-index:auto !important;
+        min-height:0 !important;
+      }
+      .date-sidebar-sticky{
+        position:static !important;
+        top:auto !important;
+        z-index:auto !important;
+        max-height:none !important;
+        overflow:visible !important;
+        padding:0 !important;
+        margin:0 0 12px !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        box-shadow:none !important;
+        backdrop-filter:none !important;
+        -webkit-backdrop-filter:none !important;
+      }
+      html[data-theme="light"] .date-sidebar-sticky{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      .date-sidebar-head{
+        margin:0 2px 7px !important;
+        padding:0 !important;
+      }
+      .date-sidebar-head h2{
+        font-size:15px !important;
+        line-height:1.2 !important;
+      }
+      .date-sidebar-head .side-icon-btn{
+        width:30px !important;
+        height:30px !important;
+        border-radius:9px !important;
+      }
+
+      /* 日期變成一條緊湊橫向 rail，不再把桌面 sidebar 卡片硬塞進手機 */
+      .date-navigator{
+        display:flex !important;
+        align-items:stretch !important;
+        gap:6px !important;
+        overflow-x:auto !important;
+        overflow-y:hidden !important;
+        padding:1px 1px 5px !important;
+        scroll-snap-type:x proximity !important;
+        scrollbar-width:none !important;
+      }
+      .date-navigator::-webkit-scrollbar{display:none !important;}
+
+      .date-nav-btn{
+        position:relative !important;
+        flex:0 0 140px !important;
+        width:140px !important;
+        min-width:140px !important;
+        min-height:64px !important;
+        grid-template-columns:44px minmax(0,1fr) !important;
+        gap:8px !important;
+        padding:8px !important;
+        border-radius:12px !important;
+        scroll-snap-align:start !important;
+        overflow:hidden !important;
+      }
+      .date-nav-day{
+        width:44px !important;
+        height:46px !important;
+        border-radius:10px !important;
+      }
+      .date-nav-day strong{font-size:18px !important;}
+      .date-nav-day span{font-size:9px !important;}
+      .date-nav-main{
+        min-width:0 !important;
+        align-self:center !important;
+        padding-right:0 !important;
+      }
+      .date-nav-main strong{
+        font-size:12.5px !important;
+        line-height:1.25 !important;
+        white-space:normal !important;
+        overflow:visible !important;
+        text-overflow:clip !important;
+      }
+      .date-nav-main span{display:none !important;}
+      .date-nav-count{
+        position:absolute !important;
+        right:8px !important;
+        bottom:7px !important;
+        min-width:24px !important;
+        padding:3px 6px !important;
+        border-radius:7px !important;
+        font-size:9px !important;
+        line-height:1.1 !important;
+      }
+      .date-nav-btn.active{
+        box-shadow:inset 3px 0 0 var(--ui-accent),0 5px 14px color-mix(in srgb,var(--ui-accent) 10%,transparent) !important;
+      }
+
+      .empty-date-group{
+        flex:0 0 auto !important;
+        display:flex !important;
+        gap:6px !important;
+        align-items:stretch !important;
+        margin:0 !important;
+      }
+      .empty-date-toggle{
+        flex:0 0 94px !important;
+        width:94px !important;
+        height:64px !important;
+        min-height:64px !important;
+        padding:8px 10px !important;
+        border-radius:12px !important;
+        flex-direction:column !important;
+        align-items:flex-start !important;
+        justify-content:center !important;
+        gap:4px !important;
+        font-size:10.5px !important;
+        line-height:1.2 !important;
+        white-space:nowrap !important;
+      }
+      .empty-date-list{
+        display:flex !important;
+        gap:6px !important;
+        margin:0 !important;
+      }
+      .date-nav-btn.is-empty{
+        flex-basis:122px !important;
+        width:122px !important;
+        min-width:122px !important;
+        min-height:64px !important;
+        opacity:.82 !important;
+      }
+      .date-nav-btn.is-empty .date-nav-day{height:46px !important;}
+      .date-nav-btn.is-empty .date-nav-main span{display:none !important;}
+
+      .sidebar-divider,.sidebar-tools-title,.sidebar-tools{display:none !important;}
+    }
+
+    @media (max-width:430px){
+      .quick-strip-btn{font-size:11px !important;}
+      .date-nav-btn{
+        flex-basis:132px !important;
+        width:132px !important;
+        min-width:132px !important;
+      }
+      .empty-date-toggle{
+        flex-basis:88px !important;
+        width:88px !important;
+      }
+    }
+
+
+    /* =========================================================
+       v29 — Modal / mobile viewport hardening
+       Fixes: mobile footer overlap, light-mode dark footer,
+       desktop dialog clipping, retained scroll position, and
+       background-page scrolling while a dialog is open.
+       ========================================================= */
+
+    body:has(.signup-modal.show),
+    body:has(.confirm-modal.show),
+    body.modal-open{
+      overflow:hidden !important;
+      overscroll-behavior:none !important;
+    }
+
+    .signup-modal,
+    .confirm-modal{
+      padding:24px !important;
+      align-items:center !important;
+      justify-content:center !important;
+      overflow:hidden !important;
+      overscroll-behavior:contain !important;
+    }
+
+    .signup-modal-box,
+    .confirm-modal-box{
+      width:min(560px, calc(100vw - 48px)) !important;
+      max-width:calc(100vw - 48px) !important;
+      max-height:calc(100dvh - 48px) !important;
+      overflow-x:hidden !important;
+      overflow-y:auto !important;
+      overscroll-behavior:contain !important;
+      -webkit-overflow-scrolling:touch !important;
+      scrollbar-gutter:stable !important;
+    }
+
+    .signup-modal-box::-webkit-scrollbar,
+    .confirm-modal-box::-webkit-scrollbar{
+      width:7px !important;
+    }
+    .signup-modal-box::-webkit-scrollbar-track,
+    .confirm-modal-box::-webkit-scrollbar-track{
+      background:transparent !important;
+    }
+    .signup-modal-box::-webkit-scrollbar-thumb,
+    .confirm-modal-box::-webkit-scrollbar-thumb{
+      background:color-mix(in srgb,var(--ui-muted) 36%,transparent) !important;
+      border-radius:999px !important;
+    }
+
+    /* Long information dialog: use the available desktop width instead of
+       stretching a narrow single column almost edge-to-edge vertically. */
+    #infoModal .confirm-modal-box{
+      width:min(720px, calc(100vw - 48px)) !important;
+      max-height:min(82dvh, 680px) !important;
+      padding:22px 24px 20px !important;
+    }
+    #infoModal .confirm-modal-title{
+      margin-bottom:14px !important;
+    }
+    #infoModal .confirm-modal-text{
+      margin:0 !important;
+      line-height:1.65 !important;
+    }
+    #infoModal .info-guide-grid{
+      display:grid !important;
+      grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+      gap:0 24px !important;
+    }
+    #infoModal .info-guide-grid > div{
+      min-width:0 !important;
+      padding:11px 0 12px !important;
+      border-bottom:1px solid var(--ui-line) !important;
+    }
+    #infoModal .info-guide-grid > div strong{
+      display:inline-block !important;
+      margin-bottom:3px !important;
+      color:var(--ui-text) !important;
+    }
+    #infoModal .confirm-modal-actions{
+      position:sticky !important;
+      bottom:0 !important;
+      z-index:10 !important;
+      margin:14px -24px -20px !important;
+      padding:12px 24px 20px !important;
+      background:linear-gradient(180deg,
+        color-mix(in srgb,var(--ui-panel) 88%,transparent),
+        var(--ui-panel) 32%) !important;
+      border-top:1px solid var(--ui-line) !important;
+      box-shadow:0 -10px 20px color-mix(in srgb,#000 10%,transparent) !important;
+    }
+    html[data-theme="light"] #infoModal .confirm-modal-actions{
+      background:linear-gradient(180deg,rgba(255,255,255,.90),#ffffff 35%) !important;
+      box-shadow:0 -10px 20px rgba(65,86,125,.06) !important;
+    }
+
+    /* Date/time editor: keep controls inside the viewport at every height. */
+    #dateTimeModal .datetime-modal-box{
+      width:min(680px, calc(100vw - 48px)) !important;
+      max-height:calc(100dvh - 48px) !important;
+      overflow-y:auto !important;
+      overflow-x:hidden !important;
+      padding:22px 24px 0 !important;
+      border-radius:22px !important;
+      scroll-padding-bottom:92px !important;
+    }
+    #dateTimeModal .confirm-modal-title{
+      margin-bottom:8px !important;
+    }
+    #dateTimeModal .datetime-helper{
+      margin:0 0 14px !important;
+      font-size:13px !important;
+      line-height:1.65 !important;
+    }
+    #dateTimeModal .datetime-grid{
+      margin-top:7px !important;
+      gap:7px !important;
+    }
+    #dateTimeModal .date-choice{
+      min-width:0 !important;
+    }
+    #dateTimeModal .datetime-team-grid{
+      gap:10px !important;
+    }
+    #dateTimeModal .datetime-team-grid .signup-label{
+      margin-top:14px !important;
+    }
+    #dateTimeModal .confirm-modal-actions{
+      position:sticky !important;
+      bottom:0 !important;
+      z-index:20 !important;
+      margin:16px -24px 0 !important;
+      padding:12px 24px calc(18px + env(safe-area-inset-bottom)) !important;
+      background:linear-gradient(180deg,
+        color-mix(in srgb,var(--ui-panel) 82%,transparent),
+        var(--ui-panel) 32%) !important;
+      border-top:1px solid var(--ui-line) !important;
+      box-shadow:0 -12px 24px color-mix(in srgb,#000 12%,transparent) !important;
+    }
+    html[data-theme="light"] #dateTimeModal .confirm-modal-actions{
+      background:linear-gradient(180deg,rgba(255,255,255,.88),#ffffff 34%) !important;
+      border-top-color:#dbe3ee !important;
+      box-shadow:0 -12px 24px rgba(65,86,125,.07) !important;
+    }
+
+    /* The three creation fields should align evenly on desktop. */
+    #dateTimeModal .datetime-team-grid{
+      grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+      align-items:end !important;
+    }
+
+    /* Complex settings dialogs can grow when conditional fields appear. */
+    #teamTypeModal .confirm-modal-box,
+    #slotStatusModal .confirm-modal-box,
+    #tagInfoModal .confirm-modal-box{
+      max-height:calc(100dvh - 48px) !important;
+      overflow-y:auto !important;
+      scroll-padding-bottom:72px !important;
+    }
+
+    @media (max-width:768px){
+      .signup-modal,
+      .confirm-modal{
+        align-items:flex-end !important;
+        justify-content:center !important;
+        padding:max(10px,env(safe-area-inset-top)) 0 0 !important;
+      }
+
+      .signup-modal-box,
+      .confirm-modal-box,
+      #infoModal .confirm-modal-box,
+      #dateTimeModal .datetime-modal-box,
+      #teamTypeModal .confirm-modal-box,
+      #slotStatusModal .confirm-modal-box,
+      #tagInfoModal .confirm-modal-box{
+        width:100% !important;
+        max-width:100% !important;
+        max-height:calc(100dvh - max(10px,env(safe-area-inset-top))) !important;
+        margin:0 !important;
+        border-radius:22px 22px 0 0 !important;
+        border-bottom:0 !important;
+        overflow-x:hidden !important;
+        overflow-y:auto !important;
+        scrollbar-gutter:auto !important;
+      }
+
+      .signup-modal-box::-webkit-scrollbar,
+      .confirm-modal-box::-webkit-scrollbar{
+        width:0 !important;
+        display:none !important;
+      }
+
+      /* A subtle drag-handle cue makes the mobile presentation read as a sheet. */
+      .signup-modal-box::before,
+      .confirm-modal-box::before{
+        content:"" !important;
+        display:block !important;
+        width:38px !important;
+        height:4px !important;
+        margin:0 auto 12px !important;
+        border-radius:999px !important;
+        background:color-mix(in srgb,var(--ui-muted) 38%,transparent) !important;
+      }
+
+      .signup-modal-title,
+      .confirm-modal-title{
+        font-size:22px !important;
+        line-height:1.2 !important;
+        margin-bottom:10px !important;
+      }
+
+      /* Date/time sheet */
+      #dateTimeModal .datetime-modal-box{
+        padding:12px 14px 0 !important;
+        scroll-padding-bottom:84px !important;
+      }
+      #dateTimeModal .datetime-modal-box::before{
+        margin-bottom:10px !important;
+      }
+      #dateTimeModal .confirm-modal-title{
+        margin-bottom:5px !important;
+      }
+      #dateTimeModal .datetime-helper{
+        margin-bottom:10px !important;
+        font-size:12px !important;
+        line-height:1.55 !important;
+      }
+      #dateTimeModal .signup-label{
+        margin:10px 0 5px !important;
+        font-size:12px !important;
+      }
+      #dateTimeModal .datetime-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+        gap:6px !important;
+        margin-top:5px !important;
+      }
+      #dateTimeModal .date-choice{
+        min-height:52px !important;
+        padding:6px 4px !important;
+        border-radius:11px !important;
+      }
+      #dateTimeModal .date-choice .date-main{
+        font-size:14px !important;
+      }
+      #dateTimeModal .date-choice .date-week{
+        font-size:9.5px !important;
+      }
+      #dateTimeModal .datetime-team-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:8px !important;
+        align-items:end !important;
+      }
+      #dateTimeModal .datetime-team-grid > div:last-child{
+        grid-column:1 / -1 !important;
+      }
+      #dateTimeModal .datetime-team-grid .signup-label{
+        margin-top:10px !important;
+      }
+      #dateTimeModal .signup-select,
+      #dateTimeModal .signup-input{
+        min-height:44px !important;
+        padding-top:10px !important;
+        padding-bottom:10px !important;
+        border-radius:11px !important;
+        font-size:13px !important;
+      }
+      #dateTimeModal .leader-security-panel,
+      #dateTimeModal .tower-option-panel{
+        margin-top:10px !important;
+        padding:11px !important;
+        border-radius:13px !important;
+      }
+      #dateTimeModal .leader-pin-row,
+      #dateTimeModal .tower-range-grid{
+        grid-template-columns:1fr !important;
+        gap:7px !important;
+      }
+      #dateTimeModal .time-preset-list{
+        display:grid !important;
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:6px !important;
+        margin-top:8px !important;
+      }
+      #dateTimeModal .time-preset{
+        width:100% !important;
+        min-height:38px !important;
+        padding:7px 8px !important;
+        border-radius:10px !important;
+        justify-content:center !important;
+        font-size:12px !important;
+      }
+      #dateTimeModal .date-limit-note{
+        margin-top:8px !important;
+        padding-bottom:2px !important;
+        font-size:11px !important;
+      }
+      #dateTimeModal .confirm-modal-actions{
+        bottom:0 !important;
+        margin:12px -14px 0 !important;
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom)) !important;
+        gap:8px !important;
+      }
+      #dateTimeModal .confirm-modal-actions > button{
+        min-height:44px !important;
+        padding:10px 12px !important;
+      }
+
+      /* Information sheet */
+      #infoModal .confirm-modal-box{
+        padding:12px 16px 0 !important;
+        scroll-padding-bottom:74px !important;
+      }
+      #infoModal .info-guide-grid{
+        grid-template-columns:1fr !important;
+        gap:0 !important;
+      }
+      #infoModal .info-guide-grid > div{
+        padding:10px 0 11px !important;
+      }
+      #infoModal .confirm-modal-text{
+        font-size:13px !important;
+        line-height:1.6 !important;
+      }
+      #infoModal .confirm-modal-actions{
+        bottom:0 !important;
+        margin:10px -16px 0 !important;
+        padding:10px 16px calc(10px + env(safe-area-inset-bottom)) !important;
+      }
+      #infoModal .confirm-modal-actions > button{
+        min-height:44px !important;
+      }
+
+      /* Other dialogs: prevent action rows from being clipped by mobile browser UI. */
+      .signup-modal-actions,
+      .confirm-modal-actions{
+        gap:8px !important;
+      }
+      .signup-confirm-btn,
+      .signup-cancel-btn,
+      .confirm-danger-btn,
+      .confirm-cancel-btn{
+        min-height:44px !important;
+      }
+    }
+
+    @media (max-width:390px){
+      #dateTimeModal .datetime-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+      }
+      #dateTimeModal .datetime-team-grid{
+        grid-template-columns:1fr !important;
+      }
+      #dateTimeModal .datetime-team-grid > div:last-child{
+        grid-column:auto !important;
+      }
+    }
+
+
+    /* ===== v29b: true scroll-body modal shells ===== */
+    #dateTimeModal .modal-shell-box,
+    #infoModal .modal-shell-box{
+      display:flex !important;
+      flex-direction:column !important;
+      overflow:hidden !important;
+      padding:0 !important;
+    }
+    #dateTimeModal .modal-sheet-head,
+    #infoModal .modal-sheet-head{
+      flex:0 0 auto !important;
+      padding:20px 24px 0 !important;
+    }
+    #dateTimeModal .modal-sheet-body,
+    #infoModal .modal-sheet-body{
+      flex:1 1 auto !important;
+      min-height:0 !important;
+      overflow-y:auto !important;
+      overflow-x:hidden !important;
+      overscroll-behavior:contain !important;
+      -webkit-overflow-scrolling:touch !important;
+      scrollbar-gutter:stable !important;
+      padding:0 24px 16px !important;
+    }
+    #dateTimeModal .modal-sheet-body::-webkit-scrollbar,
+    #infoModal .modal-sheet-body::-webkit-scrollbar{
+      width:7px !important;
+    }
+    #dateTimeModal .modal-sheet-body::-webkit-scrollbar-thumb,
+    #infoModal .modal-sheet-body::-webkit-scrollbar-thumb{
+      background:color-mix(in srgb,var(--ui-muted) 34%,transparent) !important;
+      border-radius:999px !important;
+    }
+    #dateTimeModal .modal-sheet-actions,
+    #infoModal .modal-sheet-actions{
+      position:static !important;
+      flex:0 0 auto !important;
+      z-index:auto !important;
+      margin:0 !important;
+      padding:12px 24px calc(18px + env(safe-area-inset-bottom)) !important;
+      background:linear-gradient(180deg,
+        color-mix(in srgb,var(--ui-panel) 94%,transparent),
+        var(--ui-panel)) !important;
+      border-top:1px solid var(--ui-line) !important;
+      box-shadow:0 -10px 20px color-mix(in srgb,#000 9%,transparent) !important;
+    }
+    html[data-theme="light"] #dateTimeModal .modal-sheet-actions,
+    html[data-theme="light"] #infoModal .modal-sheet-actions{
+      background:#ffffff !important;
+      border-top-color:#dbe3ee !important;
+      box-shadow:0 -8px 20px rgba(65,86,125,.06) !important;
+    }
+    #dateTimeModal .datetime-modal-body > .signup-label:first-child{
+      margin-top:8px !important;
+    }
+
+    @media (max-width:768px){
+      #dateTimeModal .modal-sheet-head,
+      #infoModal .modal-sheet-head{
+        padding:10px 14px 0 !important;
+      }
+      #dateTimeModal .modal-sheet-body,
+      #infoModal .modal-sheet-body{
+        padding:0 14px 10px !important;
+        scrollbar-gutter:auto !important;
+      }
+      #dateTimeModal .modal-sheet-body::-webkit-scrollbar,
+      #infoModal .modal-sheet-body::-webkit-scrollbar{
+        width:0 !important;
+        display:none !important;
+      }
+      #dateTimeModal .modal-sheet-actions,
+      #infoModal .modal-sheet-actions{
+        padding:10px 14px calc(10px + env(safe-area-inset-bottom)) !important;
+        gap:8px !important;
+      }
+      #infoModal .modal-sheet-head{
+        padding-left:16px !important;
+        padding-right:16px !important;
+      }
+      #infoModal .modal-sheet-body{
+        padding-left:16px !important;
+        padding-right:16px !important;
+      }
+      #infoModal .modal-sheet-actions{
+        padding-left:16px !important;
+        padding-right:16px !important;
+      }
+    }
+
 </style>
 
 <script>
@@ -11826,6 +12446,183 @@ body {
 </script>
   <!-- Shared Site Shell: common design tokens / navbar / announcement -->
   <link rel="stylesheet" href="assets/site-shell.css">
+
+  <!-- =========================================================
+       PVE theme-aware scrollbar fix
+       This style MUST stay after site-shell.css so Light Mode
+       can override the older dark scrollbar rules in this page.
+       ========================================================= -->
+  <style id="pve-theme-scrollbar-fix">
+    /* Firefox / standards-based scrollbar colours */
+    html[data-theme="light"],
+    html[data-theme="light"] body,
+    html[data-theme="light"] .batch-modal-scroll,
+    html[data-theme="light"] .datetime-modal-box,
+    html[data-theme="light"] .custom-select-menu,
+    html[data-theme="light"] .member-menu-dropdown,
+    html[data-theme="light"] .slot-menu-dropdown,
+    html[data-theme="light"] .color-menu,
+    html[data-theme="light"] .highlight-menu,
+    html[data-theme="light"] .signup-modal-box,
+    html[data-theme="light"] .confirm-modal-box{
+      color-scheme:light !important;
+      scrollbar-width:thin !important;
+      scrollbar-color:#b7c3d5 #eef3f9 !important;
+    }
+
+    /* Chromium / Safari: page + every custom scroll area */
+    html[data-theme="light"]::-webkit-scrollbar,
+    html[data-theme="light"] body::-webkit-scrollbar,
+    html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar,
+    html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar,
+    html[data-theme="light"] .custom-select-menu::-webkit-scrollbar,
+    html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar,
+    html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar,
+    html[data-theme="light"] .color-menu::-webkit-scrollbar,
+    html[data-theme="light"] .highlight-menu::-webkit-scrollbar,
+    html[data-theme="light"] .signup-modal-box::-webkit-scrollbar,
+    html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar{
+      width:10px !important;
+      height:10px !important;
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-track,
+    html[data-theme="light"] body::-webkit-scrollbar-track,
+    html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-track,
+    html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-track,
+    html[data-theme="light"] .custom-select-menu::-webkit-scrollbar-track,
+    html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar-track,
+    html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar-track,
+    html[data-theme="light"] .color-menu::-webkit-scrollbar-track,
+    html[data-theme="light"] .highlight-menu::-webkit-scrollbar-track,
+    html[data-theme="light"] .signup-modal-box::-webkit-scrollbar-track,
+    html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar-track{
+      background:#eef3f9 !important;
+      border-radius:999px !important;
+      box-shadow:inset 0 0 0 1px rgba(91,111,142,.08) !important;
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-thumb,
+    html[data-theme="light"] body::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .custom-select-menu::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .color-menu::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .highlight-menu::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .signup-modal-box::-webkit-scrollbar-thumb,
+    html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar-thumb{
+      min-height:42px !important;
+      border:3px solid transparent !important;
+      border-radius:999px !important;
+      background:linear-gradient(180deg,#cbd4e1,#aebbcf) padding-box !important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 4px rgba(76,96,127,.14) !important;
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] body::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .custom-select-menu::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .color-menu::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .highlight-menu::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .signup-modal-box::-webkit-scrollbar-thumb:hover,
+    html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar-thumb:hover{
+      background:linear-gradient(180deg,#bec9d9,#9fadc2) padding-box !important;
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] body::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .custom-select-menu::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .color-menu::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .highlight-menu::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .signup-modal-box::-webkit-scrollbar-thumb:active,
+    html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar-thumb:active{
+      background:linear-gradient(180deg,#adb9cb,#8f9eb5) padding-box !important;
+    }
+
+    html[data-theme="light"]::-webkit-scrollbar-corner,
+    html[data-theme="light"] body::-webkit-scrollbar-corner,
+    html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-corner,
+    html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-corner{
+      background:#eef3f9 !important;
+    }
+
+    /*
+      Mobile scrollbars should behave like a small overlay indicator.
+      Removing the stable gutter prevents a permanent dark/light strip
+      from consuming viewport width on narrow screens.
+    */
+    @media (max-width:768px){
+      html{
+        scrollbar-gutter:auto !important;
+      }
+
+      html[data-theme="light"]::-webkit-scrollbar,
+      html[data-theme="light"] body::-webkit-scrollbar,
+      html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar,
+      html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar,
+      html[data-theme="light"] .custom-select-menu::-webkit-scrollbar,
+      html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar,
+      html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar,
+      html[data-theme="light"] .color-menu::-webkit-scrollbar,
+      html[data-theme="light"] .highlight-menu::-webkit-scrollbar,
+      html[data-theme="light"] .signup-modal-box::-webkit-scrollbar,
+      html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar{
+        width:6px !important;
+        height:6px !important;
+      }
+
+      html[data-theme="light"]::-webkit-scrollbar-track,
+      html[data-theme="light"] body::-webkit-scrollbar-track,
+      html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-track,
+      html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-track,
+      html[data-theme="light"] .custom-select-menu::-webkit-scrollbar-track,
+      html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar-track,
+      html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar-track,
+      html[data-theme="light"] .color-menu::-webkit-scrollbar-track,
+      html[data-theme="light"] .highlight-menu::-webkit-scrollbar-track,
+      html[data-theme="light"] .signup-modal-box::-webkit-scrollbar-track,
+      html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar-track{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      html[data-theme="light"]::-webkit-scrollbar-thumb,
+      html[data-theme="light"] body::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .batch-modal-scroll::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .datetime-modal-box::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .custom-select-menu::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .member-menu-dropdown::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .slot-menu-dropdown::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .color-menu::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .highlight-menu::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .signup-modal-box::-webkit-scrollbar-thumb,
+      html[data-theme="light"] .confirm-modal-box::-webkit-scrollbar-thumb{
+        min-height:34px !important;
+        border:1px solid transparent !important;
+        background:linear-gradient(180deg,#c5cfdd,#aab7c9) padding-box !important;
+        box-shadow:none !important;
+      }
+
+      /* Keep horizontally-scrollable nav/date rails visually clean. */
+      .nav,
+      .date-navigator{
+        scrollbar-width:none !important;
+      }
+      .nav::-webkit-scrollbar,
+      .date-navigator::-webkit-scrollbar{
+        display:none !important;
+      }
+    }
+  </style>
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -12081,94 +12878,98 @@ body {
   </div>
 
   <div id="dateTimeModal" class="confirm-modal">
-    <div class="confirm-modal-box datetime-modal-box">
-      <div class="confirm-modal-title">新增日期 / 時間</div>
-      <p class="datetime-helper">玩家只能選擇今天起 2 週內的日期、時間與團類型。新增後會直接顯示在報名清單中。</p>
-
-      <label class="signup-label">日期</label>
-      <input id="customDateInput" type="hidden" />
-      <div id="customDateGrid" class="datetime-grid"></div>
-
-      <div class="datetime-team-grid">
-        <div>
-          <label class="signup-label" for="dateTimeTeamSizeSelect" style="margin-top:18px;">團隊人數</label>
-          <select id="dateTimeTeamSizeSelect" class="signup-select">
-            <option value="10">10人</option>
-            <option value="5">5人</option>
-          </select>
-        </div>
-        <div>
-          <label class="signup-label" for="dateTimeTeamTypeSelect" style="margin-top:18px;">團類型</label>
-          <select id="dateTimeTeamTypeSelect" class="signup-select">
-            <option value="普通團">普通</option>
-            <option value="天賦團">天賦</option>
-            <option value="競速團">競速</option>
-            <option value="爬塔">爬塔</option>
-          </select>
-        </div>
-        <div>
-          <label class="signup-label" for="dateTimeMinHealerSelect" style="margin-top:18px;">最低補師</label>
-          <select id="dateTimeMinHealerSelect" class="signup-select">
-            <option value="1">1 位</option>
-            <option value="2" selected>2 位</option>
-            <option value="3">3 位</option>
-          </select>
-        </div>
+    <div class="confirm-modal-box datetime-modal-box modal-shell-box">
+      <div class="modal-sheet-head">
+        <div class="confirm-modal-title">新增日期 / 時間</div>
+        <p class="datetime-helper">玩家只能選擇今天起 2 週內的日期、時間與團類型。新增後會直接顯示在報名清單中。</p>
       </div>
 
-      <div id="dateTimeLeaderSecurity" class="leader-security-panel">
-        <div class="leader-security-title"><span>🔐 團長確認</span><span>天賦／競速限定</span></div>
-        <div class="leader-security-sub">建立後，新報名會先進入待確認名單。PIN 只用來避免其他人誤按團長操作，不是安全驗證。</div>
-        <div class="leader-pin-row">
+      <div class="modal-sheet-body datetime-modal-body">
+        <label class="signup-label">日期</label>
+        <input id="customDateInput" type="hidden" />
+        <div id="customDateGrid" class="datetime-grid"></div>
+
+        <div class="datetime-team-grid">
           <div>
-            <label class="signup-label" for="dateTimePinModeSelect" style="margin-top:0;">PIN 建立方式</label>
-            <select id="dateTimePinModeSelect" class="signup-select">
-              <option value="auto">自動生成 6 位 PIN</option>
-              <option value="custom">自行設定 PIN</option>
+            <label class="signup-label" for="dateTimeTeamSizeSelect">團隊人數</label>
+            <select id="dateTimeTeamSizeSelect" class="signup-select">
+              <option value="10">10人</option>
+              <option value="5">5人</option>
             </select>
           </div>
-          <div id="dateTimeCustomPinWrap" style="display:none;">
-            <label class="signup-label" for="dateTimeCustomPinInput" style="margin-top:0;">自訂 PIN</label>
-            <input id="dateTimeCustomPinInput" class="signup-input" type="password" inputmode="numeric" maxlength="12" placeholder="4–12 位數字" />
-          </div>
-        </div>
-      </div>
-
-      <div id="dateTimeTowerOptions" class="tower-option-panel">
-        <div class="tower-range-grid">
           <div>
-            <label class="signup-label" for="dateTimeTowerStartSelect" style="margin-top:0;">起始層</label>
-            <select id="dateTimeTowerStartSelect" class="signup-select"></select>
+            <label class="signup-label" for="dateTimeTeamTypeSelect">團類型</label>
+            <select id="dateTimeTeamTypeSelect" class="signup-select">
+              <option value="普通團">普通</option>
+              <option value="天賦團">天賦</option>
+              <option value="競速團">競速</option>
+              <option value="爬塔">爬塔</option>
+            </select>
           </div>
           <div>
-            <label class="signup-label" for="dateTimeTowerEndSelect" style="margin-top:0;">結束層</label>
-            <select id="dateTimeTowerEndSelect" class="signup-select"></select>
+            <label class="signup-label" for="dateTimeMinHealerSelect">最低補師</label>
+            <select id="dateTimeMinHealerSelect" class="signup-select">
+              <option value="1">1 位</option>
+              <option value="2" selected>2 位</option>
+              <option value="3">3 位</option>
+            </select>
           </div>
         </div>
-        <div>
-          <label class="signup-label" for="dateTimeTowerDifficultySelect" style="margin-top:0;">爬塔難度</label>
-          <select id="dateTimeTowerDifficultySelect" class="signup-select">
-            <option value="普通">普通</option>
-            <option value="困難">困難</option>
-            <option value="鬼神愁">鬼神愁</option>
-          </select>
+
+        <div id="dateTimeLeaderSecurity" class="leader-security-panel">
+          <div class="leader-security-title"><span>🔐 團長確認</span><span>天賦／競速限定</span></div>
+          <div class="leader-security-sub">建立後，新報名會先進入待確認名單。PIN 只用來避免其他人誤按團長操作，不是安全驗證。</div>
+          <div class="leader-pin-row">
+            <div>
+              <label class="signup-label" for="dateTimePinModeSelect" style="margin-top:0;">PIN 建立方式</label>
+              <select id="dateTimePinModeSelect" class="signup-select">
+                <option value="auto">自動生成 6 位 PIN</option>
+                <option value="custom">自行設定 PIN</option>
+              </select>
+            </div>
+            <div id="dateTimeCustomPinWrap" style="display:none;">
+              <label class="signup-label" for="dateTimeCustomPinInput" style="margin-top:0;">自訂 PIN</label>
+              <input id="dateTimeCustomPinInput" class="signup-input" type="password" inputmode="numeric" maxlength="12" placeholder="4–12 位數字" />
+            </div>
+          </div>
         </div>
+
+        <div id="dateTimeTowerOptions" class="tower-option-panel">
+          <div class="tower-range-grid">
+            <div>
+              <label class="signup-label" for="dateTimeTowerStartSelect" style="margin-top:0;">起始層</label>
+              <select id="dateTimeTowerStartSelect" class="signup-select"></select>
+            </div>
+            <div>
+              <label class="signup-label" for="dateTimeTowerEndSelect" style="margin-top:0;">結束層</label>
+              <select id="dateTimeTowerEndSelect" class="signup-select"></select>
+            </div>
+          </div>
+          <div>
+            <label class="signup-label" for="dateTimeTowerDifficultySelect" style="margin-top:0;">爬塔難度</label>
+            <select id="dateTimeTowerDifficultySelect" class="signup-select">
+              <option value="普通">普通</option>
+              <option value="困難">困難</option>
+              <option value="鬼神愁">鬼神愁</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="signup-label" for="customTimeInput">時間</label>
+        <div class="time-row">
+          <input id="customTimeInput" class="signup-input" type="time" step="300" />
+        </div>
+        <div class="time-preset-list">
+          <button type="button" class="time-preset recommended" data-time="20:30" onclick="selectQuickTime('20:30')">20:30 <span>推薦</span></button>
+          <button type="button" class="time-preset recommended" data-time="21:15" onclick="selectQuickTime('21:15')">21:15 <span>推薦</span></button>
+          <button type="button" class="time-preset recommended" data-time="21:30" onclick="selectQuickTime('21:30')">21:30 <span>推薦</span></button>
+          <button type="button" class="time-preset recommended" data-time="22:00" onclick="selectQuickTime('22:00')">22:00 <span>推薦</span></button>
+        </div>
+
+        <div id="dateTimeLimitText" class="date-limit-note"></div>
       </div>
 
-      <label class="signup-label" for="customTimeInput" style="margin-top:18px;">時間</label>
-      <div class="time-row">
-        <input id="customTimeInput" class="signup-input" type="time" step="300" />
-      </div>
-      <div class="time-preset-list">
-        <button type="button" class="time-preset recommended" data-time="20:30" onclick="selectQuickTime('20:30')">20:30 <span>推薦</span></button>
-        <button type="button" class="time-preset recommended" data-time="21:15" onclick="selectQuickTime('21:15')">21:15 <span>推薦</span></button>
-        <button type="button" class="time-preset recommended" data-time="21:30" onclick="selectQuickTime('21:30')">21:30 <span>推薦</span></button>
-        <button type="button" class="time-preset recommended" data-time="22:00" onclick="selectQuickTime('22:00')">22:00 <span>推薦</span></button>
-      </div>
-
-      <div id="dateTimeLimitText" class="date-limit-note"></div>
-
-      <div class="confirm-modal-actions">
+      <div class="confirm-modal-actions modal-sheet-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeDateTimeModal()">取消</button>
         <button type="button" class="signup-confirm-btn" onclick="saveDateTimeSlot()">新增</button>
       </div>
@@ -12176,22 +12977,27 @@ body {
   </div>
 
   <div id="infoModal" class="confirm-modal">
-    <div class="confirm-modal-box">
-      <div class="confirm-modal-title">團隊報名說明</div>
-      <div class="confirm-modal-text" style="margin-bottom:0;">
-        <div style="display:grid; gap:12px;">
-          <div><strong style="color:var(--text);">報名前請注意</strong><br>請先確認自己可出席的時間，再進行報名。若無法參加可回到這刪除自己的名字。</div>
-          <div><strong style="color:var(--text);">最低補師</strong><br>每支隊伍可由建立者設定最低補師 1–3 位，預設 2 位。系統會依設定保留足夠治療位。</div>
-          <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
-          <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單可使用快速報名。</div>
-          <div><strong style="color:var(--text);">批量隊伍資料</strong><br>你可以儲存不同的常用組合來批量組隊，以節省重複輸入時間。</div>
-          <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
-          <div><strong style="color:var(--text);">天賦／競速團長確認</strong><br>新報名會先進入待確認。團長以建立隊伍時取得的 PIN 核准或拒絕；PIN 可自動生成或自行設定。</div>
-          <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增 2 週內的時間，並分別設定 5人 / 10人、普通、天賦、競速、爬塔與最低補師數量。</div>
+    <div class="confirm-modal-box info-modal-box modal-shell-box">
+      <div class="modal-sheet-head">
+        <div class="confirm-modal-title">團隊報名說明</div>
+      </div>
 
+      <div class="modal-sheet-body info-modal-body">
+        <div class="confirm-modal-text">
+          <div class="info-guide-grid">
+            <div><strong style="color:var(--text);">報名前請注意</strong><br>請先確認自己可出席的時間，再進行報名。若無法參加可回到這刪除自己的名字。</div>
+            <div><strong style="color:var(--text);">最低補師</strong><br>每支隊伍可由建立者設定最低補師 1–3 位，預設 2 位。系統會依設定保留足夠治療位。</div>
+            <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
+            <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單可使用快速報名。</div>
+            <div><strong style="color:var(--text);">批量隊伍資料</strong><br>你可以儲存不同的常用組合來批量組隊，以節省重複輸入時間。</div>
+            <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
+            <div><strong style="color:var(--text);">天賦／競速團長確認</strong><br>新報名會先進入待確認。團長以建立隊伍時取得的 PIN 核准或拒絕；PIN 可自動生成或自行設定。</div>
+            <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增 2 週內的時間，並分別設定 5人 / 10人、普通、天賦、競速、爬塔與最低補師數量。</div>
+          </div>
         </div>
       </div>
-      <div class="confirm-modal-actions">
+
+      <div class="confirm-modal-actions modal-sheet-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeInfoModal()">關閉</button>
       </div>
     </div>
@@ -15560,7 +16366,7 @@ body {
         return `<button type="button" class="team-intro-card ${typeClass}${isMine ? " is-my-preview" : ""}" data-jump-date="${dateKey}" data-jump-slot="${slotIndex}" title="前往 ${escapeHtml(dateLabel)} ${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")} 報名">
           <div class="team-intro-date-row"><div class="team-intro-date">${escapeHtml(dateLabel)}</div>${isMine ? `<span class="team-intro-mine">我的隊伍</span>` : ``}</div>
           <div class="team-intro-top"><span class="team-intro-time">${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")}</span><span class="team-intro-type">${escapeHtml(teamTypeLabel(slot))}</span></div>
-          <div class="team-intro-name">${escapeHtml(instanceText)} · ${maxPeople} 人組隊</div>
+          <div class="team-intro-name">${escapeHtml(instanceText)} · ${maxPeople} 人編成</div>
           <div class="team-intro-meta">
             <span>${confirmedCount}/${maxPeople} 人</span>
             ${missing.missingHeal > 0 ? `<span class="need-heal">缺補 ${missing.missingHeal}</span>` : `<span>補師達標</span>`}
@@ -16250,5 +17056,45 @@ function escapeHtml(text){
 
 })();
 </script> 
+<script>
+/* ===== v29 modal state guard ===== */
+(function(){
+  const selector = ".signup-modal, .confirm-modal";
+
+  function syncModalState(){
+    const openModal = document.querySelector(".signup-modal.show, .confirm-modal.show");
+    document.body.classList.toggle("modal-open", Boolean(openModal));
+  }
+
+  function resetOpenedModal(modal){
+    if(!modal.classList.contains("show")) return;
+    const box = modal.firstElementChild;
+    if(box){
+      box.scrollTop = 0;
+      box.querySelectorAll(".batch-modal-scroll").forEach(el => { el.scrollTop = 0; });
+    }
+    requestAnimationFrame(syncModalState);
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for(const mutation of mutations){
+      if(mutation.type !== "attributes" || mutation.attributeName !== "class") continue;
+      const modal = mutation.target;
+      if(modal.matches(selector) && modal.classList.contains("show")){
+        resetOpenedModal(modal);
+      }
+    }
+    syncModalState();
+  });
+
+  document.querySelectorAll(selector).forEach(modal => {
+    observer.observe(modal, { attributes:true, attributeFilter:["class"] });
+  });
+
+  window.addEventListener("pageshow", syncModalState);
+  syncModalState();
+})();
+</script>
+
 </body>
 </html>
