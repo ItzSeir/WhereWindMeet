@@ -11,7 +11,7 @@ on:
         options:
           - daily
           - weekly
-
+          
 jobs:
   test-discord:
     runs-on: ubuntu-latest
