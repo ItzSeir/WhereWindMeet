@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>夢回花深處｜百業戰管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+try{const t=localStorage.getItem("registration_theme")||localStorage.getItem("wwm-home-theme-v2")||"dark";document.documentElement.dataset.theme=t==="light"?"light":"dark"}catch(e){}
+</script>
+<style>
+:root{--bg:#0b1020;--surface:#11192d;--surface2:#17213a;--surface3:#1e2a47;--line:#283956;--line2:#3b5074;--text:#eef2ff;--muted:#9caac4;--soft:#71809a;--blue:#6ea8ff;--purple:#8b5cf6;--orange:#f59e0b;--red:#ff6b81;--green:#34d399;--shadow:0 16px 46px rgba(0,0,0,.26)}
+html[data-theme="light"]{--bg:#eef3fb;--surface:#fff;--surface2:#f5f8fd;--surface3:#eaf0f9;--line:#d8e2f0;--line2:#c1cfe2;--text:#18243a;--muted:#60708a;--soft:#8a97a9;--blue:#4f8ef7;--purple:#7c3aed;--orange:#b7791f;--red:#dc3958;--green:#059669;--shadow:0 14px 36px rgba(55,72,103,.12)}
+*{box-sizing:border-box}html{color-scheme:dark}html[data-theme="light"]{color-scheme:light}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 5%,color-mix(in srgb,var(--orange) 10%,transparent),transparent 27%),radial-gradient(circle at 88% 7%,color-mix(in srgb,var(--purple) 10%,transparent),transparent 24%),var(--bg);color:var(--text);font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+.topbar{position:fixed;z-index:6000;top:18px;left:50%;transform:translateX(-50%);width:min(1100px,calc(100% - 28px));min-height:62px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--surface) 84%,transparent);backdrop-filter:blur(18px);box-shadow:0 10px 35px rgba(0,0,0,.16)}
+.topbar-content{min-height:62px;padding:8px 12px 8px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand-group{display:flex;gap:8px}.brand-badge{padding:7px 11px;border-radius:999px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;font-size:11px;font-weight:900}.brand-badge.sub{background:var(--surface2);border:1px solid var(--line);color:var(--text)}
+.nav-wrap,.nav{display:flex;align-items:center;gap:5px}.nav a{padding:8px 10px;border-radius:999px;color:var(--muted);font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap}.nav a.active,.nav a:hover{background:var(--surface2);color:var(--text)}
+.theme-toggle{min-height:36px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);color:var(--text);font-size:10px;font-weight:900}
+.page{width:min(1450px,calc(100% - 32px));margin:0 auto;padding:102px 0 42px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:14px}.kicker{font-size:10px;font-weight:900;letter-spacing:.13em;color:var(--orange)}h1{margin:4px 0 6px;font-size:27px}.subtitle{margin:0;color:var(--muted);font-size:12px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.btn{min-height:38px;padding:8px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--text);font-size:10px;font-weight:900}.btn.primary{border-color:transparent;background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff}
+.weekbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding:14px 15px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow)}
+.week-main{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.week-label{color:var(--muted);font-size:9px;font-weight:900}.week-select{min-width:260px;height:39px;padding:0 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);font-size:11px;font-weight:850}.state-pill{padding:4px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:8.5px;font-weight:900}.state-pill.current{color:var(--green)}.state-pill.review{color:var(--orange)}
+.workspace{display:grid;grid-template-columns:310px minmax(0,1fr);gap:14px;align-items:start}
+.player-panel,.board{border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+.player-panel{position:sticky;top:96px;overflow:hidden}.player-head{padding:14px;border-bottom:1px solid var(--line)}.player-title-row{display:flex;align-items:center;justify-content:space-between}.player-head h2{margin:0;font-size:17px}.player-count{color:var(--muted);font-size:9px;font-weight:900}.search{width:100%;height:42px;margin-top:9px;padding:0 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);font-size:10px}.player-list{display:grid;gap:6px;padding:8px;max-height:calc(100vh - 280px);overflow:auto}.player{min-height:58px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);cursor:grab}.player:hover{background:var(--surface3);border-color:var(--line2)}.player strong{display:block;font-size:12px}.player span{display:block;margin-top:2px;color:var(--muted);font-size:8.5px}.empty{padding:24px;text-align:center;color:var(--muted);font-size:10px}
+.board{padding:14px}.review-note{margin-bottom:10px;padding:8px 10px;border:1px solid color-mix(in srgb,var(--orange) 35%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--orange) 7%,var(--surface2));color:var(--muted);font-size:9px}.review-note strong{color:var(--orange)}
+.days{display:grid;grid-template-columns:1fr 1fr;gap:12px}.day-card{border:1px solid var(--line);border-radius:15px;background:var(--surface2);overflow:hidden}.day-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:12px;border-bottom:1px solid var(--line)}.day-name{font-size:15px;font-weight:950}.day-meta{margin-top:3px;color:var(--muted);font-size:9px}.day-actions button{min-height:29px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--text);font-size:8px;font-weight:900}
+.day-body{padding:10px}.side-title{display:flex;align-items:center;justify-content:space-between;margin:2px 0 6px;color:var(--muted);font-size:9px;font-weight:900}.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:10px}.slot{position:relative;min-height:55px;padding:7px;border:1px dashed var(--line2);border-radius:9px;background:var(--surface);display:flex;align-items:center;justify-content:center;text-align:center}.slot.filled{border-style:solid;background:var(--surface3)}.slot.over{outline:2px solid color-mix(in srgb,var(--orange) 55%,transparent)}.slot-no{position:absolute;top:3px;left:5px;color:var(--soft);font-size:7px;font-weight:900}.slot strong{font-size:9px}.slot span{display:block;margin-top:2px;color:var(--muted);font-size:7.5px}.remove{position:absolute;top:2px;right:3px;border:0;background:none;color:var(--soft);font-size:9px}
+.modal{position:fixed;z-index:9000;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(12px)}.modal.show{display:flex}.modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;padding:18px;border:1px solid var(--line2);border-radius:17px;background:var(--surface);box-shadow:0 30px 90px rgba(0,0,0,.42)}.modal-title{margin:0;font-size:18px}.modal-sub{margin:5px 0 13px;color:var(--muted);font-size:10px;line-height:1.6}.editor{display:grid;gap:6px}.edit-row{display:grid;grid-template-columns:minmax(130px,1fr) 100px minmax(160px,1fr) auto;gap:6px}.edit-row input,.edit-row select{height:36px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);color:var(--text);font-size:10px}.edit-row button{width:32px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);color:var(--red)}.modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:13px}
+.toast{position:fixed;z-index:10000;left:50%;bottom:24px;transform:translate(-50%,20px);padding:8px 12px;border-radius:999px;background:#111827;color:#fff;font-size:9px;font-weight:900;opacity:0;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1050px){.workspace{grid-template-columns:270px minmax(0,1fr)}.days{grid-template-columns:1fr}.slots{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:760px){.topbar{top:10px;border-radius:20px}.topbar-content{align-items:flex-start;flex-direction:column}.nav-wrap{width:100%;overflow:hidden}.nav{overflow-x:auto}.page{padding-top:135px;width:calc(100% - 20px)}.page-head{align-items:flex-start;flex-direction:column}.workspace{grid-template-columns:1fr}.player-panel{position:relative;top:auto}.player-list{max-height:340px}.days{grid-template-columns:1fr}.slots{grid-template-columns:repeat(3,minmax(0,1fr))}.weekbar{align-items:flex-start;flex-direction:column}.week-select{width:100%;min-width:0}.edit-row{grid-template-columns:1fr 90px}.edit-row .note{grid-column:1/-1}}
+
+/* ===== v2 custom professions + larger desktop UI ===== */
+.page{width:min(1540px,calc(100% - 36px)) !important}
+h1{font-size:31px !important}
+.subtitle{font-size:13.5px !important}
+.btn{min-height:42px !important;padding:9px 14px !important;font-size:11.5px !important}
+.weekbar{padding:17px 18px !important}
+.week-label{font-size:10px !important}
+.week-select{height:44px !important;font-size:13px !important}
+.state-pill{font-size:9.5px !important}
+.workspace{grid-template-columns:350px minmax(0,1fr) !important;gap:16px !important}
+.player-head{padding:17px !important}
+.player-head h2{font-size:20px !important}
+.player-count{font-size:10.5px !important}
+.search{height:46px !important;font-size:12px !important}
+.player-list{padding:9px !important;gap:7px !important}
+.player{min-height:70px !important;padding:11px 12px !important}
+.player strong{font-size:14px !important}
+.player span{font-size:9.5px !important}
+.board{padding:17px !important}
+.days{gap:14px !important}
+.day-head{padding:14px !important}
+.day-name{font-size:17px !important}
+.day-meta{font-size:10px !important}
+.day-actions button{min-height:33px !important;font-size:9px !important}
+.day-body{padding:12px !important}
+.side-title{font-size:10px !important;margin:4px 0 8px !important}
+.slots{gap:7px !important}
+.slot{min-height:72px !important;padding:9px !important}
+.slot strong{font-size:10.5px !important}
+.slot span{font-size:8.5px !important}
+.slot-no{font-size:8px !important}
+
+.modal-card{padding:21px !important}
+.modal-title{font-size:21px !important}
+.modal-sub{font-size:11px !important}
+.edit-row{grid-template-columns:minmax(160px,1fr) 150px minmax(180px,1fr) auto !important}
+.edit-row input,.edit-row select{height:42px !important;font-size:11.5px !important}
+
+.modal-title-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.profession-config-btn{
+  flex:0 0 auto;
+  min-height:38px;
+  padding:7px 10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface2);
+  color:var(--text);
+  font-size:10px;
+  font-weight:900;
+}
+.profession-editor{display:grid;gap:7px}
+.profession-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center}
+.profession-row input{height:42px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);font-size:12px}
+.profession-row button{width:38px;height:38px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--red);font-weight:900}
+.profession-hint{margin:0 0 12px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--muted);font-size:10px;line-height:1.55}
+@media(max-width:1180px){
+  .workspace{grid-template-columns:320px minmax(0,1fr) !important}
+  .slots{grid-template-columns:repeat(5,minmax(0,1fr)) !important}
+}
+@media(max-width:760px){
+  .page{width:calc(100% - 20px) !important}
+  h1{font-size:27px !important}
+  .workspace{grid-template-columns:1fr !important}
+  .edit-row{grid-template-columns:1fr 120px !important}
+}
+
+
+/* ===== 百業戰 v4 UI rebuild ===== */
+.topbar{width:min(900px,calc(100% - 28px))!important}
+.topbar-content{min-height:70px!important;padding:10px 14px 10px 18px!important}
+.brand-badge{font-size:13px!important;padding:8px 13px!important}
+.nav{gap:6px!important}
+.nav a{padding:10px 14px!important;font-size:12.5px!important}
+.theme-toggle{min-height:40px!important;font-size:12px!important}
+
+.page{width:min(1580px,calc(100% - 34px))!important;padding-top:112px!important}
+.kicker{font-size:12px!important}
+h1{font-size:38px!important}
+.subtitle{font-size:15px!important}
+.btn{min-height:44px!important;padding:9px 14px!important;font-size:12.5px!important}
+.weekbar{padding:18px 19px!important}
+.week-label{font-size:11px!important}
+.week-select{height:48px!important;font-size:14px!important;min-width:320px!important}
+.state-pill{font-size:10.5px!important;padding:6px 10px!important}
+
+.workspace{grid-template-columns:390px minmax(0,1fr)!important;gap:18px!important}
+.player-panel,.board{border-radius:20px!important}
+.player-head{padding:18px!important}
+.player-head h2{font-size:23px!important}
+.player-count{font-size:11px!important}
+.player-filter-grid{display:grid;grid-template-columns:minmax(0,1fr) 145px;gap:8px;margin-top:10px}
+.player-filter-grid .search{margin-top:0!important}
+.search{height:48px!important;font-size:13px!important;padding:0 13px!important}
+.profession-filter{height:48px;padding:0 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);font-size:12px;font-weight:850}
+.player-list{padding:10px!important;gap:8px!important}
+.player{position:relative;display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:center;min-height:74px!important;padding:11px 13px!important;cursor:grab!important}
+.player strong{font-size:16px!important}
+.player span{font-size:11px!important}
+.player-more{width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--muted);font-size:18px;font-weight:900}
+.player-role-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.player-role-chip{display:inline-flex;padding:3px 7px;border:1px solid color-mix(in srgb,var(--purple) 28%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--purple) 7%,var(--surface));color:var(--muted);font-size:9.5px;font-weight:850}
+
+.board{padding:18px!important}
+.review-note{font-size:11px!important;padding:10px 12px!important}
+.days{gap:15px!important}
+.day-card{border-radius:17px!important;border-color:color-mix(in srgb,var(--line2) 66%,var(--line))!important;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.day-head{padding:16px!important}
+.day-name{font-size:19px!important}
+.day-meta{font-size:11.5px!important}
+.day-actions button{min-height:35px!important;font-size:10px!important}
+.day-body{padding:13px!important}
+.side-title{font-size:11px!important;margin:4px 0 8px!important}
+.slots{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:8px!important;margin-bottom:14px!important}
+.slot{min-height:86px!important;padding:10px!important;border-width:1.5px!important;cursor:pointer}
+.slot:hover{border-color:color-mix(in srgb,var(--blue) 38%,var(--line2))!important}
+.slot-no{font-size:9px!important}
+.slot strong{font-size:12px!important}
+.slot span{font-size:9.5px!important}
+.slot-empty-label{color:var(--blue)!important;font-weight:900}
+.remove{top:6px!important;right:6px!important;min-width:30px!important;height:30px!important;border:1px solid color-mix(in srgb,var(--red) 65%,var(--line))!important;border-radius:8px!important;background:var(--red)!important;color:#fff!important;font-size:12px!important;font-weight:950!important}
+
+/* Player management */
+.players-manager-card{width:min(1040px,96vw)!important}
+.players-manager-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.manager-meta{margin-top:4px;color:var(--muted);font-size:11px}
+.player-add-zone{padding:15px;border:1px solid color-mix(in srgb,var(--blue) 34%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--blue) 5%,var(--surface));margin-bottom:14px}
+.player-add-zone-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.player-add-zone-head strong{font-size:16px}
+.new-player-editor{display:grid;gap:8px}
+.new-player-row{display:grid;grid-template-columns:minmax(150px,1fr) minmax(220px,1.2fr) minmax(170px,1fr) auto;gap:8px;align-items:start}
+.new-player-row>input,.existing-player-edit>input,.input{height:44px;padding:7px 9px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);font-size:12px}
+.remove-new,.delete-old,.profession-del{min-width:76px;height:44px;padding:0 10px;border:1px solid color-mix(in srgb,var(--red) 70%,var(--line))!important;border-radius:9px;background:var(--red)!important;color:#fff!important;font-size:11px!important;font-weight:950!important}
+.existing-player-section{display:grid;gap:9px}
+.existing-player-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}
+.existing-player-search{height:44px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);font-size:12px}
+.existing-player-count-pill{display:inline-flex;align-items:center;justify-content:center;min-width:78px;padding:0 11px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);color:var(--muted);font-size:11px;font-weight:900}
+#editor{display:grid;gap:8px}
+.existing-player-card{border:1px solid var(--line);border-radius:12px;background:var(--surface2);overflow:visible}
+.existing-player-summary{display:grid;grid-template-columns:42px minmax(130px,1fr) minmax(160px,1fr) minmax(100px,.8fr) auto;gap:10px;align-items:center;min-height:64px;padding:10px 12px;cursor:pointer}
+.player-avatar{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid color-mix(in srgb,var(--orange) 35%,var(--line));border-radius:10px;background:color-mix(in srgb,var(--orange) 8%,var(--surface));color:var(--orange);font-size:14px;font-weight:950}
+.existing-player-summary .name{font-size:14px;font-weight:950}
+.existing-player-summary .roles{display:flex;flex-wrap:wrap;gap:4px}
+.existing-role-chip{display:inline-flex;padding:3px 7px;border:1px solid color-mix(in srgb,var(--purple) 28%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--purple) 7%,var(--surface));color:var(--muted);font-size:9.5px;font-weight:850}
+.existing-player-summary .note{color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.existing-player-summary .toggle{min-width:82px;min-height:34px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:10px;font-weight:900}
+.existing-player-edit{display:none;grid-template-columns:minmax(150px,1fr) minmax(220px,1.2fr) minmax(170px,1fr) auto;gap:8px;align-items:start;padding:12px;border-top:1px solid var(--line);background:var(--surface)}
+.existing-player-card.open .existing-player-edit{display:grid}
+.players-modal-footer{position:sticky;bottom:-18px;display:flex;justify-content:flex-end;gap:8px;margin:14px -18px -18px;padding:13px 18px 18px;border-top:1px solid var(--line);background:linear-gradient(to top,var(--surface) 82%,transparent);backdrop-filter:blur(8px)}
+
+/* Multi-role dropdown */
+.role-dropdown{position:relative;min-width:0}
+.role-dropdown>summary{list-style:none}
+.role-dropdown>summary::-webkit-details-marker{display:none}
+.role-dropdown-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);cursor:pointer;font-size:12px;font-weight:850}
+.role-dropdown-menu{position:absolute;z-index:9800;top:calc(100% + 5px);left:0;width:max(100%,220px);max-height:260px;overflow:auto;padding:7px;border:1px solid var(--line2);border-radius:10px;background:var(--surface);box-shadow:0 18px 55px rgba(0,0,0,.34)}
+.role-dropdown-option{display:flex;align-items:center;gap:9px;min-height:38px;padding:7px 9px;border-radius:8px;font-size:11px;font-weight:800}
+.role-dropdown-option input{width:17px;height:17px;accent-color:var(--orange)}
+.role-dropdown-arrow{color:var(--muted)}
+.role-dropdown[open] .role-dropdown-arrow{transform:rotate(180deg)}
+
+/* Slot picker */
+.slot-picker-card{width:min(980px,96vw)!important}
+.picker-toolbar{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:10px;margin:11px 0}
+.slot-picker-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px;max-height:58vh;overflow:auto}
+.picker-player{display:flex;align-items:center;justify-content:space-between;gap:9px;min-height:76px;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);text-align:left}
+.picker-player:hover{background:var(--surface3);border-color:var(--line2)}
+.picker-player strong{font-size:13px}
+.picker-player small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+
+/* Menu + confirm */
+.player-menu{position:fixed;z-index:9500;min-width:150px;padding:6px;border:1px solid var(--line2);border-radius:11px;background:var(--surface);box-shadow:0 18px 55px rgba(0,0,0,.32)}
+.player-menu[hidden]{display:none}
+.player-menu button{width:100%;min-height:36px;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:var(--text);text-align:left;font-size:10.5px;font-weight:850}
+.player-menu button:hover{background:var(--surface2)}
+.confirm-card{width:min(470px,100%)!important;padding:24px!important}
+.confirm-icon{display:flex;align-items:center;justify-content:center;width:46px;height:46px;margin-bottom:13px;border:1px solid color-mix(in srgb,var(--red) 38%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--red) 8%,var(--surface2));color:var(--red);font-size:22px;font-weight:950}
+.confirm-message{font-size:14px;line-height:1.65}
+.confirm-detail{margin-top:11px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--muted);font-size:12px}
+.danger-solid{border-color:transparent!important;background:var(--red)!important;color:#fff!important}
+
+.modal-title{font-size:23px!important}
+.modal-sub{font-size:12px!important}
+.modal-actions .btn{font-size:12px!important}
+
+@media(max-width:1180px){
+  .workspace{grid-template-columns:340px minmax(0,1fr)!important}
+  .slots{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+  .topbar{width:calc(100% - 20px)!important}
+  .page{width:calc(100% - 20px)!important;padding-top:145px!important}
+  h1{font-size:31px!important}
+  .workspace{grid-template-columns:1fr!important}
+  .player-filter-grid,.picker-toolbar{grid-template-columns:1fr}
+  .slots{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .new-player-row,.existing-player-edit{grid-template-columns:1fr!important}
+  .existing-player-summary{grid-template-columns:40px minmax(0,1fr) auto}
+  .existing-player-summary .roles,.existing-player-summary .note{grid-column:2/-1}
+}
+
+</style>
+</head>
+<body>
+<nav class="topbar"><div class="topbar-content"><div class="brand-group"><span class="brand-badge">夢回花深處</span><span class="brand-badge sub">百業戰</span></div><div class="nav-wrap"><div class="nav">
+  <a href="5人競速">5 人競速</a>
+  <a href="10人競速">10 人競速</a>
+  <a class="active" href="百業戰">百業戰</a>
+</div><button class="theme-toggle" id="themeToggleBtn">☀ 白天</button></div></div></nav>
+<main class="page">
+<header class="page-head"><div><div class="kicker">GUILD WAR ROSTER</div><h1>百業戰管理 <span style="display:inline-flex;vertical-align:middle;padding:4px 8px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--orange);font-size:10px;font-weight:900">CLICK FIX v5</span></h1><p class="subtitle">週六、週日 20:30 · 15 防守 / 15 進攻</p></div><div class="actions"><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">百業戰玩家資料</button></div></header>
+<section class="weekbar"><div class="week-main"><div><div class="week-label">WEEK</div><select class="week-select" id="weekSelect"></select></div><span class="state-pill current" id="weekState">本週</span><span class="week-label" id="weekMeta"></span></div><button class="btn" id="backWeekBtn" hidden>返回本週</button></section>
+<section class="workspace">
+<aside class="player-panel">
+  <div class="player-head">
+    <div class="player-title-row"><h2>百業戰玩家</h2><span class="player-count" id="playerCount">0 人</span></div>
+    <div class="player-filter-grid">
+      <input class="search" id="search" placeholder="搜尋玩家 / 職業 / 備註…">
+      <select class="profession-filter" id="professionFilter"><option value="">全部職業</option></select>
+    </div>
+  </div>
+  <div class="player-list" id="playerList"></div>
+</aside>
+<section class="board"><div id="reviewNote"></div><div class="days" id="days"></div></section>
+</section>
+</main>
+<div class="modal" id="playersModal"><div class="modal-card players-manager-card">
+  <div class="players-manager-head">
+    <div>
+      <h2 class="modal-title">百業戰玩家資料</h2>
+      <div class="manager-meta">新增玩家優先</div>
+    </div>
+    <button type="button" class="btn" id="professionConfigBtn">⚙ 職業設定</button>
+  </div>
+
+  <section class="player-add-zone">
+    <div class="player-add-zone-head">
+      <strong>新增玩家</strong>
+      <button class="btn" id="addRowBtn">＋ 再新增一位</button>
+    </div>
+    <div id="newPlayerEditor" class="new-player-editor"></div>
+  </section>
+
+  <section class="existing-player-section">
+    <div class="existing-player-toolbar">
+      <input class="existing-player-search" id="existingPlayerSearch" placeholder="搜尋現有玩家 / 職業 / 備註">
+      <span class="existing-player-count-pill" id="existingPlayerCount">0 人</span>
+    </div>
+    <div id="editor"></div>
+  </section>
+
+  <div class="players-modal-footer">
+    <button class="btn" data-close="playersModal">取消</button>
+    <button class="btn primary" id="savePlayersBtn">儲存玩家</button>
+  </div>
+</div></div>
+
+<div class="modal" id="professionModal"><div class="modal-card">
+  <h2 class="modal-title">職業設定</h2>
+  
+  
+  <div class="profession-editor" id="professionEditor"></div>
+  <div style="margin-top:9px"><button class="btn" id="addProfessionRowBtn">＋ 新增職業</button></div>
+  <div class="modal-actions"><button class="btn" data-close="professionModal">取消</button><button class="btn primary" id="saveProfessionsBtn">儲存職業清單</button></div>
+</div></div>
+
+<div class="modal" id="slotPickerModal"><div class="modal-card slot-picker-card">
+  <h2 class="modal-title" id="slotPickerTitle">選擇玩家</h2>
+  <div class="picker-toolbar">
+    <input class="search" id="slotPickerSearch" placeholder="搜尋玩家 / 職業 / 備註">
+    <select class="profession-filter" id="slotPickerProfessionFilter"><option value="">全部職業</option></select>
+  </div>
+  <div class="slot-picker-list" id="slotPickerList"></div>
+  <div class="modal-actions"><button class="btn" data-close="slotPickerModal">取消</button></div>
+</div></div>
+
+<div class="player-menu" id="playerMenu" hidden>
+  <button type="button" id="playerMenuEdit">✎ 編輯玩家</button>
+</div>
+
+<div class="modal" id="singlePlayerEditModal"><div class="modal-card">
+  <h2 class="modal-title">編輯玩家</h2>
+  <div class="field"><label>玩家名稱</label><input class="input" id="singlePlayerName"></div>
+  <div class="field" style="margin-top:9px"><label>職業</label><div id="singlePlayerRoles"></div></div>
+  <div class="field" style="margin-top:9px"><label>備註</label><input class="input" id="singlePlayerNote"></div>
+  <div class="modal-actions">
+    <button class="btn" data-close="singlePlayerEditModal">取消</button>
+    <button class="btn primary" id="saveSinglePlayerBtn">儲存修改</button>
+  </div>
+</div></div>
+
+<div class="modal" id="confirmDeleteModal"><div class="modal-card confirm-card">
+  <div class="confirm-icon">!</div>
+  <h2 class="modal-title" id="confirmDeleteTitle">確認</h2>
+  <p class="confirm-message" id="confirmDeleteMessage"></p>
+  <div class="confirm-detail" id="confirmDeleteDetail" hidden></div>
+  <div class="modal-actions">
+    <button class="btn" id="confirmDeleteCancelBtn">取消</button>
+    <button class="btn danger-solid" id="confirmDeleteOkBtn">確認</button>
+  </div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+<script type="module">
+const firebaseConfig={apiKey:"AIzaSyACN_995akAtlrJcdUx3opXMELAp5NtHEk",authDomain:"wwm-competition.firebaseapp.com",projectId:"wwm-competition",storageBucket:"wwm-competition.firebasestorage.app",messagingSenderId:"608687294114",appId:"1:608687294114:web:d7d3ac463cfdaac19cb9fb"};
+let initializeApp=null,getFirestore=null,doc=null,getDoc=null,onSnapshot=null,setDoc=null,serverTimestamp=null;
+let app=null,db=null,WAR_REF=null,LEGACY_REF=null,SHARED_CONFIG_REF=null;
+let firebaseReady=false,warUnsubscribe=null;
+const $=id=>document.getElementById(id),uid=p=>`${p}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`,esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])),norm=s=>String(s??"").trim().toLowerCase(),rosterIds=a=>(Array.isArray(a)?a:[]).filter(Boolean);
+const localDateKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const parseLocalDate=s=>{
+  const [y,m,d]=String(s||"").split("-").map(Number);
+  return new Date(y,m-1,d,12,0,0,0);
+};
+const today=()=>localDateKey(new Date());
+const addDays=(s,n)=>{
+  const d=parseLocalDate(s);
+  d.setDate(d.getDate()+Number(n||0));
+  return localDateKey(d);
+};
+const fmt=s=>{
+  if(!s)return"—";
+  const d=parseLocalDate(s);
+  return`${d.getMonth()+1}/${d.getDate()}`;
+};
+function currentWeek(){
+  const d=new Date();
+  d.setHours(12,0,0,0);
+  const day=d.getDay();
+  const delta=day===0?-1:6-day;
+  d.setDate(d.getDate()+delta);
+  return localDateKey(d);
+}
+function emptyDay(name){return{name,defense:Array(15).fill(null),offense:Array(15).fill(null)}}
+function ensureWeek(w,key){return{saturday:{...emptyDay("週六百業戰"),...(w?.saturday||{})},sunday:{...emptyDay("週日百業戰"),...(w?.sunday||{})},key}}
+function normalizeWeekKey(key){
+  if(!key)return key;
+  const d=parseLocalDate(key);
+  /* Earlier builds converted local midnight to UTC and saved Friday
+     instead of the intended Saturday. Repair exactly that case. */
+  if(d.getDay()===5){
+    d.setDate(d.getDate()+1);
+    return localDateKey(d);
+  }
+  return key;
+}
+function dayFilledCount(day){
+  return rosterIds(day?.defense).length+rosterIds(day?.offense).length;
+}
+function mergeWeekData(a,b,key){
+  const A=ensureWeek(a,key),B=ensureWeek(b,key);
+  return{
+    key,
+    saturday:dayFilledCount(B.saturday)>dayFilledCount(A.saturday)?B.saturday:A.saturday,
+    sunday:dayFilledCount(B.sunday)>dayFilledCount(A.sunday)?B.sunday:A.sunday
+  };
+}
+function normalizeWeekMap(rawWeeks){
+  const out={};
+  Object.entries(rawWeeks&&typeof rawWeeks==="object"?rawWeeks:{}).forEach(([key,value])=>{
+    const fixed=normalizeWeekKey(key);
+    if(!fixed)return;
+    out[fixed]=out[fixed]?mergeWeekData(out[fixed],value,fixed):ensureWeek(value,fixed);
+  });
+  return out;
+}
+function normalizeRoles(p){
+  if(Array.isArray(p?.roles)&&p.roles.length)return [...new Set(p.roles.map(x=>String(x||"").trim()).filter(Boolean))];
+  if(p?.role&&String(p.role).trim())return[String(p.role).trim()];
+  return["未設定"];
+}
+function normalizeRoleSelection(values=[]){
+  let roles=[...new Set((Array.isArray(values)?values:[]).map(x=>String(x||"").trim()).filter(Boolean))];
+  if(!roles.length)return["未設定"];
+  if(roles.length>1)roles=roles.filter(x=>x!=="未設定");
+  return roles.length?roles:["未設定"];
+}
+function normalizePlayer(p){
+  const roles=normalizeRoles(p);
+  return{id:p?.id||uid("wp"),name:p?.name||"",roles,role:roles[0]||"未設定",note:p?.note||""};
+}
+function playerRolesText(p){return normalizeRoles(p).join(" / ")}
+function snap(p){
+  if(!p)return null;
+  const n=normalizePlayer(p);
+  return{id:n.id,name:n.name||"歷史玩家",roles:n.roles,role:n.role,note:n.note||""};
+}
+function normalizeWar(raw){
+  const s={version:1,players:[],playerArchive:{},weeks:{}};
+  if(!raw||typeof raw!=="object")return s;
+  const legacy=Array.isArray(raw.warPlayers)?raw.warPlayers:Array.isArray(raw.players)?raw.players:[];
+  s.players=(Array.isArray(raw.players)&&raw.version===1?raw.players:legacy).map(normalizePlayer);
+  s.playerArchive=raw.playerArchive&&typeof raw.playerArchive==="object"?{...raw.playerArchive}:{};
+  s.players.forEach(p=>s.playerArchive[p.id]=snap(p));
+  s.weeks=normalizeWeekMap(raw.weeks&&typeof raw.weeks==="object"?raw.weeks:(raw.warWeeks&&typeof raw.warWeeks==="object"?raw.warWeeks:{}));
+  const k=currentWeek();s.weeks[k]=ensureWeek(s.weeks[k],k);return s
+}
+let state={version:1,players:[],playerArchive:{},weeks:{}},selectedWeek=currentWeek();
+let professionList=["未設定"];
+let selectedProfessionFilter="";
+let slotPickerDay="";
+let slotPickerSection="";
+let slotPickerIndex=-1;
+let slotPickerProfession="";
+let playerMenuId="";
+let singleEditingPlayerId="";
+let pendingConfirmAction=null;
+
+function roleDropdown(selected=[]){
+  const chosen=new Set(normalizeRoleSelection(selected));
+  const list=[...new Set(["未設定",...professionList])];
+  chosen.forEach(r=>{if(r&&!list.includes(r))list.push(r)});
+  return`<details class="role-dropdown">
+    <summary class="role-dropdown-summary">
+      <span class="role-dropdown-value">${esc([...chosen].join("、")||"未設定")}</span>
+      <span class="role-dropdown-arrow">▾</span>
+    </summary>
+    <div class="role-dropdown-menu">
+      ${list.map(r=>`<label class="role-dropdown-option">
+        <input type="checkbox" value="${esc(r)}"${chosen.has(r)?" checked":""}>
+        <span>${esc(r)}</span>
+      </label>`).join("")}
+    </div>
+  </details>`;
+}
+function updateRoleDropdown(dropdown,changedInput=null){
+  if(!dropdown)return;
+  const boxes=[...dropdown.querySelectorAll('input[type="checkbox"]')];
+  if(changedInput?.checked){
+    if(changedInput.value==="未設定")boxes.forEach(b=>{if(b!==changedInput)b.checked=false});
+    else{const unset=boxes.find(b=>b.value==="未設定");if(unset)unset.checked=false}
+  }
+  let selected=normalizeRoleSelection(boxes.filter(b=>b.checked).map(b=>b.value));
+  if(!boxes.some(b=>b.checked)){
+    const unset=boxes.find(b=>b.value==="未設定");if(unset)unset.checked=true;
+    selected=["未設定"];
+  }
+  const out=dropdown.querySelector(".role-dropdown-value");if(out)out.textContent=selected.join("、");
+}
+function collectRoles(container){
+  return normalizeRoleSelection([...container.querySelectorAll('.role-dropdown input[type="checkbox"]:checked')].map(i=>i.value));
+}
+function professionOptions(current=""){
+  const values=new Set();
+  state.players.forEach(p=>normalizeRoles(p).forEach(r=>{if(r&&r!=="未設定")values.add(r)}));
+  professionList.forEach(r=>{if(r&&r!=="未設定")values.add(r)});
+  return`<option value="">全部職業</option>`+[...values].sort((a,b)=>a.localeCompare(b,"zh-Hant")).map(r=>`<option value="${esc(r)}"${r===current?" selected":""}>${esc(r)}</option>`).join("");
+}
+function openConfirm({title="確認",message="",detail="",confirmText="確認",action=null}={}){
+  pendingConfirmAction=typeof action==="function"?action:null;
+  $("confirmDeleteTitle").textContent=title;
+  $("confirmDeleteMessage").textContent=message;
+  $("confirmDeleteOkBtn").textContent=confirmText;
+  const d=$("confirmDeleteDetail");
+  if(detail){d.hidden=false;d.textContent=detail}else{d.hidden=true;d.textContent=""}
+  $("confirmDeleteModal").classList.add("show");
+}
+function closeConfirm(){
+  pendingConfirmAction=null;
+  $("confirmDeleteModal").classList.remove("show");
+}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("show"),1700)}
+function persist(){
+  localStorage.setItem("wwm_war_management_cache",JSON.stringify(state));
+  if(!firebaseReady||!WAR_REF||!setDoc||!serverTimestamp)return;
+  setDoc(WAR_REF,{...state,updatedAt:serverTimestamp()}).catch(e=>{console.warn(e);toast("Firebase 寫入失敗，已保留本機資料")});
+}
+async function loadSharedProfessions(){
+  try{
+    const cached=JSON.parse(localStorage.getItem("wwm_shared_professions_cache")||"null");
+    if(Array.isArray(cached)&&cached.length)professionList=[...new Set(["未設定",...cached.filter(Boolean)])];
+  }catch(e){}
+  if(!firebaseReady||!SHARED_CONFIG_REF||!getDoc)return;
+  try{
+    const snap=await getDoc(SHARED_CONFIG_REF);
+    const data=snap.exists()?snap.data():{};
+    const list=Array.isArray(data.professions)?data.professions.map(x=>String(x||"").trim()).filter(Boolean):[];
+    professionList=[...new Set(["未設定",...list])];
+    localStorage.setItem("wwm_shared_professions_cache",JSON.stringify(list));
+  }catch(e){
+    console.warn(e);
+  }
+}
+async function saveSharedProfessions(){
+  const clean=[...new Set(professionList.map(x=>String(x||"").trim()).filter(x=>x&&x!=="未設定"))];
+  professionList=["未設定",...clean];
+  localStorage.setItem("wwm_shared_professions_cache",JSON.stringify(clean));
+  if(!firebaseReady||!SHARED_CONFIG_REF||!setDoc||!serverTimestamp)return;
+  await setDoc(SHARED_CONFIG_REF,{professions:clean,updatedAt:serverTimestamp()},{merge:true});
+}
+
+try{const c=JSON.parse(localStorage.getItem("wwm_war_management_cache")||"null");if(c)state=normalizeWar(c)}catch(e){}
+const isReview=()=>selectedWeek!==currentWeek(),getPlayer=id=>state.players.find(p=>p.id===id)||state.playerArchive[id]||null;
+async function migrate(){
+  if(!firebaseReady||!WAR_REF||!LEGACY_REF)return;
+  const w=await getDoc(WAR_REF);
+  if(w.exists())return;
+  const l=await getDoc(LEGACY_REF);
+  await setDoc(WAR_REF,{...normalizeWar(l.exists()?l.data():{}),updatedAt:serverTimestamp()});
+}
+async function initFirebase(){
+  try{
+    const [appMod,fsMod]=await Promise.all([
+      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js")
+    ]);
+    initializeApp=appMod.initializeApp;
+    getFirestore=fsMod.getFirestore;doc=fsMod.doc;getDoc=fsMod.getDoc;onSnapshot=fsMod.onSnapshot;setDoc=fsMod.setDoc;serverTimestamp=fsMod.serverTimestamp;
+    app=initializeApp(firebaseConfig);db=getFirestore(app);
+    WAR_REF=doc(db,"competition","war_management");
+    LEGACY_REF=doc(db,"competition","main");
+    SHARED_CONFIG_REF=doc(db,"competition","shared_config");
+    firebaseReady=true;
+    await loadSharedProfessions();
+    renderAll();
+    await migrate();
+    if(warUnsubscribe)try{warUnsubscribe()}catch(e){}
+    warUnsubscribe=onSnapshot(WAR_REF,s=>{
+      if(s.exists())state=normalizeWar(s.data());
+      const k=currentWeek();
+      selectedWeek=normalizeWeekKey(selectedWeek);
+      state.weeks[k]=ensureWeek(state.weeks[k],k);
+      if(!state.weeks[selectedWeek])selectedWeek=k;
+      localStorage.setItem("wwm_war_management_cache",JSON.stringify(state));
+      renderAll();
+    },e=>{console.warn(e);toast("Firebase 連線失敗，已使用本機模式")});
+  }catch(e){
+    console.warn("Firebase init failed",e);
+    firebaseReady=false;
+    toast("Firebase 暫時無法連線，頁面仍可使用");
+  }
+}
+function renderWeeks(){
+  const k=currentWeek(),keys=[...new Set([...Object.keys(state.weeks),k])].sort().reverse();
+  $("weekSelect").innerHTML=keys.map(x=>`<option value="${x}"${x===selectedWeek?" selected":""}>${fmt(x)}–${fmt(addDays(x,1))}${x===k?"（本週）":""}</option>`).join("");
+  $("weekState").textContent=isReview()?"歷史回顧":"本週";$("weekState").className=`state-pill ${isReview()?"review":"current"}`;
+  $("weekMeta").textContent=`週六 20:30 · 週日 20:30`;$("backWeekBtn").hidden=!isReview();
+  $("reviewNote").innerHTML=isReview()?`<div class="review-note"><strong>回顧模式：</strong>正在查看 ${fmt(selectedWeek)}–${fmt(addDays(selectedWeek,1))}。歷史週次只讀。</div>`:""
+}
+function renderPlayers(){
+  const q=norm($("search").value);
+  $("professionFilter").innerHTML=professionOptions(selectedProfessionFilter);
+
+  const list=state.players
+    .filter(p=>{
+      const hit=!q||norm(`${p.name} ${playerRolesText(p)} ${p.note}`).includes(q);
+      const prof=!selectedProfessionFilter||normalizeRoles(p).includes(selectedProfessionFilter);
+      return hit&&prof;
+    })
+    .sort((a,b)=>a.name.localeCompare(b.name,"zh-Hant"));
+
+  $("playerCount").textContent=`${list.length} 人`;
+  $("playerList").innerHTML=list.length?list.map(p=>{
+    const chips=normalizeRoles(p).map(r=>`<span class="player-role-chip">${esc(r)}</span>`).join("");
+    return`<div class="player" draggable="${!isReview()}" data-player="${esc(p.id)}">
+      <button type="button" class="player-more" data-player-more="${esc(p.id)}">⋯</button>
+      <div>
+        <strong>${esc(p.name)}</strong>
+        <div class="player-role-chips">${chips}</div>
+        ${p.note?`<span>${esc(p.note)}</span>`:""}
+      </div>
+    </div>`;
+  }).join(""):`<div class="empty">沒有符合條件的玩家。</div>`;
+
+  if(!isReview()){
+    document.querySelectorAll(".player").forEach(el=>{
+      el.ondragstart=e=>{
+        if(e.target.closest("[data-player-more]")){e.preventDefault();return}
+        e.dataTransfer.setData("text/player",el.dataset.player);
+        e.dataTransfer.effectAllowed="copy";
+      };
+    });
+  }
+}
+function slot(dayKey,section,i,pid){
+  const p=getPlayer(pid);
+  return`<div class="slot ${p?"filled":""}" data-day="${dayKey}" data-section="${section}" data-index="${i}">
+    <span class="slot-no">${i+1}</span>
+    ${p?`<div>
+      <strong>${esc(p.name)}</strong>
+      <span>${esc(playerRolesText(p))}</span>
+    </div>
+    ${!isReview()?`<button class="remove" data-remove="${esc(pid)}">×</button>`:""}`
+    :`<span class="slot-empty-label">${isReview()?"空位":"＋ 選擇玩家"}</span>`}
+  </div>`;
+}
+function renderDay(dayKey,label,date,obj){
+  const d=ensureWeek({[dayKey]:obj},selectedWeek)[dayKey],def=rosterIds(d.defense).length,off=rosterIds(d.offense).length;
+  return`<article class="day-card"><div class="day-head"><div><div class="day-name">${esc(d.name||label+"百業戰")}</div><div class="day-meta">${fmt(date)} ${label} · 20:30 · 防守 ${def}/15 · 進攻 ${off}/15</div></div><div class="day-actions">${!isReview()?`<button data-rename="${dayKey}">改名</button>`:""}</div></div><div class="day-body"><div class="side-title"><span>防守</span><span>${def}/15</span></div><div class="slots">${Array.from({length:15},(_,i)=>slot(dayKey,"defense",i,(d.defense||[])[i])).join("")}</div><div class="side-title"><span>進攻</span><span>${off}/15</span></div><div class="slots">${Array.from({length:15},(_,i)=>slot(dayKey,"offense",i,(d.offense||[])[i])).join("")}</div></div></article>`
+}
+function renderDays(){
+  state.weeks[selectedWeek]=ensureWeek(state.weeks[selectedWeek],selectedWeek);
+  const w=state.weeks[selectedWeek];
+  $("days").innerHTML=
+    renderDay("saturday","週六",selectedWeek,w.saturday)+
+    renderDay("sunday","週日",addDays(selectedWeek,1),w.sunday);
+
+  if(isReview())return;
+
+  document.querySelectorAll(".slot").forEach(s=>{
+    s.ondragover=e=>{e.preventDefault();s.classList.add("over")};
+    s.ondragleave=()=>s.classList.remove("over");
+    s.ondrop=e=>{
+      e.preventDefault();
+      s.classList.remove("over");
+      const pid=e.dataTransfer.getData("text/player");
+      if(pid)assign(s.dataset.day,s.dataset.section,Number(s.dataset.index),pid);
+    };
+    s.onclick=e=>{
+      if(e.target.closest("[data-remove]"))return;
+      openSlotPicker(s.dataset.day,s.dataset.section,Number(s.dataset.index));
+    };
+  });
+
+  document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    const s=b.closest(".slot");
+    requestRemove(s.dataset.day,s.dataset.section,b.dataset.remove);
+  });
+
+  document.querySelectorAll("[data-rename]").forEach(b=>b.onclick=()=>renameDay(b.dataset.rename));
+}
+function renderAll(){renderWeeks();renderPlayers();renderDays()}
+function assign(day,section,index,pid){
+  const w=state.weeks[selectedWeek]=ensureWeek(state.weeks[selectedWeek],selectedWeek);
+  const d=w[day],p=state.players.find(x=>x.id===pid);
+  if(!p)return;
+
+  const occupant=(d[section]||[])[index]||null;
+  const all=[...rosterIds(d.defense),...rosterIds(d.offense)].filter(id=>id!==occupant);
+  if(all.includes(pid)){toast(`${p.name} 已在這一天編成`);return}
+
+  d[section]=Array.from({length:15},(_,i)=>(d[section]||[])[i]||null);
+  d[section][index]=pid;
+  state.playerArchive[p.id]=snap(p);
+  persist();
+  renderAll();
+}
+function requestRemove(day,section,pid){
+  const p=getPlayer(pid);
+  openConfirm({
+    title:"移除編成",
+    message:`確定要移除「${p?.name||"這位玩家"}」？`,
+    confirmText:"移除",
+    action:()=>remove(day,section,pid)
+  });
+}
+function remove(day,section,pid){
+  const d=state.weeks[selectedWeek]?.[day];
+  if(!d)return;
+  d[section]=(d[section]||[]).map(x=>x===pid?null:x);
+  persist();
+  renderAll();
+}
+function openSlotPicker(day,section,index){
+  if(isReview())return;
+  slotPickerDay=day;slotPickerSection=section;slotPickerIndex=index;slotPickerProfession="";
+  $("slotPickerSearch").value="";
+  $("slotPickerProfessionFilter").innerHTML=professionOptions("");
+  $("slotPickerProfessionFilter").value="";
+  renderSlotPicker();
+  $("slotPickerModal").classList.add("show");
+}
+function renderSlotPicker(){
+  const w=state.weeks[selectedWeek]=ensureWeek(state.weeks[selectedWeek],selectedWeek);
+  const d=w[slotPickerDay];
+  if(!d)return;
+  const q=norm($("slotPickerSearch").value);
+  const occupant=(d[slotPickerSection]||[])[slotPickerIndex]||null;
+  const used=new Set([...rosterIds(d.defense),...rosterIds(d.offense)].filter(id=>id!==occupant));
+
+  $("slotPickerTitle").textContent=`${slotPickerDay==="saturday"?"週六":"週日"} · ${slotPickerSection==="defense"?"防守":"進攻"} · 第 ${slotPickerIndex+1} 位`;
+  $("slotPickerList").innerHTML=state.players
+    .filter(p=>
+      !used.has(p.id) &&
+      (!q||norm(`${p.name} ${playerRolesText(p)} ${p.note}`).includes(q)) &&
+      (!slotPickerProfession||normalizeRoles(p).includes(slotPickerProfession))
+    )
+    .sort((a,b)=>a.name.localeCompare(b.name,"zh-Hant"))
+    .map(p=>`<button type="button" class="picker-player" data-pick-player="${esc(p.id)}">
+      <div><strong>${esc(p.name)}</strong><small>${esc(playerRolesText(p))}${p.note?` · ${esc(p.note)}`:""}</small></div>
+    </button>`).join("")||`<div class="empty">沒有可選玩家。</div>`;
+}
+function renameDay(day){const d=state.weeks[selectedWeek]?.[day];if(!d)return;const v=prompt("編成板名稱：",d.name||"");if(v===null||!v.trim())return;d.name=v.trim();persist();renderAll()}
+$("weekSelect").onchange=()=>{selectedWeek=$("weekSelect").value;renderAll()};$("backWeekBtn").onclick=()=>{selectedWeek=currentWeek();renderAll()};$("search").oninput=renderPlayers;
+function newPlayerRow(p={}){
+  const roles=normalizeRoles(p);
+  return`<div class="new-player-row">
+    <input class="name" value="${esc(p.name||"")}" placeholder="玩家名稱">
+    ${roleDropdown(roles)}
+    <input class="note" value="${esc(p.note||"")}" placeholder="備註">
+    <button type="button" class="remove-new">🗑 移除</button>
+  </div>`;
+}
+function existingPlayerCard(p){
+  const roles=normalizeRoles(p);
+  const initial=(String(p.name||"?").trim().charAt(0)||"?").toUpperCase();
+  const chips=roles.map(r=>`<span class="existing-role-chip">${esc(r)}</span>`).join("");
+  const searchText=norm(`${p.name} ${roles.join(" ")} ${p.note||""}`);
+  return`<div class="existing-player-card" data-id="${esc(p.id||"")}" data-search="${esc(searchText)}">
+    <div class="existing-player-summary">
+      <div class="player-avatar">${esc(initial)}</div>
+      <div class="name">${esc(p.name||"")}</div>
+      <div class="roles">${chips}</div>
+      <div class="note">${esc(p.note||"")}</div>
+      <button type="button" class="toggle">編輯</button>
+    </div>
+    <div class="existing-player-edit">
+      <input class="name" value="${esc(p.name||"")}" placeholder="玩家名稱">
+      ${roleDropdown(roles)}
+      <input class="note" value="${esc(p.note||"")}" placeholder="備註">
+      <button type="button" class="delete-old">🗑 刪除</button>
+    </div>
+  </div>`;
+}
+function bindNewRows(){
+  document.querySelectorAll("#newPlayerEditor .remove-new").forEach(b=>b.onclick=()=>{
+    const row=b.closest(".new-player-row");
+    const name=row.querySelector(".name").value.trim();
+    openConfirm({
+      title:"移除新增列",
+      message:name?`移除「${name}」這個新增玩家欄位？`:"移除這個新增玩家欄位？",
+      confirmText:"移除",
+      action:()=>{
+        const rows=[...document.querySelectorAll("#newPlayerEditor .new-player-row")];
+        if(rows.length<=1){
+          row.querySelector(".name").value="";
+          row.querySelector(".note").value="";
+          row.querySelectorAll('.role-dropdown input[type="checkbox"]').forEach(i=>i.checked=i.value==="未設定");
+          updateRoleDropdown(row.querySelector(".role-dropdown"));
+        }else row.remove();
+      }
+    });
+  });
+}
+function bindExistingCards(){
+  document.querySelectorAll("#editor .existing-player-card").forEach(card=>{
+    const toggle=card.querySelector(".toggle");
+    const doToggle=()=>{
+      const open=card.classList.toggle("open");
+      toggle.textContent=open?"收合":"編輯";
+    };
+    card.querySelector(".existing-player-summary").onclick=e=>{
+      if(e.target.closest(".toggle"))return;
+      doToggle();
+    };
+    toggle.onclick=e=>{e.stopPropagation();doToggle()};
+    card.querySelector(".delete-old").onclick=()=>{
+      const name=card.querySelector(".name").value.trim()||"這位玩家";
+      openConfirm({
+        title:"刪除玩家",
+        message:`確定要刪除「${name}」？`,
+        detail:"儲存玩家資料後會從本週可排名單移除；歷史週次資料保留。",
+        confirmText:"刪除",
+        action:()=>{
+          card.remove();
+          $("existingPlayerCount").textContent=`${document.querySelectorAll("#editor .existing-player-card").length} 人`;
+        }
+      });
+    };
+  });
+}
+function renderPlayerEditor(){
+  $("newPlayerEditor").innerHTML=newPlayerRow();
+  $("editor").innerHTML=state.players.map(existingPlayerCard).join("")||`<div class="empty">尚無現有玩家</div>`;
+  $("existingPlayerSearch").value="";
+  $("existingPlayerCount").textContent=`${state.players.length} 人`;
+  bindNewRows();bindExistingCards();
+}
+function filterExistingPlayers(){
+  const q=norm($("existingPlayerSearch").value);let shown=0;
+  document.querySelectorAll("#editor .existing-player-card").forEach(card=>{
+    const ok=!q||String(card.dataset.search||"").includes(q);
+    card.hidden=!ok;if(ok)shown++;
+  });
+  $("existingPlayerCount").textContent=q?`${shown}/${state.players.length} 人`:`${state.players.length} 人`;
+}
+function professionRow(value=""){
+  return `<div class="profession-row"><input class="profession-name" value="${esc(value)}" placeholder="職業名稱"><button type="button" class="profession-del">🗑 刪除</button></div>`;
+}
+function bindProfessionRows(){
+  document.querySelectorAll(".profession-del").forEach(b=>b.onclick=()=>{
+    const row=b.closest(".profession-row");
+    const name=row.querySelector(".profession-name").value.trim()||"這個職業";
+    openConfirm({title:"刪除職業",message:`確定要刪除「${name}」？`,confirmText:"刪除",action:()=>row.remove()});
+  });
+}
+function renderProfessionEditor(){
+  const custom=professionList.filter(x=>x!=="未設定");
+  $("professionEditor").innerHTML=custom.map(professionRow).join("")||professionRow("");
+  bindProfessionRows();
+}
+$("professionConfigBtn").onclick=()=>{renderProfessionEditor();$("professionModal").classList.add("show")};
+$("addProfessionRowBtn").onclick=()=>{$("professionEditor").insertAdjacentHTML("beforeend",professionRow(""));bindProfessionRows()};
+$("saveProfessionsBtn").onclick=async()=>{
+  const vals=[],seen=new Set();let dup="";
+  document.querySelectorAll("#professionEditor .profession-name").forEach(inp=>{
+    const v=inp.value.trim();if(!v)return;const k=norm(v);if(seen.has(k)){dup=v;return}seen.add(k);vals.push(v)
+  });
+  if(dup){alert(`職業名稱重複：${dup}`);return}
+  professionList=["未設定",...vals];
+  try{await saveSharedProfessions();$("professionModal").classList.remove("show");renderPlayerEditor();toast("職業清單已更新")}
+  catch(e){console.warn(e);alert("職業清單寫入 Firebase 失敗。")}
+};
+
+$("playersBtn").onclick=()=>{renderPlayerEditor();$("playersModal").classList.add("show")};
+$("addRowBtn").onclick=()=>{$("newPlayerEditor").insertAdjacentHTML("beforeend",newPlayerRow());bindNewRows()};
+$("existingPlayerSearch").oninput=filterExistingPlayers;
+$("savePlayersBtn").onclick=()=>{
+  const next=[],names=new Set();let dup="";
+
+  document.querySelectorAll("#editor .existing-player-card").forEach(card=>{
+    const name=card.querySelector(".name").value.trim();if(!name)return;
+    const k=norm(name);if(names.has(k)){dup=name;return}names.add(k);
+    const roles=collectRoles(card);
+    next.push({id:card.dataset.id||uid("wp"),name,roles,role:roles[0]||"未設定",note:card.querySelector(".note").value.trim()});
+  });
+
+  document.querySelectorAll("#newPlayerEditor .new-player-row").forEach(row=>{
+    const name=row.querySelector(".name").value.trim();if(!name)return;
+    const k=norm(name);if(names.has(k)){dup=name;return}names.add(k);
+    const roles=collectRoles(row);
+    next.push({id:uid("wp"),name,roles,role:roles[0]||"未設定",note:row.querySelector(".note").value.trim()});
+  });
+
+  if(dup){alert(`玩家名稱重複：${dup}`);return}
+
+  state.players.forEach(p=>state.playerArchive[p.id]=snap(p));
+  next.forEach(p=>state.playerArchive[p.id]=snap(p));
+  const valid=new Set(next.map(p=>p.id));
+  state.players=next.map(normalizePlayer);
+
+  const k=currentWeek();
+  state.weeks[k]=ensureWeek(state.weeks[k],k);
+  ["saturday","sunday"].forEach(day=>{
+    const d=state.weeks[k][day];
+    d.defense=(d.defense||[]).map(id=>id&&valid.has(id)?id:null);
+    d.offense=(d.offense||[]).map(id=>id&&valid.has(id)?id:null);
+  });
+
+  persist();
+  $("playersModal").classList.remove("show");
+  renderAll();
+  toast("玩家名單已更新");
+};
+
+function openPlayerMenu(playerId,button){
+  playerMenuId=playerId;
+  const menu=$("playerMenu"),r=button.getBoundingClientRect();
+  menu.hidden=false;
+  menu.style.left=`${Math.min(r.left,window.innerWidth-170)}px`;
+  menu.style.top=`${Math.min(r.bottom+5,window.innerHeight-90)}px`;
+}
+function closePlayerMenu(){$("playerMenu").hidden=true;playerMenuId=""}
+function openSinglePlayerEdit(pid){
+  const p=state.players.find(x=>x.id===pid);if(!p)return;
+  singleEditingPlayerId=pid;
+  $("singlePlayerName").value=p.name||"";
+  $("singlePlayerNote").value=p.note||"";
+  $("singlePlayerRoles").innerHTML=roleDropdown(normalizeRoles(p));
+  closePlayerMenu();
+  $("singlePlayerEditModal").classList.add("show");
+}
+function saveSinglePlayerEdit(){
+  const p=state.players.find(x=>x.id===singleEditingPlayerId);if(!p)return;
+  const name=$("singlePlayerName").value.trim();if(!name){alert("玩家名稱不能留空");return}
+  if(state.players.some(x=>x.id!==p.id&&norm(x.name)===norm(name))){alert(`玩家名稱重複：${name}`);return}
+  const roles=collectRoles($("singlePlayerRoles"));
+  p.name=name;p.roles=roles;p.role=roles[0]||"未設定";p.note=$("singlePlayerNote").value.trim();
+  state.playerArchive[p.id]=snap(p);
+  persist();
+  $("singlePlayerEditModal").classList.remove("show");
+  renderAll();
+  toast(`${name} 已更新`);
+}
+
+$("playerList").addEventListener("click",e=>{
+  const more=e.target.closest("[data-player-more]");
+  if(more){e.stopPropagation();openPlayerMenu(more.dataset.playerMore,more)}
+});
+$("playerMenuEdit").onclick=()=>{if(playerMenuId)openSinglePlayerEdit(playerMenuId)};
+$("saveSinglePlayerBtn").onclick=saveSinglePlayerEdit;
+document.addEventListener("click",e=>{
+  if(!e.target.closest("#playerMenu")&&!e.target.closest("[data-player-more]"))closePlayerMenu();
+});
+window.addEventListener("resize",closePlayerMenu);
+window.addEventListener("scroll",closePlayerMenu,true);
+
+$("professionFilter").onchange=()=>{selectedProfessionFilter=$("professionFilter").value;renderPlayers()};
+$("slotPickerSearch").oninput=renderSlotPicker;
+$("slotPickerProfessionFilter").onchange=()=>{slotPickerProfession=$("slotPickerProfessionFilter").value;renderSlotPicker()};
+$("slotPickerList").onclick=e=>{
+  const b=e.target.closest("[data-pick-player]");if(!b)return;
+  assign(slotPickerDay,slotPickerSection,slotPickerIndex,b.dataset.pickPlayer);
+  $("slotPickerModal").classList.remove("show");
+};
+
+document.addEventListener("change",e=>{
+  const input=e.target.closest?.('.role-dropdown input[type="checkbox"]');
+  if(input)updateRoleDropdown(input.closest(".role-dropdown"),input);
+});
+document.addEventListener("click",e=>{
+  if(!e.target.closest?.(".role-dropdown"))document.querySelectorAll("details.role-dropdown[open]").forEach(d=>d.removeAttribute("open"));
+});
+
+$("confirmDeleteCancelBtn").onclick=closeConfirm;
+$("confirmDeleteOkBtn").onclick=async()=>{
+  const action=pendingConfirmAction;
+  closeConfirm();
+  if(action)await action();
+};
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove("show"));document.querySelectorAll(".modal").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("show")});
+function cell(v){return`<Cell><Data ss:Type="String">${esc(v)}</Data></Cell>`}function sheet(name,h,r){return`<Worksheet ss:Name="${esc(name)}"><Table><Row>${h.map(cell).join("")}</Row>${r.map(x=>`<Row>${x.map(cell).join("")}</Row>`).join("")}</Table></Worksheet>`}
+$("exportBtn").onclick=()=>{state.weeks[selectedWeek]=ensureWeek(state.weeks[selectedWeek],selectedWeek);const w=state.weeks[selectedWeek],rows=[];[["週六",selectedWeek,w.saturday],["週日",addDays(selectedWeek,1),w.sunday]].forEach(([day,date,d])=>[["防守",d.defense],["進攻",d.offense]].forEach(([side,a])=>Array.from({length:15},(_,i)=>{const p=getPlayer((a||[])[i]);rows.push([day,date,"20:30",side,i+1,p?.name||"",p?playerRolesText(p):"",d.name||""])})));const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheet("百業戰",["星期","日期","時間","組別","位置","玩家","職業","編成名稱"],rows)}</Workbook>`;const blob=new Blob(["\ufeff",xml],{type:"application/vnd.ms-excel"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`百業戰_${selectedWeek}.xls`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)};
+const themeBtn=$("themeToggleBtn");function applyTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem("registration_theme",t);localStorage.setItem("wwm-home-theme-v2",t)}catch(e){}themeBtn.textContent=t==="light"?"☾ 夜間":"☀ 白天"}applyTheme(document.documentElement.dataset.theme||"dark");themeBtn.onclick=()=>applyTheme(document.documentElement.dataset.theme==="light"?"dark":"light");
+
+// UI must be usable immediately. Firebase connects in the background and can never block clicks.
+selectedWeek=normalizeWeekKey(selectedWeek);
+{
+  const k=currentWeek();
+  state.weeks[k]=ensureWeek(state.weeks[k],k);
+  if(!state.weeks[selectedWeek])selectedWeek=k;
+}
+loadSharedProfessions().finally(()=>renderAll());
+initFirebase();
+</script>
+</body></html>
