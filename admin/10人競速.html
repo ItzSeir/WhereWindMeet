@@ -1751,6 +1751,26 @@ body{
   transform:translateY(-1px);
 }
 
+
+/* ===== v23 multi-player filter + duplicate roster warning ===== */
+.player-row.selected{
+  border-color:color-mix(in srgb,var(--blue) 58%,var(--line))!important;
+  background:color-mix(in srgb,var(--blue) 10%,var(--surface2))!important;
+  box-shadow:
+    inset 4px 0 0 var(--blue),
+    0 7px 18px color-mix(in srgb,var(--blue) 10%,transparent)!important;
+}
+.player-row.selected .player-name::after{
+  content:" ✓";
+  color:var(--blue);
+  font-size:11px;
+  font-weight:950;
+}
+.selected-player.multi-selected{
+  border-color:color-mix(in srgb,var(--purple) 36%,var(--line));
+  background:color-mix(in srgb,var(--purple) 5%,var(--surface));
+}
+
 </style>
 </head>
 <body>
@@ -1765,11 +1785,11 @@ body{
 
 <main class="page">
   <header class="hero">
-    <div><div class="kicker">SPEED DUNGEON · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">測試版</span></h1></div>
+    <div><div class="kicker">SPEED DUNGEON · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">CHECKED v23 · MULTI FILTER</span></h1></div>
     <div class="hero-actions"><button class="btn" id="limitBtn">上榜限制</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
-  <div class="cross"><a href="SpeedCompetition5">前往 5 人競速 →</a></div>
+  <div class="cross"><a href="5人競速">前往 5 人競速 →</a></div>
 
   <section class="cycle">
     <div class="cycle-main">
@@ -2019,7 +2039,8 @@ const today=()=>localDateKey(new Date());
 const fmtDate=s=>{if(!s)return"—";const [y,m,d]=String(s).split("-").map(Number);return m&&d?`${m}/${d}`:s};
 
 let players=[],playerArchive={},dungeons=[],activeDungeonId="",professions=["未設定"];
-let teams=[],records=[],limit=2,selectedDungeonId="",selectedPlayerId="",metricMode="count";
+let teams=[],records=[],limit=2,selectedDungeonId="",metricMode="count";
+const selectedPlayerIds=new Set();
 let pickerTeamId="",pickerIndex=-1,editingTeamId="";
 let selectedProfessionFilter="";
 let playerMenuId="";
@@ -2220,6 +2241,41 @@ function rosterSnapshotFromTeam(team){
 function memberDisplayNames(team){
   return (team.members||[]).filter(Boolean).map(v=>slotPerson(team,v)?.name||"外人");
 }
+function rosterMemberKey(team,value){
+  if(!value)return"";
+  if(isOutsiderToken(value)){
+    const ext=getOutsider(team,value);
+    return`external:${norm(ext?.name||"外人")}`;
+  }
+  return`player:${value}`;
+}
+function rosterSignature(team,members=team?.members||[]){
+  const filled=Array.from({length:SIZE},(_,i)=>members?.[i]||null).filter(Boolean);
+  if(filled.length!==SIZE)return"";
+  return filled.map(v=>rosterMemberKey(team,v)).sort().join("|");
+}
+function findDuplicateRosterTeam(team){
+  if(!team)return null;
+  const signature=rosterSignature(team);
+  if(!signature)return null;
+  return visibleTeams().find(other=>
+    other.id!==team.id &&
+    rosterSignature(other)===signature
+  )||null;
+}
+function warnDuplicateRoster(team){
+  const duplicate=findDuplicateRosterTeam(team);
+  if(!duplicate)return false;
+  const names=memberDisplayNames(team).join("、");
+  setTimeout(()=>{
+    alert(
+      `⚠ 發現相同隊伍\n\n`+
+      `「${team.name}」的隊員和「${duplicate.name}」完全相同。\n\n`+
+      `${names}`
+    );
+  },0);
+  return true;
+}
 function toggleTeam(teamId){
   if(expandedTeamIds.has(teamId))expandedTeamIds.delete(teamId);
   else expandedTeamIds.add(teamId);
@@ -2235,6 +2291,26 @@ function teamMatchesPlayer(t,pid){
   if((t.members||[]).includes(pid))return true;
   if(t.currentResult?.roster?.some(m=>m.id===pid))return true;
   return teamHistory(t).some(r=>r.roster?.some(m=>m.id===pid));
+}
+function selectedFilterPlayers(){
+  const currentIds=new Set(players.map(p=>p.id));
+  [...selectedPlayerIds].forEach(id=>{
+    if(!currentIds.has(id))selectedPlayerIds.delete(id);
+  });
+  return [...selectedPlayerIds].map(id=>getPlayer(id)).filter(Boolean);
+}
+function teamMatchesSelectedPlayers(t){
+  if(!selectedPlayerIds.size)return true;
+  return [...selectedPlayerIds].every(pid=>teamMatchesPlayer(t,pid));
+}
+function filteredVisibleTeams(){
+  return selectedPlayerIds.size
+    ? visibleTeams().filter(teamMatchesSelectedPlayers)
+    : visibleTeams();
+}
+function clearPlayerFilters(){
+  selectedPlayerIds.clear();
+  renderAll();
 }
 function playerSearchText(p){
   const rec=visibleRecords().filter(r=>r.roster?.some(m=>m.id===p.id)).map(r=>`${r.teamName} ${r.date} ${fmtTime(r.timeMs)} ${r.note||""}`).join(" ");
@@ -2254,6 +2330,7 @@ function renderCycle(){
 function renderPlayers(){
   const q=norm($("playerSearch").value);
   renderProfessionFilter();
+  const selected=selectedFilterPlayers();
 
   const list=players
     .filter(p=>(!q||playerSearchText(p).includes(q))&&playerHasProfession(p,selectedProfessionFilter))
@@ -2268,8 +2345,8 @@ function renderPlayers(){
     });
 
   $("playerCount").textContent=`${list.length} 人 · 5/10 共用`;
-  $("filterNote").classList.toggle("show",!!selectedPlayerId);
-  $("filterName").textContent=getPlayer(selectedPlayerId)?.name||"";
+  $("filterNote").classList.toggle("show",selected.length>0);
+  $("filterName").textContent=selected.map(p=>p.name).join("、");
 
   $("playerList").innerHTML=list.length?list.map(p=>{
     const s=playerStats(p.id);
@@ -2279,7 +2356,7 @@ function renderPlayers(){
 
     const roleChips=normalizeRoles(p).map(r=>`<span class="role-chip">${esc(r)}</span>`).join("");
 
-    return`<div class="player-row ${selectedPlayerId===p.id?"selected":""}" data-player="${esc(p.id)}">
+    return`<div class="player-row ${selectedPlayerIds.has(p.id)?"selected":""}" data-player="${esc(p.id)}">
       <button type="button" class="player-more" data-player-more="${esc(p.id)}" aria-label="更多選項">⋯</button>
       <div>
         <div class="player-name">${esc(p.name)}</div>
@@ -2292,18 +2369,48 @@ function renderPlayers(){
 }
 function renderSelectedPlayer(){
   const panel=$("selectedPlayerPanel");
-  if(!selectedPlayerId){panel.classList.remove("show");return}
-  const p=getPlayer(selectedPlayerId);if(!p){selectedPlayerId="";panel.classList.remove("show");return}
-  const s=playerStats(p.id),related=visibleTeams().filter(t=>teamMatchesPlayer(t,p.id));
-  panel.classList.add("show");$("selectedPlayerName").textContent=p.name;$("selectedPlayerMeta").textContent=`${playerRolesText(p)} · 正在篩選相關 ${SIZE} 人隊伍`;
-  $("selectedPlayerStats").innerHTML=`<div class="stat"><span>目前上榜</span><strong>${s.count}${limit?`/${limit}`:""}</strong></div><div class="stat"><span>最佳紀錄</span><strong>${s.best?fmtTime(s.best.timeMs):"—"}</strong></div><div class="stat"><span>相關隊伍</span><strong>${related.length}</strong></div>`;
+  const selected=selectedFilterPlayers();
+
+  if(!selected.length){
+    panel.classList.remove("show","multi-selected");
+    return;
+  }
+
+  const related=filteredVisibleTeams();
+  panel.classList.add("show");
+  panel.classList.toggle("multi-selected",selected.length>1);
+
+  if(selected.length===1){
+    const p=selected[0];
+    const s=playerStats(p.id);
+    $("selectedPlayerName").textContent=p.name;
+    $("selectedPlayerMeta").textContent=playerRolesText(p);
+    $("selectedPlayerStats").innerHTML=
+      `<div class="stat"><span>目前上榜</span><strong>${s.count}${limit?`/${limit}`:""}</strong></div>`+
+      `<div class="stat"><span>最佳紀錄</span><strong>${s.best?fmtTime(s.best.timeMs):"—"}</strong></div>`+
+      `<div class="stat"><span>相關隊伍</span><strong>${related.length}</strong></div>`;
+    return;
+  }
+
+  const ids=[...selectedPlayerIds];
+  const commonRecords=visibleRecords().filter(r=>
+    ids.every(pid=>r.roster?.some(m=>m.id===pid))
+  );
+  const best=commonRecords.slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
+
+  $("selectedPlayerName").textContent=`已選 ${selected.length} 人`;
+  $("selectedPlayerMeta").textContent=selected.map(p=>p.name).join("、");
+  $("selectedPlayerStats").innerHTML=
+    `<div class="stat"><span>篩選玩家</span><strong>${selected.length}</strong></div>`+
+    `<div class="stat"><span>共同隊伍</span><strong>${related.length}</strong></div>`+
+    `<div class="stat"><span>共同最佳</span><strong>${best?fmtTime(best.timeMs):"—"}</strong></div>`;
 }
 function renderQuick(){
-  const list=(selectedPlayerId?visibleTeams().filter(t=>teamMatchesPlayer(t,selectedPlayerId)):visibleTeams());
+  const list=filteredVisibleTeams();
   $("quickGrid").innerHTML=list.length?list.map(t=>{
     const b=teamBest(t),members=(t.members||[]).filter(Boolean).map(v=>slotPerson(t,v)).filter(Boolean);
     return`<button class="quick-card" data-jump="${esc(t.id)}"><div class="quick-top"><div class="quick-name">${esc(t.name)}</div><span class="quick-count">${members.length}/${SIZE}</span></div><div class="quick-stats"><div class="quick-stat"><span>目前正式</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div><div class="quick-stat best"><span>歷史最佳</span><strong>${b?fmtTime(b.timeMs):"—"}</strong></div></div><div class="chips">${members.length?members.map(p=>`<span class="chip">${esc(p.name)}</span>`).join(""):`<span class="chip">尚未排人</span>`}</div></button>`;
-  }).join(""):`<div class="empty">${selectedPlayerId?"這位玩家目前沒有相關隊伍。":`目前還沒有 ${SIZE} 人固定隊伍。`}</div>`;
+  }).join(""):`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`目前還沒有 ${SIZE} 人固定隊伍。`}</div>`;
 }
 function slotHtml(t,i){
   const raw=(t.members||[])[i],p=slotPerson(t,raw);
@@ -2362,9 +2469,10 @@ function resultHtml(t){
   </div>`;
 }
 function renderTeams(){
-  const list=(selectedPlayerId?visibleTeams().filter(t=>teamMatchesPlayer(t,selectedPlayerId)):visibleTeams());
-  $("boardSub").textContent=selectedPlayerId
-    ? `「${getPlayer(selectedPlayerId)?.name||""}」相關隊伍`
+  const list=filteredVisibleTeams();
+  const selected=selectedFilterPlayers();
+  $("boardSub").textContent=selected.length
+    ? `${selected.length} 人篩選 · ${list.length} 支隊伍`
     : `${visibleTeams().length} 支隊伍`;
 
   if(!currentDungeon()){
@@ -2372,7 +2480,7 @@ function renderTeams(){
     return;
   }
   if(!list.length){
-    $("teamList").innerHTML=`<div class="empty">${selectedPlayerId?"這位玩家目前沒有相關隊伍。":`尚無隊伍`}</div>`;
+    $("teamList").innerHTML=`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`尚無隊伍`}</div>`;
     return;
   }
 
@@ -2426,7 +2534,7 @@ function createTeam(){
   const name=$("createTeamName").value.trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
   const note=$("createTeamNote").value.trim();
   const team={id:uid("team"),dungeonId:dg.id,size:SIZE,name,note,members:Array(SIZE).fill(null),externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now(),_sync:"pending"};
-  teams.push(team);expandedTeamIds.add(team.id);selectedPlayerId="";$("playerSearch").value="";$("createTeamName").value="";$("createTeamNote").value="";
+  teams.push(team);expandedTeamIds.add(team.id);selectedPlayerIds.clear();$("playerSearch").value="";$("createTeamName").value="";$("createTeamNote").value="";
   saveLocalPage();renderAll();document.getElementById(`team-${team.id}`)?.scrollIntoView({behavior:"smooth",block:"center"});
   toast(`${name} 已建立`);
   syncTeam(team);
@@ -2589,6 +2697,7 @@ function applyBatchPlayers(){
   closeModal("batchPickerModal");
   renderAll();
   syncTeam(t);
+  warnDuplicateRoster(t);
   toast(`已套用 ${selected.length} 位幫內玩家`);
 }
 function assignOutsider(teamId,index){
@@ -2610,12 +2719,19 @@ function assignOutsider(teamId,index){
   closeModal("pickerModal");
   renderAll();
   syncTeam(t);
+  warnDuplicateRoster(t);
 }
 function assignPlayer(teamId,index,pid){
   const t=teams.find(x=>x.id===teamId),p=players.find(x=>x.id===pid);if(!t||!p)return;
   const existing=(t.members||[]).indexOf(pid);if(existing>=0&&existing!==index){alert(`${p.name} 已在這支隊伍裡`);return}
   t.members=Array.from({length:SIZE},(_,i)=>(t.members||[])[i]||null);const old=t.members[index];if(isOutsiderToken(old)&&t.externalMembers?.[old])delete t.externalMembers[old];t.members[index]=pid;t.updatedAtMs=Date.now();t._sync="pending";playerArchive[p.id]={...p};
-  saveLocalSharedPlayers();saveLocalPage();closeModal("pickerModal");renderAll();syncTeam(t);syncSharedPlayers()
+  saveLocalSharedPlayers();
+  saveLocalPage();
+  closeModal("pickerModal");
+  renderAll();
+  syncTeam(t);
+  syncSharedPlayers();
+  warnDuplicateRoster(t);
 }
 
 function requestRemovePlayer(teamId,pid){
@@ -3216,16 +3332,16 @@ document.addEventListener("click",e=>{
 });
 function bindUI(){
   $("teamCreateForm").addEventListener("submit",e=>{e.preventDefault();createTeam()});
-  $("dungeonSelect").addEventListener("change",()=>{selectedDungeonId=$("dungeonSelect").value;selectedPlayerId="";renderAll()});
-  $("backCurrentBtn").addEventListener("click",()=>{selectedDungeonId=activeDungeonId;selectedPlayerId="";renderAll()});
+  $("dungeonSelect").addEventListener("change",()=>{selectedDungeonId=$("dungeonSelect").value;selectedPlayerIds.clear();renderAll()});
+  $("backCurrentBtn").addEventListener("click",()=>{selectedDungeonId=activeDungeonId;selectedPlayerIds.clear();renderAll()});
   $("newDungeonBtn").addEventListener("click",()=>{$("newDungeonName").value="";$("newDungeonNote").value="";openModal("dungeonModal")});
   $("saveDungeonBtn").addEventListener("click",createDungeon);
   $("editDungeonBtn").addEventListener("click",openDungeonEdit);
   $("saveDungeonEditBtn").addEventListener("click",saveDungeonEdit);
   $("playerSearch").addEventListener("input",renderPlayers);
   $("professionFilter").addEventListener("change",()=>{selectedProfessionFilter=$("professionFilter").value;renderPlayers()});
-  $("clearFilterBtn").addEventListener("click",()=>{selectedPlayerId="";renderAll()});
-  $("clearSelectedBtn").addEventListener("click",()=>{selectedPlayerId="";renderAll()});
+  $("clearFilterBtn").addEventListener("click",clearPlayerFilters);
+  $("clearSelectedBtn").addEventListener("click",clearPlayerFilters);
   $("playerList").addEventListener("click",e=>{
     const more=e.target.closest("[data-player-more]");
     if(more){
@@ -3235,7 +3351,9 @@ function bindUI(){
     }
     const row=e.target.closest("[data-player]");
     if(!row)return;
-    selectedPlayerId=selectedPlayerId===row.dataset.player?"":row.dataset.player;
+    const pid=row.dataset.player;
+    if(selectedPlayerIds.has(pid))selectedPlayerIds.delete(pid);
+    else selectedPlayerIds.add(pid);
     renderAll();
   });
   document.querySelectorAll("[data-metric]").forEach(b=>b.addEventListener("click",()=>{metricMode=b.dataset.metric;renderAll()}));
@@ -3292,7 +3410,8 @@ function bindUI(){
   $("playerMenuEdit").addEventListener("click",()=>{if(playerMenuId)openSinglePlayerEdit(playerMenuId)});
   $("playerMenuDetail").addEventListener("click",()=>{
     if(!playerMenuId)return;
-    selectedPlayerId=playerMenuId;
+    selectedPlayerIds.clear();
+    selectedPlayerIds.add(playerMenuId);
     closePlayerMenu();
     renderAll();
   });
