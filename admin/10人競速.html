@@ -1170,6 +1170,587 @@ h1{font-size:38px}
   }
 }
 
+
+/* ===== v21 UI polish ===== */
+
+/* Overall hierarchy */
+body{
+  letter-spacing:.01em;
+}
+.page{
+  padding-bottom:56px;
+}
+.panel,.board{
+  border-color:color-mix(in srgb,var(--line2) 60%,var(--line));
+}
+.board{
+  background:linear-gradient(
+    180deg,
+    color-mix(in srgb,var(--surface) 97%,var(--blue) 3%),
+    var(--surface)
+  );
+}
+.panel-head,
+.board-head{
+  position:relative;
+}
+.panel-head::after,
+.board-head::after{
+  content:"";
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:-1px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--line2),transparent);
+  opacity:.5;
+}
+
+/* Main action buttons */
+.btn{
+  transition:transform .15s ease,border-color .15s ease,background .15s ease;
+}
+.btn:hover{
+  transform:translateY(-1px);
+}
+.btn.primary{
+  box-shadow:0 8px 20px color-mix(in srgb,var(--blue) 16%,transparent);
+}
+
+/* Create team */
+.create-box{
+  border-width:1.5px;
+  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 4%,transparent);
+}
+.create-head{
+  margin-bottom:11px;
+}
+.quick-create{
+  min-width:140px;
+  box-shadow:0 8px 18px color-mix(in srgb,var(--blue) 16%,transparent);
+}
+
+/* Player list */
+.player-row{
+  transition:border-color .15s ease,background .15s ease,transform .15s ease;
+}
+.player-row:hover{
+  transform:translateY(-1px);
+}
+.player-row.selected{
+  box-shadow:
+    inset 4px 0 0 var(--blue),
+    0 6px 18px color-mix(in srgb,var(--blue) 8%,transparent);
+}
+.player-more{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+
+/* Selected player area */
+.selected-player{
+  border-width:1.5px;
+  box-shadow:inset 3px 0 0 color-mix(in srgb,var(--blue) 70%,transparent);
+}
+.selected-stats .stat{
+  min-height:66px;
+}
+
+/* Quick preview */
+.quick{
+  border-color:color-mix(in srgb,var(--line2) 68%,var(--line));
+}
+.quick-card{
+  transition:transform .15s ease,border-color .15s ease;
+}
+.quick-card:hover{
+  transform:translateY(-2px);
+}
+
+/* Team cards */
+.team-card{
+  border-color:color-mix(in srgb,var(--line2) 68%,var(--line));
+  box-shadow:0 8px 22px rgba(0,0,0,.08);
+}
+.team-card.expanded{
+  border-color:color-mix(in srgb,var(--blue) 38%,var(--line));
+}
+.team-top{
+  background:linear-gradient(
+    90deg,
+    color-mix(in srgb,var(--surface2) 94%,var(--blue) 6%),
+    var(--surface2)
+  );
+}
+.team-name{
+  letter-spacing:.01em;
+}
+.team-mini-stat{
+  min-height:54px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.team-mini-stat strong{
+  font-variant-numeric:tabular-nums;
+}
+.team-collapse-btn{
+  min-width:90px;
+}
+.team-card.expanded .team-collapse-btn{
+  background:color-mix(in srgb,var(--blue) 9%,var(--surface));
+  border-color:color-mix(in srgb,var(--blue) 34%,var(--line));
+}
+
+/* Results */
+.result-card{
+  border-width:1.5px;
+}
+.result-summary{
+  gap:9px;
+}
+.result-box{
+  min-height:78px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.result-box strong{
+  font-variant-numeric:tabular-nums;
+}
+.save-result{
+  min-width:110px;
+  box-shadow:0 7px 16px color-mix(in srgb,var(--blue) 14%,transparent);
+}
+
+/* Roster */
+.roster{
+  gap:9px;
+}
+.slot{
+  border-width:1.5px;
+  transition:border-color .15s ease,background .15s ease;
+}
+.slot:hover{
+  border-color:color-mix(in srgb,var(--blue) 34%,var(--line2));
+}
+.slot.filled{
+  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 3%,transparent);
+}
+.roster-batch-btn{
+  min-height:40px;
+  padding:8px 13px;
+}
+
+/* History */
+.history-section{
+  margin-top:16px;
+  padding-top:14px;
+}
+.history-head{
+  margin-bottom:9px;
+}
+.team-history-row{
+  border-color:color-mix(in srgb,var(--line2) 58%,var(--line));
+  background:linear-gradient(
+    90deg,
+    color-mix(in srgb,var(--surface2) 96%,var(--purple) 4%),
+    var(--surface2)
+  );
+  transition:border-color .15s ease,transform .15s ease;
+}
+.team-history-row:hover{
+  border-color:color-mix(in srgb,var(--purple) 34%,var(--line));
+  transform:translateY(-1px);
+}
+.team-history-time{
+  font-variant-numeric:tabular-nums;
+}
+
+/* Make destructive actions very obvious */
+.history-delete-btn,
+.team-actions [data-delete],
+.existing-player-edit .delete-old,
+.prof-row .prof-del{
+  border:1px solid color-mix(in srgb,var(--red) 75%,#fff 10%)!important;
+  background:var(--red)!important;
+  color:#fff!important;
+  box-shadow:0 5px 14px color-mix(in srgb,var(--red) 20%,transparent);
+  font-weight:950!important;
+}
+.history-delete-btn:hover,
+.team-actions [data-delete]:hover,
+.existing-player-edit .delete-old:hover,
+.prof-row .prof-del:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+.history-delete-btn{
+  min-width:78px;
+  min-height:38px;
+  font-size:12px;
+}
+.team-actions [data-delete]{
+  min-width:70px;
+}
+.existing-player-edit .delete-old{
+  width:auto!important;
+  min-width:76px;
+  padding:0 12px;
+  font-size:11px!important;
+}
+.prof-row .prof-del{
+  width:auto!important;
+  min-width:70px;
+  padding:0 10px;
+  font-size:11px!important;
+}
+
+/* New-player row removal is destructive-ish but softer */
+.new-player-row .remove-new{
+  width:auto!important;
+  min-width:76px;
+  padding:0 11px;
+  border-color:color-mix(in srgb,var(--red) 42%,var(--line))!important;
+  background:color-mix(in srgb,var(--red) 10%,var(--surface2))!important;
+  color:var(--red)!important;
+  font-size:11px!important;
+  font-weight:950;
+}
+
+/* Player management modal */
+.player-add-zone{
+  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 4%,transparent);
+}
+.existing-player-card{
+  border-color:color-mix(in srgb,var(--line2) 62%,var(--line));
+}
+.existing-player-summary{
+  transition:background .15s ease;
+}
+.existing-player-card.open{
+  border-color:color-mix(in srgb,var(--blue) 34%,var(--line));
+}
+.players-modal-footer{
+  backdrop-filter:blur(10px);
+}
+
+/* Pickers */
+.picker-player,
+.batch-player{
+  transition:transform .15s ease,border-color .15s ease,background .15s ease;
+}
+.picker-player:hover,
+.batch-player:hover{
+  transform:translateY(-1px);
+}
+.batch-player.selected{
+  box-shadow:
+    inset 4px 0 0 var(--blue),
+    0 6px 16px color-mix(in srgb,var(--blue) 8%,transparent);
+}
+
+/* Modal polish */
+.modal{
+  background:rgba(4,7,16,.76);
+}
+.modal-card{
+  border-color:color-mix(in srgb,var(--line2) 72%,var(--line));
+}
+.modal-actions{
+  padding-top:4px;
+}
+.confirm-danger{
+  min-width:92px;
+  min-height:44px;
+  box-shadow:0 7px 18px color-mix(in srgb,var(--red) 24%,transparent);
+}
+
+/* Inputs */
+.input,.select,.search,.prof-filter,.picker-prof-filter,
+.new-player-row > input,.existing-player-edit > input{
+  transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.input:focus,.select:focus,.search:focus,.prof-filter:focus,.picker-prof-filter:focus,
+.new-player-row > input:focus,.existing-player-edit > input:focus{
+  border-color:color-mix(in srgb,var(--blue) 65%,var(--line));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 10%,transparent);
+}
+
+/* A bit more breathing room on mobile */
+@media(max-width:760px){
+  .board{padding:16px}
+  .team-top,.team-body{padding:14px}
+  .team-summary-bar{gap:8px}
+  .history-delete-btn{min-width:72px}
+}
+
+
+/* ===== v22 record edit + player management polish ===== */
+
+/* History action area */
+.team-history-row{
+  grid-template-columns:120px 88px minmax(220px,1fr) minmax(100px,.7fr) auto;
+}
+.history-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.history-edit-btn{
+  min-height:38px;
+  min-width:76px;
+  padding:7px 10px;
+  border:1px solid color-mix(in srgb,var(--blue) 42%,var(--line));
+  border-radius:8px;
+  background:color-mix(in srgb,var(--blue) 8%,var(--surface));
+  color:var(--blue);
+  font-size:11.5px;
+  font-weight:950;
+}
+.history-edit-btn:hover{
+  background:color-mix(in srgb,var(--blue) 14%,var(--surface));
+  transform:translateY(-1px);
+}
+.history-delete-btn,
+.history-delete-locked{
+  min-height:38px;
+  min-width:82px;
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:11.5px;
+  font-weight:950;
+}
+.history-delete-locked{
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  cursor:not-allowed;
+  opacity:.72;
+}
+.history-first-badge{
+  display:inline-flex;
+  align-items:center;
+  margin-left:6px;
+  padding:3px 6px;
+  border:1px solid color-mix(in srgb,var(--orange) 30%,var(--line));
+  border-radius:999px;
+  background:color-mix(in srgb,var(--orange) 7%,var(--surface2));
+  color:var(--orange);
+  font-size:9px;
+  font-weight:900;
+}
+
+/* Record edit modal */
+.record-edit-preview{
+  margin-bottom:12px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface2);
+}
+.record-edit-preview strong{
+  display:block;
+  font-size:14px;
+}
+.record-edit-preview span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* Every destructive-looking control is visibly red */
+.remove-new,
+.delete-old,
+.prof-del,
+.history-delete-btn,
+.team-actions [data-delete]{
+  border-color:color-mix(in srgb,var(--red) 72%,#fff 8%)!important;
+  background:var(--red)!important;
+  color:#fff!important;
+}
+.remove-new:hover,
+.delete-old:hover,
+.prof-del:hover,
+.history-delete-btn:hover,
+.team-actions [data-delete]:hover{
+  filter:brightness(1.08);
+}
+
+/* Player management modal - cleaner hierarchy */
+.players-manager-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.players-manager-title-wrap{
+  display:grid;
+  gap:4px;
+}
+.players-manager-title-wrap .manager-meta{
+  color:var(--muted);
+  font-size:11px;
+}
+.player-add-zone{
+  padding:16px;
+  border-radius:14px;
+  border-color:color-mix(in srgb,var(--blue) 36%,var(--line));
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb,var(--blue) 7%,var(--surface)),
+      color-mix(in srgb,var(--purple) 4%,var(--surface))
+    );
+}
+.player-add-zone-head{
+  margin-bottom:12px;
+}
+.player-add-zone-head strong{
+  font-size:16px;
+}
+.player-add-zone-head .btn{
+  min-height:40px;
+}
+.existing-player-section{
+  margin-top:4px;
+  padding-top:4px;
+}
+.existing-player-toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.existing-player-search{
+  width:100%;
+  height:44px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--surface2);
+  color:var(--text);
+  font-size:12px;
+  outline:0;
+}
+.existing-player-search:focus{
+  border-color:color-mix(in srgb,var(--blue) 65%,var(--line));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 10%,transparent);
+}
+.existing-player-count-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:76px;
+  height:38px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface2);
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+}
+#playerEditor{
+  display:grid;
+  gap:8px;
+}
+.existing-player-card{
+  border-radius:12px;
+  transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease;
+}
+.existing-player-card:hover{
+  border-color:color-mix(in srgb,var(--line2) 85%,var(--line));
+}
+.existing-player-card.open{
+  box-shadow:0 8px 22px rgba(0,0,0,.12);
+}
+.existing-player-summary{
+  grid-template-columns:44px minmax(140px,1fr) minmax(160px,1fr) minmax(100px,.8fr) auto;
+  min-height:66px;
+  padding:10px 12px;
+}
+.player-avatar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  border:1px solid color-mix(in srgb,var(--blue) 32%,var(--line));
+  border-radius:10px;
+  background:color-mix(in srgb,var(--blue) 8%,var(--surface));
+  color:var(--blue);
+  font-size:14px;
+  font-weight:950;
+}
+.existing-player-summary .name{
+  font-size:14px;
+}
+.existing-player-summary .roles{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  white-space:normal;
+  overflow:visible;
+}
+.existing-role-chip{
+  display:inline-flex;
+  padding:3px 7px;
+  border:1px solid color-mix(in srgb,var(--purple) 28%,var(--line));
+  border-radius:999px;
+  background:color-mix(in srgb,var(--purple) 7%,var(--surface));
+  color:var(--muted);
+  font-size:9.5px;
+  font-weight:850;
+}
+.existing-player-summary .note{
+  font-size:11px;
+}
+.existing-player-summary .toggle{
+  min-width:92px;
+  font-size:10.5px;
+}
+.existing-player-card .existing-player-edit{
+  padding:13px;
+}
+.player-add-empty-note{
+  color:var(--muted);
+  font-size:10.5px;
+}
+@media(max-width:820px){
+  .team-history-row{
+    grid-template-columns:105px 78px minmax(0,1fr);
+  }
+  .team-history-note{display:none}
+  .history-actions{grid-column:1/-1;justify-content:flex-start}
+  .existing-player-summary{
+    grid-template-columns:40px minmax(0,1fr) auto;
+  }
+  .existing-player-summary .roles,
+  .existing-player-summary .note{
+    grid-column:2/-1;
+  }
+}
+
+
+/* roster removal is also destructive */
+.slot-actions [data-remove]{
+  border:1px solid color-mix(in srgb,var(--red) 72%,#fff 8%)!important;
+  background:var(--red)!important;
+  color:#fff!important;
+  font-weight:950!important;
+}
+.slot-actions [data-remove]:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+
 </style>
 </head>
 <body>
@@ -1184,11 +1765,11 @@ h1{font-size:38px}
 
 <main class="page">
   <header class="hero">
-    <div><div class="kicker">SPEED DUNGEON · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">測試版</span></h1></div>
+    <div><div class="kicker">SPEED DUNGEON · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">CHECKED v22 · RECORD EDIT</span></h1></div>
     <div class="hero-actions"><button class="btn" id="limitBtn">上榜限制</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
-  <div class="cross"><a href="5人競速">前往 5 人競速 →</a></div>
+  <div class="cross"><a href="SpeedCompetition5">前往 5 人競速 →</a></div>
 
   <section class="cycle">
     <div class="cycle-main">
@@ -1311,8 +1892,11 @@ h1{font-size:38px}
 </div></div>
 
 <div class="modal" id="playersModal"><div class="modal-card wide">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
-    <h2 class="modal-title">競速共用玩家資料</h2>
+  <div class="players-manager-head">
+    <div class="players-manager-title-wrap">
+      <h2 class="modal-title">競速共用玩家資料</h2>
+      <div class="manager-meta">新增玩家優先</div>
+    </div>
     <button class="btn" id="professionBtn">⚙ 職業設定</button>
   </div>
 
@@ -1327,7 +1911,10 @@ h1{font-size:38px}
   <section class="existing-player-section">
     <div class="existing-player-title">
       <strong>現有玩家</strong>
-      <span id="existingPlayerCount"></span>
+    </div>
+    <div class="existing-player-toolbar">
+      <input class="existing-player-search" id="existingPlayerSearch" placeholder="搜尋現有玩家 / 職業 / 備註">
+      <span class="existing-player-count-pill" id="existingPlayerCount"></span>
     </div>
     <div id="playerEditor"></div>
   </section>
@@ -1378,6 +1965,30 @@ h1{font-size:38px}
   </div>
 </div></div>
 
+<div class="modal" id="recordEditModal"><div class="modal-card">
+  <h2 class="modal-title">編輯通關紀錄</h2>
+  <div class="record-edit-preview">
+    <strong id="recordEditTeamName"></strong>
+    <span id="recordEditMeta"></span>
+  </div>
+  <div class="field">
+    <label>通關時間</label>
+    <input class="input" id="recordEditTime" placeholder="4:32 / 4分32秒">
+  </div>
+  <div class="field" style="margin-top:8px">
+    <label>通關日期</label>
+    <input class="input" type="date" id="recordEditDate">
+  </div>
+  <div class="field" style="margin-top:8px">
+    <label>備註</label>
+    <input class="input" id="recordEditNote">
+  </div>
+  <div class="modal-actions">
+    <button type="button" class="btn" data-close="recordEditModal">取消</button>
+    <button type="button" class="btn primary" id="saveRecordEditBtn">儲存修改</button>
+  </div>
+</div></div>
+
 <div class="modal" id="confirmDeleteModal"><div class="modal-card confirm-card">
   <div class="confirm-icon">!</div>
   <h2 class="modal-title" id="confirmDeleteTitle">確認刪除</h2>
@@ -1420,6 +2031,8 @@ let batchProfessionFilter="";
 const expandedTeamIds=new Set();
 let fb=null,fbOnline=false,teamUnsub=null,recordUnsub=null,sharedUnsubs=[];
 let pendingDeleteAction=null;
+let editingRecordId="";
+let editingRecordTeamId="";
 
 
 function openDeleteConfirm({title="確認刪除",message="",detail="",confirmText="刪除",action=null}={}){
@@ -1713,13 +2326,22 @@ function resultHtml(t){
   const b=teamBest(t),cur=t.currentResult||null;
   const hist=teamHistory(t);
   const historyHtml=hist.length
-    ? hist.map(r=>`<div class="team-history-row">
-        <div class="team-history-time">${fmtTime(r.timeMs)}</div>
-        <div class="team-history-date">${fmtDate(r.date)}</div>
-        <div class="team-history-members">${(r.roster||[]).map(m=>esc(m.name||"外人")).join("、")}</div>
-        <div class="team-history-note">${esc(r.note||"")}</div>
-        ${!isReview()?`<button type="button" class="history-delete-btn" data-delete-record="${esc(r.id)}" data-team-id="${esc(t.id)}">刪除</button>`:""}
-      </div>`).join("")
+    ? hist.map(r=>{
+        const first=isFirstTeamRecord(t.id,r.id);
+        return`<div class="team-history-row">
+          <div class="team-history-time">${fmtTime(r.timeMs)}${first?`<span class="history-first-badge">第一筆</span>`:""}</div>
+          <div class="team-history-date">${fmtDate(r.date)}</div>
+          <div class="team-history-members">${(r.roster||[]).map(m=>esc(m.name||"外人")).join("、")}</div>
+          <div class="team-history-note">${esc(r.note||"")}</div>
+          ${!isReview()?`<div class="history-actions">
+            <button type="button" class="history-edit-btn" data-edit-record="${esc(r.id)}" data-team-id="${esc(t.id)}">✎ 編輯</button>
+            ${first
+              ? `<button type="button" class="history-delete-locked" disabled>🔒 保留</button>`
+              : `<button type="button" class="history-delete-btn" data-delete-record="${esc(r.id)}" data-team-id="${esc(t.id)}">🗑 刪除</button>`
+            }
+          </div>`:""}
+        </div>`;
+      }).join("")
     : `<div class="empty">這個副本目前還沒有過往通關紀錄。</div>`;
 
   return`<div class="result-card">
@@ -1774,7 +2396,7 @@ function renderTeams(){
       </div>
       <div class="team-body">
         <div class="team-actions" style="margin-bottom:9px">
-          ${!isReview()?`<button data-edit="${esc(t.id)}">編輯名稱</button><button data-retry="${esc(t.id)}">重新同步</button><button data-delete="${esc(t.id)}">刪除</button>`:""}
+          ${!isReview()?`<button data-edit="${esc(t.id)}">編輯名稱</button><button data-retry="${esc(t.id)}">重新同步</button><button data-delete="${esc(t.id)}">🗑 刪除隊伍</button>`:""}
         </div>
         ${resultHtml(t)}
         <div class="roster-title">
@@ -1995,6 +2617,17 @@ function assignPlayer(teamId,index,pid){
   t.members=Array.from({length:SIZE},(_,i)=>(t.members||[])[i]||null);const old=t.members[index];if(isOutsiderToken(old)&&t.externalMembers?.[old])delete t.externalMembers[old];t.members[index]=pid;t.updatedAtMs=Date.now();t._sync="pending";playerArchive[p.id]={...p};
   saveLocalSharedPlayers();saveLocalPage();closeModal("pickerModal");renderAll();syncTeam(t);syncSharedPlayers()
 }
+
+function requestRemovePlayer(teamId,pid){
+  const t=teams.find(x=>x.id===teamId);
+  if(!t)return;
+  const p=slotPerson(t,pid);
+  openDeleteConfirm({
+    title:"移除隊伍成員",
+    message:`確定要把「${p?.name||"這位成員"}」移出「${t.name}」？`,
+    action:()=>removePlayer(teamId,pid)
+  });
+}
 function removePlayer(teamId,pid){
   const t=teams.find(x=>x.id===teamId);if(!t)return;
   if(isOutsiderToken(pid)&&t.externalMembers?.[pid])delete t.externalMembers[pid];
@@ -2070,10 +2703,83 @@ async function saveResult(teamId){
   syncTeam(t);
 }
 
+
+function firstTeamRecord(teamId){
+  return records
+    .filter(r=>r.teamId===teamId)
+    .slice()
+    .sort((a,b)=>
+      Number(a.createdAtMs||0)-Number(b.createdAtMs||0) ||
+      String(a.date||"").localeCompare(String(b.date||"")) ||
+      String(a.id||"").localeCompare(String(b.id||""))
+    )[0]||null;
+}
+function isFirstTeamRecord(teamId,recordId){
+  return firstTeamRecord(teamId)?.id===recordId;
+}
+function openRecordEdit(teamId,recordId){
+  const t=teams.find(x=>x.id===teamId);
+  const r=records.find(x=>x.id===recordId);
+  if(!t||!r)return;
+
+  editingRecordTeamId=teamId;
+  editingRecordId=recordId;
+
+  $("recordEditTeamName").textContent=t.name;
+  $("recordEditMeta").textContent=isFirstTeamRecord(teamId,recordId)?"第一筆紀錄 · 不可刪除":"通關紀錄";
+  $("recordEditTime").value=fmtTime(r.timeMs);
+  $("recordEditDate").value=r.date||today();
+  $("recordEditNote").value=r.note||"";
+
+  openModal("recordEditModal");
+}
+async function saveRecordEdit(){
+  const t=teams.find(x=>x.id===editingRecordTeamId);
+  const r=records.find(x=>x.id===editingRecordId);
+  if(!t||!r)return;
+
+  const ms=parseTime($("recordEditTime").value);
+  if(!ms){
+    alert("請輸入正確的通關時間。");
+    $("recordEditTime").focus();
+    return;
+  }
+
+  r.timeMs=ms;
+  r.date=$("recordEditDate").value||r.date||today();
+  r.note=$("recordEditNote").value.trim();
+  r._sync="pending";
+
+  if(t.currentResult?.recordId===r.id){
+    t.currentResult={
+      recordId:r.id,
+      timeMs:r.timeMs,
+      date:r.date,
+      note:r.note||"",
+      roster:r.roster||[]
+    };
+    t.updatedAtMs=Date.now();
+    t._sync="pending";
+  }
+
+  saveLocalPage();
+  closeModal("recordEditModal");
+  renderAll();
+
+  await syncRecord(r);
+  if(t._sync==="pending")syncTeam(t);
+
+  toast(`已更新 ${fmtTime(r.timeMs)} 通關紀錄`);
+}
 function requestDeleteRecord(teamId,recordId){
   const t=teams.find(x=>x.id===teamId);
   const r=records.find(x=>x.id===recordId);
   if(!t||!r)return;
+
+  if(isFirstTeamRecord(teamId,recordId)){
+    toast("第一筆通關紀錄不可刪除");
+    return;
+  }
 
   openDeleteConfirm({
     title:"刪除通關紀錄",
@@ -2218,23 +2924,28 @@ function newPlayerRow(p={}){
     <input class="pname" value="${esc(p.name||"")}" placeholder="玩家名稱">
     ${roleDropdown(roles,"proles")}
     <input class="pnote" value="${esc(p.note||"")}" placeholder="備註">
-    <button type="button" class="remove-new">×</button>
+    <button type="button" class="remove-new">🗑 移除</button>
   </div>`;
 }
 function existingPlayerCard(p){
   const roles=normalizeRoles(p);
-  return`<div class="existing-player-card" data-id="${esc(p.id||"")}">
+  const initial=(String(p.name||"?").trim().charAt(0)||"?").toUpperCase();
+  const roleHtml=roles.map(r=>`<span class="existing-role-chip">${esc(r)}</span>`).join("");
+  const searchText=norm(`${p.name||""} ${roles.join(" ")} ${p.note||""}`);
+
+  return`<div class="existing-player-card" data-id="${esc(p.id||"")}" data-search="${esc(searchText)}">
     <div class="existing-player-summary">
+      <div class="player-avatar">${esc(initial)}</div>
       <div class="name">${esc(p.name||"")}</div>
-      <div class="roles">${esc(roles.join("、"))}</div>
+      <div class="roles">${roleHtml}</div>
       <div class="note">${esc(p.note||"")}</div>
-      <button type="button" class="toggle">展開編輯</button>
+      <button type="button" class="toggle">編輯</button>
     </div>
     <div class="existing-player-edit">
       <input class="pname" value="${esc(p.name||"")}" placeholder="玩家名稱">
       ${roleDropdown(roles,"proles")}
       <input class="pnote" value="${esc(p.note||"")}" placeholder="備註">
-      <button type="button" class="delete-old">×</button>
+      <button type="button" class="delete-old">🗑 刪除</button>
     </div>
   </div>`;
 }
@@ -2268,7 +2979,7 @@ function bindExistingPlayerCards(){
 
     const doToggle=()=>{
       const open=card.classList.toggle("open");
-      toggle.textContent=open?"收合":"展開編輯";
+      toggle.textContent=open?"收合":"編輯";
     };
 
     summary.onclick=e=>{
@@ -2299,8 +3010,20 @@ function renderPlayerEditor(){
   $("newPlayerEditor").innerHTML=newPlayerRow();
   $("playerEditor").innerHTML=players.map(existingPlayerCard).join("")||`<div class="empty">尚無現有玩家</div>`;
   $("existingPlayerCount").textContent=`${players.length} 人`;
+  $("existingPlayerSearch").value="";
   bindNewPlayerRows();
   bindExistingPlayerCards();
+}
+
+function filterExistingPlayers(){
+  const q=norm($("existingPlayerSearch").value);
+  let shown=0;
+  document.querySelectorAll("#playerEditor .existing-player-card").forEach(card=>{
+    const ok=!q||String(card.dataset.search||"").includes(q);
+    card.hidden=!ok;
+    if(ok)shown++;
+  });
+  $("existingPlayerCount").textContent=q?`${shown}/${players.length} 人`:`${players.length} 人`;
 }
 function collectRoles(container){
   return normalizeRoleSelection(
@@ -2358,7 +3081,7 @@ function savePlayersFromEditor(){
   syncSharedPlayers();
   toast("玩家名單已更新");
 }
-function profRow(v=""){return`<div class="prof-row"><input class="prof-name" value="${esc(v)}" placeholder="職業名稱"><button type="button" class="prof-del">×</button></div>`}
+function profRow(v=""){return`<div class="prof-row"><input class="prof-name" value="${esc(v)}" placeholder="職業名稱"><button type="button" class="prof-del">🗑 刪除</button></div>`}
 function bindProfDeleteButtons(){
   document.querySelectorAll(".prof-del").forEach(b=>{
     b.onclick=()=>{
@@ -2528,8 +3251,9 @@ function bindUI(){
     const toggle=e.target.closest("[data-toggle-team]");if(toggle){toggleTeam(toggle.dataset.toggleTeam);return}
     const batch=e.target.closest("[data-batch-team]");if(batch){openBatchPicker(batch.dataset.batchTeam);return}
     const pick=e.target.closest("[data-pick]");if(pick){openPicker(pick.dataset.pick,Number(pick.dataset.index));return}
-    const rm=e.target.closest("[data-remove]");if(rm){removePlayer(rm.dataset.remove,rm.dataset.player);return}
+    const rm=e.target.closest("[data-remove]");if(rm){requestRemovePlayer(rm.dataset.remove,rm.dataset.player);return}
     const sv=e.target.closest("[data-save-result]");if(sv){saveResult(sv.dataset.saveResult);return}
+    const historyEdit=e.target.closest("[data-edit-record]");if(historyEdit){openRecordEdit(historyEdit.dataset.teamId,historyEdit.dataset.editRecord);return}
     const historyDelete=e.target.closest("[data-delete-record]");if(historyDelete){requestDeleteRecord(historyDelete.dataset.teamId,historyDelete.dataset.deleteRecord);return}
     const ed=e.target.closest("[data-edit]");if(ed){editTeam(ed.dataset.edit);return}
     const rt=e.target.closest("[data-retry]");if(rt){const t=teams.find(x=>x.id===rt.dataset.retry);if(t){t._sync="pending";renderAll();syncTeam(t)}return}
@@ -2557,6 +3281,7 @@ function bindUI(){
   $("pickerList").addEventListener("click",e=>{const b=e.target.closest("[data-pick-player]");if(!b)return;assignPlayer(pickerTeamId,pickerIndex,b.dataset.pickPlayer)});
   $("saveTeamEditBtn").addEventListener("click",saveTeamEdit);
   $("playersBtn").addEventListener("click",()=>{renderPlayerEditor();openModal("playersModal")});
+  $("existingPlayerSearch").addEventListener("input",filterExistingPlayers);
   $("addPlayerBtn").addEventListener("click",()=>{$("newPlayerEditor").insertAdjacentHTML("beforeend",newPlayerRow());bindNewPlayerRows()});
   $("savePlayersBtn").addEventListener("click",savePlayersFromEditor);
   $("professionBtn").addEventListener("click",()=>{renderProfEditor();openModal("professionModal")});
@@ -2578,6 +3303,7 @@ function bindUI(){
   window.addEventListener("resize",closePlayerMenu);
   window.addEventListener("scroll",closePlayerMenu,true);
 
+  $("saveRecordEditBtn").addEventListener("click",saveRecordEdit);
   $("confirmDeleteCancelBtn").addEventListener("click",closeDeleteConfirm);
   $("confirmDeleteOkBtn").addEventListener("click",async()=>{
     const action=pendingDeleteAction;
