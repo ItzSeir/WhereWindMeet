@@ -1045,6 +1045,131 @@ h1{font-size:38px}
   }
 }
 
+
+/* ===== v20 larger text + unified destructive confirmation ===== */
+.history-head strong{font-size:15px}
+.history-head span{font-size:12px}
+.team-history-list{gap:8px}
+.team-history-row{
+  grid-template-columns:120px 88px minmax(220px,1fr) minmax(100px,.7fr) auto;
+  gap:10px;
+  min-height:58px;
+  padding:11px 12px;
+}
+.team-history-time{font-size:17px}
+.team-history-date,
+.team-history-members,
+.team-history-note{font-size:12px;line-height:1.45}
+.history-delete-btn{
+  min-height:34px;
+  padding:6px 10px;
+  border:1px solid color-mix(in srgb,var(--red) 38%,var(--line));
+  border-radius:8px;
+  background:color-mix(in srgb,var(--red) 6%,var(--surface));
+  color:var(--red);
+  font-size:11px;
+  font-weight:950;
+}
+.history-delete-btn:hover{
+  background:color-mix(in srgb,var(--red) 11%,var(--surface));
+}
+
+.cycle-meta{font-size:13px}
+.state-pill,.sync-pill{font-size:11.5px}
+.small{font-size:12px}
+.shared-note{font-size:11.5px}
+.metric-tabs button{font-size:12px}
+.player-role{font-size:12.5px}
+.role-chip{font-size:10.5px;padding:3px 7px}
+.player-metric span{font-size:10.5px}
+.filter-note,.filter-note button{font-size:11.5px}
+.board-head p{font-size:13.5px}
+.create-head span{font-size:11.5px}
+.field label{font-size:11px}
+.quick-head span{font-size:11.5px}
+.quick-count{font-size:10.5px}
+.quick-stat span{font-size:10px}
+.chip{font-size:10px}
+.team-meta{font-size:12.5px}
+.team-status{font-size:10px}
+.team-mini-stat span{font-size:10.5px}
+.team-mini-stat strong{font-size:15px}
+.team-actions button{font-size:11px}
+.result-box span{font-size:10.5px}
+.result-box small{font-size:10.5px}
+.roster-title span{font-size:11px}
+.slot-no{font-size:10px}
+.slot span{font-size:10.5px}
+.slot .limit{font-size:9.5px}
+.outsider-pill{font-size:9.5px!important}
+.slot-actions button,.add-slot{font-size:10px}
+.modal-sub{font-size:13px}
+.picker-player span{font-size:11px}
+.batch-player-note{font-size:11px}
+.batch-role-chip{font-size:10px}
+.batch-player-count{font-size:12px}
+.existing-player-summary .roles,
+.existing-player-summary .note{font-size:11.5px}
+.existing-player-title span{font-size:11px}
+.player-add-zone-head span{font-size:11px}
+.role-dropdown-option{font-size:12px}
+
+/* custom confirm dialog */
+.confirm-card{
+  width:min(470px,100%);
+  padding:24px;
+}
+.confirm-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:46px;
+  height:46px;
+  margin-bottom:13px;
+  border:1px solid color-mix(in srgb,var(--red) 38%,var(--line));
+  border-radius:14px;
+  background:color-mix(in srgb,var(--red) 8%,var(--surface2));
+  color:var(--red);
+  font-size:22px;
+  font-weight:950;
+}
+.confirm-message{
+  margin:9px 0 0;
+  color:var(--text);
+  font-size:14px;
+  line-height:1.65;
+}
+.confirm-detail{
+  margin-top:11px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface2);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+.confirm-danger{
+  border-color:transparent!important;
+  background:var(--red)!important;
+  color:#fff!important;
+}
+@media(max-width:900px){
+  .team-history-row{
+    grid-template-columns:110px 80px minmax(0,1fr) auto;
+  }
+  .team-history-note{display:none}
+}
+@media(max-width:560px){
+  .team-history-row{
+    grid-template-columns:1fr auto;
+  }
+  .team-history-date,
+  .team-history-members{
+    grid-column:1/-1;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1059,7 +1184,7 @@ h1{font-size:38px}
 
 <main class="page">
   <header class="hero">
-    <div><div class="kicker">SPEED DUNGEON · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">CHECKED v19 · COLLAPSED PLAYERS</span></h1></div>
+    <div><div class="kicker">SPEED DUNGEON · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">測試版</span></h1></div>
     <div class="hero-actions"><button class="btn" id="limitBtn">上榜限制</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
@@ -1253,6 +1378,17 @@ h1{font-size:38px}
   </div>
 </div></div>
 
+<div class="modal" id="confirmDeleteModal"><div class="modal-card confirm-card">
+  <div class="confirm-icon">!</div>
+  <h2 class="modal-title" id="confirmDeleteTitle">確認刪除</h2>
+  <p class="confirm-message" id="confirmDeleteMessage"></p>
+  <div class="confirm-detail" id="confirmDeleteDetail" hidden></div>
+  <div class="modal-actions">
+    <button type="button" class="btn" id="confirmDeleteCancelBtn">取消</button>
+    <button type="button" class="btn confirm-danger" id="confirmDeleteOkBtn">刪除</button>
+  </div>
+</div></div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -1283,7 +1419,30 @@ let batchSelectedIds=new Set();
 let batchProfessionFilter="";
 const expandedTeamIds=new Set();
 let fb=null,fbOnline=false,teamUnsub=null,recordUnsub=null,sharedUnsubs=[];
+let pendingDeleteAction=null;
 
+
+function openDeleteConfirm({title="確認刪除",message="",detail="",confirmText="刪除",action=null}={}){
+  pendingDeleteAction=typeof action==="function"?action:null;
+  $("confirmDeleteTitle").textContent=title;
+  $("confirmDeleteMessage").textContent=message;
+  $("confirmDeleteOkBtn").textContent=confirmText;
+
+  const detailEl=$("confirmDeleteDetail");
+  if(detail){
+    detailEl.hidden=false;
+    detailEl.textContent=detail;
+  }else{
+    detailEl.hidden=true;
+    detailEl.textContent="";
+  }
+
+  openModal("confirmDeleteModal");
+}
+function closeDeleteConfirm(){
+  pendingDeleteAction=null;
+  closeModal("confirmDeleteModal");
+}
 function parseTime(v){
   let s=String(v||"").trim().toLowerCase();
   if(!s)return 0;
@@ -1559,6 +1718,7 @@ function resultHtml(t){
         <div class="team-history-date">${fmtDate(r.date)}</div>
         <div class="team-history-members">${(r.roster||[]).map(m=>esc(m.name||"外人")).join("、")}</div>
         <div class="team-history-note">${esc(r.note||"")}</div>
+        ${!isReview()?`<button type="button" class="history-delete-btn" data-delete-record="${esc(r.id)}" data-team-id="${esc(t.id)}">刪除</button>`:""}
       </div>`).join("")
     : `<div class="empty">這個副本目前還沒有過往通關紀錄。</div>`;
 
@@ -1909,33 +2069,88 @@ async function saveResult(teamId){
   syncRecord(rec);
   syncTeam(t);
 }
+
+function requestDeleteRecord(teamId,recordId){
+  const t=teams.find(x=>x.id===teamId);
+  const r=records.find(x=>x.id===recordId);
+  if(!t||!r)return;
+
+  openDeleteConfirm({
+    title:"刪除通關紀錄",
+    message:`確定要刪除 ${fmtTime(r.timeMs)} 這筆紀錄？`,
+    detail:`${fmtDate(r.date)} · ${t.name}${r.note?` · ${r.note}`:""}`,
+    action:()=>deleteRecordConfirmed(teamId,recordId)
+  });
+}
+async function deleteRecordConfirmed(teamId,recordId){
+  const t=teams.find(x=>x.id===teamId);
+  const r=records.find(x=>x.id===recordId);
+  if(!t||!r)return;
+
+  records=records.filter(x=>x.id!==recordId);
+
+  if(t.currentResult?.recordId===recordId){
+    const remaining=records
+      .filter(x=>x.teamId===teamId&&x.dungeonId===t.dungeonId)
+      .slice()
+      .sort((a,b)=>
+        Number(b.createdAtMs||0)-Number(a.createdAtMs||0) ||
+        String(b.date||"").localeCompare(String(a.date||""))
+      );
+
+    const latest=remaining[0]||null;
+    t.currentResult=latest?{
+      recordId:latest.id,
+      timeMs:latest.timeMs,
+      date:latest.date,
+      note:latest.note||"",
+      roster:latest.roster||[]
+    }:null;
+    t.updatedAtMs=Date.now();
+    t._sync="pending";
+  }
+
+  saveLocalPage();
+  renderAll();
+  toast(`已刪除 ${fmtTime(r.timeMs)} 通關紀錄`);
+
+  await deleteRecordRemote(recordId);
+  if(t._sync==="pending")syncTeam(t);
+}
 function editTeam(teamId){
   const t=teams.find(x=>x.id===teamId);if(!t)return;editingTeamId=teamId;$("editTeamName").value=t.name;$("editTeamNote").value=t.note||"";openModal("teamEditModal")
 }
 function saveTeamEdit(){
   const t=teams.find(x=>x.id===editingTeamId);if(!t)return;t.name=$("editTeamName").value.trim()||t.name;t.note=$("editTeamNote").value.trim();t.updatedAtMs=Date.now();t._sync="pending";saveLocalPage();closeModal("teamEditModal");renderAll();syncTeam(t)
 }
-async function deleteTeamLocal(teamId){
+function requestDeleteTeam(teamId){
+  const t=teams.find(x=>x.id===teamId);
+  if(!t)return;
+
+  const recordCount=records.filter(r=>r.teamId===teamId).length;
+
+  openDeleteConfirm({
+    title:"刪除隊伍",
+    message:`確定要刪除「${t.name}」？`,
+    detail:`隊伍本身與 ${recordCount} 筆通關紀錄都會永久刪除，無法復原。`,
+    action:()=>deleteTeamConfirmed(teamId)
+  });
+}
+async function deleteTeamConfirmed(teamId){
   const t=teams.find(x=>x.id===teamId);
   if(!t)return;
 
   const relatedRecords=records.filter(r=>r.teamId===teamId);
   const recordCount=relatedRecords.length;
 
-  if(!confirm(
-    `確定永久刪除「${t.name}」？\n\n`+
-    `此操作會同時刪除這支隊伍的 ${recordCount} 筆通關紀錄，刪除後無法復原。`
-  ))return;
-
-  // Remove locally first so the UI responds immediately.
   teams=teams.filter(x=>x.id!==teamId);
   records=records.filter(r=>r.teamId!==teamId);
   expandedTeamIds.delete(teamId);
+
   saveLocalPage();
   renderAll();
   toast(`「${t.name}」與 ${recordCount} 筆通關紀錄已刪除`);
 
-  // Then remove the team document and every record document from Firebase.
   await deleteTeamAndRecordsRemote(teamId,relatedRecords.map(r=>r.id));
 }
 
@@ -2027,15 +2242,22 @@ function bindNewPlayerRows(){
   document.querySelectorAll("#newPlayerEditor .remove-new").forEach(b=>{
     b.onclick=()=>{
       const row=b.closest(".new-player-row");
-      const all=[...document.querySelectorAll("#newPlayerEditor .new-player-row")];
-      if(all.length<=1){
-        row.querySelector(".pname").value="";
-        row.querySelector(".pnote").value="";
-        row.querySelectorAll('.proles input[type="checkbox"]').forEach(i=>i.checked=i.value==="未設定");
-        updateRoleDropdown(row.querySelector(".proles"));
-      }else{
-        row.remove();
-      }
+      const name=row.querySelector(".pname").value.trim();
+      openDeleteConfirm({
+        title:"移除新增列",
+        message:name?`移除「${name}」這個新增玩家欄位？`:"移除這個新增玩家欄位？",
+        action:()=>{
+          const all=[...document.querySelectorAll("#newPlayerEditor .new-player-row")];
+          if(all.length<=1){
+            row.querySelector(".pname").value="";
+            row.querySelector(".pnote").value="";
+            row.querySelectorAll('.proles input[type="checkbox"]').forEach(i=>i.checked=i.value==="未設定");
+            updateRoleDropdown(row.querySelector(".proles"));
+          }else{
+            row.remove();
+          }
+        }
+      });
     };
   });
 }
@@ -2061,9 +2283,15 @@ function bindExistingPlayerCards(){
 
     card.querySelector(".delete-old").onclick=()=>{
       const name=card.querySelector(".pname").value.trim()||"這位玩家";
-      if(!confirm(`刪除「${name}」？`))return;
-      card.remove();
-      $("existingPlayerCount").textContent=`${document.querySelectorAll("#playerEditor .existing-player-card").length} 人`;
+      openDeleteConfirm({
+        title:"刪除玩家",
+        message:`確定要刪除「${name}」？`,
+        detail:"儲存玩家資料後，這位玩家會從共用玩家名單移除。",
+        action:()=>{
+          card.remove();
+          $("existingPlayerCount").textContent=`${document.querySelectorAll("#playerEditor .existing-player-card").length} 人`;
+        }
+      });
     };
   });
 }
@@ -2131,7 +2359,23 @@ function savePlayersFromEditor(){
   toast("玩家名單已更新");
 }
 function profRow(v=""){return`<div class="prof-row"><input class="prof-name" value="${esc(v)}" placeholder="職業名稱"><button type="button" class="prof-del">×</button></div>`}
-function renderProfEditor(){$("professionEditor").innerHTML=professions.filter(x=>x!=="未設定").map(profRow).join("")||profRow();document.querySelectorAll(".prof-del").forEach(b=>b.onclick=()=>b.closest(".prof-row").remove())}
+function bindProfDeleteButtons(){
+  document.querySelectorAll(".prof-del").forEach(b=>{
+    b.onclick=()=>{
+      const row=b.closest(".prof-row");
+      const name=row.querySelector(".prof-name").value.trim()||"這個職業";
+      openDeleteConfirm({
+        title:"刪除職業",
+        message:`確定要刪除「${name}」？`,
+        action:()=>row.remove()
+      });
+    };
+  });
+}
+function renderProfEditor(){
+  $("professionEditor").innerHTML=professions.filter(x=>x!=="未設定").map(profRow).join("")||profRow();
+  bindProfDeleteButtons();
+}
 function saveProfessions(){
   const vals=[],seen=new Set();let dup="";document.querySelectorAll(".prof-name").forEach(i=>{const v=i.value.trim();if(!v)return;const k=norm(v);if(seen.has(k)){dup=v;return}seen.add(k);vals.push(v)});
   if(dup){alert(`職業名稱重複：${dup}`);return}professions=["未設定",...vals];saveLocalProf();closeModal("professionModal");syncProfessions();toast("職業清單已更新")
@@ -2286,9 +2530,10 @@ function bindUI(){
     const pick=e.target.closest("[data-pick]");if(pick){openPicker(pick.dataset.pick,Number(pick.dataset.index));return}
     const rm=e.target.closest("[data-remove]");if(rm){removePlayer(rm.dataset.remove,rm.dataset.player);return}
     const sv=e.target.closest("[data-save-result]");if(sv){saveResult(sv.dataset.saveResult);return}
+    const historyDelete=e.target.closest("[data-delete-record]");if(historyDelete){requestDeleteRecord(historyDelete.dataset.teamId,historyDelete.dataset.deleteRecord);return}
     const ed=e.target.closest("[data-edit]");if(ed){editTeam(ed.dataset.edit);return}
     const rt=e.target.closest("[data-retry]");if(rt){const t=teams.find(x=>x.id===rt.dataset.retry);if(t){t._sync="pending";renderAll();syncTeam(t)}return}
-    const del=e.target.closest("[data-delete]");if(del){deleteTeamLocal(del.dataset.delete);return}
+    const del=e.target.closest("[data-delete]");if(del){requestDeleteTeam(del.dataset.delete);return}
   });
   $("pickerSearch").addEventListener("input",renderPicker);
   $("pickerProfessionFilter").addEventListener("change",()=>{
@@ -2315,7 +2560,7 @@ function bindUI(){
   $("addPlayerBtn").addEventListener("click",()=>{$("newPlayerEditor").insertAdjacentHTML("beforeend",newPlayerRow());bindNewPlayerRows()});
   $("savePlayersBtn").addEventListener("click",savePlayersFromEditor);
   $("professionBtn").addEventListener("click",()=>{renderProfEditor();openModal("professionModal")});
-  $("addProfessionBtn").addEventListener("click",()=>{$("professionEditor").insertAdjacentHTML("beforeend",profRow());document.querySelectorAll(".prof-del").forEach(b=>b.onclick=()=>b.closest(".prof-row").remove())});
+  $("addProfessionBtn").addEventListener("click",()=>{$("professionEditor").insertAdjacentHTML("beforeend",profRow());bindProfDeleteButtons()});
   $("saveProfessionsBtn").addEventListener("click",saveProfessions);
   $("limitBtn").addEventListener("click",()=>{$("limitInput").value=Number(limit||0);openModal("limitModal")});
   $("saveLimitBtn").addEventListener("click",()=>{limit=Math.max(0,Number($("limitInput").value||0));saveLocalLimits();closeModal("limitModal");renderAll();syncLimits();toast("上榜限制已更新")});
@@ -2333,6 +2578,12 @@ function bindUI(){
   window.addEventListener("resize",closePlayerMenu);
   window.addEventListener("scroll",closePlayerMenu,true);
 
+  $("confirmDeleteCancelBtn").addEventListener("click",closeDeleteConfirm);
+  $("confirmDeleteOkBtn").addEventListener("click",async()=>{
+    const action=pendingDeleteAction;
+    closeDeleteConfirm();
+    if(action)await action();
+  });
   $("exportBtn").addEventListener("click",exportExcel);
   const themeBtn=$("themeBtn");
   function applyTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem("registration_theme",t);localStorage.setItem("wwm-home-theme-v2",t)}catch(e){}themeBtn.textContent=t==="light"?"☾ 夜間":"☀ 白天"}
@@ -2472,6 +2723,21 @@ async function syncRecord(rec){
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"records",rec.id),{...clean,createdAt:fb.serverTimestamp()});
     rec._sync="synced";saveLocalPage();
   }catch(e){console.warn(e);rec._sync="local";saveLocalPage()}
+}
+
+async function deleteRecordRemote(recordId){
+  if(!fbOnline||!fb)return;
+  setSync("saving","刪除同步中");
+  try{
+    await fb.deleteDoc(
+      fb.doc(fb.db,"competition",`speed_${SIZE}`,"records",recordId)
+    );
+    setSync("ok","已同步");
+  }catch(e){
+    console.warn("Delete record sync failed",e);
+    setSync("local","刪除未同步");
+    alert("本機已刪除，但 Firebase 尚未同步。請檢查網路。");
+  }
 }
 async function deleteTeamAndRecordsRemote(teamId,recordIds=[]){
   if(!fbOnline||!fb)return;
