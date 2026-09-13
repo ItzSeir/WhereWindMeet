@@ -2490,6 +2490,31 @@ body{
   display:none!important;
 }
 
+
+/* ===== v33 best-record mode colors ===== */
+.player-metric strong.best,
+.selected-stats .stat strong,
+.quick-stat.best strong{
+  line-height:1.35;
+}
+.record-mode-inline.normal{
+  color:var(--green);
+}
+.record-mode-inline.challenge{
+  color:var(--orange);
+}
+.record-rank-inline{
+  color:var(--purple);
+}
+.record-time-inline{
+  color:inherit;
+}
+.best-inline-sep{
+  opacity:.58;
+  margin:0 4px;
+  color:var(--muted);
+}
+
 </style>
 </head>
 <body>
@@ -3031,10 +3056,13 @@ function bestRecordDisplay(record){
   const parts=[];
   const mode=recordModeLabel(record);
   const rank=recordRankLabel(record);
-  if(mode)parts.push(mode);
-  if(rank)parts.push(rank);
-  parts.push(fmtTime(record.timeMs));
-  return parts.join(" · ");
+  const modeClass=record?.mode==="challenge"?"challenge":"normal";
+
+  if(mode)parts.push(`<span class="record-mode-inline ${modeClass}">${mode}</span>`);
+  if(rank)parts.push(`<span class="record-rank-inline">${rank}</span>`);
+  parts.push(`<span class="record-time-inline">${fmtTime(record.timeMs)}</span>`);
+
+  return parts.join('<span class="best-inline-sep">·</span>');
 }
 
 function syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl){
