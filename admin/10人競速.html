@@ -1906,6 +1906,222 @@ body{
   line-height:1.25;
 }
 
+
+/* ===== v28 compact accordion team UI + fixed record form overflow ===== */
+
+/* Record form: 2 rows instead of one over-wide row */
+.result-entry-grid{
+  display:grid!important;
+  grid-template-columns:minmax(90px,.65fr) repeat(3,minmax(135px,1fr))!important;
+  gap:9px!important;
+  align-items:end;
+}
+.result-entry-grid .field{min-width:0}
+.result-entry-grid .field:nth-child(5){
+  grid-column:1/2;
+}
+.result-entry-grid .field:nth-child(6){
+  grid-column:2/4;
+}
+.result-entry-grid .save-result{
+  grid-column:4/5;
+  width:100%;
+  min-width:0!important;
+}
+.result-entry-grid .input{
+  min-width:0;
+  width:100%;
+}
+
+/* Team list toolbar */
+.board-head{
+  align-items:center!important;
+}
+.board-head-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.collapse-all-btn{
+  min-height:38px!important;
+  padding:7px 11px!important;
+  font-size:10.5px!important;
+}
+
+/* Compact collapsed team rows */
+.team-card{
+  transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.team-card:not(.expanded):hover{
+  border-color:color-mix(in srgb,var(--blue) 34%,var(--line2));
+  transform:translateY(-1px);
+}
+.team-top{
+  cursor:pointer;
+  padding:11px 13px!important;
+}
+.team-summary-bar{
+  grid-template-columns:minmax(210px,1fr) 82px 112px 136px 88px!important;
+  gap:8px!important;
+  align-items:center!important;
+}
+.team-summary-main{
+  min-width:0;
+}
+.team-name-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  flex-wrap:wrap;
+}
+.team-name-row .team-name{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.team-meta{
+  margin-top:5px!important;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+.team-member-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  min-height:23px;
+  padding:3px 7px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:9.5px;
+  font-weight:900;
+}
+.team-note-compact{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--muted);
+  font-size:10.5px;
+}
+.team-mini-stat{
+  min-height:48px!important;
+  padding:6px 8px!important;
+}
+.team-mini-stat span{
+  font-size:9.5px!important;
+}
+.team-mini-stat strong{
+  margin-top:3px!important;
+  font-size:14px!important;
+}
+.team-collapse-btn{
+  min-width:78px!important;
+  min-height:38px!important;
+  font-size:10px!important;
+}
+.team-card:not(.expanded) .team-status{
+  display:none;
+}
+.team-card.expanded{
+  border-color:color-mix(in srgb,var(--blue) 38%,var(--line))!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+}
+.team-card.expanded .team-top{
+  background:color-mix(in srgb,var(--blue) 5%,var(--surface2));
+}
+
+/* Small team type block gets its own column in collapsed summary */
+.team-summary-type{
+  display:flex;
+  justify-content:center;
+}
+
+/* Member preview only appears after expansion */
+.expanded-member-preview{
+  display:none;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+.team-card.expanded .expanded-member-preview{
+  display:block;
+}
+
+/* Result summary fits narrower right-side panel better */
+.result-summary{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.result-box{
+  min-width:0;
+}
+.result-box strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+@media(max-width:1250px){
+  .team-summary-bar{
+    grid-template-columns:minmax(190px,1fr) 78px 105px 125px 82px!important;
+  }
+}
+@media(max-width:1080px){
+  .result-entry-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .result-entry-grid .field:nth-child(5),
+  .result-entry-grid .field:nth-child(6),
+  .result-entry-grid .save-result{
+    grid-column:auto!important;
+  }
+  .result-entry-grid .save-result{
+    grid-column:1/-1!important;
+  }
+
+  .team-summary-bar{
+    grid-template-columns:minmax(0,1fr) 86px 118px auto!important;
+  }
+  .team-summary-type{
+    display:none;
+  }
+}
+@media(max-width:760px){
+  .board-head{
+    align-items:flex-start!important;
+  }
+  .team-summary-bar{
+    grid-template-columns:minmax(0,1fr) auto!important;
+  }
+  .team-mini-stat{
+    min-height:44px!important;
+  }
+  .team-summary-bar .team-mini-stat{
+    grid-row:2;
+  }
+  .team-summary-bar .team-collapse-btn{
+    grid-column:2;
+    grid-row:1;
+  }
+  .result-summary{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .result-entry-grid{
+    grid-template-columns:1fr!important;
+  }
+  .result-entry-grid .save-result{
+    grid-column:auto!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1958,7 +2174,12 @@ body{
     </aside>
 
     <section class="board">
-      <div class="board-head"><div><h2>10 人固定隊伍</h2><p id="boardSub">建立隊伍後會立即顯示在下方。</p></div></div>
+      <div class="board-head">
+        <div><h2>10 人固定隊伍</h2><p id="boardSub">建立隊伍後會立即顯示在下方。</p></div>
+        <div class="board-head-actions">
+          <button type="button" class="btn collapse-all-btn" id="collapseAllTeamsBtn">全部收合</button>
+        </div>
+      </div>
 
       <div id="reviewNote"></div>
 
@@ -2533,8 +2754,12 @@ function warnDuplicateRoster(team){
   return true;
 }
 function toggleTeam(teamId){
-  if(expandedTeamIds.has(teamId))expandedTeamIds.delete(teamId);
-  else expandedTeamIds.add(teamId);
+  if(expandedTeamIds.has(teamId)){
+    expandedTeamIds.delete(teamId);
+  }else{
+    expandedTeamIds.clear();
+    expandedTeamIds.add(teamId);
+  }
   renderTeams();
 }
 function playerStats(pid){
@@ -2776,11 +3001,19 @@ function renderTeams(){
     const names=memberDisplayNames(t);
     return`<article class="team-card ${cls} ${expanded?"expanded":""}" id="team-${esc(t.id)}">
       <div class="team-top">
-        <div class="team-summary-bar">
-          <div>
-            <div class="team-name">${esc(t.name)} <span class="team-type-tag ${normalizeTeamMode(t)}">${teamModeLabel(t)}</span> <span class="team-status">${status}</span></div>
-            <div class="team-meta">${t.note?esc(t.note):"固定隊伍"} · ${names.length}/${SIZE} 個位置已填 · ${names.length?esc(names.join("、")):"尚未排人"}</div>
+        <div class="team-summary-bar" data-toggle-team="${esc(t.id)}">
+          <div class="team-summary-main">
+            <div class="team-name-row">
+              <div class="team-name">${esc(t.name)}</div>
+              <span class="team-status">${status}</span>
+            </div>
+            <div class="team-meta">
+              <span class="team-member-count">${names.length}/${SIZE}</span>
+              <span class="team-note-compact">${t.note?esc(t.note):"固定隊伍"}</span>
+            </div>
+            <div class="expanded-member-preview">${names.length?esc(names.join("、")):"尚未排人"}</div>
           </div>
+          <div class="team-summary-type"><span class="team-type-tag ${normalizeTeamMode(t)}">${teamModeLabel(t)}</span></div>
           <div class="team-mini-stat rank"><span>遊戲排名</span><strong>${manualRankOf(t)?`#${manualRankOf(t)}`:"—"}</strong></div>
           <div class="team-mini-stat"><span>總通關時間</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div>
           <button type="button" class="team-collapse-btn" data-toggle-team="${esc(t.id)}">${expanded?"收合 ↑":"展開 ↓"}</button>
@@ -2821,7 +3054,7 @@ function createTeam(){
   const name=$("createTeamName").value.trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
   const note=$("createTeamNote").value.trim();
   const team={id:uid("team"),dungeonId:dg.id,size:SIZE,name,note,mode:"normal",members:Array(SIZE).fill(null),externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now(),_sync:"pending"};
-  teams.push(team);expandedTeamIds.add(team.id);selectedPlayerIds.clear();$("playerSearch").value="";$("createTeamName").value="";$("createTeamNote").value="";
+  teams.push(team);expandedTeamIds.clear();expandedTeamIds.add(team.id);selectedPlayerIds.clear();$("playerSearch").value="";$("createTeamName").value="";$("createTeamNote").value="";
   saveLocalPage();renderAll();document.getElementById(`team-${team.id}`)?.scrollIntoView({behavior:"smooth",block:"center"});
   toast(`${name} 已建立`);
   syncTeam(team);
@@ -3783,9 +4016,14 @@ function bindUI(){
   $("quickGrid").addEventListener("click",e=>{
     const b=e.target.closest("[data-jump]");
     if(!b)return;
+    expandedTeamIds.clear();
     expandedTeamIds.add(b.dataset.jump);
     renderTeams();
     setTimeout(()=>document.getElementById(`team-${b.dataset.jump}`)?.scrollIntoView({behavior:"smooth",block:"center"}),20);
+  });
+  $("collapseAllTeamsBtn").addEventListener("click",()=>{
+    expandedTeamIds.clear();
+    renderTeams();
   });
   $("teamList").addEventListener("change",e=>{
     const mode=e.target.closest("[data-team-type]");
