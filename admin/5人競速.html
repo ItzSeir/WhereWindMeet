@@ -3042,6 +3042,27 @@ function recordRankLabel(record){
   const rank=Number(record?.rank||0);
   return Number.isInteger(rank)&&rank>0?`#${rank}`:"";
 }
+function bestRecordByGameRank(records=[]){
+  const list=(records||[]).filter(Boolean);
+  if(!list.length)return null;
+
+  const ranked=list
+    .filter(r=>{
+      const rank=Number(r?.rank||0);
+      return Number.isInteger(rank)&&rank>0;
+    })
+    .sort((a,b)=>{
+      const ar=Number(a.rank),br=Number(b.rank);
+      if(ar!==br)return ar-br;
+      return Number(a.timeMs||Infinity)-Number(b.timeMs||Infinity);
+    });
+
+  if(ranked.length)return ranked[0];
+
+  return list
+    .slice()
+    .sort((a,b)=>Number(a.timeMs||Infinity)-Number(b.timeMs||Infinity))[0]||null;
+}
 function recordModeLabel(record){
   if(!record)return"";
   if(record.mode==="challenge")return"挑戰";
@@ -3175,7 +3196,7 @@ function playerStats(pid){
       mode:t.currentResult.mode||normalizeTeamMode(t)
     }:null);
   }).filter(Boolean);
-  const best=currentRecords.slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
+  const best=bestRecordByGameRank(currentRecords);
   return{count:current.length,best,hist:currentRecords,hit:limit>0&&current.length>=limit};
 }
 function teamMatchesPlayer(t,pid){
@@ -3288,7 +3309,7 @@ function renderSelectedPlayer(){
   const commonRecords=visibleRecords().filter(r=>
     ids.every(pid=>r.roster?.some(m=>m.id===pid))
   );
-  const best=commonRecords.slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
+  const best=bestRecordByGameRank(commonRecords);
 
   $("selectedPlayerName").textContent=`已選 ${selected.length} 人`;
   $("selectedPlayerMeta").textContent=selected.map(p=>p.name).join("、");
