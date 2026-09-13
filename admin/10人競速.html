@@ -1896,6 +1896,16 @@ body{
   cursor:not-allowed;
 }
 
+
+/* ===== v27 best record includes manual game rank ===== */
+.player-metric strong.best{
+  white-space:nowrap;
+  font-size:13.5px!important;
+}
+.selected-stats .stat strong{
+  line-height:1.25;
+}
+
 </style>
 </head>
 <body>
@@ -2416,6 +2426,16 @@ function parseOptionalTime(v){
 function fmtOptionalTime(ms){
   return Number(ms)>0?fmtTime(Number(ms)):"—";
 }
+function recordRankLabel(record){
+  const rank=Number(record?.rank||0);
+  return Number.isInteger(rank)&&rank>0?`#${rank}`:"";
+}
+function bestRecordDisplay(record){
+  if(!record)return"—";
+  const rank=recordRankLabel(record);
+  return rank?`${rank} · ${fmtTime(record.timeMs)}`:fmtTime(record.timeMs);
+}
+
 function syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl){
   if(!boss1El||!boss2El||!totalEl)return null;
 
@@ -2589,7 +2609,7 @@ function renderPlayers(){
     const s=playerStats(p.id);
     const metric=metricMode==="count"
       ? `<div class="player-metric"><strong class="${s.hit?"warn":""}">${s.count}${limit?` / ${limit}`:""}</strong><span>上榜</span></div>`
-      : `<div class="player-metric"><strong class="best">${s.best?fmtTime(s.best.timeMs):"—"}</strong><span>最佳</span></div>`;
+      : `<div class="player-metric"><strong class="best">${bestRecordDisplay(s.best)}</strong><span>最佳紀錄</span></div>`;
 
     const roleChips=normalizeRoles(p).map(r=>`<span class="role-chip">${esc(r)}</span>`).join("");
 
@@ -2624,7 +2644,7 @@ function renderSelectedPlayer(){
     $("selectedPlayerMeta").textContent=playerRolesText(p);
     $("selectedPlayerStats").innerHTML=
       `<div class="stat"><span>目前上榜</span><strong>${s.count}${limit?`/${limit}`:""}</strong></div>`+
-      `<div class="stat"><span>最佳紀錄</span><strong>${s.best?fmtTime(s.best.timeMs):"—"}</strong></div>`+
+      `<div class="stat"><span>最佳紀錄</span><strong>${bestRecordDisplay(s.best)}</strong></div>`+
       `<div class="stat"><span>相關隊伍</span><strong>${related.length}</strong></div>`;
     return;
   }
@@ -2640,7 +2660,7 @@ function renderSelectedPlayer(){
   $("selectedPlayerStats").innerHTML=
     `<div class="stat"><span>篩選玩家</span><strong>${selected.length}</strong></div>`+
     `<div class="stat"><span>共同隊伍</span><strong>${related.length}</strong></div>`+
-    `<div class="stat"><span>共同最佳</span><strong>${best?fmtTime(best.timeMs):"—"}</strong></div>`;
+    `<div class="stat"><span>共同最佳</span><strong>${bestRecordDisplay(best)}</strong></div>`;
 }
 function renderQuick(){
   const list=sortTeamsByManualRank(filteredVisibleTeams());
