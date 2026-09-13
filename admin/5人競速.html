@@ -2503,16 +2503,14 @@ body{
 .record-mode-inline.challenge{
   color:var(--orange);
 }
-.record-rank-inline{
-  color:var(--purple);
-}
-.record-time-inline{
-  color:inherit;
-}
-.best-inline-sep{
-  opacity:.58;
-  margin:0 4px;
-  color:var(--muted);
+
+
+/* ===== v34 restore previous best-record layout; color mode only ===== */
+.record-mode-inline.normal{color:var(--green)}
+.record-mode-inline.challenge{color:var(--orange)}
+.player-metric strong.best{
+  white-space:normal!important;
+  line-height:1.28!important;
 }
 
 </style>
@@ -3053,16 +3051,11 @@ function recordModeLabel(record){
 }
 function bestRecordDisplay(record){
   if(!record)return"—";
-  const parts=[];
   const mode=recordModeLabel(record);
   const rank=recordRankLabel(record);
   const modeClass=record?.mode==="challenge"?"challenge":"normal";
-
-  if(mode)parts.push(`<span class="record-mode-inline ${modeClass}">${mode}</span>`);
-  if(rank)parts.push(`<span class="record-rank-inline">${rank}</span>`);
-  parts.push(`<span class="record-time-inline">${fmtTime(record.timeMs)}</span>`);
-
-  return parts.join('<span class="best-inline-sep">·</span>');
+  const modeHtml=mode?`<span class="record-mode-inline ${modeClass}">${mode}</span>`:"";
+  return [modeHtml,rank,fmtTime(record.timeMs)].filter(Boolean).join(" · ");
 }
 
 function syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl){
