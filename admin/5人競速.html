@@ -1771,6 +1771,131 @@ body{
   background:color-mix(in srgb,var(--purple) 5%,var(--surface));
 }
 
+
+/* ===== v24 editable history / ranking / team mode / dungeon delete ===== */
+#deleteDungeonBtn{
+  border-color:color-mix(in srgb,var(--red) 72%,#fff 8%)!important;
+  background:var(--red)!important;
+  color:#fff!important;
+  font-weight:950!important;
+}
+#deleteDungeonBtn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+.quick-head strong{font-size:15px!important}
+.quick-rank{color:var(--purple)!important;font-size:18px!important;font-weight:950!important}
+.quick-name-wrap{display:flex;align-items:center;gap:7px;min-width:0}
+.team-type-tag{
+  display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:3px 8px;
+  border-radius:999px;border:1px solid var(--line);font-size:9.5px;font-weight:950;white-space:nowrap;
+}
+.team-type-tag.normal{color:var(--green);border-color:color-mix(in srgb,var(--green) 34%,var(--line));background:color-mix(in srgb,var(--green) 7%,var(--surface))}
+.team-type-tag.challenge{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 38%,var(--line));background:color-mix(in srgb,var(--orange) 8%,var(--surface))}
+.team-type-select{
+  min-height:38px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;
+  background:var(--surface);color:var(--text);font-size:10.5px;font-weight:900;
+}
+.team-type-select:focus{border-color:color-mix(in srgb,var(--blue) 55%,var(--line));outline:none}
+.history-editable-note{
+  margin-bottom:10px;padding:9px 11px;border:1px solid color-mix(in srgb,var(--blue) 28%,var(--line));
+  border-radius:10px;background:color-mix(in srgb,var(--blue) 6%,var(--surface2));color:var(--muted);font-size:11px;
+}
+.history-editable-note strong{color:var(--blue)}
+
+
+/* ===== v25 manual game rank + boss split times ===== */
+.result-summary{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.result-entry-grid{
+  display:grid;
+  grid-template-columns:110px 150px 150px 150px 150px minmax(170px,1fr) auto;
+  gap:8px;
+  align-items:end;
+}
+.result-entry-grid .save-result{
+  min-width:112px;
+}
+.manual-rank-value{
+  color:var(--purple)!important;
+}
+.boss-time-value{
+  color:var(--blue)!important;
+}
+.total-time-value{
+  color:var(--text)!important;
+}
+.team-history-row{
+  grid-template-columns:72px 108px 175px 82px minmax(210px,1fr) minmax(90px,.65fr) auto!important;
+}
+.history-rank{
+  color:var(--purple);
+  font-size:13px;
+  font-weight:950;
+  text-align:center;
+}
+.history-splits{
+  display:grid;
+  gap:2px;
+  color:var(--muted);
+  font-size:10.5px;
+  line-height:1.35;
+}
+.history-splits strong{
+  color:var(--text);
+  font-weight:850;
+}
+.quick-rank{
+  color:var(--purple)!important;
+  font-size:18px!important;
+  font-weight:950!important;
+}
+.team-mini-stat.rank strong{
+  color:var(--purple);
+}
+.record-edit-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.record-edit-grid .field.full{
+  grid-column:1/-1;
+}
+@media(max-width:1150px){
+  .result-entry-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .result-entry-grid .save-result{
+    grid-column:1/-1;
+  }
+  .team-history-row{
+    grid-template-columns:70px 105px minmax(150px,1fr) 82px auto!important;
+  }
+  .team-history-members{grid-column:1/-1}
+  .team-history-note{display:none}
+}
+@media(max-width:760px){
+  .result-summary{grid-template-columns:1fr 1fr!important}
+  .result-entry-grid{grid-template-columns:1fr}
+  .record-edit-grid{grid-template-columns:1fr}
+  .record-edit-grid .field.full{grid-column:auto}
+  .team-history-row{grid-template-columns:1fr auto!important}
+  .history-splits,
+  .team-history-date,
+  .team-history-members{grid-column:1/-1}
+}
+
+
+/* ===== v26 flexible time input + automatic total ===== */
+.input.auto-total{
+  border-color:color-mix(in srgb,var(--green) 58%,var(--line))!important;
+  background:color-mix(in srgb,var(--green) 7%,var(--surface2))!important;
+  color:var(--green)!important;
+  font-weight:900;
+}
+.input.auto-total[readonly]{
+  cursor:not-allowed;
+}
+
 </style>
 </head>
 <body>
@@ -1800,6 +1925,7 @@ body{
     </div>
     <div style="display:flex;gap:7px;flex-wrap:wrap">
       <button class="btn" id="editDungeonBtn">✎ 編輯副本</button>
+      <button class="btn" id="deleteDungeonBtn">🗑 刪除副本</button>
       <button class="btn" id="backCurrentBtn" hidden>返回目前副本</button>
     </div>
   </section>
@@ -1840,7 +1966,7 @@ body{
         <div class="selected-stats" id="selectedPlayerStats"></div>
       </section>
 
-      <div class="quick"><div class="quick-head"><strong>隊伍快速預覽</strong><span>目前成員 · 正式紀錄 · 歷史最佳</span></div><div class="quick-grid" id="quickGrid"></div></div>
+      <div class="quick"><div class="quick-head"><strong>隊伍排名</strong><span>遊戲排名 · 總通關時間</span></div><div class="quick-grid" id="quickGrid"></div></div>
       <div class="team-list" id="teamList"></div>
     </section>
   </section>
@@ -1991,17 +2117,31 @@ body{
     <strong id="recordEditTeamName"></strong>
     <span id="recordEditMeta"></span>
   </div>
-  <div class="field">
-    <label>通關時間</label>
-    <input class="input" id="recordEditTime" placeholder="4:32 / 4分32秒">
-  </div>
-  <div class="field" style="margin-top:8px">
-    <label>通關日期</label>
-    <input class="input" type="date" id="recordEditDate">
-  </div>
-  <div class="field" style="margin-top:8px">
-    <label>備註</label>
-    <input class="input" id="recordEditNote">
+  <div class="record-edit-grid">
+    <div class="field">
+      <label>遊戲排名</label>
+      <input class="input" id="recordEditRank" type="number" min="1" step="1" placeholder="例如：3">
+    </div>
+    <div class="field">
+      <label>總通關時間</label>
+      <input class="input" id="recordEditTime" placeholder="1:30 / 1.30 / 1，30 / 1,30">
+    </div>
+    <div class="field">
+      <label>BOSS 1 時間（選填）</label>
+      <input class="input" id="recordEditBoss1" placeholder="1:30 / 1.30 / 1，30 / 1,30">
+    </div>
+    <div class="field">
+      <label>BOSS 2 時間（選填）</label>
+      <input class="input" id="recordEditBoss2" placeholder="1:30 / 1.30 / 1，30 / 1,30">
+    </div>
+    <div class="field">
+      <label>通關日期</label>
+      <input class="input" type="date" id="recordEditDate">
+    </div>
+    <div class="field">
+      <label>備註</label>
+      <input class="input" id="recordEditNote">
+    </div>
   </div>
   <div class="modal-actions">
     <button type="button" class="btn" data-close="recordEditModal">取消</button>
@@ -2081,8 +2221,15 @@ function parseTime(v){
   let s=String(v||"").trim().toLowerCase();
   if(!s)return 0;
 
-  // Accept: 04:32 / 04:32.518 / 4分32秒 / 4m32s / 272秒
-  s=s.replace(/\s+/g,"");
+  // Flexible input:
+  // 1:30 / 1：30 / 1,30 / 1，30 / 1.30  => 1 min 30 sec
+  // 1:30.500 / 1：30.500 / 1.30.500    => 1 min 30.500 sec
+  // 04:32 / 04:32.518 / 4分32秒 / 4m32s / 272秒
+  s=s
+    .replace(/\s+/g,"")
+    .replace(/[：﹕]/g,":")
+    .replace(/[，,]/g,":")
+    .replace(/[．。]/g,".");
 
   const secondsOnly=s.match(/^(\d+(?:\.\d+)?)秒$/);
   if(secondsOnly)return Math.round(Number(secondsOnly[1])*1000);
@@ -2101,6 +2248,32 @@ function parseTime(v){
     return Math.round((h*3600+m*60+sec)*1000);
   }
 
+  // Dot-only shorthand.
+  // 1.30 => 1:30
+  // 1.30.500 => 1:30.500
+  // 32.518 => 32.518 seconds (3 digits after dot is treated as milliseconds)
+  if(!s.includes(":")){
+    const minuteDot=s.match(/^(\d+)\.(\d{1,2})$/);
+    if(minuteDot){
+      const m=Number(minuteDot[1]),sec=Number(minuteDot[2]);
+      if(m<0||sec<0||sec>=60)return 0;
+      return Math.round((m*60+sec)*1000);
+    }
+
+    const minuteDotMs=s.match(/^(\d+)\.(\d{1,2})\.(\d{1,3})$/);
+    if(minuteDotMs){
+      const m=Number(minuteDotMs[1]),sec=Number(minuteDotMs[2]);
+      const milli=Number(String(minuteDotMs[3]).padEnd(3,"0"));
+      if(m<0||sec<0||sec>=60)return 0;
+      return Math.round((m*60+sec)*1000+milli);
+    }
+
+    const decimalSeconds=s.match(/^(\d+)\.(\d{3})$/);
+    if(decimalSeconds){
+      return Math.round(Number(s)*1000);
+    }
+  }
+
   const p=s.split(":").map(x=>x.trim());
   let h=0,m=0,sec=0;
   if(p.length===2){
@@ -2110,6 +2283,7 @@ function parseTime(v){
   }else{
     return 0;
   }
+
   if(!Number.isFinite(h)||!Number.isFinite(m)||!Number.isFinite(sec))return 0;
   if(h<0||m<0||sec<0||sec>=60||m>=60)return 0;
   return Math.round((h*3600+m*60+sec)*1000);
@@ -2215,6 +2389,68 @@ const visibleRecords=()=>records.filter(r=>r.dungeonId===selectedDungeonId);
 const getPlayer=id=>players.find(p=>p.id===id)||playerArchive[id]||null;
 const teamHistory=t=>visibleRecords().filter(r=>r.teamId===t.id).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 const teamBest=t=>teamHistory(t).slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
+function normalizeTeamMode(team){return team?.mode==="challenge"?"challenge":"normal"}
+function teamModeLabel(team){return normalizeTeamMode(team)==="challenge"?"挑戰":"普通"}
+function manualRankOf(team){
+  const n=Number(team?.currentResult?.rank||0);
+  return Number.isInteger(n)&&n>0?n:null;
+}
+function sortTeamsByManualRank(list){
+  return (list||[]).slice().sort((a,b)=>{
+    const ar=manualRankOf(a),br=manualRankOf(b);
+    if(ar!==null&&br!==null&&ar!==br)return ar-br;
+    if(ar!==null&&br===null)return -1;
+    if(ar===null&&br!==null)return 1;
+    const at=Number(a.currentResult?.timeMs||Infinity);
+    const bt=Number(b.currentResult?.timeMs||Infinity);
+    if(at!==bt)return at-bt;
+    return String(a.name||"").localeCompare(String(b.name||""),"zh-Hant");
+  });
+}
+function parseOptionalTime(v){
+  const raw=String(v||"").trim();
+  if(!raw)return null;
+  const ms=parseTime(raw);
+  return ms>0?ms:NaN;
+}
+function fmtOptionalTime(ms){
+  return Number(ms)>0?fmtTime(Number(ms)):"—";
+}
+function syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl){
+  if(!boss1El||!boss2El||!totalEl)return null;
+
+  const raw1=String(boss1El.value||"").trim();
+  const raw2=String(boss2El.value||"").trim();
+
+  if(!raw1||!raw2){
+    totalEl.readOnly=false;
+    totalEl.classList.remove("auto-total");
+    totalEl.removeAttribute("data-auto-total");
+    totalEl.title="";
+    return null;
+  }
+
+  const boss1Ms=parseOptionalTime(raw1);
+  const boss2Ms=parseOptionalTime(raw2);
+
+  if(!Number.isFinite(boss1Ms)||!Number.isFinite(boss2Ms)){
+    totalEl.readOnly=false;
+    totalEl.classList.remove("auto-total");
+    totalEl.removeAttribute("data-auto-total");
+    totalEl.title="";
+    return null;
+  }
+
+  const total=boss1Ms+boss2Ms;
+  totalEl.value=fmtTime(total);
+  totalEl.readOnly=true;
+  totalEl.classList.add("auto-total");
+  totalEl.dataset.autoTotal="1";
+  totalEl.title="由 BOSS 1 + BOSS 2 自動計算";
+  return total;
+}
+
+
 
 
 function isOutsiderToken(v){
@@ -2313,19 +2549,20 @@ function clearPlayerFilters(){
   renderAll();
 }
 function playerSearchText(p){
-  const rec=visibleRecords().filter(r=>r.roster?.some(m=>m.id===p.id)).map(r=>`${r.teamName} ${r.date} ${fmtTime(r.timeMs)} ${r.note||""}`).join(" ");
+  const rec=visibleRecords().filter(r=>r.roster?.some(m=>m.id===p.id)).map(r=>`${r.teamName} ${r.rank||""} ${r.date} ${fmtOptionalTime(r.boss1Ms)} ${fmtOptionalTime(r.boss2Ms)} ${fmtTime(r.timeMs)} ${r.note||""}`).join(" ");
   return norm(`${p.name} ${playerRolesText(p)} ${p.note||""} ${rec}`);
 }
 
 function renderCycle(){
   $("dungeonSelect").innerHTML=dungeons.length?dungeons.slice().reverse().map(d=>`<option value="${esc(d.id)}"${d.id===selectedDungeonId?" selected":""}>${esc(d.name)}${d.id===activeDungeonId?"（目前）":""}</option>`).join(""):`<option value="">尚未建立副本</option>`;
   const review=isReview(),dg=currentDungeon();
-  $("cycleState").textContent=review?"歷史回顧":"目前副本";$("cycleState").className=`state-pill ${review?"review":"current"}`;
+  $("cycleState").textContent=review?"過往副本":"目前副本";$("cycleState").className=`state-pill ${review?"review":"current"}`;
   $("cycleMeta").textContent=dg?`建立 ${fmtDate(dg.createdAt)} · ${SIZE} 人隊伍 ${visibleTeams().length} 支${dg.note?` · ${dg.note}`:""}`:"請先建立副本";
   $("backCurrentBtn").hidden=!review;
   $("editDungeonBtn").disabled=!dg;
-  $("teamCreateForm").querySelectorAll("input,button").forEach(el=>el.disabled=review||!dg);
-  $("reviewNote").innerHTML=review?`<div class="review-note"><strong>歷史回顧：</strong>舊副本只讀，請返回目前副本再建立或修改隊伍。</div>`:"";
+  $("deleteDungeonBtn").disabled=!dg;
+  $("teamCreateForm").querySelectorAll("input,button").forEach(el=>el.disabled=!dg);
+  $("reviewNote").innerHTML=review?`<div class="history-editable-note"><strong>過往副本：</strong>可以直接編輯隊伍、隊員、通關時間與副本資料。</div>`:"";
 }
 function renderPlayers(){
   const q=norm($("playerSearch").value);
@@ -2406,10 +2643,21 @@ function renderSelectedPlayer(){
     `<div class="stat"><span>共同最佳</span><strong>${best?fmtTime(best.timeMs):"—"}</strong></div>`;
 }
 function renderQuick(){
-  const list=filteredVisibleTeams();
+  const list=sortTeamsByManualRank(filteredVisibleTeams());
   $("quickGrid").innerHTML=list.length?list.map(t=>{
-    const b=teamBest(t),members=(t.members||[]).filter(Boolean).map(v=>slotPerson(t,v)).filter(Boolean);
-    return`<button class="quick-card" data-jump="${esc(t.id)}"><div class="quick-top"><div class="quick-name">${esc(t.name)}</div><span class="quick-count">${members.length}/${SIZE}</span></div><div class="quick-stats"><div class="quick-stat"><span>目前正式</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div><div class="quick-stat best"><span>歷史最佳</span><strong>${b?fmtTime(b.timeMs):"—"}</strong></div></div><div class="chips">${members.length?members.map(p=>`<span class="chip">${esc(p.name)}</span>`).join(""):`<span class="chip">尚未排人</span>`}</div></button>`;
+    const members=(t.members||[]).filter(Boolean).map(v=>slotPerson(t,v)).filter(Boolean);
+    const rank=manualRankOf(t),mode=normalizeTeamMode(t);
+    return`<button class="quick-card" data-jump="${esc(t.id)}">
+      <div class="quick-top">
+        <div class="quick-name-wrap"><div class="quick-name">${esc(t.name)}</div><span class="team-type-tag ${mode}">${teamModeLabel(t)}</span></div>
+        <span class="quick-count">${members.length}/${SIZE}</span>
+      </div>
+      <div class="quick-stats">
+        <div class="quick-stat"><span>遊戲排名</span><strong class="quick-rank">${rank?`#${rank}`:"—"}</strong></div>
+        <div class="quick-stat"><span>總通關時間</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div>
+      </div>
+      <div class="chips">${members.length?members.map(p=>`<span class="chip">${esc(p.name)}</span>`).join(""):`<span class="chip">尚未排人</span>`}</div>
+    </button>`;
   }).join(""):`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`目前還沒有 ${SIZE} 人固定隊伍。`}</div>`;
 }
 function slotHtml(t,i){
@@ -2417,7 +2665,7 @@ function slotHtml(t,i){
   const s=p&&!p.external?playerStats(p.id):null;
 
   if(!p){
-    return`<div class="slot"><span class="slot-no">${i+1}</span>${!isReview()?`<button class="add-slot" data-pick="${esc(t.id)}" data-index="${i}">＋ 加入玩家 / 外人</button>`:`<span>空位</span>`}</div>`;
+    return`<div class="slot"><span class="slot-no">${i+1}</span><button class="add-slot" data-pick="${esc(t.id)}" data-index="${i}">＋ 加入玩家 / 外人</button></div>`;
   }
 
   return`<div class="slot filled"><span class="slot-no">${i+1}</span><div>
@@ -2426,50 +2674,66 @@ function slotHtml(t,i){
       ? `<span class="outsider-pill">外人 · 不計次數</span>`
       : `<span>${esc(p.external?"外人":playerRolesText(p))}</span><span class="limit ${s?.hit?"warn":""}">${SIZE}榜 ${s?.count||0}${limit?`/${limit}`:""}</span>`
     }
-    ${!isReview()?`<div class="slot-actions"><button data-pick="${esc(t.id)}" data-index="${i}">更換</button><button data-remove="${esc(t.id)}" data-player="${esc(raw)}">移除</button></div>`:""}
+    <div class="slot-actions"><button data-pick="${esc(t.id)}" data-index="${i}">更換</button><button data-remove="${esc(t.id)}" data-player="${esc(raw)}">移除</button></div>
   </div></div>`;
 }
 function resultHtml(t){
-  const b=teamBest(t),cur=t.currentResult||null;
+  const cur=t.currentResult||null;
   const hist=teamHistory(t);
+
   const historyHtml=hist.length
     ? hist.map(r=>{
         const first=isFirstTeamRecord(t.id,r.id);
+        const rank=Number(r.rank||0)>0?Number(r.rank):null;
         return`<div class="team-history-row">
-          <div class="team-history-time">${fmtTime(r.timeMs)}${first?`<span class="history-first-badge">第一筆</span>`:""}</div>
+          <div class="history-rank">${rank?`#${rank}`:"—"}${first?`<span class="history-first-badge">第一筆</span>`:""}</div>
+          <div class="team-history-time">${fmtTime(r.timeMs)}</div>
+          <div class="history-splits">
+            <span>BOSS 1：<strong>${fmtOptionalTime(r.boss1Ms)}</strong></span>
+            <span>BOSS 2：<strong>${fmtOptionalTime(r.boss2Ms)}</strong></span>
+          </div>
           <div class="team-history-date">${fmtDate(r.date)}</div>
           <div class="team-history-members">${(r.roster||[]).map(m=>esc(m.name||"外人")).join("、")}</div>
           <div class="team-history-note">${esc(r.note||"")}</div>
-          ${!isReview()?`<div class="history-actions">
+          <div class="history-actions">
             <button type="button" class="history-edit-btn" data-edit-record="${esc(r.id)}" data-team-id="${esc(t.id)}">✎ 編輯</button>
             ${first
               ? `<button type="button" class="history-delete-locked" disabled>🔒 保留</button>`
               : `<button type="button" class="history-delete-btn" data-delete-record="${esc(r.id)}" data-team-id="${esc(t.id)}">🗑 刪除</button>`
             }
-          </div>`:""}
+          </div>
         </div>`;
       }).join("")
     : `<div class="empty">這個副本目前還沒有過往通關紀錄。</div>`;
 
+  const rank=Number(cur?.rank||0)>0?Number(cur.rank):null;
+
   return`<div class="result-card">
     <div class="result-summary">
-      <div class="result-box"><span>目前正式紀錄</span><strong>${cur?fmtTime(cur.timeMs):"尚未記錄"}</strong><small>${cur?`${fmtDate(cur.date)}${cur.note?` · ${esc(cur.note)}`:""}`:"排好隊伍後可直接儲存"}</small></div>
-      <div class="result-box best"><span>本副本歷史最佳</span><strong>${b?fmtTime(b.timeMs):"—"}</strong><small>${b?fmtDate(b.date):"尚無歷史"}</small></div>
+      <div class="result-box"><span>遊戲排名</span><strong class="manual-rank-value">${rank?`#${rank}`:"—"}</strong><small>手動記錄遊戲內名次</small></div>
+      <div class="result-box"><span>BOSS 1</span><strong class="boss-time-value">${fmtOptionalTime(cur?.boss1Ms)}</strong><small>選填</small></div>
+      <div class="result-box"><span>BOSS 2</span><strong class="boss-time-value">${fmtOptionalTime(cur?.boss2Ms)}</strong><small>選填</small></div>
+      <div class="result-box"><span>總通關時間</span><strong class="total-time-value">${cur?fmtTime(cur.timeMs):"尚未記錄"}</strong><small>${cur?`${fmtDate(cur.date)}${cur.note?` · ${esc(cur.note)}`:""}`:""}</small></div>
     </div>
-    ${!isReview()?`<div class="result-grid">
-      <div class="field"><label>通關時間</label><input class="input" data-time="${esc(t.id)}" placeholder="4:32 / 4分32秒" value="${cur?esc(fmtTime(cur.timeMs)):""}"></div>
+
+    <div class="result-entry-grid">
+      <div class="field"><label>遊戲排名</label><input class="input" type="number" min="1" step="1" data-rank="${esc(t.id)}" placeholder="例如：3" value="${rank||""}"></div>
+      <div class="field"><label>BOSS 1 時間（選填）</label><input class="input" data-boss1="${esc(t.id)}" placeholder="1:30 / 1.30 / 1，30 / 1,30" value="${cur?.boss1Ms?esc(fmtTime(cur.boss1Ms)):""}"></div>
+      <div class="field"><label>BOSS 2 時間（選填）</label><input class="input" data-boss2="${esc(t.id)}" placeholder="1:30 / 1.30 / 1，30 / 1,30" value="${cur?.boss2Ms?esc(fmtTime(cur.boss2Ms)):""}"></div>
+      <div class="field"><label>總通關時間</label><input class="input" data-time="${esc(t.id)}" placeholder="只填總時間也可以" value="${cur?esc(fmtTime(cur.timeMs)):""}"></div>
       <div class="field"><label>通關日期</label><input class="input" type="date" data-date="${esc(t.id)}" value="${esc(cur?.date||today())}"></div>
-      <div class="field"><label>備註</label><input class="input" data-note="${esc(t.id)}" placeholder="例如：重打 PB" value="${esc(cur?.note||"")}"></div>
-      <button class="save-result" data-save-result="${esc(t.id)}">${cur?"新增本次通關":"儲存通關"}</button>
-    </div>`:""}
+      <div class="field"><label>備註</label><input class="input" data-note="${esc(t.id)}" placeholder="備註" value="${esc(cur?.note||"")}"></div>
+      <button class="save-result" data-save-result="${esc(t.id)}">${cur?"新增本次紀錄":"儲存紀錄"}</button>
+    </div>
+
     <div class="history-section">
-      <div class="history-head"><strong>本副本過往通關時間</strong><span>${hist.length} 筆</span></div>
+      <div class="history-head"><strong>本副本過往通關紀錄</strong><span>${hist.length} 筆</span></div>
       <div class="team-history-list">${historyHtml}</div>
     </div>
   </div>`;
 }
 function renderTeams(){
-  const list=filteredVisibleTeams();
+  const list=sortTeamsByManualRank(filteredVisibleTeams());
   const selected=selectedFilterPlayers();
   $("boardSub").textContent=selected.length
     ? `${selected.length} 人篩選 · ${list.length} 支隊伍`
@@ -2494,24 +2758,28 @@ function renderTeams(){
       <div class="team-top">
         <div class="team-summary-bar">
           <div>
-            <div class="team-name">${esc(t.name)} <span class="team-status">${status}</span></div>
+            <div class="team-name">${esc(t.name)} <span class="team-type-tag ${normalizeTeamMode(t)}">${teamModeLabel(t)}</span> <span class="team-status">${status}</span></div>
             <div class="team-meta">${t.note?esc(t.note):"固定隊伍"} · ${names.length}/${SIZE} 個位置已填 · ${names.length?esc(names.join("、")):"尚未排人"}</div>
           </div>
-          <div class="team-mini-stat"><span>目前正式</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div>
-          <div class="team-mini-stat best"><span>歷史最佳</span><strong>${best?fmtTime(best.timeMs):"—"}</strong></div>
+          <div class="team-mini-stat rank"><span>遊戲排名</span><strong>${manualRankOf(t)?`#${manualRankOf(t)}`:"—"}</strong></div>
+          <div class="team-mini-stat"><span>總通關時間</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div>
           <button type="button" class="team-collapse-btn" data-toggle-team="${esc(t.id)}">${expanded?"收合 ↑":"展開 ↓"}</button>
         </div>
       </div>
       <div class="team-body">
         <div class="team-actions" style="margin-bottom:9px">
-          ${!isReview()?`<button data-edit="${esc(t.id)}">編輯名稱</button><button data-retry="${esc(t.id)}">重新同步</button><button data-delete="${esc(t.id)}">🗑 刪除隊伍</button>`:""}
+          <select class="team-type-select" data-team-type="${esc(t.id)}">
+            <option value="normal"${normalizeTeamMode(t)==="normal"?" selected":""}>普通</option>
+            <option value="challenge"${normalizeTeamMode(t)==="challenge"?" selected":""}>挑戰</option>
+          </select>
+          <button data-edit="${esc(t.id)}">編輯名稱</button><button data-retry="${esc(t.id)}">重新同步</button><button data-delete="${esc(t.id)}">🗑 刪除隊伍</button>
         </div>
         ${resultHtml(t)}
         <div class="roster-title">
           <strong>隊伍成員</strong>
           <div class="roster-title-actions">
             
-            ${!isReview()?`<button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 批量選擇隊友</button>`:""}
+            <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 批量選擇隊友</button>
           </div>
         </div>
         <div class="roster">${Array.from({length:SIZE},(_,i)=>slotHtml(t,i)).join("")}</div>
@@ -2529,11 +2797,10 @@ function renderAll(){
 }
 
 function createTeam(){
-  if(isReview()){alert("目前是歷史回顧，請先返回目前副本。");return}
   const dg=currentDungeon();if(!dg){alert("請先建立或選擇目前副本。");return}
   const name=$("createTeamName").value.trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
   const note=$("createTeamNote").value.trim();
-  const team={id:uid("team"),dungeonId:dg.id,size:SIZE,name,note,members:Array(SIZE).fill(null),externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now(),_sync:"pending"};
+  const team={id:uid("team"),dungeonId:dg.id,size:SIZE,name,note,mode:"normal",members:Array(SIZE).fill(null),externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now(),_sync:"pending"};
   teams.push(team);expandedTeamIds.add(team.id);selectedPlayerIds.clear();$("playerSearch").value="";$("createTeamName").value="";$("createTeamNote").value="";
   saveLocalPage();renderAll();document.getElementById(`team-${team.id}`)?.scrollIntoView({behavior:"smooth",block:"center"});
   toast(`${name} 已建立`);
@@ -2578,7 +2845,7 @@ function renderPicker(){
 
 function openBatchPicker(teamId){
   const t=teams.find(x=>x.id===teamId);
-  if(!t||isReview())return;
+  if(!t)return;
 
   batchTeamId=teamId;
   batchSelectedIds=new Set(
@@ -2754,13 +3021,48 @@ function removePlayer(teamId,pid){
 }
 async function saveResult(teamId){
   const t=teams.find(x=>x.id===teamId);if(!t)return;
+  const rankEl=document.querySelector(`[data-rank="${CSS.escape(teamId)}"]`);
+  const boss1El=document.querySelector(`[data-boss1="${CSS.escape(teamId)}"]`);
+  const boss2El=document.querySelector(`[data-boss2="${CSS.escape(teamId)}"]`);
   const timeEl=document.querySelector(`[data-time="${CSS.escape(teamId)}"]`);
   const dateEl=document.querySelector(`[data-date="${CSS.escape(teamId)}"]`);
   const noteEl=document.querySelector(`[data-note="${CSS.escape(teamId)}"]`);
 
-  const ms=parseTime(timeEl?.value||"");
+  const rankRaw=String(rankEl?.value||"").trim();
+  const rank=rankRaw?Number(rankRaw):null;
+  if(rank!==null&&(!Number.isInteger(rank)||rank<=0)){
+    alert("遊戲排名請輸入 1 以上的整數。");
+    rankEl?.focus();
+    return;
+  }
+
+  const boss1Ms=parseOptionalTime(boss1El?.value||"");
+  const boss2Ms=parseOptionalTime(boss2El?.value||"");
+  if(Number.isNaN(boss1Ms)){
+    alert("BOSS 1 時間格式不正確。");
+    boss1El?.focus();
+    return;
+  }
+  if(Number.isNaN(boss2Ms)){
+    alert("BOSS 2 時間格式不正確。");
+    boss2El?.focus();
+    return;
+  }
+
+  const hasBothBossTimes=
+    String(boss1El?.value||"").trim() &&
+    String(boss2El?.value||"").trim();
+
+  const autoTotalMs=hasBothBossTimes
+    ? syncAutoTotalFromBossInputs(boss1El,boss2El,timeEl)
+    : null;
+
+  const ms=Number.isFinite(autoTotalMs)
+    ? autoTotalMs
+    : parseTime(timeEl?.value||"");
+
   if(!ms){
-    alert("請填寫通關時間。可用 4:32、04:32.518、4分32秒 或 4m32s。");
+    alert("請填寫總通關時間；或同時填寫 BOSS 1 與 BOSS 2，系統會自動計算總時間。");
     timeEl?.focus();
     return;
   }
@@ -2792,6 +3094,9 @@ async function saveResult(teamId){
     teamId:t.id,
     teamName:t.name,
     size:SIZE,
+    rank,
+    boss1Ms:Number.isFinite(boss1Ms)?boss1Ms:null,
+    boss2Ms:Number.isFinite(boss2Ms)?boss2Ms:null,
     timeMs:ms,
     date:dateEl?.value||today(),
     note:noteEl?.value.trim()||"",
@@ -2803,6 +3108,9 @@ async function saveResult(teamId){
   records.push(rec);
   t.currentResult={
     recordId:rec.id,
+    rank:rec.rank,
+    boss1Ms:rec.boss1Ms,
+    boss2Ms:rec.boss2Ms,
     timeMs:rec.timeMs,
     date:rec.date,
     note:rec.note,
@@ -2843,9 +3151,18 @@ function openRecordEdit(teamId,recordId){
 
   $("recordEditTeamName").textContent=t.name;
   $("recordEditMeta").textContent=isFirstTeamRecord(teamId,recordId)?"第一筆紀錄 · 不可刪除":"通關紀錄";
+  $("recordEditRank").value=Number(r.rank||0)>0?Number(r.rank):"";
+  $("recordEditBoss1").value=r.boss1Ms?fmtTime(r.boss1Ms):"";
+  $("recordEditBoss2").value=r.boss2Ms?fmtTime(r.boss2Ms):"";
   $("recordEditTime").value=fmtTime(r.timeMs);
   $("recordEditDate").value=r.date||today();
   $("recordEditNote").value=r.note||"";
+
+  syncAutoTotalFromBossInputs(
+    $("recordEditBoss1"),
+    $("recordEditBoss2"),
+    $("recordEditTime")
+  );
 
   openModal("recordEditModal");
 }
@@ -2854,13 +3171,51 @@ async function saveRecordEdit(){
   const r=records.find(x=>x.id===editingRecordId);
   if(!t||!r)return;
 
-  const ms=parseTime($("recordEditTime").value);
-  if(!ms){
-    alert("請輸入正確的通關時間。");
-    $("recordEditTime").focus();
+  const rankRaw=$("recordEditRank").value.trim();
+  const rank=rankRaw?Number(rankRaw):null;
+  if(rank!==null&&(!Number.isInteger(rank)||rank<=0)){
+    alert("遊戲排名請輸入 1 以上的整數。");
+    $("recordEditRank").focus();
     return;
   }
 
+  const boss1Ms=parseOptionalTime($("recordEditBoss1").value);
+  const boss2Ms=parseOptionalTime($("recordEditBoss2").value);
+  if(Number.isNaN(boss1Ms)){
+    alert("BOSS 1 時間格式不正確。");
+    $("recordEditBoss1").focus();
+    return;
+  }
+  if(Number.isNaN(boss2Ms)){
+    alert("BOSS 2 時間格式不正確。");
+    $("recordEditBoss2").focus();
+    return;
+  }
+
+  const editBoss1El=$("recordEditBoss1");
+  const editBoss2El=$("recordEditBoss2");
+  const editTotalEl=$("recordEditTime");
+  const hasBothBossTimes=
+    editBoss1El.value.trim() &&
+    editBoss2El.value.trim();
+
+  const autoTotalMs=hasBothBossTimes
+    ? syncAutoTotalFromBossInputs(editBoss1El,editBoss2El,editTotalEl)
+    : null;
+
+  const ms=Number.isFinite(autoTotalMs)
+    ? autoTotalMs
+    : parseTime(editTotalEl.value);
+
+  if(!ms){
+    alert("請輸入總通關時間；或同時填寫 BOSS 1 與 BOSS 2，系統會自動計算。");
+    editTotalEl.focus();
+    return;
+  }
+
+  r.rank=rank;
+  r.boss1Ms=Number.isFinite(boss1Ms)?boss1Ms:null;
+  r.boss2Ms=Number.isFinite(boss2Ms)?boss2Ms:null;
   r.timeMs=ms;
   r.date=$("recordEditDate").value||r.date||today();
   r.note=$("recordEditNote").value.trim();
@@ -2869,6 +3224,9 @@ async function saveRecordEdit(){
   if(t.currentResult?.recordId===r.id){
     t.currentResult={
       recordId:r.id,
+      rank:r.rank??null,
+      boss1Ms:r.boss1Ms??null,
+      boss2Ms:r.boss2Ms??null,
       timeMs:r.timeMs,
       date:r.date,
       note:r.note||"",
@@ -2923,6 +3281,9 @@ async function deleteRecordConfirmed(teamId,recordId){
     const latest=remaining[0]||null;
     t.currentResult=latest?{
       recordId:latest.id,
+      rank:latest.rank??null,
+      boss1Ms:latest.boss1Ms??null,
+      boss2Ms:latest.boss2Ms??null,
       timeMs:latest.timeMs,
       date:latest.date,
       note:latest.note||"",
@@ -2938,6 +3299,12 @@ async function deleteRecordConfirmed(teamId,recordId){
 
   await deleteRecordRemote(recordId);
   if(t._sync==="pending")syncTeam(t);
+}
+function setTeamMode(teamId,mode){
+  const t=teams.find(x=>x.id===teamId);if(!t)return;
+  t.mode=mode==="challenge"?"challenge":"normal";
+  t.updatedAtMs=Date.now();t._sync="pending";
+  saveLocalPage();renderAll();syncTeam(t);toast(`${t.name} 已設為「${teamModeLabel(t)}」`);
 }
 function editTeam(teamId){
   const t=teams.find(x=>x.id===teamId);if(!t)return;editingTeamId=teamId;$("editTeamName").value=t.name;$("editTeamNote").value=t.note||"";openModal("teamEditModal")
@@ -3286,6 +3653,40 @@ function saveSinglePlayerEdit(){
   toast(`${name} 已更新`);
 }
 
+function purgeDungeonFromLocalCaches(dungeonId){
+  for(const size of [5,10]){
+    const key=`wwm_speed_v7_${size}`;
+    try{
+      const data=JSON.parse(localStorage.getItem(key)||"null");
+      if(!data||typeof data!=="object")continue;
+      data.teams=Array.isArray(data.teams)?data.teams.filter(t=>t.dungeonId!==dungeonId):[];
+      data.records=Array.isArray(data.records)?data.records.filter(r=>r.dungeonId!==dungeonId):[];
+      localStorage.setItem(key,JSON.stringify(data));
+    }catch(e){}
+  }
+}
+function requestDeleteDungeon(){
+  const dg=currentDungeon();if(!dg)return;
+  openDeleteConfirm({
+    title:"刪除副本",
+    message:`確定要刪除「${dg.name}」？`,
+    detail:`會同時刪除這個副本在 5 人與 10 人競速中的相關隊伍與通關資料。此頁目前有 ${visibleTeams().length} 支隊伍、${visibleRecords().length} 筆通關紀錄。刪除後無法復原。`,
+    confirmText:"刪除副本",
+    action:()=>deleteDungeonConfirmed(dg.id)
+  });
+}
+async function deleteDungeonConfirmed(dungeonId){
+  const dg=dungeons.find(d=>d.id===dungeonId);if(!dg)return;
+  teams=teams.filter(t=>t.dungeonId!==dungeonId);
+  records=records.filter(r=>r.dungeonId!==dungeonId);
+  dungeons=dungeons.filter(d=>d.id!==dungeonId);
+  if(activeDungeonId===dungeonId)activeDungeonId=dungeons.at(-1)?.id||"";
+  if(selectedDungeonId===dungeonId)selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
+  expandedTeamIds.clear();selectedPlayerIds.clear();
+  saveLocalPage();saveLocalCycles();purgeDungeonFromLocalCaches(dungeonId);renderAll();
+  toast(`副本「${dg.name}」已刪除`);
+  await deleteDungeonRemote(dungeonId);
+}
 function openDungeonEdit(){
   const dg=currentDungeon();
   if(!dg)return;
@@ -3337,6 +3738,7 @@ function bindUI(){
   $("newDungeonBtn").addEventListener("click",()=>{$("newDungeonName").value="";$("newDungeonNote").value="";openModal("dungeonModal")});
   $("saveDungeonBtn").addEventListener("click",createDungeon);
   $("editDungeonBtn").addEventListener("click",openDungeonEdit);
+  $("deleteDungeonBtn").addEventListener("click",requestDeleteDungeon);
   $("saveDungeonEditBtn").addEventListener("click",saveDungeonEdit);
   $("playerSearch").addEventListener("input",renderPlayers);
   $("professionFilter").addEventListener("change",()=>{selectedProfessionFilter=$("professionFilter").value;renderPlayers()});
@@ -3364,6 +3766,21 @@ function bindUI(){
     expandedTeamIds.add(b.dataset.jump);
     renderTeams();
     setTimeout(()=>document.getElementById(`team-${b.dataset.jump}`)?.scrollIntoView({behavior:"smooth",block:"center"}),20);
+  });
+  $("teamList").addEventListener("change",e=>{
+    const mode=e.target.closest("[data-team-type]");
+    if(mode)setTeamMode(mode.dataset.teamType,mode.value);
+  });
+  $("teamList").addEventListener("input",e=>{
+    const bossInput=e.target.closest("[data-boss1],[data-boss2]");
+    if(!bossInput)return;
+
+    const teamId=bossInput.dataset.boss1||bossInput.dataset.boss2;
+    const boss1El=document.querySelector(`[data-boss1="${CSS.escape(teamId)}"]`);
+    const boss2El=document.querySelector(`[data-boss2="${CSS.escape(teamId)}"]`);
+    const totalEl=document.querySelector(`[data-time="${CSS.escape(teamId)}"]`);
+
+    syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl);
   });
   $("teamList").addEventListener("click",e=>{
     const toggle=e.target.closest("[data-toggle-team]");if(toggle){toggleTeam(toggle.dataset.toggleTeam);return}
@@ -3422,6 +3839,15 @@ function bindUI(){
   window.addEventListener("resize",closePlayerMenu);
   window.addEventListener("scroll",closePlayerMenu,true);
 
+  ["recordEditBoss1","recordEditBoss2"].forEach(id=>{
+    $(id).addEventListener("input",()=>{
+      syncAutoTotalFromBossInputs(
+        $("recordEditBoss1"),
+        $("recordEditBoss2"),
+        $("recordEditTime")
+      );
+    });
+  });
   $("saveRecordEditBtn").addEventListener("click",saveRecordEdit);
   $("confirmDeleteCancelBtn").addEventListener("click",closeDeleteConfirm);
   $("confirmDeleteOkBtn").addEventListener("click",async()=>{
@@ -3436,10 +3862,29 @@ function bindUI(){
 }
 function exportExcel(){
   const dg=currentDungeon(),pr=players.map(p=>{const s=playerStats(p.id);return[p.name,playerRolesText(p),p.note,s.count,limit||"不限",s.best?fmtTime(s.best.timeMs):"",s.best?.date||"",s.best?.teamName||""]});
-  const tr=visibleTeams().map(t=>[t.name,memberDisplayNames(t).join("、"),t.currentResult?fmtTime(t.currentResult.timeMs):"",t.currentResult?.date||"",teamBest(t)?fmtTime(teamBest(t).timeMs):"",t.note||""]);
-  const rr=visibleRecords().map(r=>[r.teamName,fmtTime(r.timeMs),r.date,(r.roster||[]).map(m=>m.name).join("、"),r.note||""]);
+  const tr=sortTeamsByManualRank(visibleTeams()).map(t=>[
+    t.name,
+    teamModeLabel(t),
+    manualRankOf(t)||"",
+    t.currentResult?.boss1Ms?fmtTime(t.currentResult.boss1Ms):"",
+    t.currentResult?.boss2Ms?fmtTime(t.currentResult.boss2Ms):"",
+    t.currentResult?fmtTime(t.currentResult.timeMs):"",
+    memberDisplayNames(t).join("、"),
+    t.currentResult?.date||"",
+    t.note||""
+  ]);
+  const rr=visibleRecords().map(r=>[
+    r.teamName,
+    Number(r.rank||0)>0?Number(r.rank):"",
+    r.boss1Ms?fmtTime(r.boss1Ms):"",
+    r.boss2Ms?fmtTime(r.boss2Ms):"",
+    fmtTime(r.timeMs),
+    r.date,
+    (r.roster||[]).map(m=>m.name).join("、"),
+    r.note||""
+  ]);
   const cell=v=>`<Cell><Data ss:Type="String">${esc(v)}</Data></Cell>`,sheet=(n,h,rows)=>`<Worksheet ss:Name="${esc(n)}"><Table><Row>${h.map(cell).join("")}</Row>${rows.map(r=>`<Row>${r.map(cell).join("")}</Row>`).join("")}</Table></Worksheet>`;
-  const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheet(`${SIZE}人玩家`,["玩家","職業","備註","目前上榜","上限","最佳時間","最佳日期","最佳隊伍"],pr)}${sheet(`${SIZE}人隊伍`,["隊伍","目前成員","目前正式","日期","歷史最佳","備註"],tr)}${sheet("歷史通關",["隊伍","時間","日期","當時成員","備註"],rr)}</Workbook>`;
+  const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheet(`${SIZE}人玩家`,["玩家","職業","備註","目前上榜","上限","最佳時間","最佳日期","最佳隊伍"],pr)}${sheet(`${SIZE}人隊伍`,["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","目前成員","日期","備註"],tr)}${sheet("歷史通關",["隊伍","遊戲排名","BOSS 1","BOSS 2","總通關時間","日期","當時成員","備註"],rr)}</Workbook>`;
   const blob=new Blob(["\ufeff",xml],{type:"application/vnd.ms-excel"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`${SIZE}人競速_${dg?.name||"副本"}_${today()}.xls`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)
 }
 
@@ -3491,14 +3936,14 @@ async function migrateOldPageIfNeeded(){
   if(!oldSnap?.exists())return;
   const old=oldSnap.data(),oldTeams=Array.isArray(old.teams)?old.teams.filter(t=>Number(t.size||SIZE)===SIZE):[],oldRecords=Array.isArray(old.records)?old.records.filter(r=>Number(r.size||SIZE)===SIZE):[];
   for(const t of oldTeams){
-    const team={id:t.id||uid("team"),dungeonId:t.dungeonId||activeDungeonId,size:SIZE,name:t.name||`${SIZE}人固定隊`,note:t.note||"",members:Array.isArray(t.members)?t.members:[],externalMembers:t.externalMembers&&typeof t.externalMembers==="object"?t.externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now()};
+    const team={id:t.id||uid("team"),dungeonId:t.dungeonId||activeDungeonId,size:SIZE,name:t.name||`${SIZE}人固定隊`,note:t.note||"",mode:t.mode==="challenge"?"challenge":"normal",members:Array.isArray(t.members)?t.members:[],externalMembers:t.externalMembers&&typeof t.externalMembers==="object"?t.externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now()};
     const active=oldRecords.filter(r=>r.teamId===team.id&&r.status==="active").sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];
-    if(active)team.currentResult={recordId:active.id||"",timeMs:Number(active.timeMs||0),date:active.date||"",note:active.note||"",roster:Array.isArray(active.roster)?active.roster:[]};
+    if(active)team.currentResult={recordId:active.id||"",rank:Number(active.rank||0)>0?Number(active.rank):null,boss1Ms:Number(active.boss1Ms||0)||null,boss2Ms:Number(active.boss2Ms||0)||null,timeMs:Number(active.timeMs||0),date:active.date||"",note:active.note||"",roster:Array.isArray(active.roster)?active.roster:[]};
     await setDoc(doc(db,"competition",`speed_${SIZE}`,"teams",team.id),{...team,updatedAt:serverTimestamp()}).catch(()=>{});
   }
   for(const r of oldRecords){
     if(!Number(r.timeMs||0))continue;
-    const rec={id:r.id||uid("rec"),dungeonId:r.dungeonId||activeDungeonId,teamId:r.teamId||"",teamName:r.teamName||"固定隊伍",size:SIZE,timeMs:Number(r.timeMs||0),date:r.date||"",note:r.note||"",roster:Array.isArray(r.roster)?r.roster:[],createdAtMs:Date.now()};
+    const rec={id:r.id||uid("rec"),dungeonId:r.dungeonId||activeDungeonId,teamId:r.teamId||"",teamName:r.teamName||"固定隊伍",size:SIZE,rank:Number(r.rank||0)>0?Number(r.rank):null,boss1Ms:Number(r.boss1Ms||0)||null,boss2Ms:Number(r.boss2Ms||0)||null,timeMs:Number(r.timeMs||0),date:r.date||"",note:r.note||"",roster:Array.isArray(r.roster)?r.roster:[],createdAtMs:Date.now()};
     await setDoc(doc(db,"competition",`speed_${SIZE}`,"records",rec.id),{...rec,createdAt:serverTimestamp()}).catch(()=>{});
   }
 }
@@ -3556,7 +4001,7 @@ async function syncTeam(team){
   saveLocalPage();if(!fbOnline||!fb){team._sync="local";saveLocalPage();renderAll();return}
   team._sync="pending";saveLocalPage();renderAll();setSync("saving","同步中");
   try{
-    const clean={id:team.id,dungeonId:team.dungeonId,size:SIZE,name:team.name,note:team.note||"",members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},currentResult:team.currentResult||null,createdAt:team.createdAt||Date.now(),updatedAtMs:Date.now()};
+    const clean={id:team.id,dungeonId:team.dungeonId,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},currentResult:team.currentResult||null,createdAt:team.createdAt||Date.now(),updatedAtMs:Date.now()};
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"teams",team.id),{...clean,updatedAt:fb.serverTimestamp()});
     team._sync="synced";saveLocalPage();setSync("ok","已同步");renderAll();
   }catch(e){console.warn(e);team._sync="local";saveLocalPage();setSync("local","本機暫存");renderAll()}
@@ -3564,12 +4009,32 @@ async function syncTeam(team){
 async function syncRecord(rec){
   saveLocalPage();if(!fbOnline||!fb){rec._sync="local";saveLocalPage();return}
   try{
-    const clean={id:rec.id,dungeonId:rec.dungeonId,teamId:rec.teamId,teamName:rec.teamName,size:SIZE,timeMs:rec.timeMs,date:rec.date,note:rec.note||"",roster:rec.roster||[],createdAtMs:rec.createdAtMs||Date.now()};
+    const clean={id:rec.id,dungeonId:rec.dungeonId,teamId:rec.teamId,teamName:rec.teamName,size:SIZE,rank:Number(rec.rank||0)>0?Number(rec.rank):null,boss1Ms:Number(rec.boss1Ms||0)||null,boss2Ms:Number(rec.boss2Ms||0)||null,timeMs:rec.timeMs,date:rec.date,note:rec.note||"",roster:rec.roster||[],createdAtMs:rec.createdAtMs||Date.now()};
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"records",rec.id),{...clean,createdAt:fb.serverTimestamp()});
     rec._sync="synced";saveLocalPage();
   }catch(e){console.warn(e);rec._sync="local";saveLocalPage()}
 }
 
+async function deleteDungeonRemote(dungeonId){
+  if(!fbOnline||!fb)return;
+  setSync("saving","刪除副本同步中");
+  try{
+    const jobs=[];
+    for(const size of [5,10]){
+      const teamSnap=await fb.getDocs(fb.collection(fb.db,"competition",`speed_${size}`,"teams"));
+      teamSnap.forEach(ds=>{if(ds.data()?.dungeonId===dungeonId)jobs.push(fb.deleteDoc(ds.ref))});
+      const recordSnap=await fb.getDocs(fb.collection(fb.db,"competition",`speed_${size}`,"records"));
+      recordSnap.forEach(ds=>{if(ds.data()?.dungeonId===dungeonId)jobs.push(fb.deleteDoc(ds.ref))});
+    }
+    await Promise.all(jobs);
+    await fb.setDoc(fb.doc(fb.db,"competition","speed_cycles"),{dungeons,activeDungeonId,updatedAt:fb.serverTimestamp()});
+    setSync("ok","已同步");
+  }catch(e){
+    console.warn("Delete dungeon sync failed",e);
+    setSync("local","副本刪除未完全同步");
+    alert("本機已刪除副本，但 Firebase 有部分資料未成功刪除。請檢查網路後重新整理確認。");
+  }
+}
 async function deleteRecordRemote(recordId){
   if(!fbOnline||!fb)return;
   setSync("saving","刪除同步中");
