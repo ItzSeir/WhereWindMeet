@@ -2475,6 +2475,21 @@ body{
   }
 }
 
+
+/* ===== v32 single-record mode ===== */
+.result-card{
+  padding-bottom:12px!important;
+}
+.single-record-note{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:10.5px;
+  line-height:1.5;
+}
+.history-section{
+  display:none!important;
+}
+
 </style>
 </head>
 <body>
@@ -3129,9 +3144,18 @@ function toggleTeam(teamId){
 }
 function playerStats(pid){
   const current=visibleTeams().filter(t=>t.currentResult?.roster?.some(m=>m.id===pid));
-  const hist=visibleRecords().filter(r=>r.roster?.some(m=>m.id===pid));
-  const best=hist.slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
-  return{count:current.length,best,hist,hit:limit>0&&current.length>=limit};
+  const currentRecords=current.map(t=>{
+    const id=t.currentResult?.recordId;
+    return visibleRecords().find(r=>r.id===id) || (t.currentResult?{
+      ...t.currentResult,
+      id:id||"",
+      teamId:t.id,
+      teamName:t.name,
+      mode:t.currentResult.mode||normalizeTeamMode(t)
+    }:null);
+  }).filter(Boolean);
+  const best=currentRecords.slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
+  return{count:current.length,best,hist:currentRecords,hit:limit>0&&current.length>=limit};
 }
 function teamMatchesPlayer(t,pid){
   if((t.members||[]).includes(pid))return true;
@@ -3289,57 +3313,61 @@ function slotHtml(t,i){
 }
 function resultHtml(t){
   const cur=t.currentResult||null;
-  const hist=teamHistory(t);
-
-  const historyHtml=hist.length
-    ? hist.map(r=>{
-        const first=isFirstTeamRecord(t.id,r.id);
-        const rank=Number(r.rank||0)>0?Number(r.rank):null;
-        return`<div class="team-history-row">
-          <div class="history-rank">${rank?`#${rank}`:"—"}${first?`<span class="history-first-badge">第一筆</span>`:""}</div>
-          <div class="team-history-time">${fmtTime(r.timeMs)}</div>
-          <div class="history-splits">
-            <span>BOSS 1：<strong>${fmtOptionalTime(r.boss1Ms)}</strong></span>
-            <span>BOSS 2：<strong>${fmtOptionalTime(r.boss2Ms)}</strong></span>
-          </div>
-          <div class="team-history-date">${fmtDate(r.date)}</div>
-          <div class="team-history-members">${(r.roster||[]).map(m=>esc(m.name||"外人")).join("、")}</div>
-          <div class="team-history-note">${esc(r.note||"")}</div>
-          <div class="history-actions">
-            <button type="button" class="history-edit-btn" data-edit-record="${esc(r.id)}" data-team-id="${esc(t.id)}">✎ 編輯</button>
-            ${first
-              ? `<button type="button" class="history-delete-locked" disabled>🔒 保留</button>`
-              : `<button type="button" class="history-delete-btn" data-delete-record="${esc(r.id)}" data-team-id="${esc(t.id)}">🗑 刪除</button>`
-            }
-          </div>
-        </div>`;
-      }).join("")
-    : `<div class="empty">這個副本目前還沒有過往通關紀錄。</div>`;
-
   const rank=Number(cur?.rank||0)>0?Number(cur.rank):null;
 
   return`<div class="result-card">
     <div class="result-summary">
-      <div class="result-box"><span>遊戲排名</span><strong class="manual-rank-value">${rank?`#${rank}`:"—"}</strong><small>手動記錄遊戲內名次</small></div>
-      <div class="result-box"><span>BOSS 1</span><strong class="boss-time-value">${fmtOptionalTime(cur?.boss1Ms)}</strong><small>選填</small></div>
-      <div class="result-box"><span>BOSS 2</span><strong class="boss-time-value">${fmtOptionalTime(cur?.boss2Ms)}</strong><small>選填</small></div>
-      <div class="result-box"><span>總通關時間</span><strong class="total-time-value">${cur?fmtTime(cur.timeMs):"尚未記錄"}</strong><small>${cur?`${fmtDate(cur.date)}${cur.note?` · ${esc(cur.note)}`:""}`:""}</small></div>
+      <div class="result-box">
+        <span>遊戲排名</span>
+        <strong class="manual-rank-value">${rank?`#${rank}`:"—"}</strong>
+        <small>手動記錄遊戲內名次</small>
+      </div>
+      <div class="result-box">
+        <span>BOSS 1</span>
+        <strong class="boss-time-value">${fmtOptionalTime(cur?.boss1Ms)}</strong>
+        <small>選填</small>
+      </div>
+      <div class="result-box">
+        <span>BOSS 2</span>
+        <strong class="boss-time-value">${fmtOptionalTime(cur?.boss2Ms)}</strong>
+        <small>選填</small>
+      </div>
+      <div class="result-box">
+        <span>總通關時間</span>
+        <strong class="total-time-value">${cur?fmtTime(cur.timeMs):"尚未記錄"}</strong>
+        <small>${cur?`${fmtDate(cur.date)}${cur.note?` · ${esc(cur.note)}`:""}`:""}</small>
+      </div>
     </div>
 
     <div class="result-entry-grid">
-      <div class="field"><label>遊戲排名</label><input class="input" type="number" min="1" step="1" data-rank="${esc(t.id)}" placeholder="例如：3" value="${rank||""}"></div>
-      <div class="field"><label>BOSS 1 時間（選填）</label><input class="input" data-boss1="${esc(t.id)}" placeholder="1:30 / 1.30 / 1，30 / 1,30" value="${cur?.boss1Ms?esc(fmtTime(cur.boss1Ms)):""}"></div>
-      <div class="field"><label>BOSS 2 時間（選填）</label><input class="input" data-boss2="${esc(t.id)}" placeholder="1:30 / 1.30 / 1，30 / 1,30" value="${cur?.boss2Ms?esc(fmtTime(cur.boss2Ms)):""}"></div>
-      <div class="field"><label>總通關時間</label><input class="input" data-time="${esc(t.id)}" placeholder="只填總時間也可以" value="${cur?esc(fmtTime(cur.timeMs)):""}"></div>
-      <div class="field"><label>通關日期</label><input class="input" type="date" data-date="${esc(t.id)}" value="${esc(cur?.date||today())}"></div>
-      <div class="field"><label>備註</label><input class="input" data-note="${esc(t.id)}" placeholder="備註" value="${esc(cur?.note||"")}"></div>
-      <button class="save-result" data-save-result="${esc(t.id)}">${cur?"新增本次紀錄":"儲存紀錄"}</button>
+      <div class="field">
+        <label>遊戲排名</label>
+        <input class="input" type="number" min="1" step="1" data-rank="${esc(t.id)}" placeholder="例如：3" value="${rank||""}">
+      </div>
+      <div class="field">
+        <label>BOSS 1 時間（選填）</label>
+        <input class="input" data-boss1="${esc(t.id)}" placeholder="1:30 / 1.30 / 1，30 / 1,30" value="${cur?.boss1Ms?esc(fmtTime(cur.boss1Ms)):""}">
+      </div>
+      <div class="field">
+        <label>BOSS 2 時間（選填）</label>
+        <input class="input" data-boss2="${esc(t.id)}" placeholder="1:30 / 1.30 / 1，30 / 1,30" value="${cur?.boss2Ms?esc(fmtTime(cur.boss2Ms)):""}">
+      </div>
+      <div class="field">
+        <label>總通關時間</label>
+        <input class="input" data-time="${esc(t.id)}" placeholder="只填總時間也可以" value="${cur?esc(fmtTime(cur.timeMs)):""}">
+      </div>
+      <div class="field">
+        <label>通關日期</label>
+        <input class="input" type="date" data-date="${esc(t.id)}" value="${esc(cur?.date||today())}">
+      </div>
+      <div class="field">
+        <label>備註</label>
+        <input class="input" data-note="${esc(t.id)}" placeholder="備註" value="${esc(cur?.note||"")}">
+      </div>
+      <button class="save-result" data-save-result="${esc(t.id)}">${cur?"更新紀錄":"儲存紀錄"}</button>
     </div>
 
-    <div class="history-section">
-      <div class="history-head"><strong>本副本過往通關紀錄</strong><span>${hist.length} 筆</span></div>
-      <div class="team-history-list">${historyHtml}</div>
-    </div>
+    <div class="single-record-note">每支隊伍只保留一筆紀錄，之後儲存會直接更新這筆資料。</div>
   </div>`;
 }
 function renderTeams(){
@@ -3651,7 +3679,9 @@ function removePlayer(teamId,pid){
   saveLocalPage();renderAll();syncTeam(t);
 }
 async function saveResult(teamId){
-  const t=teams.find(x=>x.id===teamId);if(!t)return;
+  const t=teams.find(x=>x.id===teamId);
+  if(!t)return;
+
   const rankEl=document.querySelector(`[data-rank="${CSS.escape(teamId)}"]`);
   const boss1El=document.querySelector(`[data-boss1="${CSS.escape(teamId)}"]`);
   const boss2El=document.querySelector(`[data-boss2="${CSS.escape(teamId)}"]`);
@@ -3685,7 +3715,6 @@ async function saveResult(teamId){
   }
 
   const hasBothBossTimes=!!(boss1Raw&&boss2Raw);
-
   const autoTotalMs=hasBothBossTimes
     ? syncAutoTotalFromBossInputs(boss1El,boss2El,timeEl)
     : null;
@@ -3703,13 +3732,11 @@ async function saveResult(teamId){
   const filled=(t.members||[]).filter(Boolean);
   const roster=rosterSnapshotFromTeam(t);
 
-  // Partial teams are valid. Only verify that every filled slot can be resolved.
   if(roster.length!==filled.length){
     alert("部分已填寫的隊伍成員資料有缺漏，請重新選擇該位置。");
     return;
   }
 
-  // Only guild/shared-list players count toward leaderboard limits.
   const internal=roster.filter(m=>!m.external&&players.some(p=>p.id===m.id));
   const over=internal.filter(m=>{
     const other=visibleTeams().filter(x=>x.id!==t.id&&x.currentResult?.roster?.some(r=>r.id===m.id&&!r.external)).length;
@@ -3718,8 +3745,14 @@ async function saveResult(teamId){
 
   if(over.length&&!confirm(`以下玩家會超過上榜限制：\n${over.join("、")}\n\n仍要儲存嗎？`))return;
 
+  const existingRecordId=t.currentResult?.recordId || `record_${t.id}`;
+  const existingCreatedAt=
+    records.find(r=>r.id===existingRecordId)?.createdAtMs ||
+    t.currentResult?.createdAtMs ||
+    Date.now();
+
   const rec={
-    id:uid("rec"),
+    id:existingRecordId,
     dungeonId:t.dungeonId,
     teamId:t.id,
     teamName:t.name,
@@ -3732,34 +3765,41 @@ async function saveResult(teamId){
     date:dateEl?.value||today(),
     note:noteEl?.value.trim()||"",
     roster,
-    createdAtMs:Date.now(),
+    createdAtMs:existingCreatedAt,
+    updatedAtMs:Date.now(),
     _sync:"pending"
   };
 
-  records.push(rec);
+  // Keep exactly one local record for this team.
+  records=records.filter(r=>r.teamId!==t.id || r.id===existingRecordId);
+  const idx=records.findIndex(r=>r.id===existingRecordId);
+  if(idx>=0)records[idx]=rec;
+  else records.push(rec);
+
   t.currentResult={
     recordId:rec.id,
-    mode:rec.mode||normalizeTeamMode(t),
+    mode:rec.mode,
     rank:rec.rank,
     boss1Ms:rec.boss1Ms,
     boss2Ms:rec.boss2Ms,
     timeMs:rec.timeMs,
     date:rec.date,
     note:rec.note,
-    roster:rec.roster
+    roster:rec.roster,
+    createdAtMs:rec.createdAtMs
   };
   t.updatedAtMs=Date.now();
   t._sync="pending";
-  expandedTeamIds.add(t.id);
 
   saveLocalPage();
   renderAll();
-  toast(`${t.name} 已新增一筆本副本通關紀錄`);
+
   syncRecord(rec);
   syncTeam(t);
+  cleanupExtraTeamRecordsRemote(t.id,rec.id);
+
+  toast(`${t.name} 紀錄已更新`);
 }
-
-
 function firstTeamRecord(teamId){
   return records
     .filter(r=>r.teamId===teamId)
@@ -4430,8 +4470,6 @@ function bindUI(){
     const pick=e.target.closest("[data-pick]");if(pick){openPicker(pick.dataset.pick,Number(pick.dataset.index));return}
     const rm=e.target.closest("[data-remove]");if(rm){requestRemovePlayer(rm.dataset.remove,rm.dataset.player);return}
     const sv=e.target.closest("[data-save-result]");if(sv){saveResult(sv.dataset.saveResult);return}
-    const historyEdit=e.target.closest("[data-edit-record]");if(historyEdit){openRecordEdit(historyEdit.dataset.teamId,historyEdit.dataset.editRecord);return}
-    const historyDelete=e.target.closest("[data-delete-record]");if(historyDelete){requestDeleteRecord(historyDelete.dataset.teamId,historyDelete.dataset.deleteRecord);return}
     const ed=e.target.closest("[data-edit]");if(ed){editTeam(ed.dataset.edit);return}
     const rt=e.target.closest("[data-retry]");if(rt){const t=teams.find(x=>x.id===rt.dataset.retry);if(t){t._sync="pending";renderAll();syncTeam(t)}return}
     const del=e.target.closest("[data-delete]");if(del){requestDeleteTeam(del.dataset.delete);return}
@@ -4527,7 +4565,7 @@ function exportExcel(){
     r.note||""
   ]);
   const cell=v=>`<Cell><Data ss:Type="String">${esc(v)}</Data></Cell>`,sheet=(n,h,rows)=>`<Worksheet ss:Name="${esc(n)}"><Table><Row>${h.map(cell).join("")}</Row>${rows.map(r=>`<Row>${r.map(cell).join("")}</Row>`).join("")}</Table></Worksheet>`;
-  const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheet(`${SIZE}人玩家`,["玩家","職業","備註","目前上榜","上限","最佳時間","最佳日期","最佳隊伍"],pr)}${sheet(`${SIZE}人隊伍`,["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","目前成員","日期","備註"],tr)}${sheet("歷史通關",["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","日期","當時成員","備註"],rr)}</Workbook>`;
+  const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheet(`${SIZE}人玩家`,["玩家","職業","備註","目前上榜","上限","最佳時間","最佳日期","最佳隊伍"],pr)}${sheet(`${SIZE}人隊伍`,["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","目前成員","日期","備註"],tr)}${sheet("目前紀錄",["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","日期","目前成員","備註"],rr)}</Workbook>`;
   const blob=new Blob(["\ufeff",xml],{type:"application/vnd.ms-excel"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`${SIZE}人競速_${dg?.name||"副本"}_${today()}.xls`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)
 }
 
@@ -4678,6 +4716,25 @@ async function deleteDungeonRemote(dungeonId){
     alert("本機已刪除副本，但 Firebase 有部分資料未成功刪除。請檢查網路後重新整理確認。");
   }
 }
+async function cleanupExtraTeamRecordsRemote(teamId,keepRecordId){
+  if(!fbOnline||!fb)return;
+  try{
+    const snap=await fb.getDocs(
+      fb.collection(fb.db,"competition",`speed_${SIZE}`,"records")
+    );
+    const jobs=[];
+    snap.forEach(ds=>{
+      const data=ds.data();
+      if(data?.teamId===teamId&&ds.id!==keepRecordId){
+        jobs.push(fb.deleteDoc(ds.ref));
+      }
+    });
+    if(jobs.length)await Promise.all(jobs);
+  }catch(e){
+    console.warn("Cleanup old team records failed",e);
+  }
+}
+
 async function deleteRecordRemote(recordId){
   if(!fbOnline||!fb)return;
   setSync("saving","刪除同步中");
