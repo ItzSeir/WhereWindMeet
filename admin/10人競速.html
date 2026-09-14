@@ -4583,92 +4583,74 @@ function bindUI(){
   applyTheme(document.documentElement.dataset.theme||"dark");themeBtn.addEventListener("click",()=>applyTheme(document.documentElement.dataset.theme==="light"?"dark":"light"));
 }
 function exportExcel(){
-  const dg=currentDungeon(),pr=players.map(p=>{const s=playerStats(p.id);return[p.name,playerRolesText(p),p.note,s.count,limit||"不限",s.best?fmtTime(s.best.timeMs):"",s.best?.date||"",s.best?.teamName||""]});
-  const tr=sortTeamsByManualRank(visibleTeams()).map(t=>[
+  const dg=currentDungeon();
+  if(!dg){
+    alert("目前沒有可匯出的副本。");
+    return;
+  }
+
+  const currentTeams=sortTeamsByManualRank(visibleTeams());
+
+  const playerRows=players.map(p=>{
+    const stats=playerStats(p.id);
+    const best=stats.best;
+    const bestRank=Number(best?.rank||0)>0?Number(best.rank):null;
+
+    const teamNames=currentTeams
+      .filter(t=>t.currentResult?.roster?.some(m=>m.id===p.id&&!m.external))
+      .map(t=>t.name)
+      .join("、");
+
+    return{
+      player:p.name,
+      rank:bestRank,
+      count:stats.count,
+      teams:teamNames
+    };
+  })
+  .filter(row=>row.count>0 || row.rank!==null)
+  .sort((a,b)=>{
+    if(a.rank!==null&&b.rank!==null&&a.rank!==b.rank)return a.rank-b.rank;
+    if(a.rank!==null&&b.rank===null)return -1;
+    if(a.rank===null&&b.rank!==null)return 1;
+    if(b.count!==a.count)return b.count-a.count;
+    return a.player.localeCompare(b.player,"zh-Hant");
+  });
+
+  const playerData=playerRows.map(row=>[
+    row.rank!==null?row.rank:"",
+    row.player,
+    row.count,
+    row.teams
+  ]);
+
+  const teamData=currentTeams.map(t=>[
     t.name,
-    teamModeLabel(t),
-    manualRankOf(t)||"",
     t.currentResult?.boss1Ms?fmtTime(t.currentResult.boss1Ms):"",
     t.currentResult?.boss2Ms?fmtTime(t.currentResult.boss2Ms):"",
-    t.currentResult?fmtTime(t.currentResult.timeMs):"",
-    memberDisplayNames(t).join("、"),
-    t.currentResult?.date||"",
-    t.note||""
+    t.currentResult?.timeMs?fmtTime(t.currentResult.timeMs):""
   ]);
-  const rr=visibleRecords().map(r=>[
-    r.teamName,
-    recordModeLabel(r),
-    Number(r.rank||0)>0?Number(r.rank):"",
-    r.boss1Ms?fmtTime(r.boss1Ms):"",
-    r.boss2Ms?fmtTime(r.boss2Ms):"",
-    fmtTime(r.timeMs),
-    r.date,
-    (r.roster||[]).map(m=>m.name).join("、"),
-    r.note||""
-  ]);
-  const cell=v=>`<Cell><Data ss:Type="String">${esc(v)}</Data></Cell>`,sheet=(n,h,rows)=>`<Worksheet ss:Name="${esc(n)}"><Table><Row>${h.map(cell).join("")}</Row>${rows.map(r=>`<Row>${r.map(cell).join("")}</Row>`).join("")}</Table></Worksheet>`;
-  const xml=`<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">${sheet(`${SIZE}人玩家`,["玩家","職業","備註","目前上榜","上限","最佳時間","最佳日期","最佳隊伍"],pr)}${sheet(`${SIZE}人隊伍`,["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","目前成員","日期","備註"],tr)}${sheet("目前紀錄",["隊伍","類型","遊戲排名","BOSS 1","BOSS 2","總通關時間","日期","目前成員","備註"],rr)}</Workbook>`;
-  const blob=new Blob(["\ufeff",xml],{type:"application/vnd.ms-excel"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`${SIZE}人競速_${dg?.name||"副本"}_${today()}.xls`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)
-}
 
-/* Firebase is optional and initialized AFTER the UI is already usable.
-   A Firebase/network failure must never disable team creation. */
-async function initFirebase(){
-  if(new URLSearchParams(location.search).get("offline")==="1"){setSync("local","離線測試");return}
-  try{
-    setSync("saving","連線中");
-    const appMod=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
-    const fsMod=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
-    const {initializeApp}=appMod;
-    const {getFirestore,doc,getDoc,setDoc,deleteDoc,onSnapshot,collection,getDocs,writeBatch,serverTimestamp}=fsMod;
-    const firebaseConfig={apiKey:"AIzaSyACN_995akAtlrJcdUx3opXMELAp5NtHEk",authDomain:"wwm-competition.firebaseapp.com",projectId:"wwm-competition",storageBucket:"wwm-competition.firebasestorage.app",messagingSenderId:"608687294114",appId:"1:608687294114:web:d7d3ac463cfdaac19cb9fb"};
-    const app=initializeApp(firebaseConfig),db=getFirestore(app);
-    fb={db,doc,getDoc,setDoc,deleteDoc,onSnapshot,collection,getDocs,writeBatch,serverTimestamp};
-    fbOnline=true;
+  const xml=`<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Styles>
+  <Style ss:ID="Header"><Font ss:Bold="1"/></Style>
+ </Styles>
+ ${sheet("玩家排名",["排名","玩家","上榜次數","隊伍名字"],playerData)}
+ ${sheet("隊伍成績",["隊伍名字","BOSS 1","BOSS 2","總通關時間"],teamData)}
+</Workbook>`;
 
-    await loadSharedRemote();
-    await migrateOldPageIfNeeded();
-    subscribeRemote();
-    setSync("ok","Firebase 已連線");
-  }catch(e){
-    console.warn("Firebase init failed",e);
-    fbOnline=false;setSync("local","本機模式");
-  }
-}
-async function loadSharedRemote(){
-  const {db,doc,getDoc,setDoc,serverTimestamp}=fb;
-  const legacyRef=doc(db,"competition","speed_management");
-  const legacySnap=await getDoc(legacyRef).catch(()=>null);const legacy=legacySnap?.exists()?legacySnap.data():{};
-  const pRef=doc(db,"competition","speed_players"),pSnap=await getDoc(pRef).catch(()=>null);
-  if(pSnap?.exists()){const d=pSnap.data();players=Array.isArray(d.players)?d.players:players;playerArchive=d.archive&&typeof d.archive==="object"?d.archive:(d.playerArchive||playerArchive);normalizeAllPlayers()}
-  else if(Array.isArray(legacy.players)||Array.isArray(legacy.speedPlayers)){players=(legacy.players||legacy.speedPlayers||[]).map(p=>normalizePlayer({id:p.id||uid("p"),name:p.name||"",role:p.role||"未設定",roles:p.roles,note:p.note||""}));players.forEach(p=>playerArchive[p.id]={...p});await setDoc(pRef,{players,archive:playerArchive,updatedAt:serverTimestamp()}).catch(()=>{})}
-  const cRef=doc(db,"competition","speed_cycles"),cSnap=await getDoc(cRef).catch(()=>null);
-  if(cSnap?.exists()){const d=cSnap.data();dungeons=Array.isArray(d.dungeons)?d.dungeons:dungeons;activeDungeonId=d.activeDungeonId||activeDungeonId}
-  else if(Array.isArray(legacy.dungeons)){dungeons=legacy.dungeons;activeDungeonId=legacy.activeDungeonId||dungeons.at(-1)?.id||"";await setDoc(cRef,{dungeons,activeDungeonId,updatedAt:serverTimestamp()}).catch(()=>{})}
-  const cfgRef=doc(db,"competition","shared_config"),cfg=await getDoc(cfgRef).catch(()=>null);if(cfg?.exists()&&Array.isArray(cfg.data().professions))professions=[...new Set(["未設定",...cfg.data().professions.filter(Boolean)])];
-  const limRef=doc(db,"competition","speed_limits"),lim=await getDoc(limRef).catch(()=>null);if(lim?.exists())limit=Number(lim.data()?.[`limit${SIZE}`]??limit);
-  saveLocalSharedPlayers();saveLocalCycles();saveLocalProf();saveLocalLimits();
-  if(!selectedDungeonId||!dungeons.some(d=>d.id===selectedDungeonId))selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
-  renderAll();
-}
-async function migrateOldPageIfNeeded(){
-  const {db,doc,getDoc,setDoc,collection,getDocs,serverTimestamp}=fb;
-  const teamCol=collection(db,"competition",`speed_${SIZE}`,"teams"),existing=await getDocs(teamCol).catch(()=>null);
-  if(existing&&existing.size>0)return;
-  const oldRef=doc(db,"competition",`speed_${SIZE}`),oldSnap=await getDoc(oldRef).catch(()=>null);
-  if(!oldSnap?.exists())return;
-  const old=oldSnap.data(),oldTeams=Array.isArray(old.teams)?old.teams.filter(t=>Number(t.size||SIZE)===SIZE):[],oldRecords=Array.isArray(old.records)?old.records.filter(r=>Number(r.size||SIZE)===SIZE):[];
-  for(const t of oldTeams){
-    const team={id:t.id||uid("team"),dungeonId:t.dungeonId||activeDungeonId,size:SIZE,name:t.name||`${SIZE}人固定隊`,note:t.note||"",mode:t.mode==="challenge"?"challenge":"normal",members:Array.isArray(t.members)?t.members:[],externalMembers:t.externalMembers&&typeof t.externalMembers==="object"?t.externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now()};
-    const active=oldRecords.filter(r=>r.teamId===team.id&&r.status==="active").sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];
-    if(active)team.currentResult={recordId:active.id||"",rank:Number(active.rank||0)>0?Number(active.rank):null,boss1Ms:Number(active.boss1Ms||0)||null,boss2Ms:Number(active.boss2Ms||0)||null,timeMs:Number(active.timeMs||0),date:active.date||"",note:active.note||"",roster:Array.isArray(active.roster)?active.roster:[]};
-    await setDoc(doc(db,"competition",`speed_${SIZE}`,"teams",team.id),{...team,updatedAt:serverTimestamp()}).catch(()=>{});
-  }
-  for(const r of oldRecords){
-    if(!Number(r.timeMs||0))continue;
-    const rec={id:r.id||uid("rec"),dungeonId:r.dungeonId||activeDungeonId,teamId:r.teamId||"",teamName:r.teamName||"固定隊伍",size:SIZE,mode:r.mode==="challenge"?"challenge":"normal",rank:Number(r.rank||0)>0?Number(r.rank):null,boss1Ms:Number(r.boss1Ms||0)||null,boss2Ms:Number(r.boss2Ms||0)||null,timeMs:Number(r.timeMs||0),date:r.date||"",note:r.note||"",roster:Array.isArray(r.roster)?r.roster:[],createdAtMs:Date.now()};
-    await setDoc(doc(db,"competition",`speed_${SIZE}`,"records",rec.id),{...rec,createdAt:serverTimestamp()}).catch(()=>{});
-  }
+  const blob=new Blob([xml],{type:"application/vnd.ms-excel"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`${SIZE}人競速_${dg.name||"副本"}.xls`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast("Excel 已匯出");
 }
 function subscribeRemote(){
   const {db,doc,onSnapshot,collection}=fb;
