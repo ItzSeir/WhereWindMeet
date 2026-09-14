@@ -2528,7 +2528,7 @@ body{
 <main class="page">
   <header class="hero">
     <div><div class="kicker">DUNGEON SPEEDRUN · 5 PLAYERS</div><h1>5 人副本競速 <span class="version">測試版</span></h1></div>
-    <div class="hero-actions"><button class="btn" id="limitBtn">上榜限制</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
+    <div class="hero-actions"><button class="btn" id="limitBtn">上榜限制</button><button class="btn" id="pngBtn">🖼 產生 PNG</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
   <div class="cross"><a href="10人競速">前往 10 人競速 →</a></div>
@@ -4577,11 +4577,109 @@ function bindUI(){
     closeDeleteConfirm();
     if(action)await action();
   });
+  $("pngBtn").addEventListener("click",exportPNG);
   $("exportBtn").addEventListener("click",exportExcel);
   const themeBtn=$("themeBtn");
   function applyTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem("registration_theme",t);localStorage.setItem("wwm-home-theme-v2",t)}catch(e){}themeBtn.textContent=t==="light"?"☾ 夜間":"☀ 白天"}
   applyTheme(document.documentElement.dataset.theme||"dark");themeBtn.addEventListener("click",()=>applyTheme(document.documentElement.dataset.theme==="light"?"dark":"light"));
 }
+
+function excelXmlEscape(value){
+  return String(value??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&apos;");
+}
+function excelCell(value,styleId=""){
+  const raw=value&&typeof value==="object"&&!Array.isArray(value)
+    ? value
+    : {value};
+
+  const cellValue=raw.value??"";
+  const finalStyle=raw.style||styleId||"";
+  const isNumber=typeof cellValue==="number"&&Number.isFinite(cellValue);
+  const type=isNumber?"Number":"String";
+
+  return `<Cell${finalStyle?` ss:StyleID="${excelXmlEscape(finalStyle)}"`:""}><Data ss:Type="${type}">${excelXmlEscape(cellValue)}</Data></Cell>`;
+}
+function sheet(name,headers,rows){
+  const safeName=String(name||"Sheet1").slice(0,31);
+
+  const columns=headers.map((_,i)=>{
+    let width=92;
+    if(i===0)width=55;
+    else if(i>=1&&i<=SIZE)width=92;
+    else if(i===SIZE+1)width=150;
+    else width=105;
+    return `<Column ss:Width="${width}"/>`;
+  }).join("");
+
+  return `<Worksheet ss:Name="${excelXmlEscape(safeName)}">
+    <Table>
+      ${columns}
+      <Row>${headers.map(h=>excelCell({value:h,style:"Header"})).join("")}</Row>
+      ${(rows||[]).map(row=>`<Row>${row.map(v=>excelCell(v)).join("")}</Row>`).join("")}
+    </Table>
+  </Worksheet>`;
+}
+function buildExportTeams(){
+  return sortTeamsByManualRank(visibleTeams())
+    .filter(t=>t.currentResult)
+    .map(t=>{
+      const result=t.currentResult||{};
+      const roster=Array.isArray(result.roster)&&result.roster.length
+        ? result.roster
+        : rosterSnapshotFromTeam(t);
+
+      return{
+        team:t,
+        result,
+        roster:Array.from({length:SIZE},(_,i)=>roster[i]||null)
+      };
+    });
+}
+function buildFastestByPlayer(exportTeams){
+  const fastestByPlayer=new Map();
+
+  exportTeams.forEach(({result,roster})=>{
+    const total=Number(result.timeMs||0);
+    if(!total)return;
+
+    roster.forEach(member=>{
+      if(!member||member.external)return;
+
+      const key=member.id
+        ? `id:${member.id}`
+        : `name:${norm(member.name||"")}`;
+
+      if(!key||key==="name:")return;
+
+      const prev=fastestByPlayer.get(key);
+      if(prev==null||total<prev)fastestByPlayer.set(key,total);
+    });
+  });
+
+  return fastestByPlayer;
+}
+function exportPlayerCell(member,total,fastestByPlayer){
+  if(!member)return {value:""};
+  if(member.external)return {value:member.name||"外人"};
+
+  const key=member.id
+    ? `id:${member.id}`
+    : `name:${norm(member.name||"")}`;
+
+  const fastest=fastestByPlayer.get(key);
+  const isBest=Number.isFinite(fastest)&&total===fastest;
+
+  return{
+    value:member.name||"",
+    style:isBest?"BestName":""
+  };
+}
+
 function exportExcel(){
   const dg=currentDungeon();
   if(!dg){
@@ -4589,47 +4687,41 @@ function exportExcel(){
     return;
   }
 
-  const currentTeams=sortTeamsByManualRank(visibleTeams());
+  const exportTeams=buildExportTeams();
 
-  const playerRows=players.map(p=>{
-    const stats=playerStats(p.id);
-    const best=stats.best;
-    const bestRank=Number(best?.rank||0)>0?Number(best.rank):null;
+  if(!exportTeams.length){
+    alert("目前副本還沒有可匯出的隊伍紀錄。");
+    return;
+  }
 
-    const teamNames=currentTeams
-      .filter(t=>t.currentResult?.roster?.some(m=>m.id===p.id&&!m.external))
-      .map(t=>t.name)
-      .join("、");
+  const headers=[
+    "排名",
+    ...Array.from({length:SIZE},(_,i)=>`玩家${i+1}`),
+    "隊伍名字",
+    "BOSS 1",
+    "BOSS 2",
+    "總通關時間"
+  ];
 
-    return{
-      player:p.name,
-      rank:bestRank,
-      count:stats.count,
-      teams:teamNames
-    };
-  })
-  .filter(row=>row.count>0 || row.rank!==null)
-  .sort((a,b)=>{
-    if(a.rank!==null&&b.rank!==null&&a.rank!==b.rank)return a.rank-b.rank;
-    if(a.rank!==null&&b.rank===null)return -1;
-    if(a.rank===null&&b.rank!==null)return 1;
-    if(b.count!==a.count)return b.count-a.count;
-    return a.player.localeCompare(b.player,"zh-Hant");
+  const fastestByPlayer=buildFastestByPlayer(exportTeams);
+
+  const rows=exportTeams.map(({team,result,roster})=>{
+    const rank=Number(result.rank||0)>0?Number(result.rank):"";
+    const total=Number(result.timeMs||0);
+
+    const playerCells=Array.from({length:SIZE},(_,i)=>
+      exportPlayerCell(roster[i],total,fastestByPlayer)
+    );
+
+    return[
+      rank,
+      ...playerCells,
+      team.name||"",
+      result.boss1Ms?fmtTime(result.boss1Ms):"",
+      result.boss2Ms?fmtTime(result.boss2Ms):"",
+      result.timeMs?fmtTime(result.timeMs):""
+    ];
   });
-
-  const playerData=playerRows.map(row=>[
-    row.rank!==null?row.rank:"",
-    row.player,
-    row.count,
-    row.teams
-  ]);
-
-  const teamData=currentTeams.map(t=>[
-    t.name,
-    t.currentResult?.boss1Ms?fmtTime(t.currentResult.boss1Ms):"",
-    t.currentResult?.boss2Ms?fmtTime(t.currentResult.boss2Ms):"",
-    t.currentResult?.timeMs?fmtTime(t.currentResult.timeMs):""
-  ]);
 
   const xml=`<?xml version="1.0"?>
 <?mso-application progid="Excel.Sheet"?>
@@ -4638,20 +4730,341 @@ function exportExcel(){
  xmlns:x="urn:schemas-microsoft-com:office:excel"
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
  <Styles>
-  <Style ss:ID="Header"><Font ss:Bold="1"/></Style>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Arial" ss:Size="10"/>
+  </Style>
+
+  <Style ss:ID="Header">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:Bold="1"/>
+   <Interior ss:Color="#DCE6F1" ss:Pattern="Solid"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#A6A6A6"/>
+   </Borders>
+  </Style>
+
+  <Style ss:ID="BestName">
+   <Font ss:Bold="1"/>
+  </Style>
  </Styles>
- ${sheet("玩家排名",["排名","玩家","上榜次數","隊伍名字"],playerData)}
- ${sheet("隊伍成績",["隊伍名字","BOSS 1","BOSS 2","總通關時間"],teamData)}
+
+ ${sheet(`${SIZE}人競速排名`,headers,rows)}
 </Workbook>`;
 
-  const blob=new Blob([xml],{type:"application/vnd.ms-excel"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=`${SIZE}人競速_${dg.name||"副本"}.xls`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-  toast("Excel 已匯出");
+  try{
+    const blob=new Blob(["\ufeff",xml],{
+      type:"application/vnd.ms-excel;charset=utf-8"
+    });
+
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=`${SIZE}人競速_${dg.name||"副本"}_排名.xls`;
+    a.style.display="none";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast("Excel 已開始下載");
+  }catch(e){
+    console.error("Excel export failed",e);
+    alert(`Excel 匯出失敗：${e?.message||e}`);
+  }
 }
+function wrapCanvasText(ctx,text,maxWidth){
+  const source=String(text||"").trim();
+  if(!source)return[""];
+
+  const tokens=source.includes("、")
+    ? source.split("、").map((t,i,arr)=>i<arr.length-1?`${t}、`:t)
+    : source.split(/\s+/);
+
+  const lines=[];
+  let line="";
+
+  tokens.forEach(token=>{
+    const test=line?line+token:token;
+    if(ctx.measureText(test).width<=maxWidth){
+      line=test;
+    }else{
+      if(line)lines.push(line.trim());
+      line=token;
+    }
+  });
+
+  if(line)lines.push(line.trim());
+  return lines.length?lines:[""];
+}
+function drawRoundRect(ctx,x,y,w,h,r,fill,stroke){
+  const rr=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr,y);
+  ctx.lineTo(x+w-rr,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+rr);
+  ctx.lineTo(x+w,y+h-rr);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-rr,y+h);
+  ctx.lineTo(x+rr,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-rr);
+  ctx.lineTo(x,y+rr);
+  ctx.quadraticCurveTo(x,y,x+rr,y);
+  ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill();}
+  if(stroke){ctx.strokeStyle=stroke;ctx.stroke();}
+}
+
+
+function exportPNG(){
+  const dg=currentDungeon();
+  if(!dg){
+    alert("目前沒有可匯出的副本。");
+    return;
+  }
+
+  const exportTeams=buildExportTeams();
+  if(!exportTeams.length){
+    alert("目前副本還沒有可分享的隊伍紀錄。");
+    return;
+  }
+
+  const fastestByPlayer=buildFastestByPlayer(exportTeams);
+
+  function fitText(ctx,text,maxWidth){
+    let s=String(text??"");
+    if(!s)return "";
+    while(s.length && ctx.measureText(s).width>maxWidth){
+      s=s.slice(0,-1);
+    }
+    return s!==String(text??"") ? s+"…" : s;
+  }
+
+  const cols=[
+    {key:"rank",label:"排名",width:82,align:"center"},
+    {key:"team",label:"隊伍名字",width:220,align:"left"},
+    {key:"mode",label:"類型",width:88,align:"center"},
+    ...Array.from({length:SIZE},(_,i)=>({
+      key:`p${i+1}`,
+      label:`玩家${i+1}`,
+      width:104,
+      align:"center"
+    })),
+    {key:"boss1",label:"BOSS 1",width:112,align:"center"},
+    {key:"boss2",label:"BOSS 2",width:112,align:"center"},
+    {key:"total",label:"總通關時間",width:136,align:"center"}
+  ];
+
+  const rows=exportTeams.map(({team,result,roster})=>({
+    rank:Number(result.rank||0)>0?`#${Number(result.rank)}`:"—",
+    team:team.name||"",
+    mode:teamModeLabel(team),
+    modeKey:normalizeTeamMode(team),
+    players:Array.from({length:SIZE},(_,i)=>roster[i]||null),
+    boss1:result.boss1Ms?fmtTime(result.boss1Ms):"—",
+    boss2:result.boss2Ms?fmtTime(result.boss2Ms):"—",
+    total:result.timeMs?fmtTime(result.timeMs):"—",
+    totalMs:Number(result.timeMs||0)
+  }));
+
+  const side=28;
+  const titleH=82;
+  const headerH=46;
+  const rowH=44;
+  const footerH=20;
+  const tableW=cols.reduce((sum,col)=>sum+col.width,0);
+  const width=tableW+side*2;
+  const height=side*2+titleH+headerH+rowH*rows.length+footerH;
+
+  const canvas=document.createElement("canvas");
+  canvas.width=width;
+  canvas.height=Math.max(height,280);
+  const ctx=canvas.getContext("2d");
+
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#1f2f4d";
+  ctx.font='900 28px Arial';
+  ctx.textAlign="left";
+  ctx.textBaseline="alphabetic";
+  ctx.fillText("5人副本競速",side,side+26);
+
+  ctx.fillStyle="#5d6c86";
+  ctx.font='600 16px Arial';
+  ctx.fillText(`${dg.name||"目前副本"} · 共 ${rows.length} 隊 · 依遊戲排名排序`,side,side+52);
+
+  const tableX=side;
+  const tableY=side+titleH;
+
+  ctx.fillStyle="#dfe7f4";
+  ctx.fillRect(tableX,tableY,tableW,headerH);
+
+  const xs=[tableX];
+  cols.forEach(col=>xs.push(xs[xs.length-1]+col.width));
+
+  // base grid
+  ctx.strokeStyle="#c4d0e2";
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  xs.forEach(x=>{
+    ctx.moveTo(x+0.5, tableY);
+    ctx.lineTo(x+0.5, tableY+headerH+rows.length*rowH);
+  });
+  ctx.stroke();
+  ctx.strokeRect(tableX+0.5, tableY+0.5, tableW, headerH+rows.length*rowH);
+
+  // header
+  ctx.fillStyle="#233555";
+  ctx.font='800 16px Arial';
+  ctx.textBaseline="middle";
+  cols.forEach((col,i)=>{
+    const x=xs[i];
+    const w=col.width;
+    const tx=col.align==="left" ? x+10 : x+w/2;
+    ctx.textAlign=col.align==="left" ? "left" : "center";
+    ctx.fillText(col.label, tx, tableY+headerH/2);
+  });
+
+  rows.forEach((row,rowIndex)=>{
+    const top=tableY+headerH+rowIndex*rowH;
+
+    ctx.fillStyle=rowIndex%2===0 ? "#ffffff" : "#f7f9fc";
+    ctx.fillRect(tableX,top,tableW,rowH);
+
+    // cell highlights for player columns only
+    row.players.forEach((member,pi)=>{
+      const colIndex=3+pi;
+      const x=xs[colIndex];
+      const w=cols[colIndex].width;
+
+      if(!member){
+        ctx.fillStyle="#ececec";
+        ctx.fillRect(x,top,w,rowH);
+        return;
+      }
+
+      if(member.external){
+        ctx.fillStyle="#fce4d6";
+        ctx.fillRect(x,top,w,rowH);
+        return;
+      }
+
+      const key=member.id
+        ? `id:${member.id}`
+        : `name:${norm(member.name||"")}`;
+
+      const fastest=fastestByPlayer.get(key);
+      const isBest=Number.isFinite(fastest) && row.totalMs===fastest;
+
+      if(!isBest){
+        ctx.fillStyle="#e7e6e6";
+        ctx.fillRect(x,top,w,rowH);
+      }
+    });
+
+    ctx.strokeStyle="#e1e8f2";
+    ctx.beginPath();
+    ctx.moveTo(tableX,top+rowH+0.5);
+    ctx.lineTo(tableX+tableW,top+rowH+0.5);
+    ctx.stroke();
+
+    const values=[
+      row.rank,
+      row.team,
+      row.mode,
+      ...row.players,
+      row.boss1,
+      row.boss2,
+      row.total
+    ];
+
+    values.forEach((value,i)=>{
+      const col=cols[i];
+      const x=xs[i];
+      const w=col.width;
+
+      let color="#223250";
+      let font='700 15px Arial';
+      let text=value;
+
+      if(col.key==="rank"){
+        color="#7a3cff";
+        font='800 16px Arial';
+      } else if(col.key==="mode"){
+        color=row.modeKey==="challenge" ? "#d58a25" : "#1fa36d";
+        font='800 15px Arial';
+      } else if(col.key==="total"){
+        color="#15294f";
+        font='900 16px Arial';
+      } else if(/^p\d+$/.test(col.key)){
+        const member=value;
+        if(!member){
+          color="#9aa5b5";
+          font='700 14px Arial';
+          text="";
+        } else if(member.external){
+          color="#9c5700";
+          font='800 15px Arial';
+          text=member.name||"外人";
+        } else {
+          const key=member.id
+            ? `id:${member.id}`
+            : `name:${norm(member.name||"")}`;
+          const fastest=fastestByPlayer.get(key);
+          const isBest=Number.isFinite(fastest) && row.totalMs===fastest;
+          const hasMulti=exportTeams.filter(et=>(et.roster||[]).some(m=>m&&!m.external&&((m.id&&m.id===member.id)||(!m.id&&norm(m.name||"")===norm(member.name||""))))).length>1;
+
+          text=member.name||"";
+          if(isBest){
+            color="#111111";
+            font='900 15px Arial';
+          } else if(hasMulti){
+            color="#7f7f7f";
+            font='700 15px Arial';
+          } else {
+            color="#223250";
+            font='700 15px Arial';
+          }
+        }
+      }
+
+      ctx.fillStyle=color;
+      ctx.font=font;
+      ctx.textAlign=col.align==="left" ? "left" : "center";
+      ctx.textBaseline="middle";
+
+      const safeText = (typeof text==="object" && text!==null) ? (text.name||"") : String(text??"");
+      const maxW = col.align==="left" ? w-18 : w-12;
+      const shown = fitText(ctx, safeText, maxW);
+      const tx = col.align==="left" ? x+10 : x+w/2;
+      ctx.fillText(shown, tx, top+rowH/2);
+    });
+  });
+
+  try{
+    canvas.toBlob(blob=>{
+      if(!blob){
+        alert("PNG 產生失敗。");
+        return;
+      }
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url;
+      a.download=`5人競速_${dg.name||"副本"}_表格戰績.png`;
+      a.style.display="none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1500);
+      toast("PNG 已開始下載");
+    },"image/png");
+  }catch(e){
+    console.error("PNG export failed",e);
+    alert(`PNG 產生失敗：${e?.message||e}`);
+  }
+}
+
 function subscribeRemote(){
   const {db,doc,onSnapshot,collection}=fb;
   sharedUnsubs.forEach(fn=>{try{fn()}catch(e){}});sharedUnsubs=[];
