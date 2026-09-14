@@ -16324,13 +16324,11 @@ body {
         });
       });
 
+      // 未來隊伍一律依「副本實際日期＋時間」由近到遠排序。
+      // 不再因是否為我的隊伍、招募優先度或建立先後改變順序。
       populated.sort((a,b) => {
-        if(a.isMine !== b.isMine) return a.isMine ? -1 : 1;
         const dateCompare = a.date - b.date;
         if(dateCompare) return dateCompare;
-
-        const prio = getSlotUiPriority(b.slot, b.date) - getSlotUiPriority(a.slot, a.date);
-        if(prio) return prio;
 
         const timeCompare = getSlotSortTime(a.slot).localeCompare(getSlotSortTime(b.slot));
         if(timeCompare) return timeCompare;
