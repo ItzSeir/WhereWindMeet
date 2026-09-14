@@ -2845,8 +2845,8 @@ function parseTime(v){
 
   // Flexible input:
   // 1:30 / 1：30 / 1,30 / 1，30 / 1.30  => 1 min 30 sec
-  // 1:30.500 / 1：30.500 / 1.30.500    => 1 min 30.500 sec
-  // 04:32 / 04:32.518 / 4分32秒 / 4m32s / 272秒
+  // 1:30 / 1：30.500 / 1.30    => 1 min 30.500 sec
+  // 04:32 / 04:32 / 4分32秒 / 4m32s / 272秒
   s=s
     .replace(/\s+/g,"")
     .replace(/[：﹕]/g,":")
@@ -2872,7 +2872,7 @@ function parseTime(v){
 
   // Dot-only shorthand.
   // 1.30 => 1:30
-  // 1.30.500 => 1:30.500
+  // 1.30 => 1:30
   // 32.518 => 32.518 seconds (3 digits after dot is treated as milliseconds)
   if(!s.includes(":")){
     const minuteDot=s.match(/^(\d+)\.(\d{1,2})$/);
@@ -2911,9 +2911,17 @@ function parseTime(v){
   return Math.round((h*3600+m*60+sec)*1000);
 }
 function fmtTime(ms){
-  ms=Number(ms||0);if(!ms)return"—";
-  const total=Math.floor(ms/1000),m=Math.floor(total/60),s=total%60,milli=ms%1000,h=Math.floor(m/60),mm=m%60;
-  return h?`${h}:${String(mm).padStart(2,"0")}:${String(s).padStart(2,"0")}.${String(milli).padStart(3,"0")}`:`${String(mm).padStart(2,"0")}:${String(s).padStart(2,"0")}.${String(milli).padStart(3,"0")}`;
+  const totalSeconds=Math.max(0,Math.floor(Number(ms||0)/1000));
+  const hours=Math.floor(totalSeconds/3600);
+  const minutes=Math.floor((totalSeconds%3600)/60);
+  const seconds=totalSeconds%60;
+
+  if(hours>0){
+    return `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+  }
+
+  const totalMinutes=Math.floor(totalSeconds/60);
+  return `${String(totalMinutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)}
 function setSync(mode,text){const el=$("syncState");el.className=`sync-pill ${mode}`;el.textContent=text}
@@ -3396,7 +3404,7 @@ function resultHtml(t){
       </div>
       <div class="field">
         <label>總通關時間</label>
-        <input class="input" data-time="${esc(t.id)}" placeholder="只填總時間也可以" value="${cur?esc(fmtTime(cur.timeMs)):""}">
+        <input class="input" data-time="${esc(t.id)}" placeholder="例如：2:30" value="${cur?esc(fmtTime(cur.timeMs)):""}">
       </div>
       <div class="field">
         <label>通關日期</label>
