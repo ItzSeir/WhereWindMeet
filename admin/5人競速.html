@@ -4721,15 +4721,52 @@ function isPlayerBestRecord(member,result,bestByPlayer){
 
   return false;
 }
-function exportPlayerCell(member,result,bestByPlayer){
-  if(!member)return {value:""};
-  if(member.external)return {value:member.name||"外人"};
+function buildPlayerRecordCountMap(exportTeams){
+  const countMap=new Map();
+
+  exportTeams.forEach(({roster})=>{
+    (roster||[]).forEach(member=>{
+      if(!member||member.external)return;
+
+      const key=member.id
+        ? `id:${member.id}`
+        : `name:${norm(member.name||"")}`;
+
+      if(!key||key==="name:")return;
+      countMap.set(key,(countMap.get(key)||0)+1);
+    });
+  });
+
+  return countMap;
+}
+function exportPlayerCell(member,result,bestByPlayer,countMap){
+  if(!member)return {value:"",style:"Blocked"};
+  if(member.external)return {value:member.name||"外人",style:"External"};
+
+  const key=member.id
+    ? `id:${member.id}`
+    : `name:${norm(member.name||"")}`;
 
   const isBest=isPlayerBestRecord(member,result,bestByPlayer);
+  const count=countMap.get(key)||0;
+
+  if(isBest){
+    return{
+      value:member.name||"",
+      style:"BestName"
+    };
+  }
+
+  if(count>1){
+    return{
+      value:member.name||"",
+      style:"Slower"
+    };
+  }
 
   return{
     value:member.name||"",
-    style:isBest?"BestName":""
+    style:""
   };
 }
 
@@ -4757,13 +4794,13 @@ function exportExcel(){
   ];
 
   const bestByPlayer=buildBestRecordByPlayer(exportTeams);
+  const countMap=buildPlayerRecordCountMap(exportTeams);
 
   const rows=exportTeams.map(({team,result,roster})=>{
     const rank=Number(result.rank||0)>0?Number(result.rank):"";
-    const total=Number(result.timeMs||0);
 
     const playerCells=Array.from({length:SIZE},(_,i)=>
-      exportPlayerCell(roster[i],result,bestByPlayer)
+      exportPlayerCell(roster[i],result,bestByPlayer,countMap)
     );
 
     return[
@@ -4798,7 +4835,21 @@ function exportExcel(){
   </Style>
 
   <Style ss:ID="BestName">
-   <Font ss:Bold="1"/>
+   <Font ss:Bold="1" ss:Color="#111111"/>
+  </Style>
+
+  <Style ss:ID="Slower">
+   <Interior ss:Color="#E7E6E6" ss:Pattern="Solid"/>
+   <Font ss:Color="#7F7F7F"/>
+  </Style>
+
+  <Style ss:ID="External">
+   <Interior ss:Color="#FCE4D6" ss:Pattern="Solid"/>
+   <Font ss:Bold="1" ss:Color="#9C5700"/>
+  </Style>
+
+  <Style ss:ID="Blocked">
+   <Interior ss:Color="#ECECEC" ss:Pattern="Solid"/>
   </Style>
  </Styles>
 
