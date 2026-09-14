@@ -4640,12 +4640,13 @@ function buildExportTeams(){
       };
     });
 }
-function buildFastestByPlayer(exportTeams){
-  const fastestByPlayer=new Map();
+function buildBestRecordByPlayer(exportTeams){
+  const grouped=new Map();
 
   exportTeams.forEach(({result,roster})=>{
     const total=Number(result.timeMs||0);
-    if(!total)return;
+    const rankNum=Number(result.rank||0);
+    const hasRank=Number.isInteger(rankNum)&&rankNum>0;
 
     roster.forEach(member=>{
       if(!member||member.external)return;
@@ -4656,23 +4657,75 @@ function buildFastestByPlayer(exportTeams){
 
       if(!key||key==="name:")return;
 
-      const prev=fastestByPlayer.get(key);
-      if(prev==null||total<prev)fastestByPlayer.set(key,total);
+      if(!grouped.has(key))grouped.set(key,[]);
+      grouped.get(key).push({
+        rank:hasRank?rankNum:null,
+        timeMs:Number.isFinite(total)&&total>0?total:null
+      });
     });
   });
 
-  return fastestByPlayer;
+  const bestByPlayer=new Map();
+
+  grouped.forEach((records,key)=>{
+    const ranked=records
+      .filter(r=>r.rank!==null)
+      .sort((a,b)=>{
+        if(a.rank!==b.rank)return a.rank-b.rank;
+        return Number(a.timeMs||Infinity)-Number(b.timeMs||Infinity);
+      });
+
+    if(ranked.length){
+      bestByPlayer.set(key, ranked[0]);
+      return;
+    }
+
+    const timed=records
+      .filter(r=>r.timeMs!==null)
+      .sort((a,b)=>Number(a.timeMs||Infinity)-Number(b.timeMs||Infinity));
+
+    if(timed.length){
+      bestByPlayer.set(key, timed[0]);
+      return;
+    }
+
+    bestByPlayer.set(key, records[0]||null);
+  });
+
+  return bestByPlayer;
 }
-function exportPlayerCell(member,total,fastestByPlayer){
-  if(!member)return {value:""};
-  if(member.external)return {value:member.name||"外人"};
+function isPlayerBestRecord(member,result,bestByPlayer){
+  if(!member||member.external)return false;
 
   const key=member.id
     ? `id:${member.id}`
     : `name:${norm(member.name||"")}`;
 
-  const fastest=fastestByPlayer.get(key);
-  const isBest=Number.isFinite(fastest)&&total===fastest;
+  const best=bestByPlayer.get(key);
+  if(!best)return false;
+
+  const rankNum=Number(result?.rank||0);
+  const hasRank=Number.isInteger(rankNum)&&rankNum>0;
+  const total=Number(result?.timeMs||0);
+  const hasTime=Number.isFinite(total)&&total>0;
+
+  if(best.rank!==null){
+    if(!hasRank || rankNum!==best.rank)return false;
+    const bestTime=Number(best.timeMs||0);
+    return !bestTime || total===bestTime;
+  }
+
+  if(best.timeMs!==null){
+    return hasTime && total===best.timeMs;
+  }
+
+  return false;
+}
+function exportPlayerCell(member,result,bestByPlayer){
+  if(!member)return {value:""};
+  if(member.external)return {value:member.name||"外人"};
+
+  const isBest=isPlayerBestRecord(member,result,bestByPlayer);
 
   return{
     value:member.name||"",
@@ -4703,14 +4756,14 @@ function exportExcel(){
     "總通關時間"
   ];
 
-  const fastestByPlayer=buildFastestByPlayer(exportTeams);
+  const bestByPlayer=buildBestRecordByPlayer(exportTeams);
 
   const rows=exportTeams.map(({team,result,roster})=>{
     const rank=Number(result.rank||0)>0?Number(result.rank):"";
     const total=Number(result.timeMs||0);
 
     const playerCells=Array.from({length:SIZE},(_,i)=>
-      exportPlayerCell(roster[i],total,fastestByPlayer)
+      exportPlayerCell(roster[i],result,bestByPlayer)
     );
 
     return[
@@ -4816,6 +4869,7 @@ function drawRoundRect(ctx,x,y,w,h,r,fill,stroke){
 }
 
 
+
 function exportPNG(){
   const dg=currentDungeon();
   if(!dg){
@@ -4829,7 +4883,7 @@ function exportPNG(){
     return;
   }
 
-  const fastestByPlayer=buildFastestByPlayer(exportTeams);
+  const bestByPlayer=buildBestRecordByPlayer(exportTeams);
 
   function fitText(ctx,text,maxWidth){
     let s=String(text??"");
@@ -4838,6 +4892,16 @@ function exportPNG(){
       s=s.slice(0,-1);
     }
     return s!==String(text??"") ? s+"…" : s;
+  }
+
+  function playerTeamCount(member){
+    if(!member||member.external)return 0;
+    const memberKey=member.id
+      ? `id:${member.id}`
+      : `name:${norm(member.name||"")}`;
+    return exportTeams.filter(et=>(et.roster||[]).some(m=>m&&!m.external&&(
+      (m.id&&m.id===member.id) || (!m.id&&`name:${norm(m.name||"")}`===memberKey)
+    ))).length;
   }
 
   const cols=[
@@ -4864,6 +4928,7 @@ function exportPNG(){
     boss1:result.boss1Ms?fmtTime(result.boss1Ms):"—",
     boss2:result.boss2Ms?fmtTime(result.boss2Ms):"—",
     total:result.timeMs?fmtTime(result.timeMs):"—",
+    result,
     totalMs:Number(result.timeMs||0)
   }));
 
@@ -4932,7 +4997,7 @@ function exportPNG(){
     ctx.fillStyle=rowIndex%2===0 ? "#ffffff" : "#f7f9fc";
     ctx.fillRect(tableX,top,tableW,rowH);
 
-    // cell highlights for player columns only
+    // highlights on player cells based on best game rank
     row.players.forEach((member,pi)=>{
       const colIndex=3+pi;
       const x=xs[colIndex];
@@ -4950,14 +5015,10 @@ function exportPNG(){
         return;
       }
 
-      const key=member.id
-        ? `id:${member.id}`
-        : `name:${norm(member.name||"")}`;
+      const isBest=isPlayerBestRecord(member,row.result,bestByPlayer);
+      const count=playerTeamCount(member);
 
-      const fastest=fastestByPlayer.get(key);
-      const isBest=Number.isFinite(fastest) && row.totalMs===fastest;
-
-      if(!isBest){
+      if(count>1 && !isBest){
         ctx.fillStyle="#e7e6e6";
         ctx.fillRect(x,top,w,rowH);
       }
@@ -5008,12 +5069,8 @@ function exportPNG(){
           font='800 15px Arial';
           text=member.name||"外人";
         } else {
-          const key=member.id
-            ? `id:${member.id}`
-            : `name:${norm(member.name||"")}`;
-          const fastest=fastestByPlayer.get(key);
-          const isBest=Number.isFinite(fastest) && row.totalMs===fastest;
-          const hasMulti=exportTeams.filter(et=>(et.roster||[]).some(m=>m&&!m.external&&((m.id&&m.id===member.id)||(!m.id&&norm(m.name||"")===norm(member.name||""))))).length>1;
+          const isBest=isPlayerBestRecord(member,row.result,bestByPlayer);
+          const hasMulti=playerTeamCount(member)>1;
 
           text=member.name||"";
           if(isBest){
