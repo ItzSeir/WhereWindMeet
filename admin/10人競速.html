@@ -5181,6 +5181,294 @@ function exportPNG(){
   }
 }
 
+
+/* Firebase is optional and initialized AFTER the UI is already usable.
+   A Firebase/network failure must never disable local editing. */
+async function initFirebase(){
+  if(new URLSearchParams(location.search).get("offline")==="1"){
+    fbOnline=false;
+    setSync("local","離線測試");
+    return;
+  }
+
+  try{
+    setSync("saving","連線中");
+
+    const appMod=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
+    const fsMod=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+
+    const {initializeApp}=appMod;
+    const {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      deleteDoc,
+      onSnapshot,
+      collection,
+      getDocs,
+      writeBatch,
+      serverTimestamp
+    }=fsMod;
+
+    const firebaseConfig={
+      apiKey:"AIzaSyACN_995akAtlrJcdUx3opXMELAp5NtHEk",
+      authDomain:"wwm-competition.firebaseapp.com",
+      projectId:"wwm-competition",
+      storageBucket:"wwm-competition.firebasestorage.app",
+      messagingSenderId:"608687294114",
+      appId:"1:608687294114:web:d7d3ac463cfdaac19cb9fb"
+    };
+
+    const app=initializeApp(firebaseConfig);
+    const db=getFirestore(app);
+
+    fb={
+      db,
+      doc,
+      getDoc,
+      setDoc,
+      deleteDoc,
+      onSnapshot,
+      collection,
+      getDocs,
+      writeBatch,
+      serverTimestamp
+    };
+
+    fbOnline=true;
+
+    await loadSharedRemote();
+    await migrateOldPageIfNeeded();
+
+    subscribeRemote();
+
+    // Upload any team/record that was created while Firebase was unavailable.
+    await flushLocalPageToFirebase();
+
+    setSync("ok","Firebase 已連線");
+  }catch(e){
+    console.error("Firebase init failed",e);
+    fbOnline=false;
+    setSync("local","本機模式");
+  }
+}
+
+async function loadSharedRemote(){
+  if(!fb)return;
+
+  const {db,doc,getDoc,setDoc,serverTimestamp}=fb;
+
+  const legacyRef=doc(db,"competition","speed_management");
+  const legacySnap=await getDoc(legacyRef).catch(()=>null);
+  const legacy=legacySnap?.exists()?legacySnap.data():{};
+
+  const pRef=doc(db,"competition","speed_players");
+  const pSnap=await getDoc(pRef).catch(()=>null);
+
+  if(pSnap?.exists()){
+    const d=pSnap.data();
+    players=Array.isArray(d.players)?d.players:players;
+    playerArchive=d.archive&&typeof d.archive==="object"
+      ? d.archive
+      : (d.playerArchive||playerArchive);
+    normalizeAllPlayers();
+  }else if(Array.isArray(legacy.players)||Array.isArray(legacy.speedPlayers)){
+    players=(legacy.players||legacy.speedPlayers||[]).map(p=>normalizePlayer({
+      id:p.id||uid("p"),
+      name:p.name||"",
+      role:p.role||"未設定",
+      roles:p.roles,
+      note:p.note||""
+    }));
+
+    players.forEach(p=>playerArchive[p.id]={...p});
+
+    await setDoc(pRef,{
+      players,
+      archive:playerArchive,
+      updatedAt:serverTimestamp()
+    }).catch(()=>{});
+  }
+
+  const cRef=doc(db,"competition","speed_cycles");
+  const cSnap=await getDoc(cRef).catch(()=>null);
+
+  if(cSnap?.exists()){
+    const d=cSnap.data();
+    dungeons=Array.isArray(d.dungeons)?d.dungeons:dungeons;
+    activeDungeonId=d.activeDungeonId||activeDungeonId;
+  }else if(Array.isArray(legacy.dungeons)){
+    dungeons=legacy.dungeons;
+    activeDungeonId=legacy.activeDungeonId||dungeons.at(-1)?.id||"";
+
+    await setDoc(cRef,{
+      dungeons,
+      activeDungeonId,
+      updatedAt:serverTimestamp()
+    }).catch(()=>{});
+  }
+
+  const cfgRef=doc(db,"competition","shared_config");
+  const cfg=await getDoc(cfgRef).catch(()=>null);
+  if(cfg?.exists()&&Array.isArray(cfg.data().professions)){
+    professions=[...new Set([
+      "未設定",
+      ...cfg.data().professions.filter(Boolean)
+    ])];
+  }
+
+  const limRef=doc(db,"competition","speed_limits");
+  const lim=await getDoc(limRef).catch(()=>null);
+  if(lim?.exists()){
+    limit=Number(lim.data()?.[`limit${SIZE}`]??limit);
+  }
+
+  saveLocalSharedPlayers();
+  saveLocalCycles();
+  saveLocalProf();
+  saveLocalLimits();
+
+  if(!selectedDungeonId||!dungeons.some(d=>d.id===selectedDungeonId)){
+    selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
+  }
+
+  renderAll();
+}
+
+async function migrateOldPageIfNeeded(){
+  if(!fb)return;
+
+  const {
+    db,
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    getDocs,
+    serverTimestamp
+  }=fb;
+
+  const teamCol=collection(db,"competition",`speed_${SIZE}`,"teams");
+  const existing=await getDocs(teamCol).catch(()=>null);
+
+  if(existing&&existing.size>0)return;
+
+  const oldRef=doc(db,"competition",`speed_${SIZE}`);
+  const oldSnap=await getDoc(oldRef).catch(()=>null);
+
+  if(!oldSnap?.exists())return;
+
+  const old=oldSnap.data();
+
+  const oldTeams=Array.isArray(old.teams)
+    ? old.teams.filter(t=>Number(t.size||SIZE)===SIZE)
+    : [];
+
+  const oldRecords=Array.isArray(old.records)
+    ? old.records.filter(r=>Number(r.size||SIZE)===SIZE)
+    : [];
+
+  for(const t of oldTeams){
+    const team={
+      id:t.id||uid("team"),
+      dungeonId:t.dungeonId||activeDungeonId,
+      size:SIZE,
+      name:t.name||`${SIZE}人固定隊`,
+      note:t.note||"",
+      mode:t.mode==="challenge"?"challenge":"normal",
+      members:Array.isArray(t.members)?t.members:[],
+      externalMembers:t.externalMembers&&typeof t.externalMembers==="object"
+        ? t.externalMembers
+        : {},
+      currentResult:t.currentResult||null,
+      createdAt:t.createdAt||Date.now(),
+      updatedAtMs:Date.now()
+    };
+
+    if(!team.currentResult){
+      const candidate=oldRecords
+        .filter(r=>r.teamId===team.id)
+        .sort((a,b)=>
+          Number(b.updatedAtMs||b.createdAtMs||0)-
+          Number(a.updatedAtMs||a.createdAtMs||0)
+        )[0];
+
+      if(candidate){
+        team.currentResult={
+          recordId:candidate.id||"",
+          mode:candidate.mode==="challenge"?"challenge":"normal",
+          rank:Number(candidate.rank||0)>0?Number(candidate.rank):null,
+          boss1Ms:Number(candidate.boss1Ms||0)||null,
+          boss2Ms:Number(candidate.boss2Ms||0)||null,
+          timeMs:Number(candidate.timeMs||0),
+          date:candidate.date||"",
+          note:candidate.note||"",
+          roster:Array.isArray(candidate.roster)?candidate.roster:[]
+        };
+      }
+    }
+
+    await setDoc(
+      doc(db,"competition",`speed_${SIZE}`,"teams",team.id),
+      {...team,updatedAt:serverTimestamp()}
+    ).catch(()=>{});
+  }
+
+  for(const r of oldRecords){
+    if(!Number(r.timeMs||0))continue;
+
+    const rec={
+      id:r.id||uid("rec"),
+      dungeonId:r.dungeonId||activeDungeonId,
+      teamId:r.teamId||"",
+      teamName:r.teamName||"固定隊伍",
+      size:SIZE,
+      mode:r.mode==="challenge"?"challenge":"normal",
+      rank:Number(r.rank||0)>0?Number(r.rank):null,
+      boss1Ms:Number(r.boss1Ms||0)||null,
+      boss2Ms:Number(r.boss2Ms||0)||null,
+      timeMs:Number(r.timeMs||0),
+      date:r.date||"",
+      note:r.note||"",
+      roster:Array.isArray(r.roster)?r.roster:[],
+      createdAtMs:r.createdAtMs||Date.now(),
+      updatedAtMs:r.updatedAtMs||Date.now()
+    };
+
+    await setDoc(
+      doc(db,"competition",`speed_${SIZE}`,"records",rec.id),
+      {...rec,updatedAt:serverTimestamp()}
+    ).catch(()=>{});
+  }
+}
+
+async function flushLocalPageToFirebase(){
+  if(!fbOnline||!fb)return;
+
+  const localTeams=teams.filter(t=>
+    t&&t.id&&(t._sync==="local"||t._sync==="pending")
+  );
+
+  const localRecords=records.filter(r=>
+    r&&r.id&&(r._sync==="local"||r._sync==="pending")
+  );
+
+  if(!localTeams.length&&!localRecords.length)return;
+
+  setSync("saving","補同步中");
+
+  for(const rec of localRecords){
+    await syncRecord(rec);
+  }
+
+  for(const team of localTeams){
+    await syncTeam(team);
+  }
+
+  setSync("ok","已同步");
+}
+
 function subscribeRemote(){
   const {db,doc,onSnapshot,collection}=fb;
   sharedUnsubs.forEach(fn=>{try{fn()}catch(e){}});sharedUnsubs=[];
