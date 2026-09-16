@@ -2513,6 +2513,24 @@ body{
   line-height:1.28!important;
 }
 
+
+/* ===== v47 manual total + visible last-updated time ===== */
+.team-updated-at{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.35;
+}
+.team-card.pending .team-updated-at::after{
+  content:" · 待同步";
+  color:var(--orange);
+}
+.team-card.local .team-updated-at::after{
+  content:" · 本機暫存";
+  color:var(--red);
+}
+
 </style>
 </head>
 <body>
@@ -3087,42 +3105,29 @@ function bestRecordDisplay(record){
   return [modeHtml,rank,fmtTime(record.timeMs)].filter(Boolean).join(" · ");
 }
 
-function syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl){
-  if(!boss1El||!boss2El||!totalEl)return null;
-
-  const raw1=String(boss1El.value||"").trim();
-  const raw2=String(boss2El.value||"").trim();
-
-  if(!raw1||!raw2){
-    totalEl.readOnly=false;
-    totalEl.classList.remove("auto-total");
-    totalEl.removeAttribute("data-auto-total");
-    totalEl.title="";
-    return null;
+function firestoreTimestampToMs(value){
+  if(!value)return 0;
+  if(typeof value.toMillis==="function"){
+    try{return Number(value.toMillis())||0}catch(e){}
   }
-
-  const boss1Ms=parseOptionalTime(raw1);
-  const boss2Ms=parseOptionalTime(raw2);
-
-  if(!Number.isFinite(boss1Ms)||!Number.isFinite(boss2Ms)){
-    totalEl.readOnly=false;
-    totalEl.classList.remove("auto-total");
-    totalEl.removeAttribute("data-auto-total");
-    totalEl.title="";
-    return null;
-  }
-
-  const total=boss1Ms+boss2Ms;
-  totalEl.value=fmtTime(total);
-  totalEl.readOnly=true;
-  totalEl.classList.add("auto-total");
-  totalEl.dataset.autoTotal="1";
-  totalEl.title="由 BOSS 1 + BOSS 2 自動計算";
-  return total;
+  if(Number(value.seconds)>0)return Number(value.seconds)*1000;
+  return 0;
 }
-
-
-
+function teamUpdatedMs(team){
+  return Math.max(
+    Number(team?.updatedAtMs||0),
+    Number(team?.currentResult?.updatedAtMs||0),
+    firestoreTimestampToMs(team?.updatedAt),
+    Number(team?.createdAt||0)
+  );
+}
+function fmtTeamUpdated(team){
+  const ms=teamUpdatedMs(team);
+  if(!ms)return"更新時間 —";
+  const d=new Date(ms);
+  const pad=n=>String(n).padStart(2,"0");
+  return `更新 ${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 function isOutsiderToken(v){
   return typeof v==="string"&&v.startsWith("external:");
@@ -3450,6 +3455,7 @@ function renderTeams(){
           <div class="team-summary-main">
             <div class="team-summary-name">${esc(t.name)}</div>
             <div class="team-member-names ${names.length?"":"empty"}">${names.length?esc(names.join("、")):"尚未加入隊員"}</div>
+            <div class="team-updated-at">${fmtTeamUpdated(t)}</div>
           </div>
 
           <div class="team-summary-type">
@@ -3764,17 +3770,10 @@ async function saveResult(teamId){
     return;
   }
 
-  const hasBothBossTimes=!!(boss1Raw&&boss2Raw);
-  const autoTotalMs=hasBothBossTimes
-    ? syncAutoTotalFromBossInputs(boss1El,boss2El,timeEl)
-    : null;
-
-  const ms=Number.isFinite(autoTotalMs)
-    ? autoTotalMs
-    : parseTime(timeEl?.value||"");
+  const ms=parseTime(timeEl?.value||"");
 
   if(!ms){
-    alert("請填寫總通關時間；或同時填寫 BOSS 1 與 BOSS 2，系統會自動計算總時間。");
+    alert("請手動填寫總通關時間。BOSS 1 / BOSS 2 為選填，不會自動計算總時間。");
     timeEl?.focus();
     return;
   }
@@ -3836,9 +3835,10 @@ async function saveResult(teamId){
     date:rec.date,
     note:rec.note,
     roster:rec.roster,
-    createdAtMs:rec.createdAtMs
+    createdAtMs:rec.createdAtMs,
+    updatedAtMs:rec.updatedAtMs
   };
-  t.updatedAtMs=Date.now();
+  t.updatedAtMs=rec.updatedAtMs;
   t._sync="pending";
 
   saveLocalPage();
@@ -3880,11 +3880,10 @@ function openRecordEdit(teamId,recordId){
   $("recordEditDate").value=r.date||today();
   $("recordEditNote").value=r.note||"";
 
-  syncAutoTotalFromBossInputs(
-    $("recordEditBoss1"),
-    $("recordEditBoss2"),
-    $("recordEditTime")
-  );
+  $("recordEditTime").readOnly=false;
+  $("recordEditTime").classList.remove("auto-total");
+  $("recordEditTime").removeAttribute("data-auto-total");
+  $("recordEditTime").title="";
 
   openModal("recordEditModal");
 }
@@ -3921,18 +3920,10 @@ async function saveRecordEdit(){
     return;
   }
 
-  const hasBothBossTimes=!!(boss1Raw&&boss2Raw);
-
-  const autoTotalMs=hasBothBossTimes
-    ? syncAutoTotalFromBossInputs(editBoss1El,editBoss2El,editTotalEl)
-    : null;
-
-  const ms=Number.isFinite(autoTotalMs)
-    ? autoTotalMs
-    : parseTime(editTotalEl.value);
+  const ms=parseTime(editTotalEl.value);
 
   if(!ms){
-    alert("請輸入總通關時間；或同時填寫 BOSS 1 與 BOSS 2，系統會自動計算。");
+    alert("請手動輸入總通關時間。BOSS 1 / BOSS 2 為選填。");
     editTotalEl.focus();
     return;
   }
@@ -3944,6 +3935,7 @@ async function saveRecordEdit(){
   r.timeMs=ms;
   r.date=$("recordEditDate").value||r.date||today();
   r.note=$("recordEditNote").value.trim();
+  r.updatedAtMs=Date.now();
   r._sync="pending";
 
   if(t.currentResult?.recordId===r.id){
@@ -3956,9 +3948,10 @@ async function saveRecordEdit(){
       timeMs:r.timeMs,
       date:r.date,
       note:r.note||"",
-      roster:r.roster||[]
+      roster:r.roster||[],
+      updatedAtMs:r.updatedAtMs
     };
-    t.updatedAtMs=Date.now();
+    t.updatedAtMs=r.updatedAtMs;
     t._sync="pending";
   }
 
@@ -4503,17 +4496,6 @@ function bindUI(){
     const mode=e.target.closest("[data-team-type]");
     if(mode)setTeamMode(mode.dataset.teamType,mode.value);
   });
-  $("teamList").addEventListener("input",e=>{
-    const bossInput=e.target.closest("[data-boss1],[data-boss2]");
-    if(!bossInput)return;
-
-    const teamId=bossInput.dataset.boss1||bossInput.dataset.boss2;
-    const boss1El=document.querySelector(`[data-boss1="${CSS.escape(teamId)}"]`);
-    const boss2El=document.querySelector(`[data-boss2="${CSS.escape(teamId)}"]`);
-    const totalEl=document.querySelector(`[data-time="${CSS.escape(teamId)}"]`);
-
-    syncAutoTotalFromBossInputs(boss1El,boss2El,totalEl);
-  });
   $("teamList").addEventListener("click",e=>{
     const toggle=e.target.closest("[data-toggle-team]");if(toggle){toggleTeam(toggle.dataset.toggleTeam);return}
     const batch=e.target.closest("[data-batch-team]");if(batch){openBatchPicker(batch.dataset.batchTeam);return}
@@ -4569,15 +4551,6 @@ function bindUI(){
   window.addEventListener("resize",closePlayerMenu);
   window.addEventListener("scroll",closePlayerMenu,true);
 
-  ["recordEditBoss1","recordEditBoss2"].forEach(id=>{
-    $(id).addEventListener("input",()=>{
-      syncAutoTotalFromBossInputs(
-        $("recordEditBoss1"),
-        $("recordEditBoss2"),
-        $("recordEditTime")
-      );
-    });
-  });
   $("saveRecordEditBtn").addEventListener("click",saveRecordEdit);
   $("confirmDeleteCancelBtn").addEventListener("click",closeDeleteConfirm);
   $("confirmDeleteOkBtn").addEventListener("click",async()=>{
@@ -5523,7 +5496,7 @@ async function syncTeam(team){
   saveLocalPage();if(!fbOnline||!fb){team._sync="local";saveLocalPage();renderAll();return}
   team._sync="pending";saveLocalPage();renderAll();setSync("saving","同步中");
   try{
-    const clean={id:team.id,dungeonId:team.dungeonId,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},currentResult:team.currentResult||null,createdAt:team.createdAt||Date.now(),updatedAtMs:Date.now()};
+    const clean={id:team.id,dungeonId:team.dungeonId,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},currentResult:team.currentResult||null,createdAt:team.createdAt||Date.now(),updatedAtMs:Number(team.updatedAtMs||team.createdAt||Date.now())};
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"teams",team.id),{...clean,updatedAt:fb.serverTimestamp()});
     team._sync="synced";saveLocalPage();setSync("ok","已同步");renderAll();
   }catch(e){console.warn(e);team._sync="local";saveLocalPage();setSync("local","本機暫存");renderAll()}
@@ -5531,8 +5504,8 @@ async function syncTeam(team){
 async function syncRecord(rec){
   saveLocalPage();if(!fbOnline||!fb){rec._sync="local";saveLocalPage();return}
   try{
-    const clean={id:rec.id,dungeonId:rec.dungeonId,teamId:rec.teamId,teamName:rec.teamName,size:SIZE,mode:rec.mode==="challenge"?"challenge":"normal",rank:Number(rec.rank||0)>0?Number(rec.rank):null,boss1Ms:Number(rec.boss1Ms||0)||null,boss2Ms:Number(rec.boss2Ms||0)||null,timeMs:rec.timeMs,date:rec.date,note:rec.note||"",roster:rec.roster||[],createdAtMs:rec.createdAtMs||Date.now()};
-    await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"records",rec.id),{...clean,createdAt:fb.serverTimestamp()});
+    const clean={id:rec.id,dungeonId:rec.dungeonId,teamId:rec.teamId,teamName:rec.teamName,size:SIZE,mode:rec.mode==="challenge"?"challenge":"normal",rank:Number(rec.rank||0)>0?Number(rec.rank):null,boss1Ms:Number(rec.boss1Ms||0)||null,boss2Ms:Number(rec.boss2Ms||0)||null,timeMs:rec.timeMs,date:rec.date,note:rec.note||"",roster:rec.roster||[],createdAtMs:rec.createdAtMs||Date.now(),updatedAtMs:Number(rec.updatedAtMs||Date.now())};
+    await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"records",rec.id),{...clean,updatedAt:fb.serverTimestamp()});
     rec._sync="synced";saveLocalPage();
   }catch(e){console.warn(e);rec._sync="local";saveLocalPage()}
 }
