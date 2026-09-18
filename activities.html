@@ -37,15 +37,71 @@
     @media(max-width:900px){.event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr auto}.filters{grid-column:1/-1;grid-row:2}.intro{grid-template-columns:1fr}.memory-count{display:grid;grid-template-columns:auto 1fr;gap:0 16px}.memory-count .count-number{margin-top:0}.memory-count .year-strip{grid-column:1/-1}}
     @media(max-width:768px){body{padding-right:12px;padding-bottom:36px;padding-left:12px}.toolbar{top:126px}.hero{min-height:0;padding:25px 21px}.hero h1{font-size:34px}.hero p{font-size:14px}.event-grid{grid-template-columns:1fr}.cover{aspect-ratio:16/9}.modal{padding:0}.modal-panel{width:100%;height:100%;max-height:none;border:0;border-radius:0}.modal-hero,.modal-hero img{height:300px;min-height:300px}.modal-title{right:20px;bottom:22px;left:20px}.modal-content{padding:22px 16px 34px}.photo-grid{grid-template-columns:repeat(2,1fr)}footer{flex-direction:column;gap:6px}}
     @media(max-width:430px){.toolbar{grid-template-columns:1fr}.sort-select{width:100%}.filters{grid-row:auto}.photo-grid{grid-template-columns:1fr 1fr}}
-    /* 活動頁目前頁面：依導覽示意改用灰色膠囊，不使用藍紫漸層 */
-    body[data-site-page="activities"] .nav a[aria-current="page"]{
-      color:var(--text) !important;
-      background:var(--surface-3) !important;
-      border:1px solid var(--line) !important;
-      box-shadow:none !important;
+  </style>
+  <!--
+    Activities standalone fallback shell.
+    The external site-shell.css still remains authoritative when available.
+    This embedded copy prevents the page from losing its design when the
+    shared stylesheet is missing or the HTML is opened by itself.
+  -->
+  <style id="activities-shell-fallback">
+    :root{
+      --bg:#0b1020;--bg-2:#111a31;--bg2:var(--bg-2);
+      --surface:#111930;--surface-2:#16213b;--surface-3:#1b2948;
+      --line:rgba(255,255,255,.11);--line-strong:rgba(255,255,255,.18);
+      --text:#eef2ff;--muted:#a8b3cf;--soft:#7888aa;
+      --accent:#6ea8ff;--accent-2:#8b5cf6;--accent2:var(--accent-2);
+      --warm:#f59e0b;--pink:#d96ba7;--danger:#ff6b81;
+      --shadow:0 18px 44px rgba(0,0,0,.24);--shadow-soft:0 10px 28px rgba(0,0,0,.14);
+      --site-nav-max:1100px;--site-content-max:1320px;
+      --site-radius-xl:28px;--site-radius-lg:20px;--site-radius-md:14px;
     }
-    body[data-site-page="activities"] .nav a[aria-current="page"]:hover{
-      background:color-mix(in srgb,var(--surface-3) 82%,var(--text)) !important;
+    html[data-theme="light"]{
+      --bg:#eef3fb;--bg-2:#f8faff;--bg2:var(--bg-2);
+      --surface:#fff;--surface-2:#f7f9fd;--surface-3:#eef3fb;
+      --line:rgba(67,89,130,.16);--line-strong:rgba(67,89,130,.24);
+      --text:#17233c;--muted:#64748b;--soft:#8794a8;
+      --accent:#4f8ef7;--accent-2:#7c3aed;--accent2:var(--accent-2);
+      --warm:#c47a13;--pink:#b64f88;--danger:#dc3958;
+      --shadow:0 18px 42px rgba(65,86,125,.13);--shadow-soft:0 9px 24px rgba(65,86,125,.09);
+    }
+    html{color-scheme:dark;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--accent) var(--surface-2)}
+    html[data-theme="light"]{color-scheme:light}
+    body{
+      color:var(--text);font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at 4% -5%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 29%),radial-gradient(circle at 97% 8%,color-mix(in srgb,var(--accent-2) 15%,transparent),transparent 27%),linear-gradient(180deg,var(--bg),var(--bg-2));
+      background-attachment:fixed;overflow-x:clip;transition:background .22s ease,color .22s ease;
+    }
+    ::-webkit-scrollbar{width:10px;height:10px}
+    ::-webkit-scrollbar-track{background:var(--surface-2)}
+    ::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent) 70%,var(--surface-3));border:2px solid var(--surface-2);border-radius:999px}
+    button,input,select,textarea{font:inherit}
+    a,button{-webkit-tap-highlight-color:transparent}
+    .topbar{
+      position:fixed;top:20px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:var(--site-nav-max);min-height:64px;height:auto;z-index:10000;
+      display:flex;align-items:center;padding:0 12px;border-radius:999px;background:color-mix(in srgb,var(--surface) 72%,transparent);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.26);backdrop-filter:blur(20px);transition:.25s ease;
+    }
+    .topbar.scrolled{top:10px;background:color-mix(in srgb,var(--surface) 91%,transparent);box-shadow:var(--shadow)}
+    .topbar-content{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .brand-group{display:flex;gap:8px;align-items:center;min-width:max-content}
+    .brand-badge{padding:6px 14px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-size:12px;font-weight:800;line-height:1.35;white-space:nowrap}
+    .brand-badge.sub{color:var(--muted)}
+    .nav-wrap{display:flex;align-items:center;gap:8px;min-width:0}
+    .nav{display:flex;gap:6px;align-items:center;min-width:0}
+    .nav a{padding:8px 15px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:13px;font-weight:700;line-height:1.35;text-decoration:none;white-space:nowrap}
+    .nav a:hover{color:var(--text);background:var(--surface-2)}
+    .nav a.active,.nav a[aria-current="page"]{color:var(--text);background:var(--surface-3);border-color:var(--line);box-shadow:none;font-weight:800}
+    .theme-toggle{flex:0 0 auto;min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--text);font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}
+    html[data-theme="light"] .topbar{background:rgba(255,255,255,.84);box-shadow:0 14px 36px rgba(65,86,125,.14)}
+    #siteAnnouncement{max-width:var(--site-content-max);margin:0 auto 16px;padding:0 18px;box-sizing:border-box}
+    .announcementBar{position:relative;display:flex;align-items:flex-start;gap:14px;padding:15px 96px 15px 16px;border:1px solid color-mix(in srgb,var(--accent-2) 30%,var(--line));border-radius:20px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,var(--surface)),color-mix(in srgb,var(--accent-2) 11%,var(--surface)));box-shadow:var(--shadow-soft)}
+    .announcementIcon{width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+    .announcementContent{flex:1;min-width:0}.announcementTitle{margin:1px 0 6px;font-size:15px;font-weight:900}.announcementPill{display:inline-flex;padding:4px 9px;margin-bottom:7px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);font-size:11px;font-weight:900}.announcementText{font-size:13px;font-weight:700;line-height:1.7}.announcementTime{margin-top:7px;color:var(--muted);font-size:11px}.announcementControls{position:absolute;top:13px;right:13px;display:flex;gap:6px}.announcementArrow{width:30px;height:30px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--text)}.announcementDots{position:absolute;right:18px;bottom:13px;display:flex;gap:6px}.announcementDot{width:7px;height:7px;padding:0;border:0;border-radius:999px;background:color-mix(in srgb,var(--muted) 36%,transparent)}.announcementDot.active{width:18px;background:var(--accent)}
+    @media(max-width:768px){
+      body{padding-top:150px !important}
+      .topbar{top:10px;min-height:0;padding:10px 14px;width:calc(100% - 20px);border-radius:24px}
+      .topbar-content{flex-direction:column;gap:8px}.brand-group{justify-content:center}.nav-wrap{width:100%;gap:6px}.nav{flex:1;width:100%;justify-content:flex-start;overflow-x:auto;padding:4px 0;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{padding:6px 11px;font-size:11px}.theme-toggle{min-height:34px;padding:0 10px;font-size:11px}
+      #siteAnnouncement{padding:0 10px;margin-bottom:12px}.announcementBar{padding:13px 13px 42px;gap:10px;border-radius:17px}.announcementIcon{width:34px;height:34px}.announcementControls{top:auto;right:12px;bottom:10px}.announcementDots{left:58px;right:auto;bottom:20px}
     }
   </style>
   <link rel="stylesheet" href="site-shell.css">
@@ -117,20 +173,8 @@
         cover:"assets/events/christmas-2025/cover.jpg", icon:"🎄", attendees:"夢回小夥伴",
         description:"歲末將至，鈴聲入夜。大家換上聖誕配色，一起拍攝第一年的聖誕大合照，為這個冬天添上一點溫暖。",
         photos:["assets/events/christmas-2025/01.jpg","assets/events/christmas-2025/02.jpg"]
-      },
-      {
-        id:"lantern-2025", title:"花燈夜遊・月下合影", date:"2025-10-06", category:"拍照活動",
-        cover:"", icon:"🏮", attendees:"自由參加",
-        description:"提著花燈走過熟悉的街巷，在月色下集合拍照。沒有競賽，只有聊天、散步和剛剛好的夜色。",
-        photos:[]
-      },
-      {
-        id:"pve-challenge-2025", title:"十人俠境挑戰夜", date:"2025-08-16", category:"副本活動",
-        cover:"", icon:"⚔️", attendees:"10 人隊伍",
-        description:"從研究機制到正式通關，團員互相補位並完成當晚目標。這不只是一場副本，也是屬於隊伍的共同紀錄。",
-        photos:[]
       }
-    ];
+      ];
 
     const $ = (s, root=document) => root.querySelector(s);
     const grid=$("#eventGrid"), filters=$("#filters"), search=$("#searchInput"), sort=$("#sortSelect");
