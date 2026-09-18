@@ -9,7 +9,7 @@
   <script>
     (function(){
       try{
-        const saved = localStorage.getItem("wwm-docs-theme-v2");
+        const saved = localStorage.getItem("registration_theme") || localStorage.getItem("wwm-home-theme-v2") || localStorage.getItem("wwm-docs-theme-v2");
         document.documentElement.dataset.theme = saved || "dark";
       }catch(error){
         document.documentElement.dataset.theme = "dark";
@@ -148,7 +148,7 @@
     button,input{ font:inherit; }
     a{ color:var(--link); }
 
-    .topbar{
+    .docsTopbar{
       color:var(--text);
       position:sticky;
       top:0;
@@ -702,7 +702,7 @@
       mask-image:linear-gradient(180deg, rgba(0,0,0,.7), transparent 78%);
     }
 
-    .topbar{
+    .docsTopbar{
       margin:12px 14px 0;
       min-height:66px;
       border:1px solid var(--border);
@@ -878,7 +878,7 @@
     }
 
     @media (max-width:760px){
-      .topbar{
+      .docsTopbar{
         margin:8px 8px 0;
         border-radius:18px;
       }
@@ -922,7 +922,7 @@
       display:none;
     }
 
-    .topbar{
+    .docsTopbar{
       position:sticky;
       top:12px;
       width:min(calc(100% - 40px), 1100px);
@@ -1176,7 +1176,7 @@
     }
 
     @media (max-width:760px){
-      .topbar{
+      .docsTopbar{
         top:8px;
         width:calc(100% - 20px);
         margin-top:8px;
@@ -1209,7 +1209,7 @@
     }
 
     @media (max-width:760px){
-      .topbar{
+      .docsTopbar{
         flex-wrap:wrap;
         gap:10px;
       }
@@ -1942,7 +1942,7 @@
         min-height:0;
       }
 
-      .topbar{
+      .docsTopbar{
         position:relative;
         flex:0 0 auto;
       }
@@ -2142,7 +2142,7 @@
       color:#eef2ff;
     }
 
-    html[data-theme="dark"] .topbar,
+    html[data-theme="dark"] .docsTopbar,
     html[data-theme="dark"] .layout,
     html[data-theme="dark"] .sidebar,
     html[data-theme="dark"] .content,
@@ -2292,7 +2292,7 @@
   body.sheet-open,
   body.lightbox-open{ overflow:hidden !important; touch-action:none; }
 
-  .topbar{
+  .docsTopbar{
     position:sticky;
     top:max(8px, env(safe-area-inset-top));
     z-index:1200;
@@ -2601,7 +2601,7 @@
 }
 
 @media (max-width:390px){
-  .topbar{ grid-template-columns:minmax(0,1fr) 40px 40px; }
+  .docsTopbar{ grid-template-columns:minmax(0,1fr) 40px 40px; }
   .content{ padding-inline:10px; }
   .docHeader{ padding:16px 14px; }
   .markdownBody{ font-size:14px; }
@@ -3281,9 +3281,28 @@
       }
     }
 </style>
+  <link rel="stylesheet" href="site-shell.css">
 </head>
 
-<body class="wherewindmeet-docs-page">
+<body class="wherewindmeet-docs-page" data-site-page="documentation">
+  <nav class="topbar" id="floatingNav" aria-label="主要導覽">
+    <div class="topbar-content">
+      <div class="brand-group">
+        <span class="brand-badge">夢回花深處</span>
+        <span class="brand-badge sub">手冊</span>
+      </div>
+      <div class="nav-wrap">
+        <div class="nav">
+          <a href="index">首頁</a>
+          <a href="PVERegistration">副本報名</a>
+          <a href="gallery">江湖回憶錄</a>
+          <a href="activities">歷屆活動</a>
+          <a href="documentation" class="active" aria-current="page">手冊</a>
+        </div>
+        <button type="button" class="theme-toggle" id="siteThemeToggleBtn" aria-label="切換白天或夜間模式">☀ 白天</button>
+      </div>
+    </div>
+  </nav>
   <div class="floatingTools" aria-label="手機閱讀工具">
     <button class="floatingBtn mobileTocBtn" id="mobileTocBtn" type="button" aria-label="開啟本頁目錄">☷</button>
     <button class="floatingBtn backToTopBtn" id="backToTopBtn" type="button" aria-label="返回頂部">↑</button>
@@ -3304,7 +3323,7 @@
     <img id="imageLightboxImage" alt="放大圖片">
   </div>
 
-  <header class="topbar">
+  <header class="docsTopbar">
     <a class="brand" href="index.html">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
       <span class="brandText">
@@ -4280,6 +4299,8 @@ document.title = `${title}｜夢回手冊`;
 
       document.documentElement.dataset.theme = finalTheme;
       localStorage.setItem("wwm-docs-theme-v2", finalTheme);
+      localStorage.setItem("registration_theme", finalTheme);
+      localStorage.setItem("wwm-home-theme-v2", finalTheme);
 
       const isDark = finalTheme === "dark";
 
@@ -4293,7 +4314,7 @@ document.title = `${title}｜夢回手冊`;
     }
 
     function initTheme(){
-      const savedTheme = localStorage.getItem("wwm-docs-theme-v2");
+      const savedTheme = localStorage.getItem("registration_theme") || localStorage.getItem("wwm-home-theme-v2") || localStorage.getItem("wwm-docs-theme-v2");
 
       // 預設使用黑夜模式；使用者切換後仍會記住選擇。
       applyTheme(savedTheme || "dark");
@@ -4510,6 +4531,33 @@ document.title = `${title}｜夢回手冊`;
   window.addEventListener('resize', repairMobileScroll, {passive:true});
   document.addEventListener('visibilitychange', repairMobileScroll, {passive:true});
   repairMobileScroll();
+})();
+</script>
+<script>
+/* Shared site navigation bridge for the documentation page */
+(function(){
+  const nav=document.getElementById('floatingNav');
+  const sharedButton=document.getElementById('siteThemeToggleBtn');
+  const docsButton=document.getElementById('themeToggle');
+
+  function syncSharedButton(){
+    const isLight=document.documentElement.dataset.theme==='light';
+    if(sharedButton) sharedButton.textContent=isLight?'☾ 夜間':'☀ 白天';
+  }
+
+  if(sharedButton && docsButton){
+    sharedButton.addEventListener('click',function(){
+      docsButton.click();
+      requestAnimationFrame(syncSharedButton);
+    });
+  }
+
+  window.addEventListener('scroll',function(){
+    if(nav) nav.classList.toggle('scrolled',window.scrollY>18);
+  },{passive:true});
+
+  new MutationObserver(syncSharedButton).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  syncSharedButton();
 })();
 </script>
 </body>
