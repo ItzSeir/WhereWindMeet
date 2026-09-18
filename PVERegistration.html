@@ -12621,6 +12621,15 @@ body {
       .date-navigator::-webkit-scrollbar{
         display:none !important;
       }
+
+    }
+
+    /* Match the shared shell: left page badge stays gray, current nav link is accented. */
+    body[data-site-page="PVERegistration"] .nav a.active[aria-current="page"]{
+      color:#fff !important;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
+      border-color:transparent !important;
+      box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 28%,transparent) !important;
     }
   </style>
 </head>
