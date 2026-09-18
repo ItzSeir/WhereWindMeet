@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <title>夢回花深處｜歷屆活動</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;padding:106px 20px 54px}
+    button,a{touch-action:manipulation}
+    button{color:inherit}
+    .container{width:min(1120px,100%);margin:auto}
+    .intro{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.55fr);gap:16px;margin-bottom:18px}
+    .hero,.memory-count{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--site-radius-xl);background:linear-gradient(135deg,var(--surface),var(--surface-2));box-shadow:var(--shadow)}
+    .hero{min-height:245px;padding:32px}.hero:after{content:"";position:absolute;right:-56px;bottom:-90px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(240,143,193,.3),rgba(139,92,246,.08) 52%,transparent 70%);pointer-events:none}
+    .eyebrow{margin:0 0 10px;color:var(--accent);font-size:12px;font-weight:900;letter-spacing:.16em}.hero h1{max-width:650px;margin:0 0 12px;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-.04em}.hero p{max-width:650px;margin:0;color:var(--muted);font-size:16px;line-height:1.8}.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.hero-tag{padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);font-size:12px;font-weight:700}
+    .memory-count{display:flex;flex-direction:column;justify-content:space-between;padding:26px}.count-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 23%,transparent),color-mix(in srgb,var(--accent-2) 26%,transparent));font-size:23px}.count-number{margin-top:24px;font-size:54px;font-weight:900;line-height:1}.count-label{margin-top:6px;color:var(--muted);font-size:14px}.year-strip{display:flex;gap:7px;margin-top:22px}.year-strip span{height:6px;flex:1;border-radius:99px;background:var(--surface-3)}.year-strip span.on{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+    .toolbar{position:sticky;z-index:20;top:98px;display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:10px;margin-bottom:18px;padding:10px;border:1px solid var(--line);border-radius:var(--site-radius-lg);background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(18px);box-shadow:var(--shadow-soft)}
+    .search{display:flex;align-items:center;gap:9px;min-width:0;padding:0 13px;border:1px solid var(--line);border-radius:var(--site-radius-md);background:var(--surface-2)}.search input{width:100%;min-width:0;padding:11px 0;border:0;outline:0;color:var(--text);background:transparent}.search input::placeholder{color:var(--muted)}
+    .filters{display:flex;gap:6px;overflow:auto;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}.filter-btn,.sort-select{padding:10px 13px;border:1px solid transparent;border-radius:13px;background:transparent;color:var(--muted);font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}.filter-btn:hover{background:var(--surface-2)}.filter-btn.active{color:var(--text);border-color:var(--line);background:var(--surface-3)}.sort-select{border-color:var(--line);background:var(--surface-2);outline:none}.sort-select option{background:var(--surface);color:var(--text)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:26px 2px 14px}.section-head h2{margin:0;font-size:20px}.result-count{color:var(--muted);font-size:13px}
+    .event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .event-card{display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:var(--surface);box-shadow:var(--shadow-soft);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;cursor:pointer}.event-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:var(--shadow)}
+    .cover{position:relative;aspect-ratio:16/10;overflow:hidden;background:linear-gradient(135deg,rgba(110,168,255,.18),rgba(139,92,246,.24))}.cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}.event-card:hover .cover img{transform:scale(1.035)}.cover-fallback{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.13),transparent 28%),linear-gradient(135deg,rgba(110,168,255,.22),rgba(139,92,246,.28));font-size:42px}.cover img:not([src]),.cover img[src=""]{display:none}
+    .cover-top{position:absolute;z-index:2;inset:12px 12px auto;display:flex;justify-content:space-between;gap:8px}.badge{padding:6px 10px;border:1px solid rgba(255,255,255,.2);border-radius:999px;color:#fff;background:rgba(9,14,26,.62);backdrop-filter:blur(10px);font-size:11px;font-weight:800}.photo-count{display:flex;align-items:center;gap:5px}
+    .card-body{display:flex;flex:1;flex-direction:column;padding:18px}.event-date{color:#9abfff;font-size:12px;font-weight:800}.event-card h3{margin:7px 0 8px;font-size:18px;line-height:1.4}.event-card p{display:-webkit-box;overflow:hidden;margin:0;color:var(--muted);font-size:14px;line-height:1.7;-webkit-line-clamp:2;-webkit-box-orient:vertical}.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;padding-top:18px}.attendees{color:var(--muted);font-size:12px;font-weight:700}.view-link{color:#bcd2ff;font-size:13px;font-weight:800}
+    .empty{display:none;padding:55px 20px;text-align:center;border:1px dashed var(--line);border-radius:24px;background:var(--surface-2)}.empty.show{display:block}.empty strong{display:block;margin-bottom:7px;font-size:18px}.empty span{color:var(--muted);font-size:14px}
+    .modal{position:fixed;z-index:30000;inset:0;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(2,6,14,.78);backdrop-filter:blur(12px)}.modal.show{display:flex}.modal-panel{position:relative;width:min(980px,100%);max-height:min(90vh,900px);overflow:auto;border:1px solid var(--line);border-radius:28px;background:var(--surface);box-shadow:0 30px 90px rgba(0,0,0,.5)}.modal-close{position:sticky;z-index:4;top:14px;float:right;margin:14px 14px -58px 0;width:44px;height:44px;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(9,14,26,.72);color:#fff;font-size:22px;cursor:pointer;backdrop-filter:blur(10px)}
+    .modal-hero{position:relative;min-height:330px;overflow:hidden;background:linear-gradient(135deg,rgba(110,168,255,.20),rgba(139,92,246,.28))}.modal-hero img{width:100%;height:330px;object-fit:cover;display:block}.modal-hero .cover-fallback{font-size:72px}.modal-gradient{position:absolute;inset:auto 0 0;height:70%;background:linear-gradient(transparent,rgba(9,14,26,.88))}.modal-title{position:absolute;z-index:2;right:28px;bottom:28px;left:28px;color:#fff}.modal-title small{font-size:13px;font-weight:800;color:#c7d8ff}.modal-title h2{margin:7px 0 0;font-size:clamp(25px,4vw,40px);line-height:1.2}
+    .modal-content{padding:28px}.modal-description{margin:0 0 25px;color:var(--muted);line-height:1.85}.modal-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:25px}.meta-pill{padding:8px 11px;border-radius:11px;background:var(--surface-2);color:var(--muted);font-size:13px;font-weight:700}.gallery-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.gallery-head h3{margin:0;font-size:17px}.gallery-tip{color:var(--muted);font-size:12px}.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.photo-item{position:relative;aspect-ratio:4/3;overflow:hidden;padding:0;border:0;border-radius:14px;background:var(--surface-2);cursor:zoom-in}.photo-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}.photo-item:hover img{transform:scale(1.04)}.photo-placeholder{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px;background:linear-gradient(135deg,var(--surface-2),color-mix(in srgb,var(--accent-2) 14%,transparent))}
+    .lightbox{position:fixed;z-index:4000;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.94)}.lightbox.show{display:flex}.lightbox img{max-width:92vw;max-height:88vh;object-fit:contain}.lightbox button{position:absolute;border:0;color:#fff;background:rgba(255,255,255,.12);cursor:pointer}.lightbox-close{top:20px;right:20px;width:46px;height:46px;border-radius:50%;font-size:24px}.lightbox-prev,.lightbox-next{top:50%;width:48px;height:58px;border-radius:15px;transform:translateY(-50%);font-size:30px}.lightbox-prev{left:18px}.lightbox-next{right:18px}.lightbox-caption{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);padding:7px 12px;border-radius:999px;color:#fff;background:rgba(255,255,255,.12);font-size:12px}
+    footer{display:flex;justify-content:space-between;gap:20px;margin-top:34px;padding:20px 4px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+    @media(max-width:900px){.event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr auto}.filters{grid-column:1/-1;grid-row:2}.intro{grid-template-columns:1fr}.memory-count{display:grid;grid-template-columns:auto 1fr;gap:0 16px}.memory-count .count-number{margin-top:0}.memory-count .year-strip{grid-column:1/-1}}
+    @media(max-width:768px){body{padding-right:12px;padding-bottom:36px;padding-left:12px}.toolbar{top:126px}.hero{min-height:0;padding:25px 21px}.hero h1{font-size:34px}.hero p{font-size:14px}.event-grid{grid-template-columns:1fr}.cover{aspect-ratio:16/9}.modal{padding:0}.modal-panel{width:100%;height:100%;max-height:none;border:0;border-radius:0}.modal-hero,.modal-hero img{height:300px;min-height:300px}.modal-title{right:20px;bottom:22px;left:20px}.modal-content{padding:22px 16px 34px}.photo-grid{grid-template-columns:repeat(2,1fr)}footer{flex-direction:column;gap:6px}}
+    @media(max-width:430px){.toolbar{grid-template-columns:1fr}.sort-select{width:100%}.filters{grid-row:auto}.photo-grid{grid-template-columns:1fr 1fr}}
+    /* 活動頁目前頁面：依導覽示意改用灰色膠囊，不使用藍紫漸層 */
+    body[data-site-page="activities"] .nav a[aria-current="page"]{
+      color:var(--text) !important;
+      background:var(--surface-3) !important;
+      border:1px solid var(--line) !important;
+      box-shadow:none !important;
+    }
+    body[data-site-page="activities"] .nav a[aria-current="page"]:hover{
+      background:color-mix(in srgb,var(--surface-3) 82%,var(--text)) !important;
+    }
+  </style>
+  <link rel="stylesheet" href="site-shell.css">
+</head>
+<body data-site-page="activities">
+  <nav class="topbar" id="floatingNav" aria-label="主要導覽">
+    <div class="topbar-content">
+      <div class="brand-group"><span class="brand-badge">夢回花深處</span><span class="brand-badge sub">歷屆活動</span></div>
+      <div class="nav-wrap">
+        <div class="nav"><a href="index">首頁</a><a href="PVERegistration">副本報名</a><a href="gallery">江湖回憶錄</a><a href="activities" class="active" aria-current="page">歷屆活動</a><a href="documentation">手冊</a></div>
+        <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="切換白天或夜間模式">☀ 白天</button>
+      </div>
+    </div>
+  </nav>
+  <div id="siteAnnouncement"></div>
+
+  <main class="container">
+    <section class="intro">
+      <div class="hero">
+        <p class="eyebrow">EVENT ARCHIVE</p>
+        <h1>一起走過的日子，<br>都值得好好收藏。</h1>
+        <p>收錄夢回花深處舉辦過的聚會、節慶與遊戲活動。點開活動，就能查看當天的介紹與完整照片。</p>
+        <div class="hero-tags"><span class="hero-tag">📷 活動相簿</span><span class="hero-tag">🗓 歷年紀錄</span><span class="hero-tag">✨ 共同回憶</span></div>
+      </div>
+      <aside class="memory-count"><div class="count-icon">✦</div><div><div class="count-number" id="eventTotal">0</div><div class="count-label">場活動已被收藏</div></div><div class="year-strip"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></aside>
+    </section>
+
+    <section class="toolbar" aria-label="活動篩選">
+      <label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="搜尋活動名稱或內容…" autocomplete="off"></label>
+      <div class="filters" id="filters"></div>
+      <select class="sort-select" id="sortSelect" aria-label="活動排序"><option value="newest">最新活動</option><option value="oldest">最早活動</option><option value="photos">照片最多</option></select>
+    </section>
+
+    <div class="section-head"><h2>活動回顧</h2><span class="result-count" id="resultCount"></span></div>
+    <section class="event-grid" id="eventGrid" aria-live="polite"></section>
+    <div class="empty" id="emptyState"><strong>沒有找到相關活動</strong><span>換一個關鍵字或分類看看。</span></div>
+  </main>
+
+  <footer class="container"><span>夢回花深處 · 活動回憶錄</span><span>願每一次相聚，都能成為下次重逢的理由。</span></footer>
+
+  <div class="modal" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+    <article class="modal-panel"><button class="modal-close" id="modalClose" type="button" aria-label="關閉">×</button><div id="modalBody"></div></article>
+  </div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="照片預覽"><button class="lightbox-close" id="lightboxClose" type="button" aria-label="關閉">×</button><button class="lightbox-prev" id="lightboxPrev" type="button" aria-label="上一張">‹</button><img id="lightboxImage" alt="活動照片"><button class="lightbox-next" id="lightboxNext" type="button" aria-label="下一張">›</button><div class="lightbox-caption" id="lightboxCaption"></div></div>
+
+  <script>
+    /*
+      ===== 活動資料只需要改這一區 =====
+      1. 圖片建議放在 assets/events/活動資料夾/
+      2. cover 是卡片封面；photos 是點進去後的相簿
+      3. 若圖片還沒準備好，可先留空字串，頁面會顯示漂亮的替代封面
+      4. 新增活動時複製一整個 { ... }，id 不可重複
+    */
+    const EVENTS = [
+      {
+        id:"fitness-party-2026", title:"夢回・全民跳操同樂會", date:"2026-09-17", category:"遊戲活動",
+        cover:"assets/events/fitness-party/cover.jpg", icon:"🏃", attendees:"全體成員",
+        description:"副本打累了，爬塔爬累了嗎？這次不比輸出、不看戰力，大家一起跟著節奏動一動，在輕鬆的笑聲中留下新的回憶。",
+        photos:["assets/events/fitness-party/01.jpg","assets/events/fitness-party/02.jpg","assets/events/fitness-party/03.jpg"]
+      },
+      {
+        id:"new-year-2026", title:"2025再見，2026你好", date:"2026-01-01", category:"節慶活動",
+        cover:"assets/events/new-year-2026/cover.jpg", icon:"🎆", attendees:"夢回家族",
+        description:"大家第一次一起跨年。倒數、煙火與合照，把新一年的第一份快樂留給彼此，也期待未來還有更多值得紀念的夜晚。",
+        photos:["assets/events/new-year-2026/01.jpg","assets/events/new-year-2026/02.jpg","assets/events/new-year-2026/03.jpg","assets/events/new-year-2026/04.jpg"]
+      },
+      {
+        id:"christmas-2025", title:"叮叮噹・染衣節", date:"2025-12-24", category:"節慶活動",
+        cover:"assets/events/christmas-2025/cover.jpg", icon:"🎄", attendees:"夢回小夥伴",
+        description:"歲末將至，鈴聲入夜。大家換上聖誕配色，一起拍攝第一年的聖誕大合照，為這個冬天添上一點溫暖。",
+        photos:["assets/events/christmas-2025/01.jpg","assets/events/christmas-2025/02.jpg"]
+      },
+      {
+        id:"lantern-2025", title:"花燈夜遊・月下合影", date:"2025-10-06", category:"拍照活動",
+        cover:"", icon:"🏮", attendees:"自由參加",
+        description:"提著花燈走過熟悉的街巷，在月色下集合拍照。沒有競賽，只有聊天、散步和剛剛好的夜色。",
+        photos:[]
+      },
+      {
+        id:"pve-challenge-2025", title:"十人俠境挑戰夜", date:"2025-08-16", category:"副本活動",
+        cover:"", icon:"⚔️", attendees:"10 人隊伍",
+        description:"從研究機制到正式通關，團員互相補位並完成當晚目標。這不只是一場副本，也是屬於隊伍的共同紀錄。",
+        photos:[]
+      }
+    ];
+
+    const $ = (s, root=document) => root.querySelector(s);
+    const grid=$("#eventGrid"), filters=$("#filters"), search=$("#searchInput"), sort=$("#sortSelect");
+    const modal=$("#eventModal"), modalBody=$("#modalBody"), lightbox=$("#lightbox");
+    let activeCategory="全部", lightboxPhotos=[], lightboxIndex=0;
+    const categories=["全部",...new Set(EVENTS.map(event=>event.category))];
+    const dateText=value=>new Intl.DateTimeFormat("zh-Hant",{year:"numeric",month:"long",day:"numeric"}).format(new Date(value+"T00:00:00"));
+    const escapeHtml=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));
+
+    function imageMarkup(src,alt,icon,extraClass=""){
+      return `<span class="cover-fallback ${extraClass}">${escapeHtml(icon||"✦")}</span>${src?`<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" onerror="this.style.display='none'">`:""}`;
+    }
+    function renderFilters(){filters.innerHTML=categories.map(item=>`<button class="filter-btn ${item===activeCategory?"active":""}" type="button" data-category="${escapeHtml(item)}">${escapeHtml(item)}</button>`).join("")}
+    function filteredEvents(){
+      const keyword=search.value.trim().toLowerCase();
+      const result=EVENTS.filter(event=>(activeCategory==="全部"||event.category===activeCategory)&&(!keyword||[event.title,event.description,event.category].join(" ").toLowerCase().includes(keyword)));
+      return result.sort((a,b)=>sort.value==="photos"?b.photos.length-a.photos.length:sort.value==="oldest"?a.date.localeCompare(b.date):b.date.localeCompare(a.date));
+    }
+    function render(){
+      const events=filteredEvents();
+      grid.innerHTML=events.map(event=>`<article class="event-card" tabindex="0" role="button" data-id="${event.id}" aria-label="查看 ${escapeHtml(event.title)}">
+        <div class="cover">${imageMarkup(event.cover,event.title,event.icon)}<div class="cover-top"><span class="badge">${escapeHtml(event.category)}</span><span class="badge photo-count">▧ ${event.photos.length}</span></div></div>
+        <div class="card-body"><span class="event-date">${dateText(event.date)}</span><h3>${escapeHtml(event.title)}</h3><p>${escapeHtml(event.description)}</p><div class="card-bottom"><span class="attendees">♟ ${escapeHtml(event.attendees)}</span><span class="view-link">查看回憶 →</span></div></div>
+      </article>`).join("");
+      $("#resultCount").textContent=`顯示 ${events.length} 場活動`;
+      $("#emptyState").classList.toggle("show",events.length===0);grid.style.display=events.length?"grid":"none";
+    }
+    function openEvent(id){
+      const event=EVENTS.find(item=>item.id===id);if(!event)return;
+      modalBody.innerHTML=`<div class="modal-hero">${imageMarkup(event.cover,event.title,event.icon)}<div class="modal-gradient"></div><div class="modal-title"><small>${dateText(event.date)} · ${escapeHtml(event.category)}</small><h2 id="modalHeading">${escapeHtml(event.title)}</h2></div></div>
+        <div class="modal-content"><div class="modal-meta"><span class="meta-pill">🗓 ${dateText(event.date)}</span><span class="meta-pill">♟ ${escapeHtml(event.attendees)}</span><span class="meta-pill">📷 ${event.photos.length} 張照片</span></div><p class="modal-description">${escapeHtml(event.description)}</p><div class="gallery-head"><h3>活動照片</h3><span class="gallery-tip">點擊照片可放大查看</span></div><div class="photo-grid">${event.photos.length?event.photos.map((src,index)=>`<button class="photo-item" type="button" data-photo-index="${index}" aria-label="查看第 ${index+1} 張照片"><span class="photo-placeholder">照片 ${index+1}</span><img src="${escapeHtml(src)}" alt="${escapeHtml(event.title)} 活動照片 ${index+1}" loading="lazy" onerror="this.style.display='none'"></button>`).join(""):`<div class="empty show" style="grid-column:1/-1"><strong>照片整理中</strong><span>將圖片放進活動資料夾，再把路徑填入 photos 即會顯示。</span></div>`}</div></div>`;
+      lightboxPhotos=event.photos;modal.classList.add("show");document.body.style.overflow="hidden";$(".modal-panel",modal).scrollTop=0;$("#modalClose").focus();
+    }
+    function closeModal(){modal.classList.remove("show");document.body.style.overflow=""}
+    function showPhoto(index){if(!lightboxPhotos.length)return;lightboxIndex=(index+lightboxPhotos.length)%lightboxPhotos.length;$("#lightboxImage").src=lightboxPhotos[lightboxIndex];$("#lightboxCaption").textContent=`${lightboxIndex+1} / ${lightboxPhotos.length}`;lightbox.classList.add("show")}
+    function closeLightbox(){lightbox.classList.remove("show");$("#lightboxImage").removeAttribute("src")}
+
+    filters.addEventListener("click",event=>{const btn=event.target.closest("[data-category]");if(!btn)return;activeCategory=btn.dataset.category;renderFilters();render()});
+    grid.addEventListener("click",event=>{const card=event.target.closest("[data-id]");if(card)openEvent(card.dataset.id)});
+    grid.addEventListener("keydown",event=>{if((event.key==="Enter"||event.key===" ")&&event.target.matches("[data-id]")){event.preventDefault();openEvent(event.target.dataset.id)}});
+    search.addEventListener("input",render);sort.addEventListener("change",render);
+    modal.addEventListener("click",event=>{if(event.target===modal)closeModal();const photo=event.target.closest("[data-photo-index]");if(photo)showPhoto(Number(photo.dataset.photoIndex))});
+    $("#modalClose").addEventListener("click",closeModal);$("#lightboxClose").addEventListener("click",closeLightbox);$("#lightboxPrev").addEventListener("click",()=>showPhoto(lightboxIndex-1));$("#lightboxNext").addEventListener("click",()=>showPhoto(lightboxIndex+1));
+    lightbox.addEventListener("click",event=>{if(event.target===lightbox)closeLightbox()});
+    document.addEventListener("keydown",event=>{if(event.key==="Escape"){if(lightbox.classList.contains("show"))closeLightbox();else if(modal.classList.contains("show"))closeModal()}if(lightbox.classList.contains("show")&&event.key==="ArrowLeft")showPhoto(lightboxIndex-1);if(lightbox.classList.contains("show")&&event.key==="ArrowRight")showPhoto(lightboxIndex+1)});
+    const themeToggle=$("#themeToggleBtn");
+    function setTheme(theme){
+      document.documentElement.dataset.theme=theme;
+      localStorage.setItem("registration_theme",theme);
+      localStorage.setItem("wwm-home-theme-v2",theme);
+      themeToggle.textContent=theme==="light"?"☾ 夜間":"☀ 白天";
+      document.querySelector('meta[name="theme-color"]').content=theme==="light"?"#eef3fb":"#0b1020";
+    }
+    themeToggle.addEventListener("click",()=>setTheme(document.documentElement.dataset.theme==="light"?"dark":"light"));
+    setTheme(localStorage.getItem("registration_theme")||localStorage.getItem("wwm-home-theme-v2")||"dark");
+    const floatingNav=$("#floatingNav");
+    addEventListener("scroll",()=>floatingNav.classList.toggle("scrolled",scrollY>18),{passive:true});
+    $("#eventTotal").textContent=EVENTS.length;renderFilters();render();
+  </script>
+  <script>
+    (async()=>{
+      const box=document.getElementById("siteAnnouncement");
+      if(!box)return;
+      const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));
+      try{
+        const response=await fetch("/WhereWindMeet/data/announcement.json?t="+Date.now());
+        const data=await response.json();
+        const items=data.enabled&&Array.isArray(data.announcements)?data.announcements:[];
+        if(!items.length){box.remove();return}
+        let current=0,timer;
+        const show=index=>{
+          current=(index+items.length)%items.length;
+          const item=items[current];
+          box.innerHTML=`<div class="announcementBar"><div class="announcementIcon">📢</div><div class="announcementContent"><div class="announcementTitle">${esc(item.title||"重要公告")}</div>${item.pill?`<div class="announcementPill">${esc(item.pill)}</div>`:""}<div class="announcementText">${esc(item.text||item.content||item.message||"")}</div><div class="announcementTime">更新時間：${esc(item.updated||"")}</div></div>${items.length>1?`<div class="announcementControls"><button class="announcementArrow" data-go="-1" type="button" aria-label="上一則">‹</button><button class="announcementArrow" data-go="1" type="button" aria-label="下一則">›</button></div><div class="announcementDots">${items.map((_,i)=>`<button class="announcementDot ${i===current?"active":""}" data-index="${i}" type="button" aria-label="第 ${i+1} 則公告"></button>`).join("")}</div>`:""}</div>`;
+          box.querySelectorAll("[data-go]").forEach(btn=>btn.onclick=()=>manual(current+Number(btn.dataset.go)));
+          box.querySelectorAll("[data-index]").forEach(btn=>btn.onclick=()=>manual(Number(btn.dataset.index)));
+        };
+        const start=()=>{clearInterval(timer);if(items.length>1)timer=setInterval(()=>show(current+1),5000)};
+        const manual=index=>{show(index);start()};
+        show(0);start();
+      }catch(error){box.remove()}
+    })();
+  </script>
+</body>
+</html>
