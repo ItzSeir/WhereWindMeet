@@ -13524,6 +13524,66 @@ body {
       return getSlotDisplayTime(slot) || slot?.time || "";
     }
 
+    // ===== 報名時間限制 =====
+    // 開團前 15 分鐘開始提醒；進入開團前 5 分鐘後停止網頁報名。
+    const SIGNUP_WARNING_MINUTES = 15;
+    const SIGNUP_CUTOFF_MINUTES = 5;
+
+    function getSlotStartDateTime(dateKey, slot){
+      const date = parseDateKey(dateKey);
+      const timeText = String(getSlotDisplayTime(slot) || slot?.time || "").trim();
+      const match = timeText.match(/^(\d{1,2}):(\d{2})$/);
+
+      if(!date || !match) return null;
+
+      const hour = Number(match[1]);
+      const minute = Number(match[2]);
+      if(hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+
+      date.setHours(hour, minute, 0, 0);
+      return date;
+    }
+
+    function getSignupTimingState(dateKey, slot){
+      const startAt = getSlotStartDateTime(dateKey, slot);
+      if(!startAt){
+        return { state:"open", startAt:null, diffMs:null, minutesUntil:null };
+      }
+
+      const diffMs = startAt.getTime() - Date.now();
+      const minutesUntil = Math.max(0, Math.ceil(diffMs / 60000));
+
+      if(diffMs <= SIGNUP_CUTOFF_MINUTES * 60000){
+        return { state:"closed", startAt, diffMs, minutesUntil };
+      }
+
+      if(diffMs <= SIGNUP_WARNING_MINUTES * 60000){
+        return { state:"warning", startAt, diffMs, minutesUntil };
+      }
+
+      return { state:"open", startAt, diffMs, minutesUntil };
+    }
+
+    function guardSignupTime(dateKey, slot, { showWarning = true } = {}){
+      const timing = getSignupTimingState(dateKey, slot);
+      const timeLabel = getSlotDisplayTime(slot) || slot?.time || "開團時間";
+
+      if(timing.state === "closed") {
+        if(timing.diffMs !== null && timing.diffMs <= 0){
+          alert(`此隊伍（${timeLabel}）已到或已過開團時間，網頁報名已停止。\n\n請直接在遊戲內詢問團長或隊伍是否還能加入。`);
+        }else{
+          alert(`此隊伍已進入開團前 ${SIGNUP_CUTOFF_MINUTES} 分鐘，網頁報名已停止。\n\n請直接在遊戲內詢問團長或隊伍是否還有空位。`);
+        }
+        return false;
+      }
+
+      if(timing.state === "warning" && showWarning){
+        alert(`⚠️ 距離 ${timeLabel} 開團約剩 ${timing.minutesUntil} 分鐘。\n\n建議直接在遊戲內詢問團長或隊伍是否還有空位。\n網頁仍可繼續報名，直到開團前 ${SIGNUP_CUTOFF_MINUTES} 分鐘。`);
+      }
+
+      return true;
+    }
+
     function renderSlotTime(slot){
       const originalTime = escapeHtml(slot?.time || "未設定時間");
       const status = getSlotStatus(slot);
@@ -14496,6 +14556,9 @@ body {
       const slot = dayData.slots[slotIndex];
       if(!slot) return;
 
+      // 使用者可能在報名視窗停留一段時間，送出前再次確認是否已進入最後 5 分鐘。
+      if(!guardSignupTime(dateKey, slot, { showWarning:false })) return;
+
       slot.members = Array.isArray(slot.members) ? slot.members : [];
       slot.pendingMembers = getPendingMembers(slot);
 
@@ -15448,6 +15511,8 @@ body {
       const slot = dayData.slots[slotIndex];
       if(!slot) return;
 
+      if(!guardSignupTime(dateKey, slot)) return;
+
       slot.members = Array.isArray(slot.members) ? slot.members : [];
 
       if(slot.members.length >= getSlotMaxPeople(slot)){
@@ -15475,6 +15540,8 @@ body {
 
       const slot = dayData.slots[slotIndex];
       if(!slot) return;
+
+      if(!guardSignupTime(dateKey, slot)) return;
 
       slot.members = Array.isArray(slot.members) ? slot.members : [];
       slot.pendingMembers = getPendingMembers(slot);
@@ -15924,6 +15991,8 @@ body {
       const slot = dayData?.slots?.[slotIndex];
       if(!dayData || !slot) return;
 
+      if(!guardSignupTime(dateKey, slot)) return;
+
       const members = Array.isArray(slot.members) ? slot.members : [];
       const maxPeople = getSlotMaxPeople(slot);
       if(members.length >= maxPeople){
@@ -15979,6 +16048,10 @@ body {
 
       const slot = dayData.slots[slotIndex];
       if(!slot) return;
+
+      // 批量視窗開著時也可能跨進最後 5 分鐘，因此送出前再次檢查。
+      if(!guardSignupTime(dateKey, slot, { showWarning:false })) return;
+
       slot.members = Array.isArray(slot.members) ? slot.members : [];
       slot.pendingMembers = getPendingMembers(slot);
 
@@ -16490,6 +16563,8 @@ body {
             const status = getStatus(members, slot);
             const slotScheduleStatus = getSlotStatus(slot);
             const isSlotCancelled = slotScheduleStatus === "取消";
+            const signupTiming = getSignupTimingState(dateKey, slot);
+            const isSignupClosed = signupTiming.state === "closed";
             const allowedRoles = getAllowedRoles(members, slot);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
@@ -16671,19 +16746,21 @@ body {
                   <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || members.length >= maxPeople ? "disabled" : ""}>
                     ${isSlotCancelled
                       ? "此隊已取消"
-                      : members.length >= maxPeople
-                        ? "此隊已滿"
-                        : isProtectedTeam(slot)
-                          ? (forceHeal ? "申請治療位" : "申請報名")
-                          : forceHeal
-                            ? "僅限治療報名"
-                            : "立即報名"}
+                      : isSignupClosed
+                        ? "報名已截止"
+                        : members.length >= maxPeople
+                          ? "此隊已滿"
+                          : isProtectedTeam(slot)
+                            ? (forceHeal ? "申請治療位" : "申請報名")
+                            : forceHeal
+                              ? "僅限治療報名"
+                              : "立即報名"}
                   </button>
                   <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || members.length >= maxPeople ? "disabled" : ""}>
-                    ${isProtectedTeam(slot) ? "多人申請" : "批量組隊"}
+                    ${isSignupClosed ? "報名已截止" : (isProtectedTeam(slot) ? "多人申請" : "批量組隊")}
                   </button>
                   <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
-                    ${isProtectedTeam(slot) ? "快速申請" : "快速報名"}
+                    ${isSignupClosed ? "報名已截止" : (isProtectedTeam(slot) ? "快速申請" : "快速報名")}
                   </button>
                 </div>
               </div>
