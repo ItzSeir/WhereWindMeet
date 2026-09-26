@@ -30,7 +30,7 @@
     html,body{
       margin:0;
       padding:0;
-      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif;
+      font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
       color:var(--text);
       background:
         radial-gradient(circle at top left, rgba(110,168,255,.18), transparent 28%),
@@ -9183,10 +9183,10 @@ body {
 
     /* ===== v18 · 字體／可讀性／彩色白天模式／週一固定顯示 ===== */
     html,body,button,input,select,textarea{
-      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif !important;
+      font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;
     }
     .workspace-kicker,.side-kicker{
-      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif !important;
+      font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;
       letter-spacing:.08em !important;
       font-size:11px !important;
     }
@@ -9752,8 +9752,9 @@ body {
     .signup-modal,.signup-modal *,
     .confirm-modal,.confirm-modal *,
     .activity-filter-panel,.activity-filter-panel *{
-      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif !important;
+      font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;
     }
+    .app-workspace{ font-synthesis:none; }
 
     /* Any labels that previously used a developer/monospace look. */
     .workspace-kicker,.side-kicker,
@@ -9762,7 +9763,7 @@ body {
     .day-sub,.slot-instance,
     .slot-description-title,
     .sidebar-tools-title{
-      font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif !important;
+      font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;
       text-transform:none !important;
     }
 
@@ -10136,7 +10137,7 @@ body {
 
 
     /* ===== v21 readability / preview / light-navbar patch ===== */
-    html,body,button,input,select,textarea{ font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif !important; }
+    html,body,button,input,select,textarea{ font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",sans-serif !important; }
     .workspace-kicker,.side-kicker,
     .sidebar-tools-title,
     .team-list-hint,
@@ -10146,7 +10147,7 @@ body {
     .workspace-stat span,
     .selected-day-heading-row p,
     .team-intro-type,
-    .team-intro-meta span{ font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif !important; letter-spacing:.03em !important; }
+    .team-intro-meta span{ font-family:"Noto Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC",system-ui,-apple-system,"Segoe UI",sans-serif !important; letter-spacing:.03em !important; }
     .workspace-kicker,.side-kicker{ font-size:11px !important; font-weight:900 !important; }
 
     .workspace-statbar{ align-items:stretch !important; }
@@ -12631,6 +12632,46 @@ body {
       border-color:transparent !important;
       box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 28%,transparent) !important;
     }
+
+    /* 日期區限定樣式：週一保留可見，用細紫色提示，不改全站字體或導航。 */
+    #dateNavigator .date-nav-btn.is-pinned-monday{
+      opacity:1 !important;
+      background:var(--ui-panel) !important;
+      border-color:rgba(171,151,255,.55) !important;
+      box-shadow:inset 3px 0 0 #a894f9 !important;
+    }
+    #dateNavigator .date-nav-btn.is-pinned-monday .date-nav-day{
+      color:#f0ebff !important;
+      background:#594987 !important;
+      border-color:#8774c5 !important;
+    }
+    #dateNavigator .date-nav-btn.is-pinned-monday.active{
+      box-shadow:inset 4px 0 0 #a894f9,0 5px 14px rgba(130,104,221,.12) !important;
+    }
+    html[data-theme="light"] #dateNavigator .date-nav-btn.is-pinned-monday{
+      background:#f8f6ff !important;
+      border-color:#cbbef4 !important;
+    }
+    html[data-theme="light"] #dateNavigator .date-nav-btn.is-pinned-monday .date-nav-day{
+      color:#fff !important;
+      background:#7761ba !important;
+      border-color:#7761ba !important;
+    }
+    .day-card.is-pinned-monday .day-head{
+      border-left:4px solid #a894f9 !important;
+      border-color:rgba(171,151,255,.42) !important;
+      border-left-color:#a894f9 !important;
+    }
+    html[data-theme="light"] .day-card.is-pinned-monday .day-head{
+      border-color:#d7cef5 !important;
+      border-left-color:#917bd5 !important;
+    }
+    .days > .day-card + .day-card{
+      margin-top:22px !important;
+    }
+    @media (max-width:768px){
+      .days > .day-card + .day-card{ margin-top:16px !important; }
+    }
   </style>
 </head>
 <body data-site-page="PVERegistration">
@@ -13377,13 +13418,11 @@ body {
     let currentBatchSignup = null;
     let pendingLeaderAction = null;
     let currentRevealPin = "";
-    const expandedEmptyDays = new Set();
     let editingBatchPresetIndex = -1;
     let currentSearchQuery = "";
     let currentTypeFilter = "all";
     let currentSizeFilter = "all";
     let selectedDateKey = localStorage.getItem("registration_selected_date") || "";
-    let emptyDateGroupExpanded = false;
     localStorage.setItem("registration_type_filter", "all");
     localStorage.setItem("registration_size_filter", "all");
     localStorage.removeItem("registration_activity_filter");
@@ -16218,41 +16257,26 @@ body {
       if(!nav) return;
       ensureSelectedDate(dates);
       const todayKey = formatDate(getTodayStart());
-      const active = [];
-      const empty = [];
-
-      const pinnedMonday = dates.find(date => date.getDay() === 1);
-      const pinnedMondayKey = pinnedMonday ? formatDate(pinnedMonday) : "";
-
-      dates.forEach(date => {
+      const mondayKey = formatDate(getNextMonday());
+      const items = dates.map(date => {
         const key = formatDate(date);
         const info = getDateActivity(key);
-        const item = { date, key, info, isPinnedMonday:key === pinnedMondayKey };
-        // 週一固定留在左側主日期列，即使當天完全沒有報名。
-        if(!info.isEmpty || key === selectedDateKey || key === pinnedMondayKey) active.push(item);
-        else empty.push(item);
+        return { date, key, info, isPinnedMonday:key === mondayKey };
       });
 
-      const buttonHtml = ({date,key,info,isPinnedMonday=false}, isEmpty=false) => {
+      const buttonHtml = ({date,key,info,isPinnedMonday=false}) => {
         const totalPeople = info.confirmed + info.pending;
         const meta = info.isEmpty
           ? "目前沒有報名"
           : `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ""}`;
-        return `<button type="button" class="date-nav-btn${key === selectedDateKey ? " active" : ""}${key === todayKey ? " is-today" : ""}${isPinnedMonday ? " is-pinned-monday" : ""}${isEmpty ? " is-empty" : ""}" data-select-date="${key}">
+        return `<button type="button" class="date-nav-btn${key === selectedDateKey ? " active" : ""}${key === todayKey ? " is-today" : ""}${isPinnedMonday ? " is-pinned-monday" : ""}${info.isEmpty ? " is-empty" : ""}" data-select-date="${key}">
           <span class="date-nav-day"><strong>${date.getDate()}</strong><span>${date.getMonth()+1}月</span></span>
           <span class="date-nav-main"><strong>${weekdayText(date)}${key === todayKey ? " · 今天" : ""}</strong><span>${meta}</span></span>
           <span class="date-nav-count">${info.isEmpty ? "空" : totalPeople}</span>
         </button>`;
       };
 
-      let html = active.map(item => buttonHtml(item)).join("");
-      if(empty.length){
-        html += `<div class="empty-date-group">
-          <button type="button" class="empty-date-toggle" id="emptyDateToggle"><span>空日期</span><span>${empty.length} ${emptyDateGroupExpanded ? "▲" : "▼"}</span></button>
-          ${emptyDateGroupExpanded ? `<div class="empty-date-list">${empty.map(item => buttonHtml(item, true)).join("")}</div>` : ""}
-        </div>`;
-      }
-      nav.innerHTML = html;
+      nav.innerHTML = items.map(buttonHtml).join("");
 
       nav.querySelectorAll("[data-select-date]").forEach(btn => {
         btn.onclick = () => {
@@ -16263,10 +16287,6 @@ body {
             document.getElementById("selectedDayHero")?.scrollIntoView({behavior:"smooth", block:"start"});
           }
         };
-      });
-      nav.querySelector("#emptyDateToggle")?.addEventListener("click", () => {
-        emptyDateGroupExpanded = !emptyDateGroupExpanded;
-        renderDateNavigator(dates);
       });
     }
 
@@ -16489,7 +16509,11 @@ body {
       const allDates = getDatesToShow();
       ensureSelectedDate(allDates);
       renderDateNavigator(allDates);
-      const dates = allDates.filter(date => formatDate(date) === selectedDateKey);
+      const mondayKey = formatDate(getNextMonday());
+      const dates = [selectedDateKey, mondayKey]
+        .filter((key, index, keys) => key && keys.indexOf(key) === index)
+        .map(key => allDates.find(date => formatDate(date) === key))
+        .filter(Boolean);
       const daysEl = document.getElementById("days");
       const myProfile = getMyProfile();
       const savedName = myProfile.name;
@@ -16503,10 +16527,8 @@ body {
         const dayMemberCount = daySlots.reduce((total, slot) => total + (Array.isArray(slot.members) ? slot.members.length : 0), 0);
         const dayPendingCount = daySlots.reduce((total, slot) => total + getPendingMembers(slot).length, 0);
         const isEmptyDay = dayMemberCount + dayPendingCount === 0;
-        const isCollapsedDay = false;
-
         html += `
-          <section class="day-card${isCollapsedDay ? " day-collapsed" : ""}" data-date-card="${dateKey}">
+          <section class="day-card${dateKey === mondayKey ? " is-pinned-monday" : ""}" data-date-card="${dateKey}">
             <div class="day-head">
               <div>
                 <h2 class="day-title">${displayDate(date)}</h2>
@@ -16514,7 +16536,6 @@ body {
               </div>
               <div class="day-actions">
                 ${isEmptyDay ? `<span class="day-empty-summary">目前無報名${daySlots.length ? `｜${daySlots.length} 個時段` : ""}</span>` : ``}
-                ${isEmptyDay ? `<button class="day-collapse-btn" data-action="toggle-day-collapse" data-date="${dateKey}">${isCollapsedDay ? "展開" : "收起"}</button>` : ``}
                 <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
               </div>
             </div>
@@ -16783,15 +16804,6 @@ body {
     }
 
     function bindActions(){
-
-      document.querySelectorAll('[data-action="toggle-day-collapse"]').forEach(btn => {
-        btn.onclick = () => {
-          const dateKey = btn.dataset.date;
-          if(expandedEmptyDays.has(dateKey)) expandedEmptyDays.delete(dateKey);
-          else expandedEmptyDays.add(dateKey);
-          render();
-        };
-      });
 
       document.querySelectorAll('[data-action="approve-pending"], [data-action="reject-pending"]').forEach(btn => {
         btn.onclick = () => {
