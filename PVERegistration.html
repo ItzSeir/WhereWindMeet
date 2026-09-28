@@ -12672,6 +12672,23 @@ body {
     @media (max-width:768px){
       .days > .day-card + .day-card{ margin-top:16px !important; }
     }
+
+    /* 新增報名視窗：讓職業選單在面板內展開，不再被短面板裁切。 */
+    #signupModal .signup-modal-box{
+      min-height:min(450px, calc(100dvh - 48px)) !important;
+      display:flex !important;
+      flex-direction:column !important;
+    }
+    #signupModal .signup-modal-actions{
+      margin-top:auto !important;
+      padding-top:16px !important;
+    }
+    #signupModal #roleSelect.open #roleSelectMenu{
+      position:relative !important;
+      top:auto !important;
+      margin-top:8px !important;
+      box-shadow:none !important;
+    }
   </style>
 </head>
 <body data-site-page="PVERegistration">
