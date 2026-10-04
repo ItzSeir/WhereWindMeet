@@ -13373,7 +13373,7 @@ body {
       getFirestore,
       doc,
       getDoc,
-      setDoc,
+      runTransaction,
       collection,
       onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -13421,6 +13421,47 @@ body {
     };
 
     let globalData = {};
+
+    // Discord sync protocol: conditional writes prevent stale whole-day overwrites.
+    class ScheduleSyncConflict extends Error {}
+    function scheduleRevision(data){ return Number.isSafeInteger(data?._syncVersion) ? data._syncVersion : 0; }
+    function validSlotId(id){ return typeof id === "string" && /^[a-zA-Z0-9_-]{1,36}$/.test(id); }
+    function guardDialogRevision(context){
+      if(!context?.dateKey) return false;
+      if(context.syncRevision !== scheduleRevision(globalData[context.dateKey])){
+        alert("這個日期的隊伍或名單已更新。請關閉視窗，重新選擇隊伍後再操作，避免更動錯誤的玩家或隊伍。");
+        return false;
+      }
+      return true;
+    }
+    async function setDoc(ref, proposed){
+      const expected = scheduleRevision(proposed);
+      const value = structuredClone(proposed);
+      const ids = new Set();
+      (value.slots || []).forEach(slot => {
+        if(!validSlotId(slot.id) || ids.has(slot.id)) slot.id = crypto.randomUUID();
+        ids.add(slot.id);
+      });
+      const stored = await runTransaction(db, async transaction => {
+        const current = await transaction.get(ref);
+        const latest = current.exists() ? current.data() : null;
+        if(scheduleRevision(latest) !== expected || (!current.exists() && expected !== 0)){
+          throw new ScheduleSyncConflict("隊伍已被其他人更新，這次操作沒有儲存。請查看最新名單後再試。");
+        }
+        const next = { ...value, _syncProtocol:3, _syncVersion:expected + 1 };
+        transaction.set(ref, next);
+        return next;
+      });
+      // Keep UI in sync even before the Firestore listener delivers the commit.
+      globalData[ref.id] = stored;
+    }
+    window.addEventListener("unhandledrejection", event => {
+      if(event.reason instanceof ScheduleSyncConflict){
+        event.preventDefault();
+        alert(event.reason.message);
+      }
+    });
+
     let isRendering = false;
     let currentSignup = { dateKey:"", slotIndex:-1, allowedRoles:[] };
     let selectedRoleValue = "";
@@ -13469,9 +13510,8 @@ body {
     }
 
     function getTodayStart(){
-      const d = new Date();
-      d.setHours(0,0,0,0);
-      return d;
+      const gameNow = new Date(Date.now() + 8 * 3600000);
+      return new Date(gameNow.getUTCFullYear(), gameNow.getUTCMonth(), gameNow.getUTCDate());
     }
 
     function addDays(date, n){
@@ -13513,8 +13553,7 @@ body {
     }
 
     function getNextMonday(){
-      const now = new Date();
-      now.setHours(0,0,0,0);
+      const now = getTodayStart();
       const day = now.getDay();
       const diff = (8 - day) % 7 || 7;
       const nextMonday = new Date(now);
@@ -13596,8 +13635,7 @@ body {
       const minute = Number(match[2]);
       if(hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
 
-      date.setHours(hour, minute, 0, 0);
-      return date;
+      return new Date(`${dateKey}T${pad(hour)}:${pad(minute)}:00+08:00`);
     }
 
     function getSignupTimingState(dateKey, slot){
@@ -13621,6 +13659,7 @@ body {
     }
 
     function guardSignupTime(dateKey, slot, { showWarning = true } = {}){
+      if(getSlotStatus(slot) === "取消"){ alert("此隊伍已取消，不能報名。"); return false; }
       const timing = getSignupTimingState(dateKey, slot);
       const timeLabel = getSlotDisplayTime(slot) || slot?.time || "開團時間";
 
@@ -14265,17 +14304,22 @@ body {
         if(!data.slots || !Array.isArray(data.slots)){
           await setDoc(ref, buildDefaultDayData(dateObj));
         } else {
-          let changed = false;
+          let changed = data._syncProtocol !== 3 || !Number.isSafeInteger(data._syncVersion);
+          const existingIds = new Set();
 
           data.slots = data.slots.map(slot => {
+            const slotId = validSlotId(slot.id) && !existingIds.has(slot.id) ? slot.id : crypto.randomUUID();
+            existingIds.add(slotId);
             const updatedSlot = {
               ...slot,
+              id:slotId,
               isCustom: typeof slot.isCustom === "undefined" ? false : slot.isCustom,
               teamType: ["普通團","天賦團","競速團","爬塔"].includes(slot.teamType) ? slot.teamType : "普通團",
               teamSize: Number(slot.teamSize) === 5 ? 5 : 10,
               minHealer: normalizeMinHealer(slot.minHealer),
               pendingMembers: Array.isArray(slot.pendingMembers)
                 ? slot.pendingMembers.map(member => ({
+                    ...member,
                     name: normalizeName(member.name || ""),
                     role: CONFIG.roles.includes(member.role) ? member.role : "輸出",
                     tag: member.tag || "",
@@ -14301,6 +14345,7 @@ body {
             };
 
             if(
+              slot.id !== slotId ||
               typeof slot.isCustom === "undefined" ||
               !slot.teamType ||
               !slot.teamSize ||
@@ -14329,7 +14374,12 @@ body {
     async function initializeVisibleDates(){
       const dates = getDatesToShow();
       for(const dateObj of dates){
-        await ensureDateDoc(formatDate(dateObj), dateObj);
+        const dateKey = formatDate(dateObj);
+        try { await ensureDateDoc(dateKey, dateObj); }
+        catch(error){
+          if(!(error instanceof ScheduleSyncConflict)) throw error;
+          await ensureDateDoc(dateKey, dateObj);
+        }
       }
     }
 
@@ -14550,7 +14600,7 @@ body {
     }
 
     window.openModal = (dateKey, slotIndex, allowedRoles) => {
-      currentSignup = { dateKey, slotIndex, allowedRoles };
+      currentSignup = { dateKey, slotIndex, allowedRoles, syncRevision:scheduleRevision(globalData[dateKey]) };
 
       const modal = document.getElementById("signupModal");
       const nameInput = document.getElementById("playerName");
@@ -14605,6 +14655,7 @@ body {
 
       saveFormDefaults(name, role);
 
+      if(!guardDialogRevision(currentSignup)) return;
       const { dateKey, slotIndex } = currentSignup;
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
@@ -14665,7 +14716,7 @@ body {
       const member = members[memberIndex];
       if(!member) return;
 
-      pendingDelete = { dateKey, slotIndex, memberIndex };
+      pendingDelete = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       document.getElementById("confirmModalText").textContent = `確定要刪除報名玩家「${member.name}」嗎？`;
       document.getElementById("confirmModal").classList.add("show");
     }
@@ -14677,6 +14728,7 @@ body {
 
     window.confirmRemoveMember = async () => {
       if(!pendingDelete) return;
+      if(!guardDialogRevision(pendingDelete)) return;
 
       const { dateKey, slotIndex, memberIndex } = pendingDelete;
       const dayData = structuredClone(globalData[dateKey]);
@@ -14708,7 +14760,7 @@ body {
       const member = globalData?.[dateKey]?.slots?.[slotIndex]?.members?.[memberIndex];
       if(!member) return;
 
-      currentTagEdit = { dateKey, slotIndex, memberIndex };
+      currentTagEdit = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       const currentTag = String(member.tag || "").trim();
       const sameTagMember = currentTag
         ? (globalData?.[dateKey]?.slots?.[slotIndex]?.members || []).find(m =>
@@ -14727,6 +14779,7 @@ body {
 
     window.saveMemberTag = async () => {
       if(!currentTagEdit) return;
+      if(!guardDialogRevision(currentTagEdit)) return;
 
       const { dateKey, slotIndex, memberIndex } = currentTagEdit;
       const tag = document.getElementById("tagInput").value.trim();
@@ -14759,7 +14812,7 @@ body {
       const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
       if(!dayData || !member) return;
 
-      currentMoveEdit = { dateKey, slotIndex, memberIndex };
+      currentMoveEdit = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
 
       const select = document.getElementById("moveTargetSelect");
       const info = document.getElementById("moveMemberInfo");
@@ -14790,6 +14843,7 @@ body {
 
     window.confirmMoveMember = async () => {
       if(!currentMoveEdit) return;
+      if(!guardDialogRevision(currentMoveEdit)) return;
 
       const { dateKey, slotIndex, memberIndex } = currentMoveEdit;
       const targetValue = document.getElementById("moveTargetSelect").value;
@@ -14859,7 +14913,7 @@ body {
       const member = globalData?.[dateKey]?.slots?.[slotIndex]?.members?.[memberIndex];
       if(!member) return;
 
-      currentRoleEdit = { dateKey, slotIndex, memberIndex };
+      currentRoleEdit = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       document.getElementById("editRoleMemberInfo").innerHTML =
         `要編輯的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
       document.getElementById("editRoleSelect").value = member.role || "輸出";
@@ -14873,6 +14927,7 @@ body {
 
     window.saveMemberRole = async () => {
       if(!currentRoleEdit) return;
+      if(!guardDialogRevision(currentRoleEdit)) return;
 
       const { dateKey, slotIndex, memberIndex } = currentRoleEdit;
       const newRole = document.getElementById("editRoleSelect").value;
@@ -14974,7 +15029,7 @@ body {
         }
         return;
       }
-      pendingLeaderAction = { dateKey, slotIndex, actionLabel, callback };
+      pendingLeaderAction = { dateKey, slotIndex, actionLabel, callback, syncRevision:scheduleRevision(globalData[dateKey]) };
       const context = document.getElementById("leaderAuthContext");
       if(context) context.textContent = `${teamTypeLabel(slot)}｜${slot.time}｜第 ${slot.instance || 1} 隊：${actionLabel}`;
       const input = document.getElementById("leaderAuthPinInput");
@@ -14992,6 +15047,7 @@ body {
 
     window.confirmLeaderAuth = async () => {
       if(!pendingLeaderAction) return;
+      if(!guardDialogRevision(pendingLeaderAction)) return;
       const input = document.getElementById("leaderAuthPinInput");
       const error = document.getElementById("leaderAuthError");
       const pin = String(input?.value || "").trim();
@@ -14999,7 +15055,9 @@ body {
       const slot = globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot) return closeLeaderAuthModal();
 
+      const actionContext = pendingLeaderAction;
       const ok = await verifyLeaderPin(slot, pin);
+      if(!guardDialogRevision(actionContext)) return;
       if(!ok){
         if(error) error.textContent = "PIN 不正確，請重新輸入。";
         input?.focus();
@@ -15037,7 +15095,7 @@ body {
             alert(`目前隊伍配置無法核准「${member.name}」的職業（${member.role}）。`);
             return;
           }
-          slot.members.push({ name:member.name, role:member.role, tag:"", note:"" });
+          slot.members.push({ ...member, name:member.name, role:member.role, tag:"", note:"" });
           slot.pendingMembers.splice(pendingIndex, 1);
           if(slot.members.length >= getSlotMaxPeople(slot)){
             autoCreateNextSameTimeSlot(dayData, slot);
@@ -15082,7 +15140,7 @@ body {
       const slot = globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot) return;
 
-      currentSlotStatusEdit = { dateKey, slotIndex };
+      currentSlotStatusEdit = { dateKey, slotIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       const statusSelect = document.getElementById("slotStatusSelect");
       const changedInput = document.getElementById("slotChangedTimeInput");
       const info = document.getElementById("slotStatusInfo");
@@ -15105,6 +15163,7 @@ body {
 
     window.saveSlotStatusModal = async () => {
       if(!currentSlotStatusEdit) return;
+      if(!guardDialogRevision(currentSlotStatusEdit)) return;
 
       const { dateKey, slotIndex } = currentSlotStatusEdit;
       const status = document.getElementById("slotStatusSelect").value;
@@ -15130,7 +15189,7 @@ body {
       const slot = globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot) return;
 
-      currentTeamTypeEdit = { dateKey, slotIndex };
+      currentTeamTypeEdit = { dateKey, slotIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       const teamSizeSelect = document.getElementById("teamSizeSelect");
       const teamTypeSelect = document.getElementById("teamTypeSelect");
       const minHealerSelect = document.getElementById("teamMinHealerSelect");
@@ -15180,6 +15239,7 @@ body {
 
     window.saveTeamType = async () => {
       if(!currentTeamTypeEdit) return;
+      if(!guardDialogRevision(currentTeamTypeEdit)) return;
 
       const { dateKey, slotIndex } = currentTeamTypeEdit;
       const teamSize = Number(document.getElementById("teamSizeSelect").value) === 5 ? 5 : 10;
@@ -16056,7 +16116,7 @@ body {
         return;
       }
 
-      currentBatchSignup = { dateKey, slotIndex };
+      currentBatchSignup = { dateKey, slotIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       const remain = maxPeople - members.length;
       document.getElementById("batchSignupInfo").innerHTML =
         `目標隊伍：<strong style="color:var(--text);">${escapeHtml(dateKey)}｜${escapeHtml(slot.time)}｜第 ${slot.instance || 1} 隊｜${teamTypeLabel(slot)}</strong><br>目前還可加入 <strong style="color:var(--text);">${remain}</strong> 人。`;
@@ -16084,6 +16144,7 @@ body {
 
     window.saveBatchSignup = async () => {
       if(!currentBatchSignup) return;
+      if(!guardDialogRevision(currentBatchSignup)) return;
 
       const rows = Array.from(document.querySelectorAll("#batchPlayerList .batch-player-row"));
       const players = rows
