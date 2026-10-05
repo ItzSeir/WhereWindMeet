@@ -3400,6 +3400,40 @@
       .markdownBody .codeBlock .copyCodeBtn{transition:none}
     }
   </style>
+
+  <style id="documentation-single-navigation">
+    /* The shared navbar is the only navigation header. */
+    .docsToolbar{
+      position:relative;
+      z-index:1200;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      width:min(calc(100% - 40px), 1100px);
+      min-height:42px;
+      margin:100px auto 0;
+    }
+    .docsToolbar .searchWrap{
+      flex:1;
+      max-width:680px;
+      margin:0 auto;
+    }
+    .docsToolbar .searchInput{height:42px;}
+    .docsToolbar .searchResults{
+      position:absolute;
+      inset:calc(100% + 8px) 0 auto;
+      max-height:min(58vh, 520px);
+    }
+    @media (min-width:769px){
+      .layout{margin-top:16px;height:calc(100vh - 172px);}
+    }
+    @media (max-width:768px){
+      body.sidebar-open #floatingNav{z-index:2000 !important;}
+      .docsToolbar{width:calc(100% - 20px);margin:0 auto;}
+      .docsToolbar .searchWrap{order:0;min-width:0;}
+      .docsToolbar .mobileMenuBtn{order:1;flex:0 0 42px;}
+    }
+  </style>
 </head>
 
 <body class="wherewindmeet-docs-page" data-site-page="documentation">
@@ -3441,33 +3475,15 @@
     <img id="imageLightboxImage" alt="放大圖片">
   </div>
 
-  <header class="docsTopbar">
-    <a class="brand" href="index.html">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzOJ5c0386XX_6Nc30CH9okPokvMTOGA9BhpgeuKTS_CyC4_QO3OITuVe4&s=10">
-      <span class="brandText">
-        <span>夢回花深處</span>
-        <span class="slash">/</span>
-        <strong>手冊</strong>
-      </span>
-    </a>
-
+  <div class="docsToolbar" role="search" aria-label="手冊搜尋">
     <button class="mobileMenuBtn" id="mobileMenuBtn" type="button" aria-label="開啟文章列表">☰</button>
-
     <div class="searchWrap">
       <span class="searchIcon">⌕</span>
-      <input class="searchInput" id="searchInput" type="search" placeholder="搜尋教學、資訊或公告">
+      <input class="searchInput" id="searchInput" type="search" aria-label="搜尋手冊" placeholder="搜尋教學、資訊或公告">
       <span class="searchKey">/</span>
       <div class="searchResults" id="searchResults"></div>
     </div>
-
-    <button class="themeToggle" id="themeToggle" type="button" aria-label="切換顯示主題">
-      <span class="themeIcon" id="themeIcon">🌙</span>
-      <span id="themeText">夜晚</span>
-    </button>
-
-    <a class="topLink" href="index">返回首頁</a>
-    <a class="topLink" href="PVERegistration">副本報名</a>
-  </header>
+  </div>
 
   <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
@@ -3574,9 +3590,7 @@
       sidebar: document.getElementById("sidebar"),
       mobileMenuBtn: document.getElementById("mobileMenuBtn"),
       sidebarBackdrop: document.getElementById("sidebarBackdrop"),
-      themeToggle: document.getElementById("themeToggle"),
-      themeIcon: document.getElementById("themeIcon"),
-      themeText: document.getElementById("themeText"),
+      themeToggle: document.getElementById("siteThemeToggleBtn"),
       content: document.querySelector(".content")
     };
 
@@ -4436,8 +4450,7 @@ document.title = `${title}｜夢回手冊`;
 
       const isDark = finalTheme === "dark";
 
-      el.themeIcon.textContent = isDark ? "🌙" : "☀️";
-      el.themeText.textContent = isDark ? "黑夜" : "白天";
+      el.themeToggle.textContent = isDark ? "☀ 白天" : "☾ 夜間";
 
       el.themeToggle.setAttribute(
         "aria-label",
@@ -4740,27 +4753,10 @@ document.title = `${title}｜夢回手冊`;
 /* Shared site navigation bridge for the documentation page */
 (function(){
   const nav=document.getElementById('floatingNav');
-  const sharedButton=document.getElementById('siteThemeToggleBtn');
-  const docsButton=document.getElementById('themeToggle');
-
-  function syncSharedButton(){
-    const isLight=document.documentElement.dataset.theme==='light';
-    if(sharedButton) sharedButton.textContent=isLight?'☾ 夜間':'☀ 白天';
-  }
-
-  if(sharedButton && docsButton){
-    sharedButton.addEventListener('click',function(){
-      docsButton.click();
-      requestAnimationFrame(syncSharedButton);
-    });
-  }
-
   window.addEventListener('scroll',function(){
     if(nav) nav.classList.toggle('scrolled',window.scrollY>18);
   },{passive:true});
 
-  new MutationObserver(syncSharedButton).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  syncSharedButton();
 })();
 </script>
 </body>
