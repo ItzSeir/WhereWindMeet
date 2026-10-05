@@ -12690,6 +12690,35 @@ body {
       box-shadow:none !important;
     }
   </style>
+
+  <style id="pve-light-readable-description">
+    /* Keep month labels readable on the purple Monday date badge. */
+    html[data-theme="light"] #dateNavigator .date-nav-btn.is-pinned-monday .date-nav-day span{
+      color:#ffffff !important;
+    }
+    /* Description formatting follows the theme without changing stored text. */
+    html[data-theme="light"] .slot-description-body strong{color:inherit;}
+    html[data-theme="light"] .slot-description-body .description-highlight{
+      color:#263954 !important;
+    }
+    html[data-theme="light"] .slot-description-body .description-color{
+      color:var(--description-color-light, #263954) !important;
+    }
+    html[data-theme="light"] .slot-description-body .description-color[data-color="red"]{--description-color-light:#991b1b;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="rose"]{--description-color-light:#9f1239;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="orange"]{--description-color-light:#9a3412;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="yellow"]{--description-color-light:#854d0e;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="gold"]{--description-color-light:#713f12;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="green"]{--description-color-light:#065f46;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="teal"]{--description-color-light:#115e59;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="cyan"]{--description-color-light:#155e75;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="blue"]{--description-color-light:#1e40af;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="indigo"]{--description-color-light:#3730a3;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="purple"]{--description-color-light:#5b21b6;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="pink"]{--description-color-light:#9d174d;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="white"]{--description-color-light:#334155;}
+    html[data-theme="light"] .slot-description-body .description-color[data-color="gray"]{--description-color-light:#475569;}
+  </style>
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -14201,13 +14230,14 @@ body {
       };
 
       t = t.replace(/\[color=(.*?)\](.*?)\[\/color\]/gs, (m, c, content) => {
-        const color = colors[c] || "#ffffff";
-        return `<span style="color:${color}">${content}</span>`;
+        const colorName = Object.prototype.hasOwnProperty.call(colors, c) ? c : "white";
+        const color = colors[colorName];
+        return `<span class="description-color" data-color="${colorName}" style="color:${color}">${content}</span>`;
       });
 
       t = t.replace(/\[highlight=(.*?)\](.*?)\[\/highlight\]/gs, (m, c, content) => {
         const color = highlights[c] || highlights.yellow;
-        return `<mark style="background:${color}; color:#ffffff; padding:1px 5px; border-radius:6px;">${content}</mark>`;
+        return `<mark class="description-highlight" style="background:${color}; color:#ffffff; padding:1px 5px; border-radius:6px;">${content}</mark>`;
       });
 
       t = t.replace(/\n/g, "<br>");
