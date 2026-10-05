@@ -3282,6 +3282,124 @@
     }
 </style>
   <link rel="stylesheet" href="site-shell.css">
+
+  <style id="documentation-code-block-fix">
+    /* Shared code toolbar: desktop and mobile, light and dark themes. */
+    .markdownBody .codeBlock{
+      margin:22px 0;
+      min-width:0;
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:var(--panel-soft);
+      box-shadow:0 8px 24px rgba(0,0,0,.05);
+    }
+    .markdownBody .codeBlockHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:11px 15px;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(100deg,color-mix(in srgb,var(--accent2,#8b5cf6) 8%,var(--panel)),var(--panel));
+      white-space:normal;
+    }
+    .markdownBody .codeLanguage{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      min-width:0;
+      padding:5px 9px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:var(--panel-soft);
+      font-size:11px;
+      font-weight:750;
+      letter-spacing:.02em;
+      color:var(--muted);
+    }
+    .markdownBody .codeLanguage svg{width:14px;height:14px;flex-shrink:0}
+    .markdownBody .codeBlock .copyCodeBtn{
+      position:static;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      flex-shrink:0;
+      min-width:94px;
+      min-height:36px;
+      padding:7px 12px;
+      border:1px solid color-mix(in srgb,var(--accent2,#8b5cf6) 28%,var(--border));
+      border-radius:10px;
+      color:color-mix(in srgb,var(--accent2,#8b5cf6) 78%,var(--text));
+      background:color-mix(in srgb,var(--accent2,#8b5cf6) 9%,var(--panel));
+      font-family:inherit;
+      font-size:12px;
+      font-weight:750;
+      line-height:1.4;
+      cursor:pointer;
+      transition:background .16s,border-color .16s,box-shadow .16s,transform .16s;
+    }
+    .markdownBody .copyCodeBtn svg{display:block;width:16px;height:16px;flex-shrink:0}
+    .markdownBody .copyCodeBtn .copyLabel{white-space:nowrap}
+    .markdownBody .codeBlock .copyCodeBtn:hover{
+      border-color:var(--accent2,#8b5cf6);
+      background:color-mix(in srgb,var(--accent2,#8b5cf6) 16%,var(--panel));
+      box-shadow:0 3px 10px color-mix(in srgb,var(--accent2,#8b5cf6) 12%,transparent);
+      transform:translateY(-1px);
+    }
+    .markdownBody .codeBlock .copyCodeBtn:active{transform:translateY(0)}
+    .markdownBody .codeBlock .copyCodeBtn:focus-visible{
+      outline:2px solid var(--accent2,#8b5cf6);
+      outline-offset:3px;
+    }
+    .markdownBody .codeBlock .copyCodeBtn[data-state="success"]{
+      color:#15803d;
+      border-color:color-mix(in srgb,#22c55e 40%,var(--border));
+      background:color-mix(in srgb,#22c55e 9%,var(--panel));
+    }
+    html[data-theme="dark"] .markdownBody .codeBlock .copyCodeBtn[data-state="success"]{color:#86efac}
+    .markdownBody .codeBlock .copyCodeBtn[data-state="error"]{
+      color:#b91c1c;
+      border-color:color-mix(in srgb,#ef4444 40%,var(--border));
+      background:color-mix(in srgb,#ef4444 9%,var(--panel));
+    }
+    html[data-theme="dark"] .markdownBody .codeBlock .copyCodeBtn[data-state="error"]{color:#fca5a5}
+    .markdownBody .codeBlock pre{
+      margin:0;
+      padding:16px 18px;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
+      overflow-x:auto;
+      overscroll-behavior-x:contain;
+    }
+    .markdownBody .codeBlock pre::before{display:none}
+    .markdownBody .codeBlock pre code{
+      display:block;
+      margin:0;
+      padding:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--text);
+      font:500 13px/1.8 ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans TC",monospace;
+      white-space:pre;
+      word-break:normal;
+      overflow-wrap:normal;
+      tab-size:2;
+    }
+    @media(max-width:760px){
+      .markdownBody .codeBlock{margin:18px 0;border-radius:13px}
+      .markdownBody .codeBlockHeader{padding:9px 12px}
+      .markdownBody .codeBlock .copyCodeBtn{min-height:40px;padding:7px 12px}
+      .markdownBody .codeBlock pre{padding:14px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .markdownBody .codeBlock .copyCodeBtn{transition:none}
+    }
+  </style>
 </head>
 
 <body class="wherewindmeet-docs-page" data-site-page="documentation">
@@ -3468,6 +3586,20 @@
       headerIds: false,
       mangle: false
     });
+
+    // Chinese labels such as **團類型：**普通團 are intended as bold.
+    // Extend inline tokenization only; code blocks and HTML stay untouched.
+    marked.use({ extensions: [{
+      name: "cjkLabelStrong",
+      level: "inline",
+      start(src){ return src.indexOf("**"); },
+      tokenizer(src){
+        const match = /^\*\*([^*\n]+[：:，。、；！？])\*\*(?=[\p{L}\p{N}])/u.exec(src);
+        if(!match || !/\p{Script=Han}/u.test(match[1])) return;
+        return { type:"cjkLabelStrong", raw:match[0], tokens:this.lexer.inlineTokens(match[1]) };
+      },
+      renderer(token){ return `<strong>${this.parser.parseInline(token.tokens)}</strong>`; }
+    }] });
 
     function apiFolderUrl(){
       const path = DOCS_CONFIG.folder
@@ -4422,27 +4554,98 @@ document.title = `${title}｜夢回手冊`;
       }
     });
 
+    function setCodeCopyState(button,state="idle"){
+      const paths = {
+        idle:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
+        success:'<path d="m5 12 4 4L19 6"/>',
+        error:'<path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v4m0 3h.01"/>'
+      };
+      const labels = {idle:"複製",success:"已複製",error:"無法複製"};
+      button.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[state]}</svg>`;
+      const label = document.createElement("span");
+      label.className = "copyLabel";
+      label.textContent = labels[state];
+      button.appendChild(label);
+      if(state === "idle") delete button.dataset.state;
+      else button.dataset.state = state;
+    }
+
+    async function copyCodeText(text){
+      if(navigator.clipboard?.writeText){
+        try{ await navigator.clipboard.writeText(text); return; }catch(error){}
+      }
+      // Clipboard permission may be unavailable; preserve a user-triggered fallback.
+      const previousFocus = document.activeElement;
+      const selection = window.getSelection();
+      const ranges = selection ? Array.from({length:selection.rangeCount},(_,i)=>selection.getRangeAt(i).cloneRange()) : [];
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.readOnly = true;
+      textarea.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0;";
+      document.body.appendChild(textarea);
+      try{
+        textarea.focus({preventScroll:true});
+        textarea.select();
+        if(!document.execCommand("copy")) throw new Error("Clipboard unavailable");
+      }finally{
+        textarea.remove();
+        previousFocus?.focus({preventScroll:true});
+        if(selection){ selection.removeAllRanges(); ranges.forEach(range=>selection.addRange(range)); }
+      }
+    }
+
     function enhanceRenderedContentV3(){
       el.markdownBody.querySelectorAll("pre").forEach(pre => {
-        if(pre.querySelector(".copyCodeBtn")) return;
+        if(pre.closest(".codeBlock")) return;
+        const code = pre.querySelector("code");
+        // Store code text before adding any controls; UI labels must never be copied.
+        pre.querySelector(".copyCodeBtn")?.remove();
+        const text = code ? code.textContent : pre.textContent;
+        const wrapper = document.createElement("div");
+        wrapper.className = "codeBlock";
+        const header = document.createElement("div");
+        header.className = "codeBlockHeader";
+        const language = document.createElement("span");
+        language.className = "codeLanguage";
+        const name = Array.from(code?.classList || []).map(value=>/^language-([a-z0-9_+-]+)$/i.exec(value)?.[1]).find(Boolean);
+        language.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></svg>';
+        language.appendChild(document.createTextNode(!name ? "CODE" : name === "text" ? "純文字" : name.toUpperCase()));
         const button = document.createElement("button");
         button.type = "button";
         button.className = "copyCodeBtn";
-        button.textContent = "複製";
+        setCodeCopyState(button);
+        button.setAttribute("aria-label", "複製此區塊內容");
+        button.setAttribute("aria-live", "polite");
+        let copying = false;
+        let feedbackTimer;
         button.addEventListener("click", async () => {
-          const code = pre.querySelector("code")?.innerText || pre.innerText;
+          if(copying) return;
+          copying = true;
+          clearTimeout(feedbackTimer);
+          button.setAttribute("aria-busy", "true");
           try{
-            await navigator.clipboard.writeText(code);
-            button.textContent = "已複製";
+            await copyCodeText(text);
+            setCodeCopyState(button,"success");
           }catch(error){
-            button.textContent = "失敗";
+            setCodeCopyState(button,"error");
+            button.title = "請選取區塊中的文字，手動複製。";
+          }finally{
+            copying = false;
+            button.removeAttribute("aria-busy");
           }
-          setTimeout(() => button.textContent = "複製", 1400);
+          feedbackTimer = setTimeout(() => {
+            setCodeCopyState(button);
+            button.removeAttribute("title");
+          }, 1600);
         });
-        pre.appendChild(button);
+        header.append(language,button);
+        pre.before(wrapper);
+        wrapper.append(header,pre);
       });
 
       el.markdownBody.querySelectorAll("img").forEach(img => {
+        if(img.dataset.lightboxReady === "true") return;
+        img.dataset.lightboxReady = "true";
         img.tabIndex = 0;
         img.setAttribute("role", "button");
         img.setAttribute("aria-label", "點擊放大圖片");
