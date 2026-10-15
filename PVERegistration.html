@@ -13302,12 +13302,13 @@ body {
         </div>
 
         <div id="dateTimeLeaderSecurity" class="leader-security-panel">
-          <div class="leader-security-title"><span>🔐 團長確認</span><span>天賦／競速限定</span></div>
-          <div class="leader-security-sub">建立後，新報名會先進入待確認名單。PIN 只用來避免其他人誤按團長操作，不是安全驗證。</div>
+          <div class="leader-security-title"><span>🔐 團長確認</span><span>天賦／競速可選</span></div>
+          <div class="leader-security-sub">啟用 PIN 後，新報名會先進入待確認名單；未啟用則直接加入。啟用 PIN 的隊伍建立滿 1 小時仍無已確認成員，將自動刪除。PIN 只用來避免其他人誤按團長操作，不是安全驗證。</div>
           <div class="leader-pin-row">
             <div>
               <label class="signup-label" for="dateTimePinModeSelect" style="margin-top:0;">PIN 建立方式</label>
               <select id="dateTimePinModeSelect" class="signup-select">
+                <option value="none">不使用 PIN（直接報名）</option>
                 <option value="auto">自動生成 6 位 PIN</option>
                 <option value="custom">自行設定 PIN</option>
               </select>
@@ -13376,7 +13377,7 @@ body {
             <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單可使用快速報名。</div>
             <div><strong style="color:var(--text);">批量隊伍資料</strong><br>你可以儲存不同的常用組合來批量組隊，以節省重複輸入時間。</div>
             <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
-            <div><strong style="color:var(--text);">天賦／競速團長確認</strong><br>新報名會先進入待確認。團長以建立隊伍時取得的 PIN 核准或拒絕；PIN 可自動生成或自行設定。</div>
+            <div><strong style="color:var(--text);">競速團長確認</strong><br>競速團的新報名會先進入待確認。團長以建立隊伍時取得的 PIN 核准或拒絕；PIN 可自動生成或自行設定。</div>
             <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增 2 週內的時間，並分別設定 5人 / 10人、普通、天賦、競速、爬塔與最低補師數量。</div>
           </div>
         </div>
@@ -13485,6 +13486,7 @@ body {
           <div>
             <label class="signup-label" for="teamPinModeSelect" style="margin-top:0;">PIN 設定</label>
             <select id="teamPinModeSelect" class="signup-select">
+              <option value="none">不使用 PIN（直接報名）</option>
               <option value="keep">保留目前 PIN</option>
               <option value="auto">重新自動生成</option>
               <option value="custom">自行設定新 PIN</option>
@@ -13587,7 +13589,7 @@ body {
       <div class="confirm-modal-title">團長 PIN 已建立</div>
       <div class="confirm-modal-text">這只是防止其他人亂設定的簡單操作碼。新版本會直接保存 PIN，之後仍可在團隊設定中更換。</div>
       <div id="leaderPinRevealCode" class="leader-pin-code">000000</div>
-      <div class="leader-pin-warning">此 PIN 只用於天賦／競速的核准、拒絕與團隊設定，不屬於帳號或安全憑證。</div>
+      <div class="leader-pin-warning">此 PIN 只用於競速的核准、拒絕與團隊設定，不屬於帳號或安全憑證。</div>
       <div class="confirm-modal-actions">
         <button type="button" class="signup-cancel-btn" onclick="copyLeaderPin()">複製 PIN</button>
         <button type="button" class="signup-confirm-btn" onclick="closeLeaderPinRevealModal()">我已保存</button>
@@ -14049,7 +14051,7 @@ body {
       const teamType = typeof slotOrType === "string"
         ? slotOrType
         : normalizeSlot(slotOrType || {}).teamType;
-      return teamType === "天賦團" || teamType === "競速團";
+      return (teamType === "競速團" || teamType === "天賦團") && (typeof slotOrType === "string" || !!(slotOrType?.leaderPin || (slotOrType?.leaderPinHash && slotOrType?.leaderPinSalt)));
     }
 
     function normalizeMinHealer(value){
@@ -15007,7 +15009,7 @@ body {
 
       if(isProtectedTeam(slot)){
         if(!slot.leaderPin && !(slot.leaderPinHash && slot.leaderPinSalt)){
-          alert("此天賦／競速隊伍尚未啟用團長 PIN，暫時無法送出報名。");
+          alert("此隊伍的 PIN 設定無效，請聯絡團長。");
           return;
         }
         slot.pendingMembers.push({ name, role, tag:"", note:"", requestedAt:Date.now() });
@@ -15020,7 +15022,7 @@ body {
       slot.members.push({ name, role, tag:"", note:"" });
 
       if(slot.members.length >= getSlotMaxPeople(slot)){
-        autoCreateNextSameTimeSlot(dayData, slot);
+        // 已停用滿員自動建立下一隊；新隊伍需手動建立。
       }
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
@@ -15269,7 +15271,7 @@ body {
       return `**[highlight=blue]競速團【説明(可更改)】[/highlight]**
 1. 請進入**[color=cyan]DC語音頻道[/color]**以便即時溝通
 2. 報名前請確認角色配置、裝備與可參與時間
-3. 新報名需經**[highlight=gold]團長確認[/highlight]**後才會正式加入
+3. 若隊伍啟用 PIN，新報名需經**[highlight=gold]團長確認[/highlight]**後才會正式加入
 
 [highlight=purple]其他要求[/highlight]`;
     }
@@ -15290,8 +15292,8 @@ body {
         if(statusText) statusText.textContent = slot?.leaderPin ? `目前 PIN：${slot.leaderPin}` : (hasPin ? "已設定（舊版）" : "尚未設定");
         const keepOption = Array.from(modeSelect.options).find(opt => opt.value === "keep");
         if(keepOption) keepOption.disabled = !hasPin;
-        if(protectedType && (!hasPin || modeSelect.value === "keep" && !hasPin)){
-          modeSelect.value = "auto";
+        if(protectedType && modeSelect.value === "keep" && !hasPin){
+          modeSelect.value = "none";
         }
       }
 
@@ -15311,6 +15313,7 @@ body {
         }
         return { mode:"custom", pin:customPin };
       }
+      if(mode === "none") return { mode:"none", pin:"" };
       return { mode:"auto", pin:generateLeaderPin() };
     }
 
@@ -15344,7 +15347,7 @@ body {
         return;
       }
       if(!slot.leaderPin && !(slot.leaderPinHash && slot.leaderPinSalt)){
-        alert("此天賦／競速隊伍尚未設定團長 PIN。請先由團長進入「團類型 / 說明」建立 PIN。");
+        alert("此競速隊伍尚未設定團長 PIN。請先由團長進入「團類型 / 說明」建立 PIN。");
         if(actionLabel === "編輯團隊設定"){
           callback();
         }
@@ -15419,7 +15422,7 @@ body {
           slot.members.push({ ...member, name:member.name, role:member.role, tag:"", note:"" });
           slot.pendingMembers.splice(pendingIndex, 1);
           if(slot.members.length >= getSlotMaxPeople(slot)){
-            autoCreateNextSameTimeSlot(dayData, slot);
+            // 已停用滿員自動建立下一隊；新隊伍需手動建立。
           }
         }
       }else{
@@ -15588,16 +15591,19 @@ body {
         return;
       }
 
-      if(isProtectedTeam(slot) && !isProtectedTeam(value) && pendingMembers.length > 0){
+      if(isProtectedTeam(slot) && !(value === "天賦團" || value === "競速團") && pendingMembers.length > 0){
         alert("此隊伍仍有待確認玩家，請先由團長核准或拒絕後再更改為普通／爬塔。");
         return;
       }
 
       let revealPin = "";
-      if(isProtectedTeam(value)){
+      if(value === "天賦團" || value === "競速團"){
         const setup = readPinSetup("team", slot);
         if(!setup) return;
-        if(setup.mode !== "keep"){
+        if(setup.mode === "none"){
+          slot.leaderPin = ""; slot.leaderPinHash = ""; slot.leaderPinSalt = "";
+          slot.pendingMembers = [];
+        }else if(setup.mode !== "keep"){
           const creds = await makeLeaderCredentials(setup.pin);
           slot.leaderPin = creds.leaderPin;
           slot.leaderPinHash = "";
@@ -15844,7 +15850,7 @@ body {
       };
       document.getElementById("dateTimePinModeSelect").onchange = () => syncLeaderPinPanel("dateTime");
       document.getElementById("dateTimeCustomPinInput").value = "";
-      document.getElementById("dateTimePinModeSelect").value = "auto";
+      document.getElementById("dateTimePinModeSelect").value = "none";
       syncLeaderPinPanel("dateTime");
       limitText.textContent = `可選日期：${todayKey} 至 ${maxKey}`;
 
@@ -15887,11 +15893,13 @@ body {
 
       let revealPin = "";
       let leaderCredentials = { leaderPin:"", leaderPinHash:"", leaderPinSalt:"" };
-      if(isProtectedTeam(teamType)){
+      if(teamType === "天賦團" || teamType === "競速團"){
         const setup = readPinSetup("dateTime");
         if(!setup) return;
-        revealPin = setup.pin;
-        leaderCredentials = await makeLeaderCredentials(setup.pin);
+        if(setup.mode !== "none"){
+          revealPin = setup.pin;
+          leaderCredentials = await makeLeaderCredentials(setup.pin);
+        }
       }
 
       const dayData = structuredClone(globalData[dateKey] || { slots: [] });
@@ -15914,6 +15922,7 @@ body {
         instance: nextInstance,
         members: [],
         isCustom: true,
+        createdAt: Date.now(),
         teamType,
         teamSize,
         minHealer,
@@ -16001,7 +16010,7 @@ body {
 
       if(isProtectedTeam(slot)){
         if(!slot.leaderPin && !(slot.leaderPinHash && slot.leaderPinSalt)){
-          alert("此天賦／競速隊伍尚未啟用團長 PIN，暫時無法送出報名。");
+          alert("此隊伍的 PIN 設定無效，請聯絡團長。");
           return;
         }
         slot.pendingMembers.push({ name, role, tag:"", note:"", requestedAt:Date.now() });
@@ -16013,7 +16022,7 @@ body {
       slot.members.push({ name, role, tag:"", note:"" });
 
       if(slot.members.length >= getSlotMaxPeople(slot)){
-        autoCreateNextSameTimeSlot(dayData, slot);
+        // 已停用滿員自動建立下一隊；新隊伍需手動建立。
       }
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
@@ -16494,7 +16503,7 @@ body {
       slot.pendingMembers = getPendingMembers(slot);
 
       if(isProtectedTeam(slot) && !slot.leaderPin && !(slot.leaderPinHash && slot.leaderPinSalt)){
-        alert("此天賦／競速隊伍尚未啟用團長 PIN，暫時無法送出報名。");
+        alert("此隊伍的 PIN 設定無效，請聯絡團長。");
         return;
       }
 
@@ -16558,7 +16567,7 @@ body {
       }
 
       if(!isProtectedTeam(slot) && slot.members.length >= maxPeople){
-        autoCreateNextSameTimeSlot(dayData, slot);
+        // 已停用滿員自動建立下一隊；新隊伍需手動建立。
       }
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
@@ -16591,7 +16600,7 @@ body {
       };
       document.getElementById("dateTimePinModeSelect").onchange = () => syncLeaderPinPanel("dateTime");
       document.getElementById("dateTimeCustomPinInput").value = "";
-      document.getElementById("dateTimePinModeSelect").value = "auto";
+      document.getElementById("dateTimePinModeSelect").value = "none";
       syncLeaderPinPanel("dateTime");
 
       const todayKey = formatDate(getTodayStart());
@@ -17011,6 +17020,7 @@ body {
             const dpsCount = countRole(members, "輸出");
             const tankCount = countRole(members, "承傷");
             const healCount = countRole(members, "治療");
+            const buffCount = countRole(members, "增益");
             const missingInfo = getSlotMissingInfo(slot);
             const slotTagItems = getSlotTagSummary(members);
             const slotTagHtml = slotTagItems.length
@@ -17075,6 +17085,7 @@ body {
                       <span class="summary-pill compact-role-pill">輸出 <strong>${dpsCount}</strong></span>
                       <span class="summary-pill compact-role-pill">承傷 <strong>${tankCount}</strong></span>
                       <span class="summary-pill compact-role-pill">治療 <strong>${healCount}</strong></span>
+                      <span class="summary-pill compact-role-pill">增益 <strong>${buffCount}</strong></span>
                     </div>
                   </div>
 
@@ -17124,7 +17135,7 @@ body {
 
                 ${isProtectedTeam(slot) ? `
                   <div class="protected-flow-note">
-                    <span><strong>天賦／競速審核</strong>｜新報名需由團長確認</span>
+                    <span><strong>競速審核</strong>｜啟用 PIN 的隊伍需由團長確認</span>
                     <span>${pendingMembers.length} 位待確認</span>
                   </div>
                 ` : ``}
@@ -17406,6 +17417,31 @@ body {
       alert("日期已整理完成。");
     };
 
+    // PIN 隊伍建立滿 60 分鐘且確認成員為 0 時清除；舊隊伍無建立時間不受影響。
+    let cleanupRunning = false;
+    async function cleanupEmptyPinTeams(){
+      if(cleanupRunning) return;
+      cleanupRunning = true;
+      try{
+        const now = Date.now();
+        for(const [dateKey, day] of Object.entries(globalData)){
+          if(!day?.slots?.some(s => s.isCustom && s.createdAt && now - Number(s.createdAt) >= 3600000 && isProtectedTeam(s) && (!Array.isArray(s.members) || s.members.length === 0))) continue;
+          await runTransaction(db, async tx => {
+            const ref = doc(db, CONFIG.collectionName, dateKey);
+            const snap = await tx.get(ref);
+            if(!snap.exists()) return;
+            const data = snap.data();
+            if(!Array.isArray(data.slots)) return;
+            const before = data.slots.length;
+            data.slots = data.slots.filter(s => !(s.isCustom && s.createdAt && Date.now() - Number(s.createdAt) >= 3600000 && isProtectedTeam(s) && (!Array.isArray(s.members) || s.members.length === 0)));
+            if(data.slots.length !== before) tx.set(ref, data);
+          });
+        }
+      }catch(error){ console.warn("PIN 空隊伍清理失敗", error); }
+      finally{ cleanupRunning = false; }
+    }
+    setInterval(cleanupEmptyPinTeams, 60000);
+
     onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
       const nextData = {};
       snapshot.forEach(item => {
@@ -17417,6 +17453,7 @@ body {
       });
 
       globalData = nextData;
+      cleanupEmptyPinTeams();
 
       const dates = getDatesToShow();
       let needInit = false;
