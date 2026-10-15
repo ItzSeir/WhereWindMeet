@@ -12448,6 +12448,20 @@ body {
       border-color:#a7e7df !important;
     }
 
+
+/* 角色統計：固定同一行，空間不足時僅統計列可橫向滑動 */
+.slot-meta-pills .role-count-row{
+  display:flex; align-items:center; flex-wrap:nowrap; gap:5px;
+  width:100%; min-width:0; overflow-x:auto; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.slot-meta-pills .role-count-row::-webkit-scrollbar{display:none}
+.slot-meta-pills .role-count-row .compact-role-pill{
+  flex:0 0 auto !important; white-space:nowrap;
+  padding:4px 7px !important; font-size:11px !important;
+}
+.slot-meta-pills .role-count-row .compact-role-pill strong{font-size:12px !important;margin-left:3px !important}
+
 </style>
 
 <script>
@@ -17082,10 +17096,12 @@ body {
                       ${normalizeSlot(slot).teamType === "爬塔" ? `<span class="tower-meta-pill">${getTowerFloorLabel(slot)}</span><span class="tower-meta-pill tower-difficulty-pill">${normalizeTowerSlot(slot).towerDifficulty}</span>` : ``}
                       <span class="team-type-pill min-healer-pill">最低治療 ${getSlotMinHealer(slot)}</span>
                       ${isProtectedTeam(slot) ? `<span class="team-type-pill leader-lock-pill">🔐 團長確認</span>` : ``}
+                      <div class="role-count-row">
                       <span class="summary-pill compact-role-pill">輸出 <strong>${dpsCount}</strong></span>
                       <span class="summary-pill compact-role-pill">承傷 <strong>${tankCount}</strong></span>
                       <span class="summary-pill compact-role-pill">治療 <strong>${healCount}</strong></span>
                       <span class="summary-pill compact-role-pill">增益 <strong>${buffCount}</strong></span>
+                      </div>
                     </div>
                   </div>
 
