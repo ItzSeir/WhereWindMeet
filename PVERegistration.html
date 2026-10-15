@@ -12435,6 +12435,19 @@ body {
       }
     }
 
+
+    /* 增益角色：獨立於治療與假奶 */
+    .role-buff{
+      background:rgba(45,212,191,.15);
+      color:#2dd4bf;
+      border:1px solid rgba(45,212,191,.30);
+    }
+    html[data-theme="light"] .role-buff{
+      color:#0f766e !important;
+      background:#e6f8f5 !important;
+      border-color:#a7e7df !important;
+    }
+
 </style>
 
 <script>
@@ -13424,6 +13437,7 @@ body {
         <option value="承傷">承傷</option>
         <option value="治療">治療</option>
         <option value="假奶">假奶</option>
+        <option value="增益">增益</option>
       </select>
 
       <div class="confirm-modal-actions">
@@ -13639,6 +13653,7 @@ body {
         <option value="承傷">承傷</option>
         <option value="治療">治療</option>
         <option value="假奶">假奶</option>
+        <option value="增益">增益</option>
       </select>
 
       <div class="confirm-modal-actions">
@@ -13720,7 +13735,7 @@ body {
       maxPeople5: 5,
       minHealer5: 2,
       weekendTimes: ["16:00","21:30"],
-      roles: ["輸出","承傷","治療","假奶"],
+      roles: ["輸出","承傷","治療","假奶","增益"],
       collectionName: "schedule"
     };
 
@@ -14225,6 +14240,7 @@ body {
       if(role === "輸出") return "role-dps";
       if(role === "承傷") return "role-tank";
       if(role === "假奶") return "role-fakeheal";
+      if(role === "增益") return "role-buff";
       return "role-heal";
     }
 
