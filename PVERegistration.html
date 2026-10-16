@@ -16650,6 +16650,42 @@ body {
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
     }
 
+    async function confirmForceDeletePinSlot(dateKey, slotIndex){
+      const slot = globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot || !slot.isCustom || !isProtectedTeam(slot) || (Array.isArray(slot.members) && slot.members.length !== 0)){
+        alert("此隊伍已不符合強制刪除條件，請重新整理後再試。");
+        return;
+      }
+      const waiting = getPendingMembers(slot).length;
+      const label = `${dateKey} ${slot.time}｜第 ${slot.instance || 1} 隊｜${normalizeSlot(slot).teamType}`;
+      const warning = `⚠️ 確定要永久刪除這支隊伍嗎？\n\n${label}\n已確認：0 人；待確認：${waiting} 人。\n\n刪除後，所有待確認申請也會一併移除，而且無法復原。`;
+      if(!window.confirm(warning)) return;
+      // 使用交易重新讀取 Firestore，避免在確認期間有其他人加入而誤刪。
+      const targetId = slot.id;
+      try{
+        const result = await runTransaction(db, async tx => {
+          const ref = doc(db, CONFIG.collectionName, dateKey);
+          const snap = await tx.get(ref);
+          if(!snap.exists()) return "missing";
+          const day = snap.data();
+          if(!Array.isArray(day.slots)) return "missing";
+          const index = day.slots.findIndex((item, i) => targetId ? item.id === targetId : (i === slotIndex && item.time === slot.time && item.instance === slot.instance));
+          if(index < 0) return "missing";
+          const latest = day.slots[index];
+          if(!latest.isCustom || !isProtectedTeam(latest) || (Array.isArray(latest.members) && latest.members.length > 0)) return "occupied";
+          day.slots.splice(index, 1);
+          sortSlots(day.slots);
+          tx.set(ref, day);
+          return "deleted";
+        });
+        if(result === "deleted") alert("隊伍已刪除，待確認申請也已一併清除。");
+        else alert("隊伍已變更或已有正式報名，未執行刪除。請重新整理後查看。");
+      }catch(err){
+        console.error("強制刪除 PIN 空隊伍失敗", err);
+        alert("刪除失敗，請檢查網路或資料庫權限後重試。");
+      }
+    }
+
     function getDateActivity(dateKey){
       const slots = Array.isArray(globalData?.[dateKey]?.slots) ? globalData[dateKey].slots : [];
       let confirmed = 0;
@@ -17053,6 +17089,8 @@ body {
             const allowedRoles = getAllowedRoles(members, slot);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
+            // PIN 空隊伍允許團長手動刪除（即使仍有待審核申請）。
+            const canForceDeletePinSlot = !!slot.isCustom && isProtectedTeam(slot) && members.length === 0;
             const isRecommended = ["20:30", "21:15", "21:30", "22:00"].includes(slot.time);
             const isMyTeam = !!savedName && (
               members.some(m => normalizeName(m.name) === normalizeName(savedName)) ||
@@ -17122,11 +17160,15 @@ body {
                           隊伍狀態
                         </button>
 
-                        ${slot.isCustom ? `
+                        ${canForceDeletePinSlot ? `
+                          <button class="slot-menu-item delete" data-action="force-delete-pin-slot" data-date="${dateKey}" data-slot="${slotIndex}">
+                            🗑 強制刪除隊伍
+                          </button>
+                        ` : (slot.isCustom ? `
                           <button class="slot-menu-item delete" data-action="delete-slot" data-date="${dateKey}" data-slot="${slotIndex}" ${canDeleteCustomSlot ? "" : "disabled"}>
                             刪除時間
                           </button>
-                        ` : ``}
+                        ` : ``)}
                       </div>
                     </div>
                   </div>
@@ -17405,6 +17447,16 @@ body {
         };
       });
 
+      document.querySelectorAll('[data-action="force-delete-pin-slot"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll(".slot-menu.open").forEach(menu => menu.classList.remove("open"));
+          const dateKey = btn.dataset.date;
+          const slotIndex = Number(btn.dataset.slot);
+          // 空隊伍無需團長 PIN，直接開啟最後確認；提交前會重新核對 Firestore。
+          confirmForceDeletePinSlot(dateKey, slotIndex);
+        };
+      });
+
       document.querySelectorAll('[data-action="delete-slot"]').forEach(btn => {
         btn.onclick = () => {
           document.querySelectorAll(".slot-menu.open").forEach(menu => menu.classList.remove("open"));
@@ -17433,30 +17485,7 @@ body {
       alert("日期已整理完成。");
     };
 
-    // PIN 隊伍建立滿 60 分鐘且確認成員為 0 時清除；舊隊伍無建立時間不受影響。
-    let cleanupRunning = false;
-    async function cleanupEmptyPinTeams(){
-      if(cleanupRunning) return;
-      cleanupRunning = true;
-      try{
-        const now = Date.now();
-        for(const [dateKey, day] of Object.entries(globalData)){
-          if(!day?.slots?.some(s => s.isCustom && s.createdAt && now - Number(s.createdAt) >= 3600000 && isProtectedTeam(s) && (!Array.isArray(s.members) || s.members.length === 0))) continue;
-          await runTransaction(db, async tx => {
-            const ref = doc(db, CONFIG.collectionName, dateKey);
-            const snap = await tx.get(ref);
-            if(!snap.exists()) return;
-            const data = snap.data();
-            if(!Array.isArray(data.slots)) return;
-            const before = data.slots.length;
-            data.slots = data.slots.filter(s => !(s.isCustom && s.createdAt && Date.now() - Number(s.createdAt) >= 3600000 && isProtectedTeam(s) && (!Array.isArray(s.members) || s.members.length === 0)));
-            if(data.slots.length !== before) tx.set(ref, data);
-          });
-        }
-      }catch(error){ console.warn("PIN 空隊伍清理失敗", error); }
-      finally{ cleanupRunning = false; }
-    }
-    setInterval(cleanupEmptyPinTeams, 60000);
+    // 已停用 60 分鐘自動刪除；PIN 空隊伍改由團長手動確認刪除。
 
     onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
       const nextData = {};
@@ -17469,7 +17498,6 @@ body {
       });
 
       globalData = nextData;
-      cleanupEmptyPinTeams();
 
       const dates = getDatesToShow();
       let needInit = false;
