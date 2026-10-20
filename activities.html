@@ -439,6 +439,195 @@ html[data-theme="light"] {--ui-panel:#ffffff;--ui-panel-2:#f7f9fd;--ui-panel-3:#
 @media(prefers-reduced-motion:reduce){.wwm-toast{animation:none;}}
 
 </style>
+<style id="wwma-shared-ui">
+/* WhereWindMeet · Announcement UI v1.0 — same visual component across five pages. */
+:root {
+  --wwma-surface:#121c34;
+  --wwma-border:rgba(157,178,227,.18);
+  --wwma-text:#f2f5ff;
+  --wwma-muted:#9aaaca;
+  --wwma-chip-bg:rgba(139,92,246,.13);
+  --wwma-chip-text:#d9cbff;
+  --wwma-chip-border:rgba(170,143,255,.24);
+  --wwma-button-bg:rgba(255,255,255,.055);
+  --wwma-button-hover:rgba(255,255,255,.12);
+  --wwma-shadow:0 16px 40px rgba(0,0,0,.19);
+  --wwma-backdrop:rgba(4,8,22,.72);
+}
+html[data-theme="light"] {
+  --wwma-surface:#ffffff;
+  --wwma-border:rgba(70,91,136,.17);
+  --wwma-text:#1e2943;
+  --wwma-muted:#63728f;
+  --wwma-chip-bg:#f1edff;
+  --wwma-chip-text:#6945b8;
+  --wwma-chip-border:#dcd2fc;
+  --wwma-button-bg:rgba(66,91,146,.06);
+  --wwma-button-hover:rgba(66,91,146,.13);
+  --wwma-shadow:0 16px 36px rgba(55,77,122,.11);
+  --wwma-backdrop:rgba(16,28,53,.48);
+}
+html body #siteAnnouncement {
+  display:block;
+  width:min(100vw,1320px) !important;
+  max-width:1320px !important;
+  padding:0 14px !important;
+  margin:0 0 17px !important;
+  left:50%;
+  transform:translateX(-50%);
+  box-sizing:border-box !important;
+  position:relative;
+  z-index:2;
+  font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+html body #siteAnnouncement[hidden] { display:none !important; }
+@media(min-width:769px){
+  html body[data-site-page="documentation"] #siteAnnouncement{margin-top:100px !important;}
+}
+html body #siteAnnouncement .wwma-card,
+html body #siteAnnouncement .wwma-card * { box-sizing:border-box; }
+html body #siteAnnouncement .wwma-card {
+  position:relative;
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) 172px;
+  gap:15px;
+  align-items:center;
+  width:100%;
+  height:120px;
+  min-height:120px;
+  max-height:120px;
+  padding:15px 21px 17px 17px;
+  border:1px solid var(--wwma-border);
+  border-radius:22px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(142,103,250,.13),transparent 35%),
+    radial-gradient(circle at 0% 100%,rgba(87,158,255,.07),transparent 33%),
+    var(--wwma-surface);
+  color:var(--wwma-text);
+  box-shadow:var(--wwma-shadow),inset 0 1px 0 rgba(255,255,255,.055);
+  isolation:isolate;
+}
+html[data-theme="light"] body #siteAnnouncement .wwma-card {
+  background:
+    radial-gradient(circle at 96% 0%,rgba(143,110,232,.10),transparent 39%),
+    radial-gradient(circle at 0% 100%,rgba(75,145,244,.06),transparent 37%),
+    var(--wwma-surface);
+}
+html body #siteAnnouncement .wwma-card::before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+  width:4px;
+  border-radius:0 6px 6px 0;
+  background:linear-gradient(180deg,#64b5ff 0%,#8867f8 58%,#cf7bdc 100%);
+}
+html body #siteAnnouncement .wwma-emblem {
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:50px;
+  height:50px;
+  border-radius:17px;
+  background:linear-gradient(145deg,#678df0,#9b60e4);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 7px 18px rgba(110,104,245,.24),inset 0 1px 1px rgba(255,255,255,.30);
+  color:#fff;
+}
+html body #siteAnnouncement .wwma-emblem svg {display:block;width:23px;height:23px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+html body #siteAnnouncement .wwma-copy { min-width:0;align-self:center;overflow:hidden; }
+html body #siteAnnouncement .wwma-overline { display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:5px; }
+html body #siteAnnouncement .wwma-live-dot {width:6px;height:6px;background:#74c8ff;border-radius:99px;box-shadow:0 0 0 3px rgba(100,181,255,.12);flex:0 0 auto;}
+html body #siteAnnouncement .wwma-overline-label {color:var(--wwma-muted);font-size:10px;line-height:1.1;font-weight:800;letter-spacing:.09em;white-space:nowrap;}
+html body #siteAnnouncement .wwma-tag {display:inline-flex;align-items:center;max-width:145px;padding:3px 8px;border-radius:99px;background:var(--wwma-chip-bg);border:1px solid var(--wwma-chip-border);font-size:10px;line-height:1.4;color:var(--wwma-chip-text);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+html body #siteAnnouncement .wwma-title {margin:0 0 5px;font-size:16px;line-height:1.28;font-weight:900;letter-spacing:-.01em;color:var(--wwma-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+html body #siteAnnouncement .wwma-message {margin:0;font-size:12px;line-height:1.55;color:var(--wwma-muted);font-weight:550;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;}
+html body #siteAnnouncement .wwma-side {min-width:0;display:flex;align-items:flex-end;justify-content:center;flex-direction:column;gap:10px;border-left:1px solid var(--wwma-border);padding-left:14px;}
+html body #siteAnnouncement .wwma-update {font-size:10px;line-height:1.4;white-space:nowrap;color:var(--wwma-muted);font-weight:650;text-align:right;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+html body #siteAnnouncement .wwma-nav {display:flex;align-items:center;gap:5px;justify-content:flex-end;width:100%;}
+html body #siteAnnouncement button.wwma-arrow, html body #siteAnnouncement button.wwma-read {
+  display:grid;place-items:center;flex:0 0 auto;
+  width:32px;height:32px;min-width:0;min-height:0;
+  padding:0;margin:0;
+  border:1px solid var(--wwma-border);border-radius:11px;
+  background:var(--wwma-button-bg);color:var(--wwma-text);
+  box-shadow:none;font-family:inherit;font-size:17px;font-weight:700;line-height:1;
+  cursor:pointer;transition:background .2s,transform .2s;
+}
+html body #siteAnnouncement button.wwma-arrow:hover,html body #siteAnnouncement button.wwma-read:hover {background:var(--wwma-button-hover);transform:translateY(-1px)}
+html body #siteAnnouncement button.wwma-read {width:auto;min-width:51px;padding:0 9px;font-size:11px;font-weight:850;color:var(--wwma-chip-text);background:var(--wwma-chip-bg);}
+html body #siteAnnouncement .wwma-step {display:inline-block;min-width:36px;font-size:10px;color:var(--wwma-muted);font-weight:850;text-align:center;font-variant-numeric:tabular-nums;}
+html body #siteAnnouncement .wwma-progress {position:absolute;left:0;bottom:0;right:0;height:2px;background:transparent;overflow:hidden;pointer-events:none;}
+html body #siteAnnouncement .wwma-progress-fill {height:100%;width:100%;background:linear-gradient(90deg,#64b5ff,#a07af3,#c77ccd);transform-origin:left;animation:wwma-countdown var(--wwma-duration,6500ms) linear both;}
+html body #siteAnnouncement .wwma-card.is-paused .wwma-progress-fill {animation-play-state:paused;}
+@keyframes wwma-countdown {from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* Full-text modal. Important announcements never become inaccessible due to fixed card height. */
+.wwma-modal[hidden] {display:none !important;}
+.wwma-modal {position:fixed;inset:0;z-index:160000;display:grid;place-items:center;padding:20px;}
+.wwma-modal-mask{position:absolute;inset:0;background:var(--wwma-backdrop);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);}
+.wwma-modal-panel{position:relative;width:min(520px,100%);max-height:min(82vh,720px);overflow:auto;padding:26px;border-radius:23px;background:var(--wwma-surface);border:1px solid var(--wwma-border);box-shadow:0 28px 75px rgba(0,0,0,.35);color:var(--wwma-text);font-family:"Noto Sans TC",system-ui,sans-serif;}
+.wwma-modal-eyebrow{font-size:11px;font-weight:900;color:var(--wwma-chip-text);letter-spacing:.06em;margin-bottom:12px;}
+.wwma-modal-title{font-size:21px;line-height:1.35;font-weight:900;margin:0 34px 14px 0;overflow-wrap:anywhere;}
+.wwma-modal-message{font-size:14px;line-height:1.85;font-weight:500;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--wwma-text);margin:0;}
+.wwma-modal-updated{font-size:11px;color:var(--wwma-muted);margin:20px 0 0;}
+.wwma-modal-close{position:absolute;top:17px;right:17px;width:34px;height:34px;border:1px solid var(--wwma-border);border-radius:11px;background:var(--wwma-button-bg);color:var(--wwma-text);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;}
+.wwma-modal-close:hover{background:var(--wwma-button-hover);}
+
+@media(max-width:768px){
+  html body #siteAnnouncement {max-width:1320px !important;margin:0 0 11px !important;padding:0 10px !important;}
+  html body #siteAnnouncement .wwma-card {
+    grid-template-columns:39px minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) 32px;
+    gap:8px 10px;
+    height:151px;min-height:151px;max-height:151px;
+    padding:13px 13px 10px;
+    border-radius:18px;
+  }
+  html body #siteAnnouncement .wwma-card::before {top:13px;bottom:13px;width:3px;}
+  html body #siteAnnouncement .wwma-emblem {width:38px;height:38px;border-radius:13px;align-self:start;}
+  html body #siteAnnouncement .wwma-emblem svg {width:19px;height:19px;}
+  html body #siteAnnouncement .wwma-copy {align-self:start;padding-top:1px;}
+  html body #siteAnnouncement .wwma-overline {gap:7px;margin-bottom:5px;}
+  html body #siteAnnouncement .wwma-overline-label {font-size:9px;}
+  html body #siteAnnouncement .wwma-tag {font-size:9px;padding:2px 7px;max-width:115px;}
+  html body #siteAnnouncement .wwma-title {font-size:14px !important;margin-bottom:5px;line-height:1.35;}
+  html body #siteAnnouncement .wwma-message {font-size:11px !important;line-height:1.55;-webkit-line-clamp:2;}
+  html body #siteAnnouncement .wwma-side {grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;border-left:0;border-top:1px solid var(--wwma-border);padding:6px 0 0;gap:8px;}
+  html body #siteAnnouncement .wwma-update {text-align:left;font-size:9px !important;max-width:45%;}
+  html body #siteAnnouncement .wwma-nav {width:auto;gap:4px;}
+  html body #siteAnnouncement button.wwma-arrow,html body #siteAnnouncement button.wwma-read {height:28px;border-radius:9px;}
+  html body #siteAnnouncement button.wwma-arrow {width:28px;font-size:15px;}
+  html body #siteAnnouncement button.wwma-read {min-width:47px;padding:0 7px;font-size:10px;}
+  html body #siteAnnouncement .wwma-step {font-size:9px;min-width:31px;}
+  .wwma-modal-panel {padding:23px 20px;max-height:80dvh;border-radius:20px;}
+  .wwma-modal-title {font-size:18px;}
+  .wwma-modal-message {font-size:13px;}
+}
+@media(max-width:365px){
+  html body #siteAnnouncement .wwma-update {max-width:38%;font-size:8px !important;}
+  html body #siteAnnouncement .wwma-nav {gap:3px;}
+  html body #siteAnnouncement button.wwma-read{min-width:42px;padding:0 6px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #siteAnnouncement .wwma-progress-fill {animation:none;transform:scaleX(1)}
+  html body #siteAnnouncement button.wwma-arrow,html body #siteAnnouncement button.wwma-read{transition:none}
+}
+html body #siteAnnouncement .wwma-tag[hidden],
+html body #siteAnnouncement button.wwma-arrow[hidden],
+html body #siteAnnouncement .wwma-step[hidden],
+html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
+/* The docs search already reserves top space for its fixed site navbar.
+   When announcements are shown, the announcement takes over that spacer. */
+@media(min-width:769px){
+  html body[data-site-page="documentation"] #siteAnnouncement:not([hidden]) ~ .docsToolbar {
+    margin-top:16px !important;
+  }
+}
+
+</style>
 </head>
 <body data-site-page="activities" data-site-page="activities">
   <nav aria-label="主要導覽" class="topbar" id="floatingNav">
@@ -608,30 +797,7 @@ html[data-theme="light"] {--ui-panel:#ffffff;--ui-panel-2:#f7f9fd;--ui-panel-3:#
     addEventListener("scroll",()=>floatingNav.classList.toggle("scrolled",scrollY>18),{passive:true});
     $("#eventTotal").textContent=EVENTS.length;renderFilters();render();
   </script>
-  <script>
-    (async()=>{
-      const box=document.getElementById("siteAnnouncement");
-      if(!box)return;
-      const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));
-      try{
-        const response=await fetch("/WhereWindMeet/data/announcement.json?t="+Date.now());
-        const data=await response.json();
-        const items=data.enabled&&Array.isArray(data.announcements)?data.announcements:[];
-        if(!items.length){box.remove();return}
-        let current=0,timer;
-        const show=index=>{
-          current=(index+items.length)%items.length;
-          const item=items[current];
-          box.innerHTML=`<div class="announcementBar"><div class="announcementIcon">📢</div><div class="announcementContent"><div class="announcementTitle">${esc(item.title||"重要公告")}</div>${item.pill?`<div class="announcementPill">${esc(item.pill)}</div>`:""}<div class="announcementText">${esc(item.text||item.content||item.message||"")}</div><div class="announcementTime">更新時間：${esc(item.updated||"")}</div></div>${items.length>1?`<div class="announcementControls"><button class="announcementArrow" data-go="-1" type="button" aria-label="上一則">‹</button><button class="announcementArrow" data-go="1" type="button" aria-label="下一則">›</button></div><div class="announcementDots">${items.map((_,i)=>`<button class="announcementDot ${i===current?"active":""}" data-index="${i}" type="button" aria-label="第 ${i+1} 則公告"></button>`).join("")}</div>`:""}</div>`;
-          box.querySelectorAll("[data-go]").forEach(btn=>btn.onclick=()=>manual(current+Number(btn.dataset.go)));
-          box.querySelectorAll("[data-index]").forEach(btn=>btn.onclick=()=>manual(Number(btn.dataset.index)));
-        };
-        const start=()=>{clearInterval(timer);if(items.length>1)timer=setInterval(()=>show(current+1),5000)};
-        const manual=index=>{show(index);start()};
-        show(0);start();
-      }catch(error){box.remove()}
-    })();
-  </script>
+  <!-- Announcement renderer replaced by shared v1 -->
 <script id="wwm-shared-feedback">
 (function(){
   'use strict';
@@ -763,6 +929,159 @@ html[data-theme="light"] {--ui-panel:#ffffff;--ui-panel-2:#f7f9fd;--ui-panel-3:#
  });
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelLongPress();});
 })();
+</script>
+<script id="wwma-shared-script">
+/* WhereWindMeet · Shared Announcement Component v1.0
+ * Same announcement.json, size, carousel, accessibility and modal on every page.
+ * Self-contained; no new frameworks and no changes to existing site data. */
+(() => {
+  'use strict';
+  const mount = document.getElementById('siteAnnouncement');
+  if (!mount) return;
+  mount.hidden = true;
+  const esc = value => String(value ?? '');
+  const source = '/WhereWindMeet/data/announcement.json?t=' + Date.now();
+  const duration = 6500;
+  const mutedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const megaphone = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4c0 1.1.9 2 2 2h2l1.8 4h2.7L9.8 16h1.1L21 20V4L10.9 8H5c-1.1 0-2 .9-2 2Z"/><path d="M21 4v16M3 12H1"/></svg>';
+  let announcements=[];
+  let selected=0;
+  let timeout=null;
+  let paused=false;
+  let detailModal=null;
+  let focusReturn=null;
+
+  const layout = document.createElement('section');
+  layout.className='wwma-card';
+  layout.setAttribute('aria-label','網站公告');
+  layout.setAttribute('aria-roledescription','輪播');
+  layout.setAttribute('role','region');
+  layout.style.setProperty('--wwma-duration',duration+'ms');
+  layout.innerHTML = `
+    <div class="wwma-emblem">${megaphone}</div>
+    <div class="wwma-copy">
+      <div class="wwma-overline"><span class="wwma-live-dot" aria-hidden="true"></span><span class="wwma-overline-label">網站公告</span><span class="wwma-tag" hidden></span></div>
+      <h2 class="wwma-title"></h2>
+      <p class="wwma-message"></p>
+    </div>
+    <div class="wwma-side">
+      <time class="wwma-update"></time>
+      <div class="wwma-nav">
+        <button class="wwma-arrow" data-direction="-1" type="button" aria-label="上一則公告">‹</button>
+        <span class="wwma-step" aria-label="目前公告頁數"></span>
+        <button class="wwma-arrow" data-direction="1" type="button" aria-label="下一則公告">›</button>
+        <button class="wwma-read" type="button" aria-label="查看公告全文">全文</button>
+      </div>
+    </div>
+    <div class="wwma-progress" aria-hidden="true"><div class="wwma-progress-fill"></div></div>`;
+  const refs = {
+    title:layout.querySelector('.wwma-title'),
+    text:layout.querySelector('.wwma-message'),
+    tag:layout.querySelector('.wwma-tag'),
+    date:layout.querySelector('.wwma-update'),
+    count:layout.querySelector('.wwma-step'),
+    arrows:Array.from(layout.querySelectorAll('.wwma-arrow')),
+    fill:layout.querySelector('.wwma-progress-fill'),
+    read:layout.querySelector('.wwma-read')
+  };
+
+  function paint(){
+    const item=announcements[selected];
+    refs.title.textContent=esc(item.title || '重要公告');
+    refs.text.textContent=esc(item.text || item.content || item.message || '');
+    refs.tag.textContent=esc(item.pill || '');
+    refs.tag.hidden=!item.pill;
+    refs.date.textContent=item.updated ? `更新 · ${esc(item.updated)}` : '夢回花深處 · 公告';
+    refs.count.textContent=`${selected+1} / ${announcements.length}`;
+    refs.arrows.forEach(el=>{el.hidden=announcements.length<2;});
+    refs.count.hidden=announcements.length<2;
+    refs.fill.parentElement.hidden=announcements.length<2;
+    // Restart fill animation only when the displayed announcement changes.
+    refs.fill.style.animation='none';
+    void refs.fill.offsetWidth;
+    refs.fill.style.animation='';
+    layout.classList.toggle('is-paused',paused || mutedMotion);
+  }
+  function rotate(index){
+    selected=(index+announcements.length)%announcements.length;
+    paint();
+    schedule();
+  }
+  function schedule(){
+    clearTimeout(timeout);
+    if (announcements.length < 2 || paused || mutedMotion || document.hidden || !mount.isConnected) return;
+    timeout=setTimeout(()=>rotate(selected+1), duration);
+  }
+  function setPause(value){
+    paused=value;
+    layout.classList.toggle('is-paused',paused || mutedMotion);
+    if(value) clearTimeout(timeout); else schedule();
+  }
+  refs.arrows.forEach(el=>el.addEventListener('click',()=>rotate(selected+Number(el.dataset.direction))));
+  layout.addEventListener('mouseenter',()=>setPause(true));
+  layout.addEventListener('mouseleave',()=>setPause(false));
+  layout.addEventListener('focusin',()=>setPause(true));
+  layout.addEventListener('focusout',e=>{if(!layout.contains(e.relatedTarget))setPause(false)});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timeout);else schedule();});
+
+  function ensureModal(){
+    if(detailModal) return;
+    detailModal=document.createElement('div');
+    detailModal.className='wwma-modal';
+    detailModal.hidden=true;
+    detailModal.innerHTML=`
+      <div class="wwma-modal-mask"></div>
+      <div class="wwma-modal-panel" role="dialog" aria-modal="true" aria-labelledby="wwmaFullTitle" tabindex="-1">
+        <button type="button" class="wwma-modal-close" aria-label="關閉公告全文">×</button>
+        <div class="wwma-modal-eyebrow">夢回花深處 · 網站公告</div>
+        <h2 id="wwmaFullTitle" class="wwma-modal-title"></h2>
+        <p class="wwma-modal-message"></p>
+        <p class="wwma-modal-updated"></p>
+      </div>`;
+    document.body.append(detailModal);
+    detailModal.querySelector('.wwma-modal-close').addEventListener('click',closeModal);
+    detailModal.querySelector('.wwma-modal-mask').addEventListener('click',closeModal);
+    detailModal.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.stopPropagation();closeModal();}
+      if(event.key==='Tab'){
+        const close=detailModal.querySelector('.wwma-modal-close');
+        if(event.shiftKey || document.activeElement!==close){event.preventDefault();close.focus();}
+      }
+    });
+  }
+  function showModal(){
+    ensureModal();
+    const item=announcements[selected];
+    focusReturn=document.activeElement;
+    detailModal.querySelector('.wwma-modal-title').textContent=esc(item.title || '重要公告');
+    detailModal.querySelector('.wwma-modal-message').textContent=esc(item.text || item.content || item.message || '');
+    detailModal.querySelector('.wwma-modal-updated').textContent=item.updated ? `更新時間：${esc(item.updated)}` : '';
+    detailModal.hidden=false;
+    detailModal.querySelector('.wwma-modal-close').focus();
+    setPause(true);
+  }
+  function closeModal(){
+    if(!detailModal || detailModal.hidden)return;
+    detailModal.hidden=true;
+    if(focusReturn && focusReturn.isConnected)focusReturn.focus();
+    setPause(false);
+  }
+  refs.read.addEventListener('click',showModal);
+
+  fetch(source,{cache:'no-store'})
+    .then(response=>{if(!response.ok)throw new Error('announcement HTTP '+response.status);return response.json();})
+    .then(data=>{
+      announcements=(data?.enabled===true && Array.isArray(data.announcements))
+        ? data.announcements.filter(item=>item && typeof item==='object') : [];
+      if(!announcements.length){mount.hidden=true;return;}
+      mount.replaceChildren(layout);
+      mount.hidden=false;
+      paint();
+      schedule();
+    })
+    .catch(()=>{mount.hidden=true;});
+})();
+
 </script>
 </body>
 </html>
