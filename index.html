@@ -204,31 +204,385 @@ html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb,.schedule-container:
 </style>
   <!-- Shared Site Shell: common design tokens / navbar / announcement -->
   <link rel="stylesheet" href="site-shell.css">
+<style id="wwm-shared-navigation-v1">
+
+/* Shared visual tokens: same values as the PVE registration navbar. */
+:root {--ui-panel:#111930;--ui-panel-2:#151f38;--ui-panel-3:#1b2743;
+ --ui-line:rgba(255,255,255,.12);--ui-line-strong:rgba(255,255,255,.18);
+ --ui-text:#eef2ff;--ui-muted:#a8b3cf;--ui-accent:#6ea8ff;--ui-accent-soft:rgba(110,168,255,.13);}
+html[data-theme="light"] {--ui-panel:#ffffff;--ui-panel-2:#f7f9fd;--ui-panel-3:#eef3fb;
+ --ui-line:rgba(67,89,130,.16);--ui-line-strong:rgba(67,89,130,.23);
+ --ui-text:#17233c;--ui-muted:#64748b;--ui-accent:#4f8ef7;--ui-accent-soft:rgba(79,142,247,.12);}
+#floatingNav.topbar{position:fixed !important;left:50% !important;transform:translateX(-50%) !important;top:14px;z-index:10050;box-sizing:border-box;}
+#floatingNav, #pveMnavPanel {font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;}
+#floatingNav button, #pveMnavPanel button {cursor:pointer;font-family:inherit;}
+#floatingNav a, #pveMnavPanel a {text-decoration:none;}
+#pveMnavPanel[hidden],#pveMnavScrim[hidden]{display:none !important;}
+@media(min-width:769px){#floatingNav .pve-mnav-bar,#pveMnavPanel,#pveMnavScrim{display:none!important;}}
+
+
+/* Scope the desktop improvement to screens larger than the existing mobile hamburger breakpoint. */
+@media (min-width:769px){
+  html body #floatingNav.topbar,
+  html body #floatingNav.topbar.scrolled{
+    top:14px !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    width:calc(100% - 44px) !important;
+    max-width:1160px !important;
+    min-height:70px !important;
+    height:70px !important;
+    padding:7px 13px !important;
+    border-radius:24px !important;
+    overflow:visible !important;
+    background:rgba(17,25,45,.91) !important;
+    border:1px solid rgba(167,190,245,.15) !important;
+    box-shadow:0 15px 45px rgba(5,10,25,.23),inset 0 1px 0 rgba(255,255,255,.06) !important;
+    backdrop-filter:blur(22px) saturate(145%) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(145%) !important;
+    transition:background .22s ease,box-shadow .22s ease,top .22s ease !important;
+  }
+  html body #floatingNav.topbar.scrolled{
+    top:8px !important;
+    background:rgba(14,21,39,.96) !important;
+    box-shadow:0 16px 42px rgba(5,10,25,.27) !important;
+  }
+  html body #floatingNav .topbar-content{
+    width:100% !important;height:100% !important;min-width:0 !important;
+    display:flex !important;flex-direction:row !important;
+    align-items:center !important;justify-content:space-between !important;gap:14px !important;
+  }
+  html body #floatingNav .brand-group{
+    display:flex !important;align-items:center !important;gap:9px !important;
+    min-width:0 !important;flex:0 0 auto !important;
+  }
+  html body #floatingNav .brand-group::before{
+    content:'✿';display:grid;place-items:center;
+    flex:0 0 39px;width:39px;height:39px;
+    background:linear-gradient(140deg,#7394f2,#967be4 59%,#c783c6);
+    border:1px solid rgba(255,255,255,.22);border-radius:14px;
+    color:#fff;font-size:24px;line-height:1;
+    box-shadow:0 6px 17px rgba(120,112,227,.25),inset 0 1px 0 rgba(255,255,255,.27);
+  }
+  html body #floatingNav .brand-badge{
+    display:inline-flex !important;align-items:center !important;
+    padding:0 !important;min-height:0 !important;
+    border:0 !important;border-radius:0 !important;
+    background:transparent !important;box-shadow:none !important;
+    color:#f1f5ff !important;font-size:16px !important;
+    font-weight:900 !important;letter-spacing:-.018em !important;
+    white-space:nowrap !important;
+  }
+  html body #floatingNav .brand-badge.sub{
+    padding:6px 10px !important;min-height:30px !important;
+    background:rgba(138,157,218,.11) !important;
+    color:#bfcaf1 !important;
+    border:1px solid rgba(151,174,234,.18) !important;
+    border-radius:10px !important;
+    font-size:11px !important;font-weight:800 !important;
+    letter-spacing:.025em !important;
+  }
+  html body #floatingNav .brand-badge.sub::before{display:none !important;}
+  html body #floatingNav .nav-wrap{
+    display:flex !important;align-items:center !important;
+    gap:11px !important;min-width:0 !important;flex:0 0 auto !important;
+    margin-left:auto !important;
+  }
+  html body #floatingNav .nav{
+    display:flex !important;align-items:center !important;justify-content:center !important;
+    flex-wrap:nowrap !important;gap:3px !important;min-width:0 !important;
+    padding:4px !important;
+    border:1px solid rgba(144,166,213,.10) !important;
+    background:rgba(126,146,194,.055) !important;
+    border-radius:16px !important;
+    overflow:visible !important;
+  }
+  html body #floatingNav .nav a,
+  html body #floatingNav .nav a.home-btn,
+  html body #floatingNav .nav a.active:not(.home-btn){
+    position:relative;display:inline-flex !important;align-items:center !important;justify-content:center !important;
+    flex:0 0 auto !important;min-height:39px !important;
+    padding:9px 14px !important;border-radius:12px !important;
+    background:transparent !important;border:1px solid transparent !important;
+    box-shadow:none !important;color:#b3c2de !important;
+    text-shadow:none !important;font-size:13px !important;font-weight:700 !important;
+    line-height:1.2 !important;letter-spacing:0 !important;white-space:nowrap !important;
+    transition:color .18s ease,background .18s ease,box-shadow .18s ease,transform .18s ease !important;
+  }
+  html body #floatingNav .nav a:hover,
+  html body #floatingNav .nav a.home-btn:hover{
+    color:#eff5ff !important;background:rgba(131,155,214,.15) !important;
+    box-shadow:none !important;transform:none !important;
+  }
+  html body #floatingNav .nav a.active[aria-current="page"],
+  html body #floatingNav .nav a.active[aria-current="page"]:hover{
+    background:linear-gradient(130deg,#587be9 0%,#7766db 70%,#8d6fda 100%) !important;
+    border-color:rgba(199,207,255,.27) !important;
+    color:#fff !important;font-weight:850 !important;
+    box-shadow:0 5px 15px rgba(94,105,222,.31),inset 0 1px 0 rgba(255,255,255,.19) !important;
+  }
+  html body #floatingNav .theme-toggle{
+    flex:0 0 auto !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;
+    gap:5px !important;min-width:83px !important;min-height:43px !important;
+    border-radius:14px !important;border:1px solid rgba(153,174,225,.20) !important;
+    padding:8px 12px !important;
+    color:#e6edfc !important;background:rgba(131,151,202,.10) !important;
+    box-shadow:none !important;font-size:12px !important;font-weight:800 !important;
+  }
+  html body #floatingNav .theme-toggle:hover{
+    background:rgba(140,159,220,.20) !important;border-color:rgba(149,171,231,.40) !important;
+    transform:none !important;
+  }
+  html body #floatingNav .nav a:focus-visible,
+  html body #floatingNav .theme-toggle:focus-visible{
+    outline:2px solid #90b4ff !important;outline-offset:3px !important;
+  }
+
+  /* Light mode explicitly overrides old transparent-active / white-text rules. */
+  html[data-theme="light"] body #floatingNav.topbar,
+  html[data-theme="light"] body #floatingNav.topbar.scrolled{
+    background:rgba(255,255,255,.94) !important;
+    border-color:rgba(84,109,155,.13) !important;
+    box-shadow:0 16px 42px rgba(57,76,125,.13),inset 0 1px 0 rgba(255,255,255,.93) !important;
+  }
+  html[data-theme="light"] body #floatingNav .brand-badge{color:#25314e !important;}
+  html[data-theme="light"] body #floatingNav .brand-badge.sub{
+    background:#f0f3fc !important;color:#617295 !important;
+    border-color:#e0e7f3 !important;
+  }
+  html[data-theme="light"] body #floatingNav .nav{
+    background:#f4f6fc !important;border-color:#ebeff7 !important;
+  }
+  html[data-theme="light"] body #floatingNav .nav a,
+  html[data-theme="light"] body #floatingNav .nav a.home-btn,
+  html[data-theme="light"] body #floatingNav .nav a.active:not(.home-btn){color:#697994 !important;}
+  html[data-theme="light"] body #floatingNav .nav a:hover,
+  html[data-theme="light"] body #floatingNav .nav a.home-btn:hover{
+    color:#344d91 !important;background:#e7ebfb !important;
+  }
+  html[data-theme="light"] body #floatingNav .nav a.active[aria-current="page"],
+  html[data-theme="light"] body #floatingNav .nav a.active[aria-current="page"]:hover{
+    color:#fff !important;background:linear-gradient(130deg,#5579e7,#7967d9 75%,#8d70df) !important;
+    border-color:rgba(108,110,206,.20) !important;
+    box-shadow:0 6px 17px rgba(92,103,213,.23),inset 0 1px 0 rgba(255,255,255,.20) !important;
+  }
+  html[data-theme="light"] body #floatingNav .theme-toggle{
+    color:#34435f !important;background:#f5f7fd !important;
+    border-color:#e2e8f3 !important;
+  }
+  html[data-theme="light"] body #floatingNav .theme-toggle:hover{
+    background:#ebf0fb !important;border-color:#c8d6f0 !important;
+  }
+}
+/* Keep all five navigation links, brand and theme switch on one line at intermediate desktop widths. */
+@media(min-width:769px) and (max-width:1020px){
+  html body #floatingNav.topbar,
+  html body #floatingNav.topbar.scrolled{width:calc(100% - 24px) !important;padding:6px 10px !important;}
+  html body #floatingNav .topbar-content{gap:7px !important;}
+  html body #floatingNav .brand-group{gap:6px !important;}
+  html body #floatingNav .brand-group::before{width:34px;height:34px;flex-basis:34px;font-size:20px;border-radius:12px;}
+  html body #floatingNav .brand-badge{font-size:13px !important;}
+  html body #floatingNav .brand-badge.sub{font-size:10px !important;padding:5px 7px !important;}
+  html body #floatingNav .nav-wrap{gap:6px !important;}
+  html body #floatingNav .nav{gap:1px !important;padding:3px !important;}
+  html body #floatingNav .nav a,
+  html body #floatingNav .nav a.home-btn,
+  html body #floatingNav .nav a.active:not(.home-btn){font-size:11px !important;padding:8px 9px !important;min-height:37px !important;}
+  html body #floatingNav .theme-toggle{min-width:69px !important;padding:7px 8px !important;font-size:11px !important;}
+}
+
+
+/* The shared desktop navbar is kept untouched. This new compact variant is mobile-only. */
+.pve-mnav-bar,.pve-mnav-scrim,.pve-mnav-panel{display:none;}
+@media(max-width:768px){
+  html body[data-site-page]{padding-top:92px !important;}
+  html body #floatingNav.topbar, html body #floatingNav.topbar.scrolled{
+    top:calc(9px + env(safe-area-inset-top)) !important;left:50% !important;
+    width:calc(100% - 22px) !important;max-width:520px !important;
+    height:64px !important;min-height:64px !important;padding:5px 8px 5px 8px !important;
+    border-radius:22px !important;overflow:visible !important;
+    background:color-mix(in srgb,var(--ui-panel) 91%,transparent) !important;
+    border:1px solid var(--ui-line-strong) !important;
+    box-shadow:0 12px 38px rgba(7,13,29,.20),inset 0 1px 0 rgba(255,255,255,.08) !important;
+    backdrop-filter:blur(22px) saturate(145%) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(145%) !important;
+    z-index:10050 !important;
+  }
+  html body #floatingNav .topbar-content{display:flex !important;flex-direction:row !important;align-items:center !important;justify-content:stretch !important;height:100% !important;gap:0 !important;}
+  html body #floatingNav .topbar-content > .brand-group,
+  html body #floatingNav .topbar-content > .nav-wrap{display:none !important;}
+  html body #floatingNav .pve-mnav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;height:100%;min-width:0;}
+  .pve-mnav-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1;text-align:left;border:0;background:transparent !important;color:var(--ui-text);padding:1px 2px 1px 3px;box-shadow:none !important;}
+  .pve-mnav-brand:focus-visible,.pve-mnav-icon-btn:focus-visible,.pve-mnav-close:focus-visible,
+  .pve-mnav-link:focus-visible{outline:2px solid var(--ui-accent) !important;outline-offset:3px;}
+  .pve-mnav-flower{flex:0 0 41px;display:grid;place-items:center;width:41px;height:41px;border-radius:15px;
+    color:#fff;font-size:26px;font-weight:500;line-height:1;background:linear-gradient(135deg,#7c9fff 0%,#9774e4 53%,#d085c2 100%);
+    border:1px solid rgba(255,255,255,.23);box-shadow:0 4px 13px rgba(126,106,224,.23),inset 0 1px 0 rgba(255,255,255,.22);}
+  .pve-mnav-brand-text{display:flex;flex-direction:column;justify-content:center;min-width:0;gap:3px;}
+  .pve-mnav-brand-text strong{display:block;color:var(--ui-text);font-size:15px;font-weight:900;white-space:nowrap;letter-spacing:.015em;line-height:1.2;}
+  .pve-mnav-brand-text small{display:block;color:var(--ui-muted);font-size:10px;font-weight:650;white-space:nowrap;letter-spacing:.07em;line-height:1.15;}
+  .pve-mnav-brand-dot{color:var(--ui-accent);padding:0 2px;}
+  .pve-mnav-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto;}
+  .pve-mnav-icon-btn{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;padding:0;border:1px solid var(--ui-line) !important;
+    border-radius:14px !important;background:var(--ui-panel-2) !important;color:var(--ui-text) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.035) !important;transition:background .2s ease,transform .2s ease,border-color .2s ease;}
+  .pve-mnav-icon-btn:active{transform:scale(.95);}
+  .pve-mnav-theme svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .pve-mnav-sun{display:none;}
+  html[data-theme="light"] .pve-mnav-sun{display:block;}
+  html[data-theme="light"] .pve-mnav-moon{display:none;}
+  .pve-mnav-burger{border-color:rgba(126,144,254,.36) !important;
+    background:linear-gradient(135deg,#667de6,#8368d5) !important;color:white !important;}
+  .pve-mnav-burger-lines{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:22px;height:22px;}
+  .pve-mnav-burger-lines i{width:20px;height:2px;border-radius:99px;background:currentColor;display:block;transform-origin:center;transition:transform .25s ease,opacity .2s ease,width .25s ease;}
+  .pve-mnav-burger-lines i:nth-child(2){width:14px;align-self:flex-end;}
+  .pve-mnav-burger[aria-expanded="true"] .pve-mnav-burger-lines i:first-child{transform:translateY(7px) rotate(45deg);}
+  .pve-mnav-burger[aria-expanded="true"] .pve-mnav-burger-lines i:nth-child(2){opacity:0;transform:scaleX(0);}
+  .pve-mnav-burger[aria-expanded="true"] .pve-mnav-burger-lines i:last-child{transform:translateY(-7px) rotate(-45deg);}
+  .pve-mnav-scrim{display:block;position:fixed;inset:0;z-index:10015;background:rgba(3,8,20,.52);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s;}
+  .pve-mnav-scrim.is-open{opacity:1;visibility:visible;pointer-events:auto;}
+  .pve-mnav-panel{display:block;position:fixed;top:var(--pve-mnav-panel-top,82px);left:max(11px,calc((100vw - 520px)/2));right:max(11px,calc((100vw - 520px)/2));
+    width:auto;max-height:calc(100dvh - var(--pve-mnav-panel-top,82px) - 18px);overflow:auto;overscroll-behavior:contain;
+    z-index:10030;border-radius:25px;padding:18px 16px 13px;color:var(--ui-text);
+    background:var(--ui-panel);border:1px solid var(--ui-line-strong);
+    box-shadow:0 26px 65px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04);
+    opacity:0;transform:translateY(-11px) scale(.985);visibility:hidden;pointer-events:none;
+    transition:opacity .23s ease,transform .23s ease,visibility .23s;}
+  .pve-mnav-panel.is-open{opacity:1;transform:translateY(0) scale(1);visibility:visible;pointer-events:auto;}
+  .pve-mnav-panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:0 1px 12px;}
+  .pve-mnav-panel-heading h2{margin:3px 0 2px;color:var(--ui-text);font-size:22px;font-weight:900;letter-spacing:-.03em;line-height:1.3;}
+  .pve-mnav-panel-heading p{margin:0;font-size:11px;color:var(--ui-muted);line-height:1.5;}
+  .pve-mnav-eyebrow{display:block;color:var(--ui-accent);font-size:9px;letter-spacing:.14em;font-weight:900;}
+  .pve-mnav-close{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;border-radius:11px;border:1px solid var(--ui-line);background:var(--ui-panel-2);color:var(--ui-muted);font-size:24px;font-weight:400;line-height:1;padding:0;}
+  .pve-mnav-links{display:grid;gap:7px;padding-top:8px;border-top:1px solid var(--ui-line);}
+  .pve-mnav-link{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 12px;border-radius:16px;
+    text-decoration:none;border:1px solid transparent;background:var(--ui-panel-2);color:var(--ui-text);transition:transform .18s,background .18s;}
+  .pve-mnav-link:active{transform:scale(.985);}
+  .pve-mnav-link.is-current{background:var(--ui-accent-soft);border-color:color-mix(in srgb,var(--ui-accent) 30%,transparent);}
+  .pve-mnav-link-icon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;
+    background:var(--ui-panel-3);color:var(--ui-accent);font-size:21px;font-weight:700;}
+  .pve-mnav-link.is-current .pve-mnav-link-icon{background:color-mix(in srgb,var(--ui-accent) 18%,var(--ui-panel));}
+  .pve-mnav-link-copy{display:flex;flex-direction:column;flex:1;gap:2px;min-width:0;}
+  .pve-mnav-link-copy strong{font-size:13px;font-weight:850;color:var(--ui-text);line-height:1.3;}
+  .pve-mnav-link-copy small{font-size:10px;color:var(--ui-muted);line-height:1.3;}
+  .pve-mnav-link-arrow{font-size:16px;color:var(--ui-muted);}
+  .pve-mnav-current-pill{display:inline-flex;padding:5px 9px;background:var(--ui-accent-soft);color:var(--ui-accent);
+    border:1px solid var(--ui-line-strong);border-radius:999px;font-size:10px;font-weight:850;}
+  .pve-mnav-footer{display:flex;align-items:center;gap:7px;padding:14px 3px 2px;font-size:10px;color:var(--ui-muted);}
+  .pve-mnav-footer-flower{font-size:15px;color:#c58acb;}
+  .pve-mnav-version{margin-left:auto;opacity:.7;font-size:9px;}
+  body.pve-mnav-open{overflow:hidden !important;}
+  .pve-petal-layer{position:fixed;inset:0;z-index:120000;pointer-events:none;overflow:hidden;}
+  .pve-secret-petal{position:absolute;left:var(--petal-left);top:-35px;color:var(--petal-color);font-size:var(--petal-size);opacity:0;
+    text-shadow:0 4px 12px rgba(126,85,158,.2);animation:pve-secret-fall var(--petal-duration) ease-in forwards;}
+  @keyframes pve-secret-fall{0%{opacity:0;transform:translate3d(0,-10px,0) rotate(0)}15%{opacity:.92}85%{opacity:.85}100%{opacity:0;transform:translate3d(var(--petal-drift),100dvh,0) rotate(var(--petal-rotate))}}
+}
+@media(max-width:365px){
+  .pve-mnav-brand{gap:7px;}
+  .pve-mnav-flower{width:37px;height:37px;flex-basis:37px;font-size:24px;}
+  .pve-mnav-brand-text strong{font-size:13px;}
+  .pve-mnav-icon-btn{width:39px;height:39px;flex-basis:39px;}
+  .pve-mnav-actions{gap:4px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .pve-mnav-panel,.pve-mnav-scrim,.pve-mnav-burger-lines i,.pve-secret-petal{transition:none !important;animation:none !important;}
+}
+
+
+/* One coherent mobile typography scale, leaving content structure intact. */
+@media(max-width:768px){
+  html body[data-site-page] {font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;}
+  html body #floatingNav .pve-mnav-brand-text strong{font-size:15px !important;}
+  html body #floatingNav .pve-mnav-brand-text small{font-size:10px !important;}
+  html body .announcementTitle{font-size:13px;}
+  html body .announcementText{font-size:12px;}
+  html body .announcementTime{font-size:10px;}
+  html body #siteAnnouncement{padding-left:10px;padding-right:10px;}
+}
+@media(max-width:365px){html body #floatingNav .pve-mnav-brand-text strong{font-size:13px !important;}}
+
+@media(max-width:768px){
+  body[data-site-page="index"] .container{padding-inline:10px;}
+  body[data-site-page="index"] .hero{padding:18px;border-radius:22px;}
+  body[data-site-page="index"] .hero h1{font-size:clamp(29px,9vw,38px);}
+  body[data-site-page="index"] .hero p{font-size:12px;line-height:1.75;}
+  body[data-site-page="index"] .quick-link{min-height:48px;}
+  body[data-site-page="index"] .quick-link strong{font-size:13px;}
+  body[data-site-page="index"] .quick-link span{font-size:11px;}
+  body[data-site-page="index"] .hero-actions .btn{font-size:12px;}
+  body[data-site-page="index"] .section-title{font-size:17px;}
+}
+
+
+.wwm-toast-stack{position:fixed;right:14px;bottom:18px;z-index:120100;display:grid;gap:9px;pointer-events:none;max-width:calc(100vw - 28px);}
+.wwm-toast{pointer-events:auto;display:flex;gap:10px;align-items:center;padding:12px 14px;min-width:200px;max-width:340px;
+ background:var(--ui-panel);color:var(--ui-text);border:1px solid var(--ui-line-strong);border-radius:16px;
+ box-shadow:0 18px 40px rgba(0,0,0,.24);font-size:12px;font-weight:750;line-height:1.55;
+ animation:wwm-toast-in .2s ease;}
+.wwm-toast[data-kind="success"]{border-left:3px solid #34d399;}
+.wwm-toast[data-kind="error"]{border-left:3px solid #fb7185;}
+.wwm-toast-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:10px;background:var(--ui-panel-2);flex:0 0 28px;}
+@keyframes wwm-toast-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.wwm-toast-stack{bottom:calc(20px + env(safe-area-inset-bottom));left:14px;right:14px;}.wwm-toast{max-width:none;min-width:0;width:100%;}}
+@media(prefers-reduced-motion:reduce){.wwm-toast{animation:none;}}
+
+</style>
 </head>
 
-<body data-site-page="index">
+<body data-site-page="index" data-site-page="index">
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
 <div class="bg-orb orb3"></div>
 
-<nav class="topbar" id="floatingNav" aria-label="主要導覽">
-  <div class="topbar-content">
-    <div class="brand-group">
-      <span class="brand-badge">夢回花深處</span>
-      <span class="brand-badge sub">首頁</span>
-    </div>
-    <div class="nav-wrap">
-      <div class="nav">
-        <a href="index" class="active" aria-current="page">首頁</a>
-        <a href="PVERegistration">副本報名</a>
-        <a href="gallery">江湖回憶錄</a>
-        <a href="activities">歷屆活動</a>
-        <a href="documentation">手冊</a>
-      </div>
-      <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="切換白天或夜間模式">☀ 白天</button>
-    </div>
-  </div>
+<nav aria-label="主要導覽" class="topbar" id="floatingNav">
+<div class="topbar-content">
+<div class="brand-group">
+<span class="brand-badge">夢回花深處</span>
+<span class="brand-badge sub">首頁</span>
+</div>
+<div class="nav-wrap">
+<div class="nav">
+<a href="index" class="active" aria-current="page">首頁</a>
+<a href="PVERegistration">副本報名</a>
+<a href="gallery">江湖回憶錄</a>
+<a href="activities">歷屆活動</a>
+<a href="documentation">手冊</a>
+</div>
+<button aria-label="切換白天或夜間模式" class="theme-toggle" id="themeToggleBtn" type="button">☀ 白天</button>
+</div>
+<!-- Mobile-only navigation. Keep the original desktop links and theme button intact. -->
+<div aria-label="手機主導覽" class="pve-mnav-bar">
+<button aria-label="夢回花深處，返回頁面頂部" class="pve-mnav-brand" id="pveMnavBrand" type="button">
+<span aria-hidden="true" class="pve-mnav-flower">✿</span>
+<span class="pve-mnav-brand-text"><strong>夢回花深處</strong><small>首頁 <span class="pve-mnav-brand-dot">·</span> HOME</small></span>
+</button>
+<div class="pve-mnav-actions">
+<button aria-label="切換至淺色模式" class="pve-mnav-icon-btn pve-mnav-theme" id="pveMnavTheme" title="切換外觀" type="button">
+<svg aria-hidden="true" class="pve-mnav-moon" viewbox="0 0 24 24"><path d="M20.5 14.1A8.8 8.8 0 0 1 9.9 3.5a8.8 8.8 0 1 0 10.6 10.6Z"></path></svg>
+<svg aria-hidden="true" class="pve-mnav-sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg>
+</button>
+<button aria-controls="pveMnavPanel" aria-expanded="false" aria-label="開啟網站選單" class="pve-mnav-icon-btn pve-mnav-burger" id="pveMnavBurger" title="網站選單" type="button">
+<span aria-hidden="true" class="pve-mnav-burger-lines"><i></i><i></i><i></i></span>
+</button>
+</div>
+</div>
+</div>
 </nav>
+<div class="pve-mnav-scrim" hidden="" id="pveMnavScrim"></div>
+<div aria-hidden="true" aria-label="網站導覽" aria-modal="true" class="pve-mnav-panel" hidden="" id="pveMnavPanel" role="dialog">
+<div class="pve-mnav-panel-heading">
+<div><span class="pve-mnav-eyebrow">EXPLORE THE JIANGHU</span><h2>去哪裡看看？</h2><p>探索夢回花深處的每個角落</p></div>
+<button aria-label="關閉網站選單" class="pve-mnav-close" id="pveMnavClose" type="button">×</button>
+</div>
+<nav aria-label="網站頁面" class="pve-mnav-links">
+<a aria-current="page" class="pve-mnav-link is-current" href="index"><span class="pve-mnav-link-icon">⌂</span><span class="pve-mnav-link-copy"><strong>首頁</strong><small>目前所在頁面</small></span><span class="pve-mnav-current-pill">目前頁面</span></a>
+<a class="pve-mnav-link" href="PVERegistration"><span class="pve-mnav-link-icon">⚔</span><span class="pve-mnav-link-copy"><strong>副本報名</strong><small>找隊、開團、報名副本</small></span></a>
+<a class="pve-mnav-link" href="gallery"><span class="pve-mnav-link-icon">▧</span><span class="pve-mnav-link-copy"><strong>江湖回憶錄</strong><small>收藏一起走過的故事</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+<a class="pve-mnav-link" href="activities"><span class="pve-mnav-link-icon">✧</span><span class="pve-mnav-link-copy"><strong>歷屆活動</strong><small>看看過往的精彩時刻</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+<a class="pve-mnav-link" href="documentation"><span class="pve-mnav-link-icon">▤</span><span class="pve-mnav-link-copy"><strong>使用手冊</strong><small>玩法介紹與完整教學</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+</nav>
+<div class="pve-mnav-footer"><span aria-hidden="true" class="pve-mnav-footer-flower">✿</span><span>江湖不遠，花深處見。</span><span class="pve-mnav-version">夢回花深處</span></div>
+</div>
 
 <div id="siteAnnouncement"></div>
 
@@ -288,7 +642,7 @@ html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb,.schedule-container:
         <div class="leader-list">
           <div class="leader-item"><span class="leader-role">社長</span><span class="leader-name">姜澈</span></div>
           <div class="leader-item"><span class="leader-role">副社長</span><span class="leader-name">花臻茵</span></div>
-          <div class="leader-item"><span class="leader-role">執法長老</span><span class="leader-members"><span class="member-tag">白凡</span><span class="member-tag">雙鱼</span><span class="member-tag">曲絡寧</span><span class="member-tag">星天羽</span><span class="member-tag">婁震戒</span></span></div>
+          <div class="leader-item"><span class="leader-role">執法長老</span><span class="leader-members"><span class="member-tag">婁震戒</span><span class="member-tag">雙鱼</span><span class="member-tag">曲絡寧</span><span class="member-tag">星天羽</span><span class="member-tag">筱風</span></span></div>
         </div>
       </div>
     </div>
@@ -924,5 +1278,137 @@ window.addEventListener('scroll', () => {
 })();
 </script>
 
+<script id="wwm-shared-feedback">
+(function(){
+  'use strict';
+  let stack=document.getElementById('wwmToastStack');
+  if(!stack){stack=document.createElement('div');stack.id='wwmToastStack';stack.className='wwm-toast-stack';stack.setAttribute('aria-live','polite');document.body.appendChild(stack);}
+  window.showAppToast=function(message,tone='info',title=''){
+    const kind=tone==='danger'?'error':tone;
+    const el=document.createElement('div');el.className='wwm-toast';el.dataset.kind=kind;
+    const icon=document.createElement('span');icon.className='wwm-toast-icon';icon.textContent=kind==='success'?'✓':kind==='error'?'!':'✿';
+    const text=document.createElement('span');text.textContent=(title?title+' · ':'')+String(message);
+    el.append(icon,text);stack.appendChild(el);
+    const clear=()=>{el.remove();};const timeout=setTimeout(clear,3800);
+    el.addEventListener('click',()=>{clearTimeout(timeout);clear();});
+  };
+  const root=document.documentElement;
+  const bar=document.getElementById('floatingNav');
+  // Keep the fixed desktop navbar neat when the page scrolls.
+  const updateScroll=()=>bar?.classList.toggle('scrolled',window.scrollY>40);
+  window.addEventListener('scroll',updateScroll,{passive:true});updateScroll();
+})();
+</script>
+<script id="wwm-shared-mobile-menu">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const bar=$('floatingNav'), burger=$('pveMnavBurger'), panel=$('pveMnavPanel'), scrim=$('pveMnavScrim'), close=$('pveMnavClose'),
+       brand=$('pveMnavBrand'), theme=$('pveMnavTheme');
+ if(!bar||!burger||!panel||!scrim||!close||!brand||!theme)return;
+ const mobile=window.matchMedia('(max-width:768px)');
+ const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+ let expanded=false,lastFocus=null,longPressTimer=null,longPressTriggered=false,brandTaps=0,brandTapTime=0;
+ function setPanelTop(){
+   const bottom=bar.getBoundingClientRect().bottom;
+   document.documentElement.style.setProperty('--pve-mnav-panel-top',Math.ceil(bottom+9)+'px');
+ }
+ function setExpanded(next, focusReturn=true){
+   if(next && !mobile.matches)return;
+   if(expanded===next)return;
+   expanded=next;
+   if(next){
+     lastFocus=document.activeElement;
+     setPanelTop();
+     panel.hidden=false;scrim.hidden=false;
+     panel.setAttribute('aria-hidden','false');
+     burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','關閉網站選單');
+     document.body.classList.add('pve-mnav-open');
+     requestAnimationFrame(()=>{
+       panel.classList.add('is-open');scrim.classList.add('is-open');
+       close.focus({preventScroll:true});
+     });
+   }else{
+     panel.classList.remove('is-open');scrim.classList.remove('is-open');
+     panel.setAttribute('aria-hidden','true');
+     burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','開啟網站選單');
+     document.body.classList.remove('pve-mnav-open');
+     panel.hidden=true;scrim.hidden=true;
+     if(focusReturn && lastFocus?.isConnected)lastFocus.focus({preventScroll:true});
+     lastFocus=null;
+   }
+ }
+ burger.addEventListener('click',e=>{
+   if(longPressTriggered){longPressTriggered=false;e.preventDefault();return;}
+   setExpanded(!expanded);
+ });
+ close.addEventListener('click',()=>setExpanded(false));
+ scrim.addEventListener('click',()=>setExpanded(false));
+ panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setExpanded(false,false)));
+ document.addEventListener('keydown',e=>{
+   if(e.key==='Escape'&&expanded){e.preventDefault();setExpanded(false);return;}
+   if(e.key==='Tab'&&expanded){
+     const interactive=[...panel.querySelectorAll('button:not([disabled]),a[href]')];
+     const first=interactive[0],last=interactive.at(-1);
+     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+   }
+ });
+ window.addEventListener('resize',()=>{if(!mobile.matches)setExpanded(false,false);else if(expanded)setPanelTop();},{passive:true});
+ window.addEventListener('scroll',()=>{if(expanded)setPanelTop();},{passive:true});
+ window.visualViewport?.addEventListener('resize',()=>{if(expanded)setPanelTop();},{passive:true});
+ // The existing theme toggle remains the single source of truth. Mirror its state here.
+ function updateTheme(){
+   const light=document.documentElement.dataset.theme==='light';
+   theme.setAttribute('aria-label',light?'切換至深色模式':'切換至淺色模式');
+   theme.setAttribute('title',light?'切換至深色模式':'切換至淺色模式');
+ }
+ theme.addEventListener('click',()=>{
+   $('themeToggleBtn')?.click();updateTheme();
+ });
+ new MutationObserver(updateTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+ updateTheme();
+ brand.addEventListener('click',()=>{
+   if(!mobile.matches)return;
+   window.scrollTo({top:0,behavior:reduceMotion.matches?'auto':'smooth'});
+   const now=Date.now();brandTaps=now-brandTapTime<2500?brandTaps+1:1;brandTapTime=now;
+   if(brandTaps>=5){brandTaps=0;triggerSecret();}
+ });
+ // Easter egg: press and hold the burger for ~1 second (or tap the flower 5 times).
+ function triggerSecret(){
+   setExpanded(false,false);
+   if(typeof window.showAppToast==='function')window.showAppToast('🌸 花深處的秘密被你找到了！江湖路遠，繁花相伴。','success','隱藏彩蛋');
+   if(reduceMotion.matches)return;
+   const layer=document.createElement('div');layer.className='pve-petal-layer';layer.setAttribute('aria-hidden','true');
+   const palette=['#eaa5c9','#cfa8f1','#f9c6d8','#a5c4ff','#f4d3ef'];
+   for(let i=0;i<23;i++){
+     const petal=document.createElement('span');petal.className='pve-secret-petal';petal.textContent=i%4===0?'✿':'❀';
+     petal.style.setProperty('--petal-left',`${3+(i*37)%94}%`);
+     petal.style.setProperty('--petal-color',palette[i%palette.length]);
+     petal.style.setProperty('--petal-size',`${13+i%6*4}px`);
+     petal.style.setProperty('--petal-duration',`${2.7+(i%5)*.36}s`);
+     petal.style.setProperty('--petal-drift',`${-90+(i*27)%180}px`);
+     petal.style.setProperty('--petal-rotate',`${(i%2===0?1:-1)*(190+i*22)}deg`);
+     petal.style.animationDelay=`${(i%8)*.12}s`;
+     layer.appendChild(petal);
+   }
+   document.body.appendChild(layer);
+   setTimeout(()=>layer.remove(),5600);
+ }
+ function cancelLongPress(){if(longPressTimer!==null){clearTimeout(longPressTimer);longPressTimer=null;}}
+ burger.addEventListener('pointerdown',e=>{
+   if(e.button!==0)return;
+   longPressTriggered=false;
+   cancelLongPress();
+   longPressTimer=setTimeout(()=>{longPressTriggered=true;triggerSecret();cancelLongPress();},1050);
+ });
+ for(const event of ['pointerup','pointercancel','pointerleave'])burger.addEventListener(event,cancelLongPress);
+ burger.addEventListener('contextmenu',e=>{if(mobile.matches)e.preventDefault();});
+ burger.addEventListener('keydown',e=>{
+   if(e.shiftKey&&e.key==='Enter'){e.preventDefault();longPressTriggered=true;triggerSecret();}
+ });
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelLongPress();});
+})();
+</script>
 </body>
 </html>
