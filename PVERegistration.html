@@ -12655,7 +12655,7 @@ body {
     /* Match the shared shell: left page badge stays gray, current nav link is accented. */
     body[data-site-page="PVERegistration"] .nav a.active[aria-current="page"]{
       color:#fff !important;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
+      background:linear-gradient(135deg,#557ce9,#8060d8) !important;
       border-color:transparent !important;
       box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 28%,transparent) !important;
     }
@@ -13033,8 +13033,39 @@ body {
       </div>
       <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="切換白天或夜間模式">☀ 白天</button>
     </div>
+    <!-- Mobile-only navigation. Keep the original desktop links and theme button intact. -->
+    <div class="pve-mnav-bar" aria-label="手機主導覽">
+      <button type="button" class="pve-mnav-brand" id="pveMnavBrand" aria-label="夢回花深處，返回頁面頂部">
+        <span class="pve-mnav-flower" aria-hidden="true">✿</span>
+        <span class="pve-mnav-brand-text"><strong>夢回花深處</strong><small>副本組隊 <span class="pve-mnav-brand-dot">·</span> PVE</small></span>
+      </button>
+      <div class="pve-mnav-actions">
+        <button type="button" class="pve-mnav-icon-btn pve-mnav-theme" id="pveMnavTheme" aria-label="切換至淺色模式" title="切換外觀">
+          <svg class="pve-mnav-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.1A8.8 8.8 0 0 1 9.9 3.5a8.8 8.8 0 1 0 10.6 10.6Z"/></svg>
+          <svg class="pve-mnav-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        </button>
+        <button type="button" class="pve-mnav-icon-btn pve-mnav-burger" id="pveMnavBurger" aria-label="開啟網站選單" aria-expanded="false" aria-controls="pveMnavPanel" title="網站選單">
+          <span class="pve-mnav-burger-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
+<div id="pveMnavScrim" class="pve-mnav-scrim" hidden></div>
+<div id="pveMnavPanel" class="pve-mnav-panel" role="dialog" aria-modal="true" aria-label="網站導覽" aria-hidden="true" hidden>
+  <div class="pve-mnav-panel-heading">
+    <div><span class="pve-mnav-eyebrow">EXPLORE THE JIANGHU</span><h2>去哪裡看看？</h2><p>探索夢回花深處的每個角落</p></div>
+    <button type="button" id="pveMnavClose" class="pve-mnav-close" aria-label="關閉網站選單">×</button>
+  </div>
+  <nav class="pve-mnav-links" aria-label="網站頁面">
+    <a href="index" class="pve-mnav-link"><span class="pve-mnav-link-icon">⌂</span><span class="pve-mnav-link-copy"><strong>首頁</strong><small>回到江湖入口</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+    <a href="PVERegistration" class="pve-mnav-link is-current" aria-current="page"><span class="pve-mnav-link-icon">⚔</span><span class="pve-mnav-link-copy"><strong>副本報名</strong><small>目前所在頁面</small></span><span class="pve-mnav-current-pill">目前</span></a>
+    <a href="gallery" class="pve-mnav-link"><span class="pve-mnav-link-icon">▧</span><span class="pve-mnav-link-copy"><strong>江湖回憶錄</strong><small>收藏一起走過的故事</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+    <a href="activities" class="pve-mnav-link"><span class="pve-mnav-link-icon">✧</span><span class="pve-mnav-link-copy"><strong>歷屆活動</strong><small>看看過往的精彩時刻</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+    <a href="documentation" class="pve-mnav-link"><span class="pve-mnav-link-icon">▤</span><span class="pve-mnav-link-copy"><strong>使用手冊</strong><small>玩法介紹與完整教學</small></span><span class="pve-mnav-link-arrow">↗</span></a>
+  </nav>
+  <div class="pve-mnav-footer"><span class="pve-mnav-footer-flower" aria-hidden="true">✿</span><span>江湖不遠，花深處見。</span><span class="pve-mnav-version">夢回花深處</span></div>
+</div>
   <div id="siteAnnouncement"></div>
 
 
@@ -13797,6 +13828,11 @@ body {
       }
     });
 
+    // Mobile team accordion: starts closed, preserves explicit opens across live updates.
+    const expandedMobileTeamIds = new Set();
+    function mobileTeamIdentity(dateKey, slot, slotIndex){
+      return `${dateKey}::${validSlotId(slot?.id) ? slot.id : `legacy-${slotIndex}`}`;
+    }
     let isRendering = false;
     let currentSignup = { dateKey:"", slotIndex:-1, allowedRoles:[] };
     let selectedRoleValue = "";
@@ -16211,7 +16247,7 @@ body {
       setTimeout(() => document.querySelector("#batchPlayerList .batch-name-input")?.focus(), 20);
     };
 
-    window.saveCurrentBatchAsPreset = () => {
+    window.saveCurrentBatchAsPreset = async () => {
       const rows = getCurrentBatchRows();
       const players = rows
         .map(row => ({
@@ -16225,7 +16261,7 @@ body {
         return;
       }
 
-      const presetName = prompt("請輸入這組常用批量名稱：", `常用隊伍 ${players.length}人`);
+      const presetName = await window.showAppPrompt("請輸入這組常用批量名稱：", `常用隊伍 ${players.length}人`, { title: "儲存常用批量", confirmText: "儲存" });
       if(presetName === null) return;
       const name = presetName.trim() || `常用隊伍 ${players.length}人`;
 
@@ -16234,7 +16270,7 @@ body {
       const presetData = { name, players };
 
       if(existingIndex >= 0){
-        if(!confirm(`已存在「${name}」，要覆蓋嗎？`)) return;
+        if(!(await window.showAppConfirm(`已存在「${name}」，要覆蓋嗎？`, { title: "覆蓋常用批量", confirmText: "覆蓋" }))) return;
         presets[existingIndex] = presetData;
       } else {
         presets.push(presetData);
@@ -16250,7 +16286,7 @@ body {
       }
     };
 
-    window.deleteSelectedBatchPreset = () => {
+    window.deleteSelectedBatchPreset = async () => {
       const select = document.getElementById("batchPresetSelect");
       if(!select || select.disabled) return;
 
@@ -16259,7 +16295,7 @@ body {
       const preset = presets[index];
       if(!preset) return;
 
-      if(!confirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`)) return;
+      if(!(await window.showAppConfirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`, { title: "刪除常用批量", confirmText: "刪除", tone: "danger" }))) return;
       presets.splice(index, 1);
       saveBatchPresetList(presets);
       renderBatchPresetSelect();
@@ -16395,11 +16431,11 @@ body {
       resetPresetManageRows(Array.isArray(preset.players) ? preset.players : []);
     };
 
-    window.deleteBatchPresetFromManager = (index) => {
+    window.deleteBatchPresetFromManager = async (index) => {
       const presets = getBatchPresetList();
       const preset = presets[index];
       if(!preset) return;
-      if(!confirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`)) return;
+      if(!(await window.showAppConfirm(`確定要刪除常用批量「${preset.name || `常用隊伍 ${index + 1}`}」嗎？`, { title: "刪除常用批量", confirmText: "刪除", tone: "danger" }))) return;
 
       presets.splice(index, 1);
       saveBatchPresetList(presets);
@@ -16663,7 +16699,7 @@ body {
       }
       const waiting = getPendingMembers(slot).length;
       const label = `${dateKey} ${slot.time}｜第 ${slot.instance || 1} 隊｜${normalizeSlot(slot).teamType}`;
-      if(!window.confirm(`⚠️ 確定要永久刪除這支隊伍嗎？\n\n${label}\n已確認 0 人，待確認 ${waiting} 人。\n\n待確認申請也會一併移除，無法復原。`)) return;
+      if(!(await window.showAppConfirm(`⚠️ 確定要永久刪除這支隊伍嗎？\n\n${label}\n已確認 0 人，待確認 ${waiting} 人。\n\n待確認申請也會一併移除，無法復原。`, { title: "強制刪除隊伍", confirmText: "確定刪除", tone: "danger" }))) return;
       try{
         const ref = doc(db, CONFIG.collectionName, dateKey);
         const result = await runTransaction(db, async transaction => {
@@ -17127,10 +17163,39 @@ body {
               : members.length > 0
                 ? `slot-card has-members${quickFillClass}${isMyTeam ? " my-team" : ""}`
                 : `slot-card${isMyTeam ? " my-team" : ""}`;
-            const slotCardClass = `${slotCardBaseClass}${isSlotCancelled ? " cancelled-slot" : ""}`;
+            const mobileTeamId = mobileTeamIdentity(dateKey, slot, slotIndex);
+            const mobileTeamIsOpen = expandedMobileTeamIds.has(mobileTeamId);
+            const mobileFirstMember = String(members[0]?.name || "").trim();
+            const mobileLeaderText = mobileFirstMember ? escapeHtml(mobileFirstMember) : "尚無隊長";
+            const mobileWaiting = pendingMembers.length;
+            const mobileStateText = isSlotCancelled ? "已取消" : members.length >= maxPeople ? "已滿" : mobileWaiting > 0 ? `待確認 ${mobileWaiting}` : members.length > 0 ? "招募中" : "待招募";
+            const slotCardClass = `${slotCardBaseClass}${isSlotCancelled ? " cancelled-slot" : ""}${mobileTeamIsOpen ? " mobile-team-expanded" : " mobile-team-collapsed"}`;
 
             html += `
               <div class="${slotCardClass}" id="team-${dateKey}-${slotIndex}" data-team-card-slot="${slotIndex}">
+                <button type="button" class="mobile-team-toggle" data-action="mobile-team-toggle"
+                  data-mobile-team-id="${escapeHtml(mobileTeamId)}"
+                  aria-expanded="${mobileTeamIsOpen ? "true" : "false"}"
+                  aria-label="${escapeHtml(slot.time || "未設定時間")} 第 ${slot.instance || 1} 隊，${members.length} / ${maxPeople} 人，${mobileFirstMember ? `隊長 ${mobileFirstMember}` : "尚無隊長"}，${mobileTeamIsOpen ? "收合" : "展開"}隊伍詳情">
+                  <span class="mobile-team-main">
+                    <span class="mobile-team-topline">
+                      <strong class="mobile-team-time">${escapeHtml(getSlotChangedTime(slot) && slotScheduleStatus === "時間更改" ? getSlotChangedTime(slot) : slot.time || "未設定")}</strong>
+                      <span class="mobile-team-number">第 ${slot.instance || 1} 隊</span>
+                      <span class="mobile-team-type">${escapeHtml(normalizeSlot(slot).teamType.replace("團", ""))}</span>
+                    </span>
+                    <span class="mobile-team-lowerline">
+                      <span class="mobile-team-leader" title="${mobileLeaderText}"><span aria-hidden="true">♙</span> ${mobileLeaderText}</span>
+                      <span class="mobile-team-state${isSlotCancelled ? " is-cancelled" : members.length >= maxPeople ? " is-full" : ""}">${mobileStateText}</span>
+                    </span>
+                  </span>
+                  <span class="mobile-team-end">
+                    <span class="mobile-team-count"><strong>${members.length}</strong><span>/${maxPeople}</span></span>
+                    <span class="mobile-team-count-hint">已報名</span>
+                  </span>
+                  <span class="mobile-team-chevron" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                  </span>
+                </button>
                 <div class="slot-top">
                   <div>
                     <div class="slot-time-wrap">
@@ -17286,26 +17351,30 @@ body {
             html += `
                 </div>
 
-                <div class="slot-actions">
-                  <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || members.length >= maxPeople ? "disabled" : ""}>
-                    ${isSlotCancelled
-                      ? "此隊已取消"
-                      : isSignupClosed
-                        ? "報名已截止"
-                        : members.length >= maxPeople
-                          ? "此隊已滿"
-                          : isProtectedTeam(slot)
-                            ? (forceHeal ? "申請治療位" : "申請報名")
-                            : forceHeal
-                              ? "僅限治療報名"
-                              : "立即報名"}
-                  </button>
-                  <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || members.length >= maxPeople ? "disabled" : ""}>
-                    ${isSignupClosed ? "報名已截止" : (isProtectedTeam(slot) ? "多人申請" : "批量組隊")}
-                  </button>
-                  <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
-                    ${isSignupClosed ? "報名已截止" : (isProtectedTeam(slot) ? "快速申請" : "快速報名")}
-                  </button>
+                <div class="slot-actions${isSlotCancelled || isSignupClosed || members.length >= maxPeople ? " signup-not-available" : ""}">
+                  ${isSlotCancelled || isSignupClosed || members.length >= maxPeople ? `
+                    <div class="signup-availability-note" role="status" aria-live="polite">
+                      <span class="signup-availability-symbol" aria-hidden="true">${isSlotCancelled ? "✕" : isSignupClosed ? "◷" : "✓"}</span>
+                      <span class="signup-availability-copy">
+                        <strong>${isSlotCancelled ? "隊伍已取消" : isSignupClosed ? "報名已截止" : "隊伍已滿"}</strong>
+                        <small>${isSlotCancelled ? "本隊不再接受報名" : isSignupClosed ? "已接近或超過開團時間，請在遊戲內詢問團長" : "名額已滿，仍可查看隊伍名單"}</small>
+                      </span>
+                    </div>
+                  ` : `
+                    <button class="add-btn" data-action="add-member" data-date="${dateKey}" data-slot="${slotIndex}">
+                      ${isProtectedTeam(slot)
+                        ? (forceHeal ? "申請治療位" : "申請報名")
+                        : forceHeal
+                          ? "僅限治療報名"
+                          : "立即報名"}
+                    </button>
+                    <button class="batch-signup-btn" data-action="batch-signup" data-date="${dateKey}" data-slot="${slotIndex}">
+                      ${isProtectedTeam(slot) ? "多人申請" : "批量組隊"}
+                    </button>
+                    <button class="quick-signup-btn" data-action="quick-signup" data-date="${dateKey}" data-slot="${slotIndex}" ${canQuickSignup ? "" : "disabled"}>
+                      ${isProtectedTeam(slot) ? "快速申請" : "快速報名"}
+                    </button>
+                  `}
                 </div>
               </div>
             `;
@@ -17327,6 +17396,25 @@ body {
     }
 
     function bindActions(){
+      // An actual button per team: accessible on touch, keyboard, and with screen readers.
+      // Do not call render() for toggles; keep the user's scroll position and menu state.
+      document.querySelectorAll('[data-action="mobile-team-toggle"]').forEach(btn => {
+        btn.onclick = () => {
+          const card = btn.closest('.slot-card');
+          if(!card) return;
+          const id = btn.dataset.mobileTeamId;
+          const open = !expandedMobileTeamIds.has(id);
+          if(open) expandedMobileTeamIds.add(id);
+          else expandedMobileTeamIds.delete(id);
+          card.classList.toggle('mobile-team-expanded', open);
+          card.classList.toggle('mobile-team-collapsed', !open);
+          btn.setAttribute('aria-expanded', String(open));
+          btn.setAttribute('aria-label', btn.getAttribute('aria-label').replace(/(收合|展開)隊伍詳情$/, `${open ? '收合' : '展開'}隊伍詳情`));
+          if(!open) {
+            card.querySelectorAll('.slot-menu.open,.member-menu.open').forEach(m => m.classList.remove('open'));
+          }
+        };
+      });
 
       document.querySelectorAll('[data-action="approve-pending"], [data-action="reject-pending"]').forEach(btn => {
         btn.onclick = () => {
@@ -17807,5 +17895,1086 @@ function escapeHtml(text){
   syncDateControl();
 })();
 </script>
+
+<style id="pve-app-enhancements">
+/* App experience layer. Uses the existing project's color tokens and markup. */
+:root { --pve-app-ease: cubic-bezier(.2,.8,.2,1); }
+html { scroll-behavior:smooth; }
+body { -webkit-tap-highlight-color:transparent; }
+button, [role="button"] { touch-action:manipulation; }
+button:focus-visible, a:focus-visible, summary:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline:2px solid var(--ui-accent,#7c9cff) !important;
+  outline-offset:3px;
+}
+
+/* Clearer visual hierarchy on the existing cards, without moving navigation. */
+.app-workspace .slot-card,
+.app-workspace .team-intro-card,
+.app-workspace .my-team-card {
+  transition:background-color .2s ease, border-color .2s ease,
+    box-shadow .22s ease, transform .22s var(--pve-app-ease) !important;
+}
+@media (hover:hover) and (min-width:769px) {
+  .app-workspace .slot-card:hover {
+    transform:translateY(-2px);
+    border-color:color-mix(in srgb,var(--ui-accent) 33%,var(--ui-line)) !important;
+    box-shadow:0 14px 38px rgba(0,0,0,.13) !important;
+  }
+}
+.app-workspace .slot-top .slot-time { letter-spacing:-.035em; }
+.app-workspace .slot-top-right .slot-menu-trigger {
+  min-height:36px;
+  min-width:36px;
+  border-radius:12px;
+  background:var(--ui-panel-2);
+  border:1px solid var(--ui-line);
+  color:var(--ui-text);
+}
+.app-workspace .slot-menu-dropdown,
+.app-workspace .member-menu-dropdown {
+  border-radius:15px !important;
+  border:1px solid var(--ui-line-strong) !important;
+  background:var(--ui-panel) !important;
+  box-shadow:0 20px 45px rgba(0,0,0,.24) !important;
+  transform-origin:top right;
+  animation:pve-menu-pop .18s var(--pve-app-ease);
+}
+.app-workspace .slot-menu-item,
+.app-workspace .member-menu-item { min-height:41px; }
+@keyframes pve-menu-pop {
+  from { opacity:0; transform:translateY(-5px) scale(.97); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+.app-workspace .slot-meta-pills .role-count-row {
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch;
+}
+.app-workspace .slot-meta-pills .compact-role-pill { scroll-snap-align:start; }
+.app-workspace .slot-actions button { transition:filter .17s ease,transform .17s var(--pve-app-ease) !important; }
+.app-workspace .slot-actions button:active { transform:scale(.985) !important; }
+
+/* Existing dialogs are preserved, but receive consistent App presentation. */
+.signup-modal.show, .confirm-modal.show { backdrop-filter:blur(5px); }
+.signup-modal .signup-modal-box,
+.confirm-modal .confirm-modal-box {
+  background:var(--ui-panel) !important;
+  color:var(--ui-text) !important;
+  border:1px solid var(--ui-line-strong) !important;
+  box-shadow:0 28px 75px rgba(0,0,0,.34) !important;
+}
+.signup-modal .signup-modal-title,
+.confirm-modal .confirm-modal-title {
+  color:var(--ui-text) !important;
+  letter-spacing:-.025em;
+}
+.signup-modal .signup-label,
+.confirm-modal .signup-label { color:var(--ui-muted) !important; }
+.signup-modal .signup-input,
+.confirm-modal .signup-input,
+.signup-modal .signup-select,
+.confirm-modal .signup-select,
+.signup-modal .signup-textarea,
+.confirm-modal .signup-textarea,
+.confirm-modal .custom-select-trigger,
+.signup-modal .custom-select-trigger {
+  color:var(--ui-text) !important;
+  background-color:var(--ui-panel-2) !important;
+  border-color:var(--ui-line-strong) !important;
+}
+.signup-modal .signup-input::placeholder,
+.confirm-modal .signup-input::placeholder,
+.signup-modal .signup-textarea::placeholder,
+.confirm-modal .signup-textarea::placeholder { color:var(--ui-muted) !important; opacity:.85; }
+.signup-modal .signup-confirm-btn,
+.confirm-modal .signup-confirm-btn,
+.confirm-modal .confirm-danger-btn,
+.confirm-modal .confirm-cancel-btn,
+.confirm-modal .signup-cancel-btn,
+.signup-modal .signup-cancel-btn { min-height:43px; }
+
+/* Toast: brief feedback; all user text goes through textContent. */
+.pve-toast-stack {
+  position:fixed; right:18px; bottom:20px; z-index:130000;
+  display:grid; gap:9px; pointer-events:none;
+}
+.pve-toast {
+  display:flex; align-items:flex-start; gap:11px;
+  width:min(375px,calc(100vw - 24px)); padding:13px 14px;
+  border:1px solid var(--ui-line-strong); border-radius:17px;
+  background:var(--ui-panel); color:var(--ui-text);
+  box-shadow:0 15px 45px rgba(0,0,0,.26);
+  pointer-events:auto; cursor:pointer;
+  animation:pve-toast-in .22s var(--pve-app-ease);
+}
+.pve-toast-icon { display:grid;place-items:center;width:36px;height:36px;
+  flex:0 0 36px;border-radius:12px;font-size:17px;font-weight:900;
+  background:var(--ui-panel-3); }
+.pve-toast[data-tone="success"] .pve-toast-icon { color:#16a34a;background:rgba(34,197,94,.13); }
+.pve-toast[data-tone="danger"] .pve-toast-icon { color:#fb7185;background:rgba(244,63,94,.13); }
+.pve-toast[data-tone="warn"] .pve-toast-icon { color:#f59e0b;background:rgba(245,158,11,.13); }
+.pve-toast[data-tone="info"] .pve-toast-icon { color:var(--ui-accent);background:var(--ui-accent-soft); }
+.pve-toast strong { display:block;margin:2px 0 4px;font-size:13px; }
+.pve-toast p { margin:0; white-space:pre-wrap; word-break:break-word;
+  font-size:12px; line-height:1.6; color:var(--ui-muted); }
+@keyframes pve-toast-in { from { opacity:0;transform:translateY(9px) scale(.98) } to { opacity:1;transform:none } }
+
+/* Custom notice / prompt / confirmation, replacing browser dialogs. */
+.pve-dialog-root { position:fixed; inset:0; z-index:140000; padding:22px;
+  display:none; align-items:center; justify-content:center; }
+.pve-dialog-root.show { display:flex; }
+.pve-dialog-scrim { position:absolute;inset:0;background:rgba(5,10,25,.68);backdrop-filter:blur(7px); }
+.pve-dialog {
+  position:relative; width:min(480px,100%); max-height:calc(100dvh - 40px);
+  overflow-y:auto; background:var(--ui-panel); color:var(--ui-text);
+  border:1px solid var(--ui-line-strong); border-radius:26px;
+  box-shadow:0 30px 90px rgba(0,0,0,.35); padding:24px;
+  animation:pve-dialog-in .22s var(--pve-app-ease);
+}
+.pve-dialog::before { content:"";position:absolute;inset:0 0 auto;height:4px;
+  background:linear-gradient(90deg,#6ea8ff,#8b5cf6,#ec4899); }
+.pve-dialog[data-tone="danger"]::before{background:linear-gradient(90deg,#fb7185,#ef4444);}
+.pve-dialog[data-tone="warn"]::before{background:linear-gradient(90deg,#fbbf24,#f97316);}
+.pve-dialog-header { display:flex;align-items:flex-start;gap:14px; }
+.pve-dialog-icon {display:grid;place-items:center;width:46px;height:46px;flex:0 0 46px;
+  border-radius:16px;background:var(--ui-accent-soft);font-size:23px;}
+.pve-dialog[data-tone="danger"] .pve-dialog-icon{background:rgba(244,63,94,.13)}
+.pve-dialog[data-tone="warn"] .pve-dialog-icon{background:rgba(245,158,11,.13)}
+.pve-dialog-kicker{margin-bottom:5px;color:var(--ui-muted);font-size:10px;font-weight:900;letter-spacing:.12em;}
+.pve-dialog h2{margin:0;color:var(--ui-text);font-size:23px;line-height:1.25;letter-spacing:-.03em;}
+.pve-dialog-message{margin:16px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;
+  color:var(--ui-muted);font-size:14px;line-height:1.8;}
+.pve-dialog-input-wrap{margin-top:16px;}
+.pve-dialog-input{width:100%;min-height:46px;padding:11px 13px;border-radius:12px;
+  border:1px solid var(--ui-line-strong);background:var(--ui-panel-2);
+  color:var(--ui-text);font:inherit;outline:none;}
+.pve-dialog-actions { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:22px; }
+.pve-dialog-actions.single{grid-template-columns:1fr;}
+.pve-dialog-btn{border:1px solid transparent;border-radius:13px;min-height:46px;
+  padding:10px 14px;font-size:14px;font-weight:800;cursor:pointer;}
+.pve-dialog-btn.cancel{background:var(--ui-panel-2);color:var(--ui-text);border-color:var(--ui-line);}
+.pve-dialog-btn.confirm{background:linear-gradient(135deg,#6ea8ff,#8b5cf6);color:#fff;}
+.pve-dialog[data-tone="danger"] .pve-dialog-btn.confirm{background:linear-gradient(135deg,#fb7185,#ef4444);}
+.pve-dialog[data-tone="warn"] .pve-dialog-btn.confirm{background:linear-gradient(135deg,#f59e0b,#ea580c);}
+@keyframes pve-dialog-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+
+/* Quick actions drawer is triggered by mobile dock. */
+.pve-sheet-scrim { position:fixed;inset:0;z-index:110000;display:none;
+  background:rgba(5,10,25,.55);backdrop-filter:blur(5px); }
+.pve-sheet-scrim.show{display:block;}
+.pve-sheet { position:fixed;z-index:110001;inset:auto 0 0;display:none;
+  padding:0 12px calc(12px + env(safe-area-inset-bottom)); }
+.pve-sheet.show{display:block;}
+.pve-sheet-inner{max-width:590px;margin:0 auto;padding:14px;
+  background:var(--ui-panel);color:var(--ui-text);border:1px solid var(--ui-line-strong);
+  border-radius:26px 26px 20px 20px;box-shadow:0 25px 70px rgba(0,0,0,.34);
+  animation:pve-sheet-in .2s var(--pve-app-ease);}
+@keyframes pve-sheet-in{from{transform:translateY(24px);opacity:.7}to{transform:none;opacity:1}}
+.pve-sheet-grip { width:44px;height:5px;margin:0 auto 14px;border-radius:999px;background:var(--ui-line-strong); }
+.pve-sheet-head {display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 14px;}
+.pve-sheet-head strong {font-size:18px;letter-spacing:-.025em;}
+.pve-sheet-head small{display:block;margin-top:3px;color:var(--ui-muted);font-size:12px;}
+.pve-sheet-close {border:1px solid var(--ui-line);background:var(--ui-panel-2);
+  color:var(--ui-text);width:38px;height:38px;border-radius:12px;font-size:20px;}
+.pve-sheet-actions { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
+.pve-sheet-action{display:flex;align-items:center;gap:10px;min-width:0;min-height:67px;
+  text-align:left;border:1px solid var(--ui-line);border-radius:16px;
+  background:var(--ui-panel-2);color:var(--ui-text);padding:10px 12px;font-size:13px;font-weight:800;}
+.pve-sheet-action .glyph{display:grid;place-items:center;width:36px;height:36px;
+  flex:0 0 36px;border-radius:12px;background:var(--ui-accent-soft);font-size:18px;}
+.pve-sheet-action small{display:block;color:var(--ui-muted);font-weight:500;font-size:10px;margin-top:3px;}
+.pve-sheet-action:active{transform:scale(.98);}
+
+/* Desktop hover tips; keyboard title attribute remains for assistive devices. */
+@media (hover:hover) and (min-width:769px){
+  .pve-tooltip{position:relative;}
+  .pve-tooltip:hover::after,.pve-tooltip:focus-visible::after{
+    content:attr(data-pve-tip);position:absolute;bottom:calc(100% + 9px);left:50%;
+    transform:translateX(-50%);white-space:nowrap;pointer-events:none;
+    background:var(--ui-panel);color:var(--ui-text);padding:7px 10px;
+    border-radius:10px;border:1px solid var(--ui-line-strong);
+    font-size:11px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:100;
+  }
+}
+
+/* Loading placeholders, displayed only when no rendered team list exists yet. */
+.pve-skeleton {display:grid;gap:16px;}
+.pve-skeleton-card{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;
+  background:var(--ui-panel);border:1px solid var(--ui-line);border-radius:20px;padding:18px;}
+.pve-skeleton-stack{display:grid;gap:12px;}
+.pve-skeleton-box,.pve-skeleton-line{
+  border-radius:13px;background:linear-gradient(90deg,var(--ui-panel-2),var(--ui-panel-3),var(--ui-panel-2));
+  background-size:220% 100%;animation:pve-shimmer 1.45s linear infinite;
+}
+.pve-skeleton-box{min-height:120px;}.pve-skeleton-line{height:17px;}.pve-skeleton-line.short{width:55%;}
+@keyframes pve-shimmer{to{background-position:-220% 0}}
+
+/* Native dialogs behave as bottom sheets on mobile; no changes to form structure. */
+.pve-mobile-dock{display:none;}
+@media (max-width:768px){
+  body{padding-bottom:calc(105px + env(safe-area-inset-bottom)) !important;}
+  body:has(.signup-modal.show),body:has(.confirm-modal.show),body.pve-overlay-open{overflow:hidden !important;}
+  html body .fab-add-team {display:none !important;}
+  .pve-mobile-dock {
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;
+    position:fixed;bottom:calc(10px + env(safe-area-inset-bottom));left:12px;right:12px;
+    min-height:66px;padding:6px;gap:4px;border-radius:21px;
+    background:color-mix(in srgb,var(--ui-panel) 91%,transparent);
+    border:1px solid var(--ui-line-strong);box-shadow:0 12px 36px rgba(0,0,0,.24);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:9000;
+  }
+  .pve-dock-btn {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    padding:5px 2px;border-radius:15px;background:transparent;color:var(--ui-muted);border:0;
+    font-size:10px;font-weight:800;min-width:0;}
+  .pve-dock-btn svg {display:block;width:21px;height:21px;stroke:currentColor;stroke-width:1.8;fill:none;}
+  .pve-dock-btn[aria-current="page"], .pve-dock-btn:active {
+    color:var(--ui-accent);background:var(--ui-accent-soft);
+  }
+  .pve-dock-btn[data-pve-dock="create"] {color:#fff;
+    background:linear-gradient(135deg,#6ea8ff,#8b5cf6);box-shadow:0 4px 12px rgba(110,168,255,.22);}
+  .pve-dock-btn[data-pve-dock="create"] svg{stroke-width:2.3;}
+  .pve-mobile-dock[aria-hidden="true"]{pointer-events:none;visibility:hidden;}
+  .pve-dialog-root {align-items:flex-end;padding:0;}
+  .pve-dialog{width:100%;max-height:min(90dvh,850px);border-radius:25px 25px 0 0;
+    padding:16px 19px calc(18px + env(safe-area-inset-bottom));border-bottom:0;}
+  .pve-dialog::before{content:"";position:static;display:block;height:5px;width:43px;
+    border-radius:999px;background:var(--ui-line-strong) !important;margin:0 auto 15px;}
+  .pve-dialog h2{font-size:21px;}
+  .pve-dialog-message{font-size:13px;line-height:1.75;}
+  .pve-toast-stack{left:12px;right:12px;bottom:calc(90px + env(safe-area-inset-bottom));}
+  .pve-toast{width:100%;}
+  .pve-sheet {padding-bottom:calc(89px + env(safe-area-inset-bottom));}
+  .pve-sheet-actions{grid-template-columns:1fr 1fr;}
+  .pve-skeleton-card{grid-template-columns:1fr;}
+  .signup-modal.show .signup-modal-box,.confirm-modal.show .confirm-modal-box{
+    animation:pve-dialog-in .2s var(--pve-app-ease);
+  }
+  .app-workspace .slot-card{border-radius:16px !important;}
+  .app-workspace .slot-actions button{min-height:45px !important;}
+  .app-workspace .slot-top-right .slot-menu-trigger {min-width:36px;min-height:36px;}
+  /* Keep roles on one swipeable row without shrinking the counts to illegibility. */
+  .app-workspace .role-count-row {max-width:100%;overflow-x:auto;flex-wrap:nowrap !important;}
+  /* Hints remain accessible using the dedicated help menu, not a new page section. */
+}
+@media (max-width:370px){
+  .pve-sheet-actions{grid-template-columns:1fr;}
+  .pve-mobile-dock{left:7px;right:7px;bottom:calc(7px + env(safe-area-inset-bottom));}
+  .pve-dock-btn{font-size:9px;}
+}
+@media (prefers-reduced-motion:reduce){
+  html {scroll-behavior:auto;}
+  .pve-dialog,.pve-toast,.pve-sheet-inner,.pve-skeleton-box,.pve-skeleton-line,
+  .app-workspace .slot-card {animation:none !important;transition:none !important;}
+}
+</style>
+
+
+<div class="pve-toast-stack" id="pveToastStack" role="status" aria-live="polite"></div>
+
+<div id="pveDialogRoot" class="pve-dialog-root" aria-hidden="true">
+  <div class="pve-dialog-scrim"></div>
+  <div id="pveDialogBox" class="pve-dialog" role="dialog" aria-modal="true" aria-labelledby="pveDialogTitle" data-tone="info">
+    <div class="pve-dialog-header">
+      <div class="pve-dialog-icon" id="pveDialogIcon" aria-hidden="true">i</div>
+      <div>
+        <div class="pve-dialog-kicker">夢回花深處 · 副本助手</div>
+        <h2 id="pveDialogTitle">提醒</h2>
+      </div>
+    </div>
+    <p id="pveDialogMessage" class="pve-dialog-message"></p>
+    <div id="pveDialogInputWrap" class="pve-dialog-input-wrap" hidden>
+      <input id="pveDialogInput" class="pve-dialog-input" type="text" autocomplete="off" aria-label="輸入內容">
+    </div>
+    <div id="pveDialogActions" class="pve-dialog-actions">
+      <button type="button" id="pveDialogCancel" class="pve-dialog-btn cancel">取消</button>
+      <button type="button" id="pveDialogConfirm" class="pve-dialog-btn confirm">確定</button>
+    </div>
+  </div>
+</div>
+
+<nav id="pveMobileDock" class="pve-mobile-dock" aria-label="手機快捷導覽">
+  <button type="button" class="pve-dock-btn" data-pve-dock="teams" aria-current="page" aria-label="前往隊伍列表">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9h8M8 14h5"/></svg><span>隊伍</span>
+  </button>
+  <button type="button" class="pve-dock-btn" data-pve-dock="create" aria-label="建立隊伍">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>建立</span>
+  </button>
+  <button type="button" class="pve-dock-btn" data-pve-dock="profile" aria-label="我的資料">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg><span>我的</span>
+  </button>
+  <button type="button" class="pve-dock-btn" data-pve-dock="more" aria-label="更多工具">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span>更多</span>
+  </button>
+</nav>
+
+<div id="pveSheetScrim" class="pve-sheet-scrim" hidden></div>
+<div id="pveBottomSheet" class="pve-sheet" aria-hidden="true">
+  <div class="pve-sheet-inner" role="dialog" aria-modal="true" aria-label="更多工具">
+    <div class="pve-sheet-grip" aria-hidden="true"></div>
+    <div class="pve-sheet-head">
+      <div><strong>更多工具</strong><small>常用操作集中管理</small></div>
+      <button type="button" id="pveSheetClose" class="pve-sheet-close" aria-label="關閉工具抽屜">×</button>
+    </div>
+    <div class="pve-sheet-actions">
+      <button type="button" class="pve-sheet-action" data-pve-sheet-action="batch"><span class="glyph">👥</span><span>批量預設<small>管理固定團名單</small></span></button>
+      <button type="button" class="pve-sheet-action" data-pve-sheet-action="dates"><span class="glyph">📅</span><span>選擇日期<small>切換或查看隊伍日期</small></span></button>
+      <button type="button" class="pve-sheet-action" data-pve-sheet-action="refresh"><span class="glyph">↻</span><span>整理日期<small>重新整理日期清單</small></span></button>
+      <button type="button" class="pve-sheet-action" data-pve-sheet-action="help"><span class="glyph">🛈</span><span>使用說明<small>查看完整的報名規則</small></span></button>
+    </div>
+  </div>
+</div>
+
+<script id="pve-app-script">
+/* Page-only enhancements. All business operations remain in the existing registration script. */
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const toastRoot=$('pveToastStack');
+  const dialogRoot=$('pveDialogRoot');
+  const dialogBox=$('pveDialogBox');
+  const message=$('pveDialogMessage');
+  const title=$('pveDialogTitle');
+  const icon=$('pveDialogIcon');
+  const inputWrap=$('pveDialogInputWrap');
+  const input=$('pveDialogInput');
+  const cancelBtn=$('pveDialogCancel');
+  const confirmBtn=$('pveDialogConfirm');
+  const actionRow=$('pveDialogActions');
+  const sheet=$('pveBottomSheet');
+  const sheetScrim=$('pveSheetScrim');
+  const dock=$('pveMobileDock');
+
+  function toneFor(value, tone){
+    if(tone) return tone;
+    const txt=String(value||'');
+    if(/失敗|錯誤|無法|不能|不可|拒絕|已停止/.test(txt))return 'danger';
+    if(/⚠|截止|提醒|剩|注意|分鐘/.test(txt))return 'warn';
+    if(/已複製|已加入|已儲存|已送出|已刪除|完成|成功/.test(txt))return 'success';
+    return 'info';
+  }
+  function iconFor(t){return t==='danger'?'⛔':t==='warn'?'⏰':t==='success'?'✓':'i';}
+  function defaultTitle(t){return t==='danger'?'操作失敗':t==='warn'?'溫馨提醒':t==='success'?'已完成':'副本通知';}
+  function syncOverlay(){
+    const open=dialogRoot.classList.contains('show') || sheet.classList.contains('show');
+    document.body.classList.toggle('pve-overlay-open',open);
+    const nativeOpen=!!document.querySelector('.signup-modal.show,.confirm-modal.show');
+    if(dock) dock.setAttribute('aria-hidden',String(open||nativeOpen));
+  }
+
+  function appToast(text, tone, heading){
+    const mode=toneFor(text,tone), el=document.createElement('div');
+    el.className='pve-toast';el.dataset.tone=mode;el.setAttribute('role','status');
+    const glyph=document.createElement('div');glyph.className='pve-toast-icon';glyph.textContent=iconFor(mode);
+    const body=document.createElement('div'), h=document.createElement('strong'), p=document.createElement('p');
+    h.textContent=heading||defaultTitle(mode);p.textContent=String(text ?? '');
+    body.append(h,p);el.append(glyph,body);toastRoot.appendChild(el);
+    const remove=()=>{el.remove();};
+    const timer=setTimeout(remove,4500);
+    el.addEventListener('click',()=>{clearTimeout(timer);remove();});
+    return el;
+  }
+  window.showAppToast=appToast;
+
+  const dialogQueue=[];
+  let activeDialog=null;
+  let focusBefore=null;
+  function showNext(){
+    if(activeDialog || !dialogQueue.length)return;
+    activeDialog=dialogQueue.shift();
+    const opt=activeDialog.options;
+    const t=toneFor(opt.message,opt.tone);
+    focusBefore=document.activeElement;
+    dialogBox.dataset.tone=t;
+    title.textContent=opt.title||defaultTitle(t);
+    message.textContent=String(opt.message??'');
+    icon.textContent=iconFor(t);
+    const isInput=activeDialog.mode==='prompt';
+    const showCancel=activeDialog.mode!=='alert';
+    inputWrap.hidden=!isInput;
+    if(isInput){input.value=String(opt.defaultValue??'');input.placeholder=opt.placeholder||'';}
+    cancelBtn.hidden=!showCancel;
+    cancelBtn.style.display=showCancel?'':'none';
+    actionRow.classList.toggle('single',!showCancel);
+    cancelBtn.textContent=opt.cancelText||'取消';
+    confirmBtn.textContent=opt.confirmText||(isInput?'儲存':'確定');
+    dialogRoot.classList.add('show');dialogRoot.setAttribute('aria-hidden','false');
+    syncOverlay();
+    requestAnimationFrame(()=> (isInput?input:confirmBtn).focus());
+  }
+  function finishDialog(value){
+    const task=activeDialog;
+    if(!task)return;
+    activeDialog=null;
+    dialogRoot.classList.remove('show');dialogRoot.setAttribute('aria-hidden','true');
+    syncOverlay();
+    task.resolve(value);
+    if(focusBefore && focusBefore.isConnected && typeof focusBefore.focus==='function'){
+      const target=focusBefore;requestAnimationFrame(()=>target.focus());
+    }
+    focusBefore=null;
+    queueMicrotask(showNext);
+  }
+  function open(mode, options){return new Promise(resolve=>{dialogQueue.push({mode,options,resolve});showNext();});}
+  window.showAppAlert=(message,opts={})=>open('alert',{...opts,message});
+  window.showAppConfirm=(message,opts={})=>open('confirm',{...opts,message});
+  window.showAppPrompt=(message,defaultValue='',opts={})=>open('prompt',{...opts,message,defaultValue});
+  confirmBtn.addEventListener('click',()=>finishDialog(activeDialog?.mode==='prompt'?input.value:true));
+  cancelBtn.addEventListener('click',()=>finishDialog(activeDialog?.mode==='prompt'?null:false));
+  dialogRoot.querySelector('.pve-dialog-scrim').addEventListener('click',()=>{
+    finishDialog(activeDialog?.mode==='prompt'?null:false);
+  });
+  document.addEventListener('keydown',e=>{
+    if(!dialogRoot.classList.contains('show'))return;
+    if(e.key==='Escape'){e.preventDefault();finishDialog(activeDialog?.mode==='prompt'?null:false);return;}
+    if(e.key==='Enter' && document.activeElement===input){e.preventDefault();finishDialog(input.value);return;}
+    if(e.key==='Tab'){
+      const candidates=[...(inputWrap.hidden?[]:[input]),...(cancelBtn.hidden?[]:[cancelBtn]),confirmBtn];
+      const first=candidates[0],last=candidates.at(-1);
+      if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  },true);
+
+  // Older handlers expect alert(). Success notices are unobtrusive; critical warnings get a dialog.
+  // No blocking browser dialogs are used.
+  const toastPatterns=[
+    /^PIN 已複製/,/^日期已整理完成/,/^已儲存常用批量隊伍資料/,
+    /^✅ 隊伍已刪除/,/^報名已送出/,/^已加入 \d+ 位/,/^已送出 \d+ 位待確認申請/
+  ];
+  window.alert=function(value){
+    const text=String(value ?? '');
+    if(toastPatterns.some(p=>p.test(text))){appToast(text.replace(/^✅\s*/,''),'success');return;}
+    void window.showAppAlert(text);
+  };
+
+  function openSheet(){
+    sheetScrim.classList.add('show');sheetScrim.hidden=false;
+    sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');
+    syncOverlay();
+    $('pveSheetClose')?.focus();
+  }
+  function closeSheet(){
+    sheetScrim.classList.remove('show');sheetScrim.hidden=true;
+    sheet.classList.remove('show');sheet.setAttribute('aria-hidden','true');
+    syncOverlay();
+  }
+  $('pveSheetClose')?.addEventListener('click',closeSheet);
+  sheetScrim.addEventListener('click',closeSheet);
+  const actionTargets={
+    create:'addDateTimeBtn',profile:'myProfileBtn',batch:'batchPresetManageBtn',
+    help:'infoBtn',refresh:'refreshBtn'
+  };
+  function performAction(action){
+    if(action==='teams'){
+      $('days')?.scrollIntoView({behavior:'smooth',block:'start'});return;
+    }
+    if(action==='more'){openSheet();return;}
+    if(action==='dates'){
+      document.querySelector('.date-sidebar-head')?.scrollIntoView({behavior:'smooth',block:'start'});
+      return;
+    }
+    const target=$(actionTargets[action]);
+    if(target){target.click();}else{appToast('目前無法開啟此功能，請重新整理網頁。','warn');}
+  }
+  document.querySelectorAll('[data-pve-dock]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const action=btn.dataset.pveDock;
+      if(action==='teams'){
+        document.querySelectorAll('[data-pve-dock]').forEach(item=>item.removeAttribute('aria-current'));
+        btn.setAttribute('aria-current','page');
+      }
+      performAction(action);
+    });
+  });
+  document.querySelectorAll('[data-pve-sheet-action]').forEach(btn=>{
+    btn.addEventListener('click',()=>{const action=btn.dataset.pveSheetAction;closeSheet();performAction(action);});
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&sheet.classList.contains('show')){closeSheet();}
+  });
+
+  // Hide dock while original registration modals are open.
+  const observer=new MutationObserver(syncOverlay);
+  document.querySelectorAll('.signup-modal,.confirm-modal').forEach(m=>observer.observe(m,{attributes:true,attributeFilter:['class']}));
+  syncOverlay();
+
+  const tips={addDateTimeBtn:'新增日期或時間',selectedDayAddBtn:'新增隊伍',
+    myProfileBtn:'編輯個人名稱與職業',batchPresetManageBtn:'管理常用隊伍名單',
+    refreshBtn:'重新整理日期與隊伍',infoBtn:'查看完整使用說明'};
+  Object.entries(tips).forEach(([id,tip])=>{
+    const el=$(id);if(!el)return;
+    el.classList.add('pve-tooltip');el.dataset.pveTip=tip;
+  });
+
+  // Only display placeholders before the first real render; refreshing never hides loaded teams.
+  const days=$('days');
+  if(days && !days.children.length){
+    const skeleton=document.createElement('div');skeleton.className='pve-skeleton';
+    skeleton.setAttribute('data-pve-skeleton','');
+    for(let i=0;i<2;i++){
+      const card=document.createElement('div');card.className='pve-skeleton-card';
+      card.innerHTML='<div class="pve-skeleton-box"></div><div class="pve-skeleton-stack"><div class="pve-skeleton-line short"></div><div class="pve-skeleton-line"></div><div class="pve-skeleton-box"></div></div>';
+      skeleton.appendChild(card);
+    }
+    days.appendChild(skeleton);
+    const mo=new MutationObserver(()=>{
+      if([...days.children].some(el=>el!==skeleton)){
+        skeleton.remove();mo.disconnect();
+      }
+    });
+    mo.observe(days,{childList:true});
+    setTimeout(()=>{if(skeleton.isConnected){skeleton.remove();mo.disconnect();}},12000);
+  }
+})();
+
+</script>
+
+
+<style id="pve-mobile-hamburger-redesign">
+/* The shared desktop navbar is kept untouched. This new compact variant is mobile-only. */
+.pve-mnav-bar,.pve-mnav-scrim,.pve-mnav-panel{display:none;}
+@media(max-width:768px){
+  html body[data-site-page="PVERegistration"]{padding-top:92px !important;}
+  html body #floatingNav.topbar, html body #floatingNav.topbar.scrolled{
+    top:calc(9px + env(safe-area-inset-top)) !important;left:50% !important;
+    width:calc(100% - 22px) !important;max-width:520px !important;
+    height:64px !important;min-height:64px !important;padding:5px 8px 5px 8px !important;
+    border-radius:22px !important;overflow:visible !important;
+    background:color-mix(in srgb,var(--ui-panel) 91%,transparent) !important;
+    border:1px solid var(--ui-line-strong) !important;
+    box-shadow:0 12px 38px rgba(7,13,29,.20),inset 0 1px 0 rgba(255,255,255,.08) !important;
+    backdrop-filter:blur(22px) saturate(145%) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(145%) !important;
+    z-index:10050 !important;
+  }
+  html body #floatingNav .topbar-content{display:flex !important;flex-direction:row !important;align-items:center !important;justify-content:stretch !important;height:100% !important;gap:0 !important;}
+  html body #floatingNav .topbar-content > .brand-group,
+  html body #floatingNav .topbar-content > .nav-wrap{display:none !important;}
+  html body #floatingNav .pve-mnav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;height:100%;min-width:0;}
+  .pve-mnav-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1;text-align:left;border:0;background:transparent !important;color:var(--ui-text);padding:1px 2px 1px 3px;box-shadow:none !important;}
+  .pve-mnav-brand:focus-visible,.pve-mnav-icon-btn:focus-visible,.pve-mnav-close:focus-visible,
+  .pve-mnav-link:focus-visible{outline:2px solid var(--ui-accent) !important;outline-offset:3px;}
+  .pve-mnav-flower{flex:0 0 41px;display:grid;place-items:center;width:41px;height:41px;border-radius:15px;
+    color:#fff;font-size:26px;font-weight:500;line-height:1;background:linear-gradient(135deg,#7c9fff 0%,#9774e4 53%,#d085c2 100%);
+    border:1px solid rgba(255,255,255,.23);box-shadow:0 4px 13px rgba(126,106,224,.23),inset 0 1px 0 rgba(255,255,255,.22);}
+  .pve-mnav-brand-text{display:flex;flex-direction:column;justify-content:center;min-width:0;gap:3px;}
+  .pve-mnav-brand-text strong{display:block;color:var(--ui-text);font-size:15px;font-weight:900;white-space:nowrap;letter-spacing:.015em;line-height:1.2;}
+  .pve-mnav-brand-text small{display:block;color:var(--ui-muted);font-size:10px;font-weight:650;white-space:nowrap;letter-spacing:.07em;line-height:1.15;}
+  .pve-mnav-brand-dot{color:var(--ui-accent);padding:0 2px;}
+  .pve-mnav-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto;}
+  .pve-mnav-icon-btn{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;padding:0;border:1px solid var(--ui-line) !important;
+    border-radius:14px !important;background:var(--ui-panel-2) !important;color:var(--ui-text) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.035) !important;transition:background .2s ease,transform .2s ease,border-color .2s ease;}
+  .pve-mnav-icon-btn:active{transform:scale(.95);}
+  .pve-mnav-theme svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .pve-mnav-sun{display:none;}
+  html[data-theme="light"] .pve-mnav-sun{display:block;}
+  html[data-theme="light"] .pve-mnav-moon{display:none;}
+  .pve-mnav-burger{border-color:rgba(126,144,254,.36) !important;
+    background:linear-gradient(135deg,#667de6,#8368d5) !important;color:white !important;}
+  .pve-mnav-burger-lines{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:22px;height:22px;}
+  .pve-mnav-burger-lines i{width:20px;height:2px;border-radius:99px;background:currentColor;display:block;transform-origin:center;transition:transform .25s ease,opacity .2s ease,width .25s ease;}
+  .pve-mnav-burger-lines i:nth-child(2){width:14px;align-self:flex-end;}
+  .pve-mnav-burger[aria-expanded="true"] .pve-mnav-burger-lines i:first-child{transform:translateY(7px) rotate(45deg);}
+  .pve-mnav-burger[aria-expanded="true"] .pve-mnav-burger-lines i:nth-child(2){opacity:0;transform:scaleX(0);}
+  .pve-mnav-burger[aria-expanded="true"] .pve-mnav-burger-lines i:last-child{transform:translateY(-7px) rotate(-45deg);}
+  .pve-mnav-scrim{display:block;position:fixed;inset:0;z-index:10015;background:rgba(3,8,20,.52);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s;}
+  .pve-mnav-scrim.is-open{opacity:1;visibility:visible;pointer-events:auto;}
+  .pve-mnav-panel{display:block;position:fixed;top:var(--pve-mnav-panel-top,82px);left:max(11px,calc((100vw - 520px)/2));right:max(11px,calc((100vw - 520px)/2));
+    width:auto;max-height:calc(100dvh - var(--pve-mnav-panel-top,82px) - 18px);overflow:auto;overscroll-behavior:contain;
+    z-index:10030;border-radius:25px;padding:18px 16px 13px;color:var(--ui-text);
+    background:var(--ui-panel);border:1px solid var(--ui-line-strong);
+    box-shadow:0 26px 65px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04);
+    opacity:0;transform:translateY(-11px) scale(.985);visibility:hidden;pointer-events:none;
+    transition:opacity .23s ease,transform .23s ease,visibility .23s;}
+  .pve-mnav-panel.is-open{opacity:1;transform:translateY(0) scale(1);visibility:visible;pointer-events:auto;}
+  .pve-mnav-panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:0 1px 12px;}
+  .pve-mnav-panel-heading h2{margin:3px 0 2px;color:var(--ui-text);font-size:22px;font-weight:900;letter-spacing:-.03em;line-height:1.3;}
+  .pve-mnav-panel-heading p{margin:0;font-size:11px;color:var(--ui-muted);line-height:1.5;}
+  .pve-mnav-eyebrow{display:block;color:var(--ui-accent);font-size:9px;letter-spacing:.14em;font-weight:900;}
+  .pve-mnav-close{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;border-radius:11px;border:1px solid var(--ui-line);background:var(--ui-panel-2);color:var(--ui-muted);font-size:24px;font-weight:400;line-height:1;padding:0;}
+  .pve-mnav-links{display:grid;gap:7px;padding-top:8px;border-top:1px solid var(--ui-line);}
+  .pve-mnav-link{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 12px;border-radius:16px;
+    text-decoration:none;border:1px solid transparent;background:var(--ui-panel-2);color:var(--ui-text);transition:transform .18s,background .18s;}
+  .pve-mnav-link:active{transform:scale(.985);}
+  .pve-mnav-link.is-current{background:var(--ui-accent-soft);border-color:color-mix(in srgb,var(--ui-accent) 30%,transparent);}
+  .pve-mnav-link-icon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;
+    background:var(--ui-panel-3);color:var(--ui-accent);font-size:21px;font-weight:700;}
+  .pve-mnav-link.is-current .pve-mnav-link-icon{background:color-mix(in srgb,var(--ui-accent) 18%,var(--ui-panel));}
+  .pve-mnav-link-copy{display:flex;flex-direction:column;flex:1;gap:2px;min-width:0;}
+  .pve-mnav-link-copy strong{font-size:13px;font-weight:850;color:var(--ui-text);line-height:1.3;}
+  .pve-mnav-link-copy small{font-size:10px;color:var(--ui-muted);line-height:1.3;}
+  .pve-mnav-link-arrow{font-size:16px;color:var(--ui-muted);}
+  .pve-mnav-current-pill{display:inline-flex;padding:5px 9px;background:var(--ui-accent-soft);color:var(--ui-accent);
+    border:1px solid var(--ui-line-strong);border-radius:999px;font-size:10px;font-weight:850;}
+  .pve-mnav-footer{display:flex;align-items:center;gap:7px;padding:14px 3px 2px;font-size:10px;color:var(--ui-muted);}
+  .pve-mnav-footer-flower{font-size:15px;color:#c58acb;}
+  .pve-mnav-version{margin-left:auto;opacity:.7;font-size:9px;}
+  body.pve-mnav-open{overflow:hidden !important;}
+  .pve-petal-layer{position:fixed;inset:0;z-index:120000;pointer-events:none;overflow:hidden;}
+  .pve-secret-petal{position:absolute;left:var(--petal-left);top:-35px;color:var(--petal-color);font-size:var(--petal-size);opacity:0;
+    text-shadow:0 4px 12px rgba(126,85,158,.2);animation:pve-secret-fall var(--petal-duration) ease-in forwards;}
+  @keyframes pve-secret-fall{0%{opacity:0;transform:translate3d(0,-10px,0) rotate(0)}15%{opacity:.92}85%{opacity:.85}100%{opacity:0;transform:translate3d(var(--petal-drift),100dvh,0) rotate(var(--petal-rotate))}}
+}
+@media(max-width:365px){
+  .pve-mnav-brand{gap:7px;}
+  .pve-mnav-flower{width:37px;height:37px;flex-basis:37px;font-size:24px;}
+  .pve-mnav-brand-text strong{font-size:13px;}
+  .pve-mnav-icon-btn{width:39px;height:39px;flex-basis:39px;}
+  .pve-mnav-actions{gap:4px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .pve-mnav-panel,.pve-mnav-scrim,.pve-mnav-burger-lines i,.pve-secret-petal{transition:none !important;animation:none !important;}
+}
+</style>
+
+
+<script id="pve-mobile-hamburger-behavior">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const bar=$('floatingNav'), burger=$('pveMnavBurger'), panel=$('pveMnavPanel'), scrim=$('pveMnavScrim'), close=$('pveMnavClose'),
+       brand=$('pveMnavBrand'), theme=$('pveMnavTheme');
+ if(!bar||!burger||!panel||!scrim||!close||!brand||!theme)return;
+ const mobile=window.matchMedia('(max-width:768px)');
+ const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+ let expanded=false,lastFocus=null,longPressTimer=null,longPressTriggered=false,brandTaps=0,brandTapTime=0;
+ function setPanelTop(){
+   const bottom=bar.getBoundingClientRect().bottom;
+   document.documentElement.style.setProperty('--pve-mnav-panel-top',Math.ceil(bottom+9)+'px');
+ }
+ function setExpanded(next, focusReturn=true){
+   if(next && !mobile.matches)return;
+   if(expanded===next)return;
+   expanded=next;
+   if(next){
+     lastFocus=document.activeElement;
+     setPanelTop();
+     panel.hidden=false;scrim.hidden=false;
+     panel.setAttribute('aria-hidden','false');
+     burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','關閉網站選單');
+     document.body.classList.add('pve-mnav-open');
+     requestAnimationFrame(()=>{
+       panel.classList.add('is-open');scrim.classList.add('is-open');
+       close.focus({preventScroll:true});
+     });
+   }else{
+     panel.classList.remove('is-open');scrim.classList.remove('is-open');
+     panel.setAttribute('aria-hidden','true');
+     burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','開啟網站選單');
+     document.body.classList.remove('pve-mnav-open');
+     panel.hidden=true;scrim.hidden=true;
+     if(focusReturn && lastFocus?.isConnected)lastFocus.focus({preventScroll:true});
+     lastFocus=null;
+   }
+ }
+ burger.addEventListener('click',e=>{
+   if(longPressTriggered){longPressTriggered=false;e.preventDefault();return;}
+   setExpanded(!expanded);
+ });
+ close.addEventListener('click',()=>setExpanded(false));
+ scrim.addEventListener('click',()=>setExpanded(false));
+ panel.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setExpanded(false,false)));
+ document.addEventListener('keydown',e=>{
+   if(e.key==='Escape'&&expanded){e.preventDefault();setExpanded(false);return;}
+   if(e.key==='Tab'&&expanded){
+     const interactive=[...panel.querySelectorAll('button:not([disabled]),a[href]')];
+     const first=interactive[0],last=interactive.at(-1);
+     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+   }
+ });
+ window.addEventListener('resize',()=>{if(!mobile.matches)setExpanded(false,false);else if(expanded)setPanelTop();},{passive:true});
+ window.addEventListener('scroll',()=>{if(expanded)setPanelTop();},{passive:true});
+ window.visualViewport?.addEventListener('resize',()=>{if(expanded)setPanelTop();},{passive:true});
+ // The existing theme toggle remains the single source of truth. Mirror its state here.
+ function updateTheme(){
+   const light=document.documentElement.dataset.theme==='light';
+   theme.setAttribute('aria-label',light?'切換至深色模式':'切換至淺色模式');
+   theme.setAttribute('title',light?'切換至深色模式':'切換至淺色模式');
+ }
+ theme.addEventListener('click',()=>{
+   $('themeToggleBtn')?.click();updateTheme();
+ });
+ new MutationObserver(updateTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+ updateTheme();
+ brand.addEventListener('click',()=>{
+   if(!mobile.matches)return;
+   window.scrollTo({top:0,behavior:reduceMotion.matches?'auto':'smooth'});
+   const now=Date.now();brandTaps=now-brandTapTime<2500?brandTaps+1:1;brandTapTime=now;
+   if(brandTaps>=5){brandTaps=0;triggerSecret();}
+ });
+ // Easter egg: press and hold the burger for ~1 second (or tap the flower 5 times).
+ function triggerSecret(){
+   setExpanded(false,false);
+   if(typeof window.showAppToast==='function')window.showAppToast('🌸 花深處的秘密被你找到了！江湖路遠，繁花相伴。','success','隱藏彩蛋');
+   if(reduceMotion.matches)return;
+   const layer=document.createElement('div');layer.className='pve-petal-layer';layer.setAttribute('aria-hidden','true');
+   const palette=['#eaa5c9','#cfa8f1','#f9c6d8','#a5c4ff','#f4d3ef'];
+   for(let i=0;i<23;i++){
+     const petal=document.createElement('span');petal.className='pve-secret-petal';petal.textContent=i%4===0?'✿':'❀';
+     petal.style.setProperty('--petal-left',`${3+(i*37)%94}%`);
+     petal.style.setProperty('--petal-color',palette[i%palette.length]);
+     petal.style.setProperty('--petal-size',`${13+i%6*4}px`);
+     petal.style.setProperty('--petal-duration',`${2.7+(i%5)*.36}s`);
+     petal.style.setProperty('--petal-drift',`${-90+(i*27)%180}px`);
+     petal.style.setProperty('--petal-rotate',`${(i%2===0?1:-1)*(190+i*22)}deg`);
+     petal.style.animationDelay=`${(i%8)*.12}s`;
+     layer.appendChild(petal);
+   }
+   document.body.appendChild(layer);
+   setTimeout(()=>layer.remove(),5600);
+ }
+ function cancelLongPress(){if(longPressTimer!==null){clearTimeout(longPressTimer);longPressTimer=null;}}
+ burger.addEventListener('pointerdown',e=>{
+   if(e.button!==0)return;
+   longPressTriggered=false;
+   cancelLongPress();
+   longPressTimer=setTimeout(()=>{longPressTriggered=true;triggerSecret();cancelLongPress();},1050);
+ });
+ for(const event of ['pointerup','pointercancel','pointerleave'])burger.addEventListener(event,cancelLongPress);
+ burger.addEventListener('contextmenu',e=>{if(mobile.matches)e.preventDefault();});
+ burger.addEventListener('keydown',e=>{
+   if(e.shiftKey&&e.key==='Enter'){e.preventDefault();longPressTriggered=true;triggerSecret();}
+ });
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelLongPress();});
+})();
+</script>
+
+
+<style id="pve-desktop-nav-refinement">
+/* Scope the desktop improvement to screens larger than the existing mobile hamburger breakpoint. */
+@media (min-width:769px){
+  html body #floatingNav.topbar,
+  html body #floatingNav.topbar.scrolled{
+    top:14px !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    width:calc(100% - 44px) !important;
+    max-width:1160px !important;
+    min-height:70px !important;
+    height:70px !important;
+    padding:7px 13px !important;
+    border-radius:24px !important;
+    overflow:visible !important;
+    background:rgba(17,25,45,.91) !important;
+    border:1px solid rgba(167,190,245,.15) !important;
+    box-shadow:0 15px 45px rgba(5,10,25,.23),inset 0 1px 0 rgba(255,255,255,.06) !important;
+    backdrop-filter:blur(22px) saturate(145%) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(145%) !important;
+    transition:background .22s ease,box-shadow .22s ease,top .22s ease !important;
+  }
+  html body #floatingNav.topbar.scrolled{
+    top:8px !important;
+    background:rgba(14,21,39,.96) !important;
+    box-shadow:0 16px 42px rgba(5,10,25,.27) !important;
+  }
+  html body #floatingNav .topbar-content{
+    width:100% !important;height:100% !important;min-width:0 !important;
+    display:flex !important;flex-direction:row !important;
+    align-items:center !important;justify-content:space-between !important;gap:14px !important;
+  }
+  html body #floatingNav .brand-group{
+    display:flex !important;align-items:center !important;gap:9px !important;
+    min-width:0 !important;flex:0 0 auto !important;
+  }
+  html body #floatingNav .brand-group::before{
+    content:'✿';display:grid;place-items:center;
+    flex:0 0 39px;width:39px;height:39px;
+    background:linear-gradient(140deg,#7394f2,#967be4 59%,#c783c6);
+    border:1px solid rgba(255,255,255,.22);border-radius:14px;
+    color:#fff;font-size:24px;line-height:1;
+    box-shadow:0 6px 17px rgba(120,112,227,.25),inset 0 1px 0 rgba(255,255,255,.27);
+  }
+  html body #floatingNav .brand-badge{
+    display:inline-flex !important;align-items:center !important;
+    padding:0 !important;min-height:0 !important;
+    border:0 !important;border-radius:0 !important;
+    background:transparent !important;box-shadow:none !important;
+    color:#f1f5ff !important;font-size:16px !important;
+    font-weight:900 !important;letter-spacing:-.018em !important;
+    white-space:nowrap !important;
+  }
+  html body #floatingNav .brand-badge.sub{
+    padding:6px 10px !important;min-height:30px !important;
+    background:rgba(138,157,218,.11) !important;
+    color:#bfcaf1 !important;
+    border:1px solid rgba(151,174,234,.18) !important;
+    border-radius:10px !important;
+    font-size:11px !important;font-weight:800 !important;
+    letter-spacing:.025em !important;
+  }
+  html body #floatingNav .brand-badge.sub::before{display:none !important;}
+  html body #floatingNav .nav-wrap{
+    display:flex !important;align-items:center !important;
+    gap:11px !important;min-width:0 !important;flex:0 0 auto !important;
+    margin-left:auto !important;
+  }
+  html body #floatingNav .nav{
+    display:flex !important;align-items:center !important;justify-content:center !important;
+    flex-wrap:nowrap !important;gap:3px !important;min-width:0 !important;
+    padding:4px !important;
+    border:1px solid rgba(144,166,213,.10) !important;
+    background:rgba(126,146,194,.055) !important;
+    border-radius:16px !important;
+    overflow:visible !important;
+  }
+  html body #floatingNav .nav a,
+  html body #floatingNav .nav a.home-btn,
+  html body #floatingNav .nav a.active:not(.home-btn){
+    position:relative;display:inline-flex !important;align-items:center !important;justify-content:center !important;
+    flex:0 0 auto !important;min-height:39px !important;
+    padding:9px 14px !important;border-radius:12px !important;
+    background:transparent !important;border:1px solid transparent !important;
+    box-shadow:none !important;color:#b3c2de !important;
+    text-shadow:none !important;font-size:13px !important;font-weight:700 !important;
+    line-height:1.2 !important;letter-spacing:0 !important;white-space:nowrap !important;
+    transition:color .18s ease,background .18s ease,box-shadow .18s ease,transform .18s ease !important;
+  }
+  html body #floatingNav .nav a:hover,
+  html body #floatingNav .nav a.home-btn:hover{
+    color:#eff5ff !important;background:rgba(131,155,214,.15) !important;
+    box-shadow:none !important;transform:none !important;
+  }
+  html body #floatingNav .nav a.active[aria-current="page"],
+  html body #floatingNav .nav a.active[aria-current="page"]:hover{
+    background:linear-gradient(130deg,#587be9 0%,#7766db 70%,#8d6fda 100%) !important;
+    border-color:rgba(199,207,255,.27) !important;
+    color:#fff !important;font-weight:850 !important;
+    box-shadow:0 5px 15px rgba(94,105,222,.31),inset 0 1px 0 rgba(255,255,255,.19) !important;
+  }
+  html body #floatingNav .theme-toggle{
+    flex:0 0 auto !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;
+    gap:5px !important;min-width:83px !important;min-height:43px !important;
+    border-radius:14px !important;border:1px solid rgba(153,174,225,.20) !important;
+    padding:8px 12px !important;
+    color:#e6edfc !important;background:rgba(131,151,202,.10) !important;
+    box-shadow:none !important;font-size:12px !important;font-weight:800 !important;
+  }
+  html body #floatingNav .theme-toggle:hover{
+    background:rgba(140,159,220,.20) !important;border-color:rgba(149,171,231,.40) !important;
+    transform:none !important;
+  }
+  html body #floatingNav .nav a:focus-visible,
+  html body #floatingNav .theme-toggle:focus-visible{
+    outline:2px solid #90b4ff !important;outline-offset:3px !important;
+  }
+
+  /* Light mode explicitly overrides old transparent-active / white-text rules. */
+  html[data-theme="light"] body #floatingNav.topbar,
+  html[data-theme="light"] body #floatingNav.topbar.scrolled{
+    background:rgba(255,255,255,.94) !important;
+    border-color:rgba(84,109,155,.13) !important;
+    box-shadow:0 16px 42px rgba(57,76,125,.13),inset 0 1px 0 rgba(255,255,255,.93) !important;
+  }
+  html[data-theme="light"] body #floatingNav .brand-badge{color:#25314e !important;}
+  html[data-theme="light"] body #floatingNav .brand-badge.sub{
+    background:#f0f3fc !important;color:#617295 !important;
+    border-color:#e0e7f3 !important;
+  }
+  html[data-theme="light"] body #floatingNav .nav{
+    background:#f4f6fc !important;border-color:#ebeff7 !important;
+  }
+  html[data-theme="light"] body #floatingNav .nav a,
+  html[data-theme="light"] body #floatingNav .nav a.home-btn,
+  html[data-theme="light"] body #floatingNav .nav a.active:not(.home-btn){color:#697994 !important;}
+  html[data-theme="light"] body #floatingNav .nav a:hover,
+  html[data-theme="light"] body #floatingNav .nav a.home-btn:hover{
+    color:#344d91 !important;background:#e7ebfb !important;
+  }
+  html[data-theme="light"] body #floatingNav .nav a.active[aria-current="page"],
+  html[data-theme="light"] body #floatingNav .nav a.active[aria-current="page"]:hover{
+    color:#fff !important;background:linear-gradient(130deg,#5579e7,#7967d9 75%,#8d70df) !important;
+    border-color:rgba(108,110,206,.20) !important;
+    box-shadow:0 6px 17px rgba(92,103,213,.23),inset 0 1px 0 rgba(255,255,255,.20) !important;
+  }
+  html[data-theme="light"] body #floatingNav .theme-toggle{
+    color:#34435f !important;background:#f5f7fd !important;
+    border-color:#e2e8f3 !important;
+  }
+  html[data-theme="light"] body #floatingNav .theme-toggle:hover{
+    background:#ebf0fb !important;border-color:#c8d6f0 !important;
+  }
+}
+/* Keep all five navigation links, brand and theme switch on one line at intermediate desktop widths. */
+@media(min-width:769px) and (max-width:1020px){
+  html body #floatingNav.topbar,
+  html body #floatingNav.topbar.scrolled{width:calc(100% - 24px) !important;padding:6px 10px !important;}
+  html body #floatingNav .topbar-content{gap:7px !important;}
+  html body #floatingNav .brand-group{gap:6px !important;}
+  html body #floatingNav .brand-group::before{width:34px;height:34px;flex-basis:34px;font-size:20px;border-radius:12px;}
+  html body #floatingNav .brand-badge{font-size:13px !important;}
+  html body #floatingNav .brand-badge.sub{font-size:10px !important;padding:5px 7px !important;}
+  html body #floatingNav .nav-wrap{gap:6px !important;}
+  html body #floatingNav .nav{gap:1px !important;padding:3px !important;}
+  html body #floatingNav .nav a,
+  html body #floatingNav .nav a.home-btn,
+  html body #floatingNav .nav a.active:not(.home-btn){font-size:11px !important;padding:8px 9px !important;min-height:37px !important;}
+  html body #floatingNav .theme-toggle{min-width:69px !important;padding:7px 8px !important;font-size:11px !important;}
+}
+</style>
+
+
+<style id="pve-mobile-compact-team-accordion">
+/* Tablet/desktop never receive mobile compact cards. */
+.mobile-team-toggle{display:none;}
+@media(max-width:768px){
+  /* More air along each side while keeping date-portal aligned with the content. */
+  html body .container.app-workspace{
+    width:calc(100% - 20px) !important;
+    max-width:calc(100% - 20px) !important;
+    margin-left:auto !important;margin-right:auto !important;
+    padding-left:0 !important;padding-right:0 !important;
+  }
+  html body .app-workspace.mobile-date-portal{max-width:none !important;}
+  html body #floatingNav.topbar,
+  html body #floatingNav.topbar.scrolled{width:calc(100% - 20px) !important;border-radius:20px !important;}
+  html body .pve-mobile-dock{left:10px !important;right:10px !important;min-height:60px !important;padding:5px !important;gap:3px !important;border-radius:20px !important;}
+  html body .pve-dock-btn{font-size:9.5px !important;gap:3px !important;}
+  html body .pve-dock-btn svg{width:19px !important;height:19px !important;}
+  html body .pve-mnav-brand-text strong{font-size:14px !important;}
+  html body .pve-mnav-brand-text small{font-size:9px !important;}
+
+  /* Typography: preserve readable inputs; shrink decorative & supporting text. */
+  html body .app-workspace .workspace-title{font-size:20px !important;}
+  html body .app-workspace .workspace-subtitle{font-size:10px !important;}
+  html body .app-workspace .workspace-top-actions button{font-size:10px !important;padding:8px 10px !important;min-height:38px !important;}
+  html body .app-workspace .team-overview-grid .top-active-teams .selected-day-heading-row h2{font-size:16px !important;}
+  html body .app-workspace .team-overview-grid .top-active-teams .selected-day-heading-row p{font-size:10px !important;}
+  html body .app-workspace .team-overview-grid .top-active-teams .team-intro-time{font-size:18px !important;}
+  html body .app-workspace .team-overview-grid .top-active-teams .team-intro-card{flex-basis:180px !important;min-width:180px !important;width:180px !important;max-width:180px !important;}
+  html body .app-workspace .quick-strip-btn{font-size:10px !important;}
+  html body .app-workspace .date-sidebar-head h2{font-size:14px !important;}
+  html body .app-workspace .date-jump-control{font-size:10px !important;min-height:40px !important;padding:5px 9px !important;}
+  html body .app-workspace .date-sidebar-head .side-icon-btn{width:40px !important;height:40px !important;}
+  html body .app-workspace .team-list-heading h2{font-size:17px !important;}
+  html body .app-workspace .team-list-hint{font-size:9.5px !important;}
+  html body .app-workspace .day-card .day-title{font-size:17px !important;}
+  html body .app-workspace .day-card .day-sub{font-size:9.5px !important;}
+  html body .app-workspace .day-card .day-actions button{font-size:10.5px !important;min-height:36px !important;padding:7px 10px !important;}
+  html body .app-workspace .slot-card .slot-description-body{font-size:12px !important;}
+  html body .app-workspace .slot-card .member-name{font-size:12px !important;}
+  html body .app-workspace .slot-card .slot-actions button{font-size:11px !important;}
+
+  /* Breathe: avoid cards nearly touching the screen and each other. */
+  html body .app-workspace .day-card{padding:9px !important;border-radius:17px !important;}
+  html body .app-workspace .day-card .day-head{padding:10px 11px !important;margin-bottom:8px !important;}
+  html body .app-workspace .day-card:not(.day-collapsed) .slot-list{
+    display:grid;grid-template-columns:minmax(0,1fr) !important;
+    padding:2px 0 4px !important;
+    gap:9px !important;
+  }
+  html body .app-workspace .slot-card{
+    min-width:0 !important;min-height:0 !important;
+    padding:0 !important;
+    border-radius:15px !important;
+    overflow:visible !important;
+  }
+  html body .app-workspace .slot-card.mobile-team-collapsed > :not(.mobile-team-toggle){display:none !important;}
+
+  html body .app-workspace .slot-card .mobile-team-toggle{
+    display:flex !important;align-items:center;text-align:left;
+    gap:9px;width:100%;min-width:0;
+    padding:13px 12px !important;
+    border:0 !important;border-radius:14px !important;
+    background:transparent !important;color:var(--ui-text) !important;
+    box-shadow:none !important;min-height:77px;
+    font-family:inherit;cursor:pointer;
+  }
+  html body .app-workspace .slot-card .mobile-team-toggle:hover{transform:none !important;}
+  html body .app-workspace .slot-card .mobile-team-toggle:focus-visible{
+    outline:2px solid var(--ui-accent) !important;outline-offset:2px;
+  }
+  html body .app-workspace .mobile-team-main{display:flex;flex:1;flex-direction:column;gap:7px;min-width:0;}
+  html body .app-workspace .mobile-team-topline{display:flex;align-items:center;gap:7px;min-width:0;white-space:nowrap;}
+  html body .app-workspace .mobile-team-time{font-size:20px;line-height:1.2;font-weight:900;letter-spacing:-.03em;color:var(--ui-text);font-variant-numeric:tabular-nums;}
+  html body .app-workspace .mobile-team-number{font-size:10px;color:var(--ui-muted);white-space:nowrap;font-weight:750;}
+  html body .app-workspace .mobile-team-type{font-size:9.5px;font-weight:800;color:var(--ui-accent);background:var(--ui-accent-soft);border:1px solid var(--ui-line);border-radius:999px;padding:3px 7px;white-space:nowrap;max-width:30%;overflow:hidden;text-overflow:ellipsis;}
+  html body .app-workspace .mobile-team-lowerline{display:flex;gap:7px;align-items:center;min-width:0;}
+  html body .app-workspace .mobile-team-leader{font-size:11px;font-weight:650;color:var(--ui-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:66%;}
+  html body .app-workspace .mobile-team-leader > span{color:var(--ui-accent);font-size:12px;}
+  html body .app-workspace .mobile-team-state{font-size:9px;font-weight:850;white-space:nowrap;border-radius:999px;padding:3px 7px;border:1px solid var(--ui-line);background:var(--ui-panel-2);color:var(--ui-muted);}
+  html body .app-workspace .mobile-team-state.is-full{background:color-mix(in srgb,#f59e0b 12%,var(--ui-panel));color:color-mix(in srgb,#f59e0b 85%,var(--ui-text));}
+  html body .app-workspace .mobile-team-state.is-cancelled{background:color-mix(in srgb,#f43f5e 12%,var(--ui-panel));color:color-mix(in srgb,#f43f5e 85%,var(--ui-text));}
+  html body .app-workspace .mobile-team-end{display:flex;flex-direction:column;align-items:flex-end;flex:0 0 41px;gap:0;}
+  html body .app-workspace .mobile-team-count{font-size:12px;line-height:1.35;color:var(--ui-muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  html body .app-workspace .mobile-team-count strong{font-size:17px;color:var(--ui-text);font-weight:900;}
+  html body .app-workspace .mobile-team-count-hint{font-size:9px;color:var(--ui-muted);white-space:nowrap;}
+  html body .app-workspace .mobile-team-chevron{display:grid;place-items:center;flex:0 0 19px;width:19px;height:19px;border-radius:50%;background:var(--ui-panel-2);color:var(--ui-muted);transition:transform .2s ease;}
+  html body .app-workspace .mobile-team-chevron svg{width:13px;height:13px;}
+  html body .app-workspace .slot-card.mobile-team-expanded .mobile-team-chevron{transform:rotate(180deg);background:var(--ui-accent-soft);color:var(--ui-accent);}
+  html body .app-workspace .slot-card.mobile-team-expanded .mobile-team-toggle{border-radius:14px 14px 0 0 !important;border-bottom:1px solid var(--ui-line) !important;padding-bottom:12px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > :not(.mobile-team-toggle){margin-left:12px !important;margin-right:12px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top{display:block !important;position:relative;padding-top:12px !important;margin-top:0 !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top > div:first-child{min-width:0;padding-right:42px;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top .slot-top-right{position:absolute !important;top:9px !important;right:0 !important;left:auto !important;display:flex !important;width:36px !important;min-width:36px !important;justify-content:flex-end !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top .slot-badges{display:none !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top .slot-time-wrap,
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top .slot-instance{display:none !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded .slot-meta-pills{margin-top:0 !important;gap:5px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded .role-count-row{width:calc(100% + 42px);margin-top:2px;}
+  html body .app-workspace .slot-card.mobile-team-expanded .role-count-row .summary-pill{font-size:10px !important;padding:5px 7px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded .slot-menu-trigger{font-size:17px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-actions{margin-bottom:12px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded > .member-list{padding:0 !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded .member{min-height:44px !important;padding:7px 8px !important;}
+  html body .app-workspace .slot-card.mobile-team-expanded .member .role-badge{font-size:10px !important;}
+
+  /* Reduce visual density outside team cards. Inputs remain >=16px to prevent mobile Safari zoom. */
+  html body .team-workspace .workspace-controls{padding:10px !important;}
+  html body .team-workspace .workspace-controls .quick-search-input{font-size:16px !important;}
+  html body .app-workspace .day-empty-summary{font-size:10px !important;}
+}
+@media(max-width:360px){
+  html body .container.app-workspace{width:calc(100% - 16px) !important;max-width:calc(100% - 16px) !important;}
+  html body .app-workspace .mobile-team-toggle{padding:11px 9px !important;gap:6px !important;}
+  html body .app-workspace .mobile-team-time{font-size:18px;}
+  html body .app-workspace .mobile-team-count strong{font-size:16px;}
+  html body .app-workspace .mobile-team-type{max-width:28%;}
+  html body .pve-mobile-dock{left:8px !important;right:8px !important;}
+}
+@media(prefers-reduced-motion:reduce){.mobile-team-chevron{transition:none !important;}}
+</style>
+
+
+<style id="pve-single-closed-status">
+/* Only one compact status line when signup is unavailable (no repeated disabled buttons). */
+html body .app-workspace .slot-actions.signup-not-available{
+  display:block !important;grid-template-columns:none !important;
+  padding:7px 0 0 !important;margin-top:8px !important;
+}
+html body .app-workspace .signup-availability-note{
+  display:flex;align-items:center;justify-content:flex-start;
+  gap:10px;width:100%;min-width:0;
+  padding:11px 12px;border-radius:13px;
+  background:rgba(148,163,184,.07);border:1px solid rgba(148,163,184,.18);
+  color:var(--ui-text,#eef2ff);
+}
+html body .app-workspace .signup-availability-symbol{
+  width:30px;height:30px;flex:0 0 30px;
+  display:grid;place-items:center;border-radius:10px;
+  background:rgba(148,163,184,.12);color:var(--ui-muted,#a8b3cf);
+  font-size:17px;font-weight:800;
+}
+html body .app-workspace .signup-availability-copy{display:flex;flex-direction:column;gap:3px;min-width:0;text-align:left;line-height:1.35;}
+html body .app-workspace .signup-availability-copy strong{font-size:12px;font-weight:850;color:var(--ui-text,#eef2ff);}
+html body .app-workspace .signup-availability-copy small{font-size:10.5px;font-weight:500;color:var(--ui-muted,#a8b3cf);line-height:1.5;}
+html[data-theme="light"] body .app-workspace .signup-availability-note{
+  background:rgba(100,116,139,.05);border-color:rgba(100,116,139,.20);
+}
+html[data-theme="light"] body .app-workspace .signup-availability-symbol{
+  background:rgba(100,116,139,.09);
+}
+@media (max-width:768px){
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-actions.signup-not-available{
+    margin-bottom:11px !important;
+  }
+  html body .app-workspace .signup-availability-note{padding:9px 10px;border-radius:11px;gap:9px;}
+  html body .app-workspace .signup-availability-symbol{width:28px;height:28px;flex-basis:28px;font-size:15px;}
+  html body .app-workspace .signup-availability-copy strong{font-size:11.5px;}
+  html body .app-workspace .signup-availability-copy small{font-size:10px;}
+}
+</style>
+
 </body>
 </html>
