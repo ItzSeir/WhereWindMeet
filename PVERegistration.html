@@ -13204,6 +13204,65 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
 }
 
 </style>
+
+<style id="team-category-visual-update">
+/* 副本種類識別：只影響隊伍卡片及未來隊伍預覽，不更動導航與功能 */
+html body .app-workspace .slot-card.category-normal { --category-color:#6e9ece; --category-soft:rgba(110,158,206,.13); }
+html body .app-workspace .slot-card.category-talent { --category-color:#e9aa50; --category-soft:rgba(233,170,80,.15); }
+html body .app-workspace .slot-card.category-speed { --category-color:#e882ac; --category-soft:rgba(232,130,172,.15); }
+html body .app-workspace .slot-card.category-tower { --category-color:#60bba9; --category-soft:rgba(96,187,169,.15); }
+html body .app-workspace .slot-card:is(.category-normal,.category-talent,.category-speed,.category-tower),
+html body .app-workspace .slot-card:is(.category-normal,.category-talent,.category-speed,.category-tower):hover,
+html body .app-workspace .slot-card:is(.category-normal,.category-talent,.category-speed,.category-tower).has-members,
+html body .app-workspace .slot-card:is(.category-normal,.category-talent,.category-speed,.category-tower).full-team {
+  border-left:5px solid var(--category-color) !important;
+}
+html body .app-workspace .slot-card.category-talent .team-type-talent,
+html body .app-workspace .slot-card.category-speed .team-type-speed,
+html body .app-workspace .slot-card.category-tower .team-type-tower {
+  color:var(--category-color) !important;
+  background:var(--category-soft) !important;
+  border-color:var(--category-color) !important;
+  font-weight:900 !important;
+}
+/* 未來隊伍：普通低調，天賦／競速／爬塔以相同色系強調 */
+html body .app-workspace .team-intro-card.type-normal { --category-color:#6e9ece; --category-soft:rgba(110,158,206,.10); }
+html body .app-workspace .team-intro-card.type-talent { --category-color:#e9aa50; --category-soft:rgba(233,170,80,.17); }
+html body .app-workspace .team-intro-card.type-speed { --category-color:#e882ac; --category-soft:rgba(232,130,172,.17); }
+html body .app-workspace .team-intro-card.type-tower { --category-color:#60bba9; --category-soft:rgba(96,187,169,.17); }
+html body .app-workspace .team-intro-card:is(.type-normal,.type-talent,.type-speed,.type-tower)::before {
+  background:var(--category-color) !important;width:4px !important;
+}
+html body .app-workspace .team-intro-card:is(.type-talent,.type-speed,.type-tower) .team-intro-type {
+  color:var(--category-color) !important;
+  background:var(--category-soft) !important;
+  border:1px solid var(--category-color) !important;
+  font-weight:900 !important;
+  letter-spacing:.015em;
+}
+html body .app-workspace .team-intro-card.type-normal .team-intro-type {
+  color:var(--ui-muted) !important;background:var(--ui-panel-3) !important;
+  border:1px solid var(--ui-line) !important;
+}
+/* 手機收合時仍保留分類色條和分類標籤 */
+@media(max-width:768px){
+  html body .app-workspace .slot-card:is(.category-normal,.category-talent,.category-speed,.category-tower) .mobile-team-type {
+    color:var(--category-color) !important;
+    background:var(--category-soft) !important;
+    border:1px solid var(--category-color) !important;
+    font-weight:900 !important;
+  }
+}
+/* 淺色主題微調對比度 */
+html[data-theme="light"] body .app-workspace .slot-card.category-normal,
+html[data-theme="light"] body .app-workspace .team-intro-card.type-normal { --category-color:#537da3; }
+html[data-theme="light"] body .app-workspace .slot-card.category-talent,
+html[data-theme="light"] body .app-workspace .team-intro-card.type-talent { --category-color:#a96512; --category-soft:#fff1da; }
+html[data-theme="light"] body .app-workspace .slot-card.category-speed,
+html[data-theme="light"] body .app-workspace .team-intro-card.type-speed { --category-color:#ad3973; --category-soft:#ffedf5; }
+html[data-theme="light"] body .app-workspace .slot-card.category-tower,
+html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --category-color:#207d70; --category-soft:#e2f6f0; }
+</style>
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -17198,7 +17257,7 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
         const missing = getSlotMissingInfo(slot);
         const maxPeople = getSlotMaxPeople(slot);
         const type = normalizeSlot(slot).teamType;
-        const typeClass = type === "talent" ? "type-talent" : type === "speed" ? "type-speed" : type === "tower" ? "type-tower" : "type-normal";
+        const typeClass = type === "天賦團" ? "type-talent" : type === "競速團" ? "type-speed" : type === "爬塔" ? "type-tower" : "type-normal";
         const instanceText = slot.instance ? `第 ${slot.instance} 隊` : "隊伍";
         const dateLabel = `${displayDate(date)} ${weekdayText(date)}`;
 
@@ -17358,7 +17417,7 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
             const mobileLeaderText = mobileFirstMember ? escapeHtml(mobileFirstMember) : "尚無隊長";
             const mobileWaiting = pendingMembers.length;
             const mobileStateText = isSlotCancelled ? "已取消" : members.length >= maxPeople ? "已滿" : mobileWaiting > 0 ? `待確認 ${mobileWaiting}` : members.length > 0 ? "招募中" : "待招募";
-            const slotCardClass = `${slotCardBaseClass}${isSlotCancelled ? " cancelled-slot" : ""}${mobileTeamIsOpen ? " mobile-team-expanded" : " mobile-team-collapsed"}`;
+            const slotCardClass = `${slotCardBaseClass} ${normalizeSlot(slot).teamType === "天賦團" ? "category-talent" : normalizeSlot(slot).teamType === "競速團" ? "category-speed" : normalizeSlot(slot).teamType === "爬塔" ? "category-tower" : "category-normal"}${isSlotCancelled ? " cancelled-slot" : ""}${mobileTeamIsOpen ? " mobile-team-expanded" : " mobile-team-collapsed"}`;
 
             html += `
               <div class="${slotCardClass}" id="team-${dateKey}-${slotIndex}" data-team-card-slot="${slotIndex}">
