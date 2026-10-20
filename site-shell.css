@@ -1,6 +1,6 @@
 /* =========================================================
-   夢回花深處 — Shared Site Shell v1.0
-   Common design tokens, navbar, announcement and responsive shell.
+   夢回花深處 — Shared Site Shell v2.0 / Unified Announcement
+   Tokens, fallback navbar and exact Unified Announcement design.
    Page-specific layouts stay inside each HTML file.
    ========================================================= */
 
@@ -74,18 +74,14 @@ html{
 }
 html[data-theme="light"]{color-scheme:light}
 
-body::before{display:none !important}
+/* Preserve each page’s own optional decorative body::before layer. */
 
+/* Do not override page-level background or responsive padding.
+   The five Unified HTML files own their individual page layouts. */
 body{
-  color:var(--text) !important;
-  font-family:"Noto Sans TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important;
-  background:
-    radial-gradient(circle at 4% -5%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 29%),
-    radial-gradient(circle at 97% 8%,color-mix(in srgb,var(--accent-2) 15%,transparent),transparent 27%),
-    linear-gradient(180deg,var(--bg),var(--bg-2)) !important;
-  background-attachment:fixed !important;
+  color:var(--text);
+  font-family:"Noto Sans TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   overflow-x:clip;
-  transition:background .22s ease,color .22s ease;
 }
 
 ::-webkit-scrollbar{width:10px;height:10px}
@@ -99,214 +95,235 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   outline-offset:2px;
 }
 
-/* ===== Shared navbar ===== */
+
+/* =========================================================
+   Navbar fallback only
+   The Unified HTML files already embed the newer desktop navbar
+   and the one-row mobile hamburger navigation. No !important
+   rules here, so neither design can be overwritten by site-shell.
+   ========================================================= */
 .topbar{
-  position:fixed !important;
-  top:20px !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  width:calc(100% - 40px) !important;
-  max-width:var(--site-nav-max) !important;
-  min-height:64px !important;
-  height:auto !important;
-  z-index:10000 !important;
-  display:flex !important;
-  align-items:center !important;
-  padding:0 12px !important;
-  border-radius:999px !important;
-  background:color-mix(in srgb,var(--surface) 72%,transparent) !important;
-  border:1px solid var(--line) !important;
-  box-shadow:0 10px 30px rgba(0,0,0,.26) !important;
-  backdrop-filter:blur(20px) !important;
-  -webkit-backdrop-filter:blur(20px) !important;
-  transition:top .25s ease,background .25s ease,box-shadow .25s ease,border-color .25s ease !important;
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 40px);max-width:var(--site-nav-max);min-height:64px;
+  z-index:1000;display:flex;align-items:center;padding:0 12px;
+  border-radius:999px;background:color-mix(in srgb,var(--surface) 85%,transparent);
+  border:1px solid var(--line);box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 }
-.topbar.scrolled{
-  top:10px !important;
-  background:color-mix(in srgb,var(--surface) 91%,transparent) !important;
-  box-shadow:var(--shadow) !important;
+.topbar.scrolled{top:10px}
+.topbar-content{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand-group,.nav,.nav-wrap{display:flex;align-items:center;gap:8px}
+.brand-badge{padding:6px 14px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-size:12px;font-weight:800;white-space:nowrap}
+.brand-badge.sub{color:var(--muted)}
+.nav a{text-decoration:none;color:var(--muted);padding:8px 15px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.nav a:hover{color:var(--text);background:var(--surface-2)}
+.nav a.active,.nav a[aria-current="page"]{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.theme-toggle{min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--text);font-size:12px;font-weight:800;cursor:pointer}
+@media(max-width:768px){
+  /* Fallback for older documents; the new .pve-mnav-bar takes precedence. */
+  .topbar{top:10px;width:calc(100% - 20px);border-radius:22px}
+  .topbar-content{gap:7px}
+  .nav{overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
 }
-.topbar-content{
-  width:100% !important;
-  display:flex !important;
-  justify-content:space-between !important;
-  align-items:center !important;
-  gap:10px !important;
-}
-.brand-group{
-  display:flex !important;
-  gap:8px !important;
-  align-items:center !important;
-  min-width:max-content !important;
-}
-.brand-badge{
-  padding:6px 14px !important;
-  border-radius:999px !important;
-  background:var(--surface-2) !important;
-  border:1px solid var(--line) !important;
-  color:var(--text) !important;
-  font-size:12px !important;
-  font-weight:800 !important;
-  line-height:1.35 !important;
-  white-space:nowrap !important;
-}
-.brand-badge.sub{color:var(--muted) !important}
-.nav-wrap{
-  display:flex !important;
-  align-items:center !important;
-  gap:8px !important;
-  min-width:0 !important;
-}
-.nav{
-  display:flex !important;
-  gap:6px !important;
-  align-items:center !important;
-  min-width:0 !important;
-}
-.nav a,
-.nav a.home-btn{
-  text-decoration:none !important;
-  color:var(--muted) !important;
-  padding:8px 15px !important;
-  border-radius:999px !important;
-  font-size:13px !important;
-  font-weight:700 !important;
-  line-height:1.35 !important;
-  white-space:nowrap !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  transition:color .18s ease,background .18s ease,transform .18s ease !important;
-}
-.nav a:hover{
-  color:var(--text) !important;
-  background:var(--surface-2) !important;
-}
-.nav a.active,
-.nav a[aria-current="page"]{
-  color:#fff !important;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
-  box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 28%,transparent) !important;
-  font-weight:800 !important;
-}
-.theme-toggle{
-  flex:0 0 auto !important;
-  min-height:38px !important;
-  padding:0 12px !important;
-  border:1px solid var(--line) !important;
-  border-radius:999px !important;
-  background:var(--surface-2) !important;
-  color:var(--text) !important;
-  font-size:12px !important;
-  font-weight:900 !important;
-  line-height:1 !important;
-  white-space:nowrap !important;
-  cursor:pointer !important;
-  box-shadow:none !important;
-  transition:transform .18s ease,border-color .18s ease,background .18s ease !important;
-}
-.theme-toggle:hover{
-  border-color:color-mix(in srgb,var(--accent) 55%,var(--line)) !important;
-  transform:translateY(-1px) !important;
-}
-html[data-theme="light"] .topbar{
-  background:rgba(255,255,255,.84) !important;
-  border-color:var(--line) !important;
-  box-shadow:0 14px 36px rgba(65,86,125,.14) !important;
-}
-html[data-theme="light"] .topbar.scrolled{background:rgba(255,255,255,.95) !important}
 
-/* ===== Shared announcement ===== */
-#siteAnnouncement{
-  max-width:var(--site-content-max) !important;
-  margin:0 auto 16px !important;
-  padding:0 18px !important;
+/* =========================================================
+   Unified Announcement Bar — identical component CSS to
+   WWM Announcement Bar — Unified (all five HTML pages).
+   The matching JS creates .wwma-card, .wwma-nav and the
+   accessible announcement full-text modal.
+   Do not reintroduce old !important .announcementBar selectors.
+   ========================================================= */
+/* WhereWindMeet · Announcement UI v1.0 — same visual component across five pages. */
+:root {
+  --wwma-surface:#121c34;
+  --wwma-border:rgba(157,178,227,.18);
+  --wwma-text:#f2f5ff;
+  --wwma-muted:#9aaaca;
+  --wwma-chip-bg:rgba(139,92,246,.13);
+  --wwma-chip-text:#d9cbff;
+  --wwma-chip-border:rgba(170,143,255,.24);
+  --wwma-button-bg:rgba(255,255,255,.055);
+  --wwma-button-hover:rgba(255,255,255,.12);
+  --wwma-shadow:0 16px 40px rgba(0,0,0,.19);
+  --wwma-backdrop:rgba(4,8,22,.72);
+}
+html[data-theme="light"] {
+  --wwma-surface:#ffffff;
+  --wwma-border:rgba(70,91,136,.17);
+  --wwma-text:#1e2943;
+  --wwma-muted:#63728f;
+  --wwma-chip-bg:#f1edff;
+  --wwma-chip-text:#6945b8;
+  --wwma-chip-border:#dcd2fc;
+  --wwma-button-bg:rgba(66,91,146,.06);
+  --wwma-button-hover:rgba(66,91,146,.13);
+  --wwma-shadow:0 16px 36px rgba(55,77,122,.11);
+  --wwma-backdrop:rgba(16,28,53,.48);
+}
+html body #siteAnnouncement {
+  display:block;
+  width:min(100vw,1320px) !important;
+  max-width:1320px !important;
+  padding:0 14px !important;
+  margin:0 0 17px !important;
+  left:50%;
+  transform:translateX(-50%);
   box-sizing:border-box !important;
+  position:relative;
+  z-index:2;
+  font-family:"Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
-.announcementBar{
-  position:relative !important;
-  display:flex !important;
-  align-items:flex-start !important;
-  gap:14px !important;
-  padding:15px 96px 15px 16px !important;
-  border-radius:20px !important;
-  border:1px solid color-mix(in srgb,var(--accent-2) 30%,var(--line)) !important;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,var(--surface)),color-mix(in srgb,var(--accent-2) 11%,var(--surface))) !important;
-  box-shadow:var(--shadow-soft) !important;
-  color:var(--text) !important;
+html body #siteAnnouncement[hidden] { display:none !important; }
+@media(min-width:769px){
+  html body[data-site-page="documentation"] #siteAnnouncement{margin-top:100px !important;}
 }
-.announcementIcon{
-  width:40px !important;
-  height:40px !important;
-  flex:0 0 auto !important;
-  border-radius:13px !important;
-  display:grid !important;
-  place-items:center !important;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2)) !important;
-  color:#fff !important;
-  box-shadow:0 9px 20px color-mix(in srgb,var(--accent) 22%,transparent) !important;
-  font-size:18px !important;
+html body #siteAnnouncement .wwma-card,
+html body #siteAnnouncement .wwma-card * { box-sizing:border-box; }
+html body #siteAnnouncement .wwma-card {
+  position:relative;
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) 172px;
+  gap:15px;
+  align-items:center;
+  width:100%;
+  height:120px;
+  min-height:120px;
+  max-height:120px;
+  padding:15px 21px 17px 17px;
+  border:1px solid var(--wwma-border);
+  border-radius:22px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(142,103,250,.13),transparent 35%),
+    radial-gradient(circle at 0% 100%,rgba(87,158,255,.07),transparent 33%),
+    var(--wwma-surface);
+  color:var(--wwma-text);
+  box-shadow:var(--wwma-shadow),inset 0 1px 0 rgba(255,255,255,.055);
+  isolation:isolate;
 }
-.announcementContent{flex:1 !important;min-width:0 !important}
-.announcementTitle{margin:1px 0 6px !important;font-size:15px !important;font-weight:900 !important;color:var(--text) !important}
-.announcementPill{
-  display:inline-flex !important;
-  width:max-content !important;
-  max-width:100% !important;
-  padding:4px 9px !important;
-  margin-bottom:7px !important;
-  border-radius:999px !important;
-  background:color-mix(in srgb,var(--accent-2) 14%,var(--surface-2)) !important;
-  border:1px solid color-mix(in srgb,var(--accent-2) 26%,var(--line)) !important;
-  color:#d9ceff !important;
-  font-size:11px !important;
-  font-weight:900 !important;
-  box-shadow:none !important;
+html[data-theme="light"] body #siteAnnouncement .wwma-card {
+  background:
+    radial-gradient(circle at 96% 0%,rgba(143,110,232,.10),transparent 39%),
+    radial-gradient(circle at 0% 100%,rgba(75,145,244,.06),transparent 37%),
+    var(--wwma-surface);
 }
-.announcementText{color:var(--text) !important;font-size:13px !important;font-weight:700 !important;line-height:1.7 !important}
-.announcementTime{margin-top:7px !important;color:var(--muted) !important;font-size:11px !important;font-weight:700 !important}
-.announcementControls{position:absolute !important;top:13px !important;right:13px !important;display:flex !important;gap:6px !important}
-.announcementArrow{
-  width:30px !important;height:30px !important;border:1px solid var(--line) !important;border-radius:999px !important;
-  background:var(--surface-2) !important;color:var(--text) !important;font-size:17px !important;font-weight:900 !important;cursor:pointer !important;
+html body #siteAnnouncement .wwma-card::before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+  width:4px;
+  border-radius:0 6px 6px 0;
+  background:linear-gradient(180deg,#64b5ff 0%,#8867f8 58%,#cf7bdc 100%);
 }
-.announcementArrow:hover{background:var(--surface-3) !important}
-.announcementDots{position:absolute !important;right:18px !important;bottom:13px !important;display:flex !important;gap:6px !important}
-.announcementDot{width:7px !important;height:7px !important;border-radius:999px !important;border:0 !important;padding:0 !important;background:color-mix(in srgb,var(--muted) 36%,transparent) !important;cursor:pointer !important}
-.announcementDot.active{width:18px !important;background:var(--accent) !important}
-html[data-theme="light"] .announcementPill{color:var(--accent-2) !important}
+html body #siteAnnouncement .wwma-emblem {
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:50px;
+  height:50px;
+  border-radius:17px;
+  background:linear-gradient(145deg,#678df0,#9b60e4);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 7px 18px rgba(110,104,245,.24),inset 0 1px 1px rgba(255,255,255,.30);
+  color:#fff;
+}
+html body #siteAnnouncement .wwma-emblem svg {display:block;width:23px;height:23px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+html body #siteAnnouncement .wwma-copy { min-width:0;align-self:center;overflow:hidden; }
+html body #siteAnnouncement .wwma-overline { display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:5px; }
+html body #siteAnnouncement .wwma-live-dot {width:6px;height:6px;background:#74c8ff;border-radius:99px;box-shadow:0 0 0 3px rgba(100,181,255,.12);flex:0 0 auto;}
+html body #siteAnnouncement .wwma-overline-label {color:var(--wwma-muted);font-size:10px;line-height:1.1;font-weight:800;letter-spacing:.09em;white-space:nowrap;}
+html body #siteAnnouncement .wwma-tag {display:inline-flex;align-items:center;max-width:145px;padding:3px 8px;border-radius:99px;background:var(--wwma-chip-bg);border:1px solid var(--wwma-chip-border);font-size:10px;line-height:1.4;color:var(--wwma-chip-text);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+html body #siteAnnouncement .wwma-title {margin:0 0 5px;font-size:16px;line-height:1.28;font-weight:900;letter-spacing:-.01em;color:var(--wwma-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+html body #siteAnnouncement .wwma-message {margin:0;font-size:12px;line-height:1.55;color:var(--wwma-muted);font-weight:550;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;}
+html body #siteAnnouncement .wwma-side {min-width:0;display:flex;align-items:flex-end;justify-content:center;flex-direction:column;gap:10px;border-left:1px solid var(--wwma-border);padding-left:14px;}
+html body #siteAnnouncement .wwma-update {font-size:10px;line-height:1.4;white-space:nowrap;color:var(--wwma-muted);font-weight:650;text-align:right;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+html body #siteAnnouncement .wwma-nav {display:flex;align-items:center;gap:5px;justify-content:flex-end;width:100%;}
+html body #siteAnnouncement button.wwma-arrow, html body #siteAnnouncement button.wwma-read {
+  display:grid;place-items:center;flex:0 0 auto;
+  width:32px;height:32px;min-width:0;min-height:0;
+  padding:0;margin:0;
+  border:1px solid var(--wwma-border);border-radius:11px;
+  background:var(--wwma-button-bg);color:var(--wwma-text);
+  box-shadow:none;font-family:inherit;font-size:17px;font-weight:700;line-height:1;
+  cursor:pointer;transition:background .2s,transform .2s;
+}
+html body #siteAnnouncement button.wwma-arrow:hover,html body #siteAnnouncement button.wwma-read:hover {background:var(--wwma-button-hover);transform:translateY(-1px)}
+html body #siteAnnouncement button.wwma-read {width:auto;min-width:51px;padding:0 9px;font-size:11px;font-weight:850;color:var(--wwma-chip-text);background:var(--wwma-chip-bg);}
+html body #siteAnnouncement .wwma-step {display:inline-block;min-width:36px;font-size:10px;color:var(--wwma-muted);font-weight:850;text-align:center;font-variant-numeric:tabular-nums;}
+html body #siteAnnouncement .wwma-progress {position:absolute;left:0;bottom:0;right:0;height:2px;background:transparent;overflow:hidden;pointer-events:none;}
+html body #siteAnnouncement .wwma-progress-fill {height:100%;width:100%;background:linear-gradient(90deg,#64b5ff,#a07af3,#c77ccd);transform-origin:left;animation:wwma-countdown var(--wwma-duration,6500ms) linear both;}
+html body #siteAnnouncement .wwma-card.is-paused .wwma-progress-fill {animation-play-state:paused;}
+@keyframes wwma-countdown {from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
-/* ===== Shared mobile shell ===== */
-@media (max-width:768px){
-  body{padding-top:150px !important}
-  .topbar{
-    top:10px !important;
-    min-height:0 !important;
-    height:auto !important;
-    padding:10px 14px !important;
-    width:calc(100% - 20px) !important;
-    border-radius:24px !important;
+/* Full-text modal. Important announcements never become inaccessible due to fixed card height. */
+.wwma-modal[hidden] {display:none !important;}
+.wwma-modal {position:fixed;inset:0;z-index:160000;display:grid;place-items:center;padding:20px;}
+.wwma-modal-mask{position:absolute;inset:0;background:var(--wwma-backdrop);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);}
+.wwma-modal-panel{position:relative;width:min(520px,100%);max-height:min(82vh,720px);overflow:auto;padding:26px;border-radius:23px;background:var(--wwma-surface);border:1px solid var(--wwma-border);box-shadow:0 28px 75px rgba(0,0,0,.35);color:var(--wwma-text);font-family:"Noto Sans TC",system-ui,sans-serif;}
+.wwma-modal-eyebrow{font-size:11px;font-weight:900;color:var(--wwma-chip-text);letter-spacing:.06em;margin-bottom:12px;}
+.wwma-modal-title{font-size:21px;line-height:1.35;font-weight:900;margin:0 34px 14px 0;overflow-wrap:anywhere;}
+.wwma-modal-message{font-size:14px;line-height:1.85;font-weight:500;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--wwma-text);margin:0;}
+.wwma-modal-updated{font-size:11px;color:var(--wwma-muted);margin:20px 0 0;}
+.wwma-modal-close{position:absolute;top:17px;right:17px;width:34px;height:34px;border:1px solid var(--wwma-border);border-radius:11px;background:var(--wwma-button-bg);color:var(--wwma-text);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;}
+.wwma-modal-close:hover{background:var(--wwma-button-hover);}
+
+@media(max-width:768px){
+  html body #siteAnnouncement {max-width:1320px !important;margin:0 0 11px !important;padding:0 10px !important;}
+  html body #siteAnnouncement .wwma-card {
+    grid-template-columns:39px minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) 32px;
+    gap:8px 10px;
+    height:151px;min-height:151px;max-height:151px;
+    padding:13px 13px 10px;
+    border-radius:18px;
   }
-  .topbar.scrolled{top:8px !important}
-  .topbar-content{flex-direction:column !important;gap:8px !important}
-  .brand-group{justify-content:center !important}
-  .nav-wrap{width:100% !important;gap:6px !important}
-  .nav{
-    flex:1 !important;width:100% !important;justify-content:flex-start !important;overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch !important;padding:4px 0 !important;scrollbar-width:none !important;
+  html body #siteAnnouncement .wwma-card::before {top:13px;bottom:13px;width:3px;}
+  html body #siteAnnouncement .wwma-emblem {width:38px;height:38px;border-radius:13px;align-self:start;}
+  html body #siteAnnouncement .wwma-emblem svg {width:19px;height:19px;}
+  html body #siteAnnouncement .wwma-copy {align-self:start;padding-top:1px;}
+  html body #siteAnnouncement .wwma-overline {gap:7px;margin-bottom:5px;}
+  html body #siteAnnouncement .wwma-overline-label {font-size:9px;}
+  html body #siteAnnouncement .wwma-tag {font-size:9px;padding:2px 7px;max-width:115px;}
+  html body #siteAnnouncement .wwma-title {font-size:14px !important;margin-bottom:5px;line-height:1.35;}
+  html body #siteAnnouncement .wwma-message {font-size:11px !important;line-height:1.55;-webkit-line-clamp:2;}
+  html body #siteAnnouncement .wwma-side {grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;border-left:0;border-top:1px solid var(--wwma-border);padding:6px 0 0;gap:8px;}
+  html body #siteAnnouncement .wwma-update {text-align:left;font-size:9px !important;max-width:45%;}
+  html body #siteAnnouncement .wwma-nav {width:auto;gap:4px;}
+  html body #siteAnnouncement button.wwma-arrow,html body #siteAnnouncement button.wwma-read {height:28px;border-radius:9px;}
+  html body #siteAnnouncement button.wwma-arrow {width:28px;font-size:15px;}
+  html body #siteAnnouncement button.wwma-read {min-width:47px;padding:0 7px;font-size:10px;}
+  html body #siteAnnouncement .wwma-step {font-size:9px;min-width:31px;}
+  .wwma-modal-panel {padding:23px 20px;max-height:80dvh;border-radius:20px;}
+  .wwma-modal-title {font-size:18px;}
+  .wwma-modal-message {font-size:13px;}
+}
+@media(max-width:365px){
+  html body #siteAnnouncement .wwma-update {max-width:38%;font-size:8px !important;}
+  html body #siteAnnouncement .wwma-nav {gap:3px;}
+  html body #siteAnnouncement button.wwma-read{min-width:42px;padding:0 6px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #siteAnnouncement .wwma-progress-fill {animation:none;transform:scaleX(1)}
+  html body #siteAnnouncement button.wwma-arrow,html body #siteAnnouncement button.wwma-read{transition:none}
+}
+html body #siteAnnouncement .wwma-tag[hidden],
+html body #siteAnnouncement button.wwma-arrow[hidden],
+html body #siteAnnouncement .wwma-step[hidden],
+html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
+/* The docs search already reserves top space for its fixed site navbar.
+   When announcements are shown, the announcement takes over that spacer. */
+@media(min-width:769px){
+  html body[data-site-page="documentation"] #siteAnnouncement:not([hidden]) ~ .docsToolbar {
+    margin-top:16px !important;
   }
-  .nav::-webkit-scrollbar{display:none !important}
-  .nav a,.nav a.home-btn{padding:6px 11px !important;font-size:11px !important}
-  .theme-toggle{min-height:34px !important;padding:0 10px !important;font-size:11px !important}
-
-  #siteAnnouncement{padding:0 10px !important;margin-bottom:12px !important}
-  .announcementBar{padding:13px 13px 42px !important;gap:10px !important;border-radius:17px !important}
-  .announcementIcon{width:34px !important;height:34px !important;border-radius:11px !important;font-size:16px !important}
-  .announcementControls{top:auto !important;right:12px !important;bottom:10px !important}
-  .announcementDots{left:58px !important;right:auto !important;bottom:20px !important}
-  .announcementText{font-size:12px !important}
 }
 
-@media (prefers-reduced-motion:reduce){
+
+/* Additional accessibility defaults, kept separate from the
+   announcement component’s own reduced-motion rules. */
+@media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{scroll-behavior:auto !important;transition-duration:.01ms !important;animation-duration:.01ms !important;animation-iteration-count:1 !important}
 }
