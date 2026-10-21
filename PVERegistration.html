@@ -14335,9 +14335,38 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       }
       return true;
     }
+    // 重要：Firestore 一律儲存 24 小時制 HH:mm；12 小時制僅用於前端畫面。
+    // 這裡在每次寫入前統一校驗，避免將 AM / PM 字串寫進隊伍資料。
+    function toFirestore24Hour(value, fieldName="開團時間", allowEmpty=false){
+      const raw = String(value ?? "").trim();
+      if(allowEmpty && !raw) return "";
+      const twentyFour = /^(?:([01]?\d|2[0-3])):([0-5]\d)$/.exec(raw);
+      if(twentyFour){
+        return `${String(Number(twentyFour[1])).padStart(2,"0")}:${twentyFour[2]}`;
+      }
+      const twelve = /^(0?[1-9]|1[0-2]):([0-5]\d)\s*(AM|PM)$/i.exec(raw);
+      if(twelve){
+        let hour = Number(twelve[1]) % 12;
+        if(twelve[3].toUpperCase() === "PM") hour += 12;
+        return `${String(hour).padStart(2,"0")}:${twelve[2]}`;
+      }
+      throw new Error(`${fieldName}必須使用有效時間（24 小時制 HH:mm）。`);
+    }
+    function ensureFirestore24HourSlots(dayData){
+      if(!Array.isArray(dayData?.slots)) return dayData;
+      dayData.slots.forEach((slot) => {
+        slot.time = toFirestore24Hour(slot.time, "隊伍開團時間");
+        ["changedTime", "newTime", "updatedTime"].forEach(field => {
+          if(Object.prototype.hasOwnProperty.call(slot,field)){
+            slot[field] = toFirestore24Hour(slot[field], "隊伍更改時間", true);
+          }
+        });
+      });
+      return dayData;
+    }
     async function setDoc(ref, proposed){
       const expected = scheduleRevision(proposed);
-      const value = structuredClone(proposed);
+      const value = ensureFirestore24HourSlots(structuredClone(proposed));
       const ids = new Set();
       (value.slots || []).forEach(slot => {
         if(!validSlotId(slot.id) || ids.has(slot.id)) slot.id = crypto.randomUUID();
@@ -16157,7 +16186,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       panel.classList.toggle("show", status === "時間更改");
 
       if(status === "時間更改"){
-        preview.innerHTML = `目前狀態：<strong>時間更改</strong><br>原本時間會劃掉，並顯示新的時間 <strong>${escapeHtml(changedInput.value || "未設定")}</strong>。`;
+        preview.innerHTML = `目前狀態：<strong>時間更改</strong><br>原本時間會劃掉，並顯示新的時間 <strong>${escapeHtml(formatDisplayTime(changedInput.value || "未設定"))}</strong>。`;
       }else if(status === "取消"){
         preview.innerHTML = `目前狀態：<strong>取消</strong><br>隊伍會標記為已取消，並停止新的報名。`;
       }else{
@@ -17383,7 +17412,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
           const nextSlots = day.slots.filter(item => item.id !== targetId);
           sortSlots(nextSlots);
           // 與原本的 setDoc 寫入協定一致，Discord Worker 依賴此版本號。
-          const next = {...day, slots:nextSlots, _syncProtocol:3, _syncVersion:scheduleRevision(day)+1};
+          const next = ensureFirestore24HourSlots({...day, slots:nextSlots, _syncProtocol:3, _syncVersion:scheduleRevision(day)+1});
           transaction.set(ref, next);
           return {status:"deleted", data:next};
         });
