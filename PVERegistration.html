@@ -14142,7 +14142,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     <section class="team-poster-dialog" role="dialog" aria-modal="true" aria-labelledby="teamPosterTitle">
       <header class="team-poster-head">
         <div>
-          <span class="team-poster-kicker">隊伍清單 · PNG</span>
+          <span class="team-poster-kicker">TEAM ROSTER · PNG</span>
           <h2 id="teamPosterTitle" class="team-poster-title">生成隊伍圖</h2>
         </div>
         <button id="teamPosterClose" type="button" class="team-poster-close" aria-label="關閉預覽">×</button>
@@ -15328,6 +15328,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         document.querySelectorAll(".team-share-menu.open").forEach(menu => {
           if(!menu.contains(e.target)){
             menu.classList.remove("open");
+            menu.querySelector('.team-share-trigger')?.setAttribute('aria-expanded','false');
           }
         });
       });
@@ -17733,7 +17734,11 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         await navigator.clipboard.writeText(url);
         alert('隊伍連結已複製，可以直接分享。');
       }catch(error){
-        prompt('請手動複製隊伍連結：', url);
+        if(typeof window.showAppPrompt==='function'){
+          await window.showAppPrompt('可以選取下方的完整鏈接並複製分享。',url,{title:'分享隊伍鏈接',confirmText:'完成',cancelText:'關閉'});
+        }else{
+          prompt('請手動複製隊伍連結：',url);
+        }
       }
     }
     async function shareTeamImage(dateKey,slotIndex){
@@ -18079,7 +18084,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                     </div>
 
                     <div class="team-share-menu">
-                      <button class="team-share-trigger" type="button" data-action="toggle-share-menu" aria-label="分享隊伍">分享</button>
+                      <button class="team-share-trigger" type="button" data-action="toggle-share-menu" aria-label="分享隊伍" title="分享隊伍" aria-expanded="false" aria-haspopup="true"><svg class="team-share-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"/></svg></button>
                       <div class="team-share-dropdown">
                         <button class="team-share-item link" type="button" data-action="share-team-link" data-date="${dateKey}" data-slot="${slotIndex}">分享鏈接</button>
                         <button class="team-share-item image" type="button" data-action="share-team-image" data-date="${dateKey}" data-slot="${slotIndex}">分享圖片</button>
@@ -18368,7 +18373,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
             }
           });
 
-          btn.closest(".team-share-menu").classList.toggle("open");
+          const shareMenu=btn.closest(".team-share-menu");
+          const opened=shareMenu.classList.toggle("open");
+          btn.setAttribute("aria-expanded",String(opened));
         };
       });
 
@@ -20047,5 +20054,392 @@ html[data-theme="light"] body .team-poster-preview{border-color:#dce5f1 !importa
   html body .app-workspace .team-share-dropdown{min-width:146px;z-index:80;}
 }
 </style>
+
+<style id="pve-modal-design-20261021">
+/* 統一所有現有彈窗：沿用取消黑工報名的確認視窗語言，不變動資料與事件。 */
+:root{
+  --pve-modal-blue:#80aaff;
+  --pve-modal-surface:var(--ui-panel,#141e32);
+  --pve-modal-soft:var(--ui-panel-2,#202c41);
+  --pve-modal-border:var(--ui-line-strong,rgba(196,210,245,.17));
+  --pve-modal-text:var(--ui-text,#eef2ff);
+  --pve-modal-muted:var(--ui-muted,#a8b3cf);
+}
+html[data-theme="light"]{
+  --pve-modal-blue:#4f76c9;
+  --pve-modal-surface:#ffffff;
+  --pve-modal-soft:#f4f7fc;
+  --pve-modal-border:#dce5f0;
+  --pve-modal-text:#24344e;
+  --pve-modal-muted:#64748b;
+}
+/* 消除舊版使用黑色固定背景的情況，包括明暗主題。 */
+html body .signup-modal.show,
+html body .confirm-modal.show,
+html body .blackwork-modal:not([hidden]),
+html body .team-poster-backdrop:not([hidden]){
+  background:rgba(4,10,26,.68) !important;
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
+}
+html[data-theme="light"] body .signup-modal.show,
+html[data-theme="light"] body .confirm-modal.show,
+html[data-theme="light"] body .blackwork-modal:not([hidden]),
+html[data-theme="light"] body .team-poster-backdrop:not([hidden]){
+  background:rgba(29,47,77,.42) !important;
+}
+html body .signup-modal .signup-modal-box,
+html body .confirm-modal .confirm-modal-box,
+html body .blackwork-dialog,
+html body .team-poster-dialog,
+html body .pve-dialog-root .pve-dialog{
+  background:var(--pve-modal-surface) !important;
+  color:var(--pve-modal-text) !important;
+  border:1px solid var(--pve-modal-border) !important;
+  border-radius:23px !important;
+  box-shadow:0 28px 80px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.05) inset !important;
+}
+html[data-theme="light"] body .signup-modal .signup-modal-box,
+html[data-theme="light"] body .confirm-modal .confirm-modal-box,
+html[data-theme="light"] body .blackwork-dialog,
+html[data-theme="light"] body .team-poster-dialog,
+html[data-theme="light"] body .pve-dialog-root .pve-dialog{
+  box-shadow:0 24px 70px rgba(40,59,90,.20),0 1px 0 #fff inset !important;
+}
+/* Icon + eyebrow + title: shared with the confirmation dialog. */
+html body .pve-form-header{
+  --modal-icon-color:#8ab4ff;
+  --modal-icon-soft:rgba(110,168,255,.13);
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-width:0;
+  min-height:49px;
+  margin:0 0 18px;
+}
+html body .pve-form-header[data-tone="danger"]{
+  --modal-icon-color:#fb7185;
+  --modal-icon-soft:rgba(244,63,94,.13);
+}
+html body .pve-form-header[data-tone="success"]{
+  --modal-icon-color:#5dd6b3;
+  --modal-icon-soft:rgba(41,176,139,.13);
+}
+html body .pve-form-header[data-tone="warn"]{
+  --modal-icon-color:#f3b862;
+  --modal-icon-soft:rgba(245,158,11,.13);
+}
+html[data-theme="light"] body .pve-form-header[data-tone="success"]{--modal-icon-color:#168875;}
+html[data-theme="light"] body .pve-form-header[data-tone="warn"]{--modal-icon-color:#b87515;}
+html[data-theme="light"] body .pve-form-header[data-tone="danger"]{--modal-icon-color:#c9495f;}
+html body .pve-modal-glyph{
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  flex:0 0 46px;
+  border-radius:15px;
+  background:var(--modal-icon-soft);
+  color:var(--modal-icon-color);
+  border:1px solid color-mix(in srgb,var(--modal-icon-color) 24%,transparent);
+}
+html body .pve-modal-glyph svg{
+  display:block;
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+html body .pve-modal-heading{min-width:0;flex:1;}
+html body .pve-modal-kicker{
+  margin-bottom:5px;
+  color:var(--pve-modal-muted);
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.06em;
+  line-height:1.3;
+}
+html body .pve-form-header .signup-modal-title,
+html body .pve-form-header .confirm-modal-title,
+html body .pve-form-header .blackwork-dialog-title{
+  display:block;
+  color:var(--pve-modal-text) !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.3 !important;
+  font-size:clamp(18px,2.6vw,22px) !important;
+  font-weight:850 !important;
+  letter-spacing:-.03em !important;
+}
+html body .pve-form-header .confirm-modal-title::before,
+html body .pve-form-header .signup-modal-title::before{display:none !important;content:none !important;}
+html body .pve-form-header + .confirm-modal-text,
+html body .pve-form-header + .blackwork-dialog-copy{color:var(--pve-modal-muted) !important;line-height:1.75;}
+html body .signup-modal .signup-label,
+html body .confirm-modal .signup-label,
+html body .blackwork-dialog .signup-label{
+  color:var(--pve-modal-muted) !important;
+  font-weight:750;
+  font-size:12.5px;
+}
+html body .signup-modal :is(.signup-input,.signup-select,.signup-textarea,.custom-select-trigger),
+html body .confirm-modal :is(.signup-input,.signup-select,.signup-textarea,.custom-select-trigger),
+html body .blackwork-dialog :is(.signup-input,.signup-select){
+  min-height:44px;
+  border:1px solid var(--pve-modal-border) !important;
+  color:var(--pve-modal-text) !important;
+  background-color:var(--pve-modal-soft) !important;
+  border-radius:12px !important;
+}
+html body .signup-modal :is(.signup-input,.signup-select,.signup-textarea,.custom-select-trigger):focus,
+html body .confirm-modal :is(.signup-input,.signup-select,.signup-textarea,.custom-select-trigger):focus,
+html body .blackwork-dialog :is(.signup-input,.signup-select):focus{
+  border-color:var(--pve-modal-blue) !important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--pve-modal-blue) 17%,transparent) !important;
+}
+/* Confirmation-style controls, without moving or rerouting any existing buttons. */
+html body :is(.signup-modal,.confirm-modal) :is(.signup-modal-actions,.confirm-modal-actions) > button,
+html body .blackwork-dialog-actions > button{
+  min-height:45px !important;
+  border-radius:13px !important;
+  font-size:13px !important;
+  font-weight:800 !important;
+  transition:background-color .15s ease,filter .15s ease,transform .15s ease;
+}
+html body :is(.signup-modal,.confirm-modal) :is(.confirm-cancel-btn,.signup-cancel-btn),
+html body .blackwork-cancel{
+  color:var(--pve-modal-text) !important;
+  background:var(--pve-modal-soft) !important;
+  border:1px solid var(--pve-modal-border) !important;
+  box-shadow:none !important;
+}
+html body :is(.signup-modal,.confirm-modal) .signup-confirm-btn{
+  color:#fff !important;
+  background:linear-gradient(135deg,#639fff,#8061dc) !important;
+  border:1px solid rgba(170,193,255,.25) !important;
+  box-shadow:0 5px 16px rgba(99,119,216,.14) !important;
+}
+html body :is(.signup-modal,.confirm-modal) .confirm-danger-btn{
+  color:#fff !important;
+  background:linear-gradient(135deg,#f36f87,#dd455e) !important;
+  border:1px solid rgba(255,181,192,.25) !important;
+}
+html body .blackwork-save{
+  background:linear-gradient(135deg,#2db49a,#248c86) !important;
+  border:1px solid rgba(83,197,166,.25) !important;
+  color:#fff !important;
+}
+html body .signup-modal-actions > button:hover,
+html body .confirm-modal-actions > button:hover,
+html body .blackwork-dialog-actions > button:hover{filter:brightness(1.075);}
+html body .signup-modal-actions > button:active,
+html body .confirm-modal-actions > button:active,
+html body .blackwork-dialog-actions > button:active{transform:scale(.985);}
+html body .signup-modal-actions > button:disabled,
+html body .confirm-modal-actions > button:disabled,
+html body .blackwork-dialog-actions > button:disabled{opacity:.45;cursor:not-allowed;filter:none;transform:none;}
+/* Large form sheets retain original separate scrolling content and sticky actions. */
+html body #dateTimeModal .modal-sheet-head,
+html body #infoModal .modal-sheet-head{padding-top:21px !important;}
+html body #dateTimeModal .pve-form-header,
+html body #infoModal .pve-form-header{margin-bottom:13px;}
+html body :is(#batchSignupModal,#batchPresetManageModal) .batch-modal-header .pve-form-header{
+  margin:0 0 8px;
+}
+html body :is(#batchSignupModal,#batchPresetManageModal) .batch-modal-header{
+  border-bottom-color:var(--pve-modal-border) !important;
+}
+/* Compact sign-up when the role chooser is closed; preserve room for expanded options. */
+html body #signupModal .signup-modal-box{min-height:0 !important;}
+html body #signupModal .signup-modal-actions{
+  margin-top:19px !important;
+  padding-top:0 !important;
+}
+html body #signupModal .signup-modal-box:has(#roleSelect.open){
+  min-height:min(460px,calc(100dvh - 30px)) !important;
+}
+/* Poster preview and worker form get identical header layout and actions. */
+html body .team-poster-head{align-items:center;gap:13px;border-color:var(--pve-modal-border) !important;}
+html body .team-poster-head > .pve-modal-glyph{--modal-icon-color:#8ab4ff;--modal-icon-soft:rgba(110,168,255,.13);}
+html body .team-poster-head .team-poster-title{margin:0 0 2px;color:var(--pve-modal-text) !important;}
+html body .team-poster-head .team-poster-kicker{letter-spacing:.07em;}
+html body .team-poster-head .team-poster-subtitle,
+html body .team-poster-status{color:var(--pve-modal-muted) !important;}
+html body .team-poster-actions button,
+html body .team-poster-close{
+  border-radius:12px !important;
+  min-height:42px;
+}
+html body .team-poster-actions .team-poster-secondary,
+html body .team-poster-close{
+  background:var(--pve-modal-soft) !important;
+  color:var(--pve-modal-text) !important;
+  border:1px solid var(--pve-modal-border) !important;
+}
+/* Compact share icon next to the three-dot control. */
+html body .app-workspace .team-share-trigger{
+  width:36px !important;
+  min-width:36px !important;
+  height:36px !important;
+  min-height:36px !important;
+  padding:0 !important;
+  border-radius:12px !important;
+  gap:0 !important;
+  display:inline-grid !important;
+  place-items:center !important;
+  font-size:0 !important;
+  color:#a9c9ff !important;
+  background:var(--ui-panel-2,rgba(255,255,255,.08)) !important;
+  border:1px solid var(--ui-line-strong,rgba(255,255,255,.13)) !important;
+  box-shadow:none !important;
+}
+html body .app-workspace .team-share-trigger::before{content:none !important;display:none !important;}
+html body .app-workspace .team-share-icon{
+  width:19px;height:19px;display:block;stroke:currentColor;fill:none;
+}
+html body .app-workspace .team-share-trigger:hover,
+html body .app-workspace .team-share-menu.open .team-share-trigger{
+  background:var(--ui-accent-soft,rgba(110,168,255,.15)) !important;
+  border-color:color-mix(in srgb,var(--ui-accent,#80aaff) 40%,transparent) !important;
+}
+html[data-theme="light"] body .app-workspace .team-share-trigger{
+  color:#4d73ac !important;
+  background:#f3f6fc !important;
+  border-color:#d4dfed !important;
+}
+html[data-theme="light"] body .app-workspace .team-share-trigger:hover{
+  background:#e8effb !important;
+  border-color:#adc3e0 !important;
+}
+html body .app-workspace .team-share-dropdown{
+  background:var(--pve-modal-surface) !important;
+  border-color:var(--pve-modal-border) !important;
+}
+/* Ensure other accessible/native modals never sit on top of the share controls. */
+html body:has(.blackwork-modal:not([hidden])),
+html body:has(.team-poster-backdrop:not([hidden])){overflow:hidden;}
+@media(max-width:768px){
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top > div:first-child{
+    padding-right:86px !important;
+  }
+  html body .app-workspace .team-share-trigger{
+    width:34px !important;min-width:34px !important;height:34px !important;min-height:34px !important;
+  }
+  html body .signup-modal .signup-modal-box,
+  html body .confirm-modal .confirm-modal-box{
+    border-radius:23px 23px 0 0 !important;
+  }
+  html body .pve-form-header{gap:10px;min-height:42px;margin-bottom:12px;}
+  html body .pve-modal-glyph{width:40px;height:40px;flex-basis:40px;border-radius:13px;}
+  html body .pve-modal-glyph svg{width:20px;height:20px;}
+  html body .pve-form-header .signup-modal-title,
+  html body .pve-form-header .confirm-modal-title,
+  html body .pve-form-header .blackwork-dialog-title{font-size:19px !important;}
+  html body .pve-modal-kicker{font-size:9px;}
+  html body #dateTimeModal .modal-sheet-head,
+  html body #infoModal .modal-sheet-head{padding-top:13px !important;}
+  html body .blackwork-modal:not([hidden]){
+    padding:0 !important;align-items:flex-end !important;
+  }
+  html body .blackwork-dialog{
+    width:100% !important;
+    max-height:calc(100dvh - max(10px,env(safe-area-inset-top))) !important;
+    border-radius:23px 23px 0 0 !important;
+    padding:20px 18px calc(20px + env(safe-area-inset-bottom)) !important;
+  }
+  html body .blackwork-dialog::before{
+    content:'';display:block;width:42px;height:4px;border-radius:99px;
+    margin:-7px auto 18px;background:var(--pve-modal-border);
+  }
+  html body .team-poster-head{gap:9px;}
+  html body .team-poster-head > .pve-modal-glyph{width:38px;height:38px;flex-basis:38px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html body .signup-modal-actions > button,
+  html body .confirm-modal-actions > button,
+  html body .blackwork-dialog-actions > button{transition:none !important;}
+}
+</style>
+
+<script id="pve-unified-modals-init">
+/* Visual treatment only: preserve every existing modal's inputs, handlers, and IDs. */
+(()=>{
+  const iconPaths={
+    users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+    user:'<path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/>',
+    plus:'<path d="M12 5v14M5 12h14"/><circle cx="12" cy="12" r="10"/>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',
+    lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
+    trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15M10 10v7m4-7v7"/>',
+    shield:'<path d="m12 22 7-4V6l-7-4-7 4v12z"/><path d="m9 12 2 2 4-4"/>',
+    tag:'<path d="m20 13-7 7-10-10V3h7z"/><circle cx="7.5" cy="7.5" r="1"/>',
+    switch:'<path d="M7 7h14m-4-4 4 4-4 4M17 17H3m4-4-4 4 4 4"/>',
+    pencil:'<path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/>',
+    info:'<circle cx="12" cy="12" r="10"/><path d="M12 11v5M12 8h.01"/>',
+    list:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+    image:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/>'
+  };
+  function makeGlyph(name){
+    const el=document.createElement('div');
+    el.className='pve-modal-glyph';el.setAttribute('aria-hidden','true');
+    el.innerHTML='<svg viewBox="0 0 24 24">'+(iconPaths[name]||iconPaths.info)+'</svg>';
+    return el;
+  }
+  const config={
+    signupModal:['plus','info'],
+    batchSignupModal:['users','info'],
+    batchPresetManageModal:['list','info'],
+    confirmModal:['trash','danger'],
+    dateTimeModal:['calendar','info'],
+    infoModal:['info','info'],
+    tagModal:['tag','info'],
+    moveModal:['switch','info'],
+    editRoleModal:['pencil','info'],
+    teamTypeModal:['shield','info'],
+    leaderPinRevealModal:['lock','warn'],
+    leaderAuthModal:['lock','warn'],
+    slotStatusModal:['shield','info'],
+    myProfileModal:['user','info'],
+    nameViewModal:['user','info'],
+    tagInfoModal:['tag','info'],
+    blackworkModal:['users','success']
+  };
+  for(const [id,[icon,tone]] of Object.entries(config)){
+    const modal=document.getElementById(id);
+    if(!modal)continue;
+    const heading=modal.querySelector('.signup-modal-title,.confirm-modal-title,.blackwork-dialog-title');
+    if(!heading || heading.closest('.pve-form-header'))continue;
+    const wrapper=document.createElement('div');wrapper.className='pve-form-header';wrapper.dataset.tone=tone;
+    const intro=document.createElement('div');intro.className='pve-modal-heading';
+    const kicker=document.createElement('div');kicker.className='pve-modal-kicker';
+    kicker.textContent='夢回花深處 · 副本助手';
+    heading.parentNode.insertBefore(wrapper,heading);
+    intro.append(kicker,heading);
+    wrapper.append(makeGlyph(icon),intro);
+  }
+  const poster=document.getElementById('teamPosterModal');
+  const posterHead=poster?.querySelector('.team-poster-head');
+  if(posterHead && !posterHead.querySelector('.pve-modal-glyph')){
+    posterHead.prepend(makeGlyph('image'));
+  }
+  /* Unobtrusive keyboard support for the share dropdown. */
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Escape')return;
+    const active=document.querySelector('.team-share-menu.open');
+    if(active){active.classList.remove('open');
+      const trigger=active.querySelector('.team-share-trigger');
+      trigger?.setAttribute('aria-expanded','false');trigger?.focus();}
+  });
+  /* Consistently clear share ARIA state on closing a dropdown by clicking away. */
+  document.addEventListener('click',event=>{
+    document.querySelectorAll('.team-share-trigger[aria-expanded="true"]').forEach(trigger=>{
+      if(!trigger.closest('.team-share-menu')?.classList.contains('open')) trigger.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+</script>
 </body>
 </html>
