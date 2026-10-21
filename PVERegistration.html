@@ -13263,6 +13263,119 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-speed { --cat
 html[data-theme="light"] body .app-workspace .slot-card.category-tower,
 html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --category-color:#207d70; --category-soft:#e2f6f0; }
 </style>
+
+  <style id="teamPosterStyle">
+    /* 隊伍圖片產生器：只新增獨立樣式，不影響副本及導覽 UI */
+    .team-poster-backdrop[hidden]{display:none !important}
+    .team-poster-backdrop{
+      position:fixed; inset:0; z-index:210000; display:flex; align-items:center;
+      justify-content:center; padding:18px; background:rgba(4,9,20,.82);
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    }
+    .team-poster-dialog{
+      width:min(960px,100%); max-height:min(94dvh,950px); min-height:0;
+      display:flex; flex-direction:column; overflow:hidden;
+      border-radius:24px; border:1px solid var(--line,rgba(255,255,255,.15));
+      background:var(--panel,#151e31); color:var(--text,#eef2ff);
+      box-shadow:0 34px 80px rgba(0,0,0,.48);
+    }
+    .team-poster-head{padding:19px 24px; display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line,rgba(255,255,255,.10));}
+    .team-poster-kicker{font-size:10px;font-weight:900;letter-spacing:.15em;color:var(--muted,#a8b3cf)}
+    .team-poster-title{font-size:22px;line-height:1.4;font-weight:900;margin:3px 0 4px;color:var(--text,#eef2ff)}
+    .team-poster-subtitle{margin:0;font-size:12px;color:var(--muted,#a8b3cf);line-height:1.6}
+    .team-poster-close{flex:none;width:36px;height:36px;padding:0;border-radius:12px;border:1px solid var(--line,rgba(255,255,255,.12));background:var(--panel-soft,rgba(255,255,255,.06));color:var(--text,#eef2ff);font-size:23px;line-height:1;cursor:pointer}
+    .team-poster-body{padding:17px 24px;overflow-y:auto;flex:1;min-height:0;display:grid;place-items:center;overscroll-behavior:contain}
+    .team-poster-preview{display:block;width:auto;max-width:100%;max-height:min(58dvh,640px);height:auto;object-fit:contain;border-radius:12px;box-shadow:0 14px 36px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.10)}
+    .team-poster-status{font-size:12px;color:var(--muted,#a8b3cf);min-height:16px;line-height:1.5;margin:0;padding:0 24px 10px}
+    .team-poster-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding:16px 24px 20px;border-top:1px solid var(--line,rgba(255,255,255,.10));}
+    .team-poster-actions button{padding:10px 16px;min-height:40px;border-radius:12px;font-weight:800;font-size:13px;border:1px solid var(--line,rgba(255,255,255,.13));cursor:pointer;white-space:nowrap}
+    .team-poster-secondary{background:var(--panel-soft,rgba(255,255,255,.07));color:var(--text,#eef2ff)}
+    .team-poster-primary{background:linear-gradient(135deg,#5e98f7,#8b5cf6);color:#fff;border-color:rgba(180,200,255,.36) !important}
+    .slot-share-actions{margin-top:10px;display:flex;}
+.share-team-btn{
+  width:100%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:42px;
+  padding:10px 12px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:800;
+  color:#eef6ff;
+  background:linear-gradient(135deg, rgba(96,165,250,.24), rgba(139,92,246,.24));
+  border:1px solid rgba(180,200,255,.24);
+  box-shadow:0 8px 18px rgba(110,168,255,.08);
+}
+.share-team-btn::before{content:'▧';font-size:16px;color:#a8d0ff;}
+.share-team-btn:hover{
+  background:linear-gradient(135deg, rgba(96,165,250,.34), rgba(139,92,246,.34));
+  box-shadow:0 10px 24px rgba(110,168,255,.14);
+}
+.share-team-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  filter:saturate(.55);
+  box-shadow:none;
+  transform:none;
+}
+.slot-menu-item.poster{color:var(--text,#eaf0ff);display:flex;align-items:center;gap:8px}
+    .slot-menu-item.poster::before{content:'▧';font-size:17px;color:#84b9ff}
+    @media(max-width:650px){
+      .team-poster-backdrop{padding:9px;align-items:center}
+      .team-poster-dialog{max-height:95dvh;border-radius:18px}
+      .team-poster-head{padding:15px 15px 12px}
+      .team-poster-title{font-size:18px}
+      .team-poster-body{padding:12px;}
+      .team-poster-preview{max-height:56dvh}
+      .team-poster-actions{padding:12px;gap:7px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+      .team-poster-actions button{padding:9px 7px;font-size:12px;min-width:0}
+      .team-poster-actions .team-poster-primary{grid-column:1 / -1;grid-row:1}
+      .team-poster-status{padding:0 14px 8px}
+    }
+  </style>
+
+  <style id="blackworkStyle">
+    /* 黑工：獨立人員名單，不影響正式隊伍人數或職業配置 */
+    .blackwork-block{margin:14px 0 0;padding:12px 13px;border:1px solid rgba(92,201,188,.23);border-radius:15px;background:linear-gradient(140deg,rgba(41,175,158,.10),rgba(65,119,150,.055));}
+    .blackwork-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+    .blackwork-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900;color:#6fe0ce}
+    .blackwork-title .blackwork-count{display:inline-grid;place-items:center;min-width:23px;height:22px;padding:0 6px;border-radius:8px;color:#d7fff5;background:rgba(76,196,166,.16);border:1px solid rgba(105,224,201,.20);font-size:11px}
+    .blackwork-caption{font-size:11px;color:var(--muted,#9facbf);font-weight:700}
+    .blackwork-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+    .blackwork-person{display:flex;align-items:center;min-width:0;gap:7px;padding:7px 9px;border:1px solid rgba(119,216,206,.15);border-radius:11px;background:rgba(255,255,255,.045)}
+    .blackwork-person .role-badge{font-size:10px;flex:none}
+    .blackwork-person-name{font-size:12px;color:var(--text,#e7eeff);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+    .blackwork-person-self{border-color:rgba(235,199,105,.40);background:rgba(255,211,125,.07)}
+    .blackwork-remove{border:none;background:transparent;color:#f5a3b0;padding:2px 6px;font-size:17px;font-weight:700;min-height:30px;border-radius:8px;flex:none}
+    .blackwork-remove:hover{background:rgba(255,102,123,.14)}
+    .mobile-blackwork-count{display:inline-flex;align-items:center;flex:none;font-size:9px;font-weight:800;color:#6fe0ce;background:rgba(55,188,165,.10);border:1px solid rgba(77,203,179,.20);padding:3px 6px;border-radius:999px;white-space:nowrap}
+    .blackwork-preview-stat{color:#72ddc7 !important;background:rgba(50,171,150,.12) !important;border-color:rgba(96,210,183,.28) !important}
+    .blackwork-cta{margin-top:9px;display:flex;align-items:center;gap:9px}
+    .blackwork-add{width:100%;min-height:40px;padding:9px 12px;border:1px solid rgba(94,206,190,.36);border-radius:12px;background:rgba(42,172,151,.14);color:#85f1d9;font-size:13px;font-weight:850;cursor:pointer}
+    .blackwork-add:hover{background:rgba(42,172,151,.23)}
+    .blackwork-add:disabled{opacity:.48;cursor:not-allowed;transform:none}
+    .blackwork-modal[hidden]{display:none !important}
+    .blackwork-modal{position:fixed;inset:0;z-index:210100;display:flex;align-items:center;justify-content:center;padding:15px;background:rgba(3,9,20,.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    .blackwork-dialog{width:min(440px,100%);max-height:90dvh;overflow-y:auto;padding:24px;border:1px solid var(--line,rgba(255,255,255,.15));border-radius:21px;background:var(--panel,#172238);color:var(--text,#e8edff);box-shadow:0 28px 70px rgba(0,0,0,.45)}
+    .blackwork-dialog-title{font-size:22px;font-weight:900;line-height:1.3;margin:0 0 7px;color:var(--text,#f1f5ff)}
+    .blackwork-dialog-copy{font-size:12px;line-height:1.7;margin:0 0 16px;color:var(--muted,#a8b3cf)}
+    .blackwork-dialog .signup-label{margin:13px 0 6px;display:block}
+    .blackwork-dialog .signup-input,.blackwork-dialog .signup-select{width:100%;min-height:44px}
+    .blackwork-dialog-actions{display:flex;gap:10px;margin-top:21px}
+    .blackwork-dialog-actions button{flex:1;min-height:42px;padding:9px 12px;border-radius:11px;font-size:13px;font-weight:850}
+    .blackwork-save{background:linear-gradient(135deg,#32ae99,#247f89);color:#fff;border:1px solid rgba(153,253,231,.22)}
+    .blackwork-cancel{background:var(--panel-soft,rgba(255,255,255,.08));color:var(--text,#eef2ff);border:1px solid var(--line,rgba(255,255,255,.12))}
+    html[data-theme="light"] .blackwork-block{background:linear-gradient(130deg,#ecfaf6,#f7fbfc);border-color:#b4dcd4}
+    html[data-theme="light"] .blackwork-title{color:#167b6b}
+    html[data-theme="light"] .blackwork-title .blackwork-count{color:#0c685b;background:#d7f1eb;border-color:#add9d0}
+    html[data-theme="light"] .blackwork-person{background:#fff;border-color:#d5e9e5}
+    html[data-theme="light"] .blackwork-person-name{color:#1a3442}
+    html[data-theme="light"] .blackwork-add{background:#e0f5ee;color:#137662;border-color:#a5d6c9}
+    @media(max-width:600px){.blackwork-block{padding:10px;margin-top:11px}.blackwork-list{grid-template-columns:minmax(0,1fr)}.blackwork-cta{margin-top:8px}.blackwork-dialog{padding:20px;border-radius:17px}.blackwork-person{min-height:39px}}
+  </style>
+
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -13981,6 +14094,46 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
   </div>
 
 
+
+
+  <!-- 黑工報名：獨立存放於 blackWorkers，不計入正式名額 -->
+  <div id="blackworkModal" class="blackwork-modal" hidden>
+    <section class="blackwork-dialog" role="dialog" aria-modal="true" aria-labelledby="blackworkDialogTitle">
+      <h2 class="blackwork-dialog-title" id="blackworkDialogTitle">黑工報名</h2>
+      <p class="blackwork-dialog-copy">已經領取過獎勵的協助者／候補，不佔正式隊伍名額，也沒有報名人數上限。</p>
+      <label class="signup-label" for="blackworkName">玩家名稱</label>
+      <input id="blackworkName" class="signup-input" type="text" maxlength="80" autocomplete="off" placeholder="請輸入玩家名稱" />
+      <label class="signup-label" for="blackworkRole">職業</label>
+      <select id="blackworkRole" class="signup-select">
+        <option value="輸出">輸出</option><option value="承傷">承傷</option><option value="治療">治療</option><option value="假奶">假奶</option><option value="增益">增益</option>
+      </select>
+      <div class="blackwork-dialog-actions">
+        <button class="blackwork-cancel" type="button" id="blackworkCancel">取消</button>
+        <button class="blackwork-save" type="button" id="blackworkConfirm">確認報名</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 單一隊伍 PNG 預覽／匯出：純前端繪製，絕不寫入報名資料 -->
+  <div id="teamPosterModal" class="team-poster-backdrop" hidden>
+    <section class="team-poster-dialog" role="dialog" aria-modal="true" aria-labelledby="teamPosterTitle">
+      <header class="team-poster-head">
+        <div>
+          <span class="team-poster-kicker">TEAM ROSTER · PNG</span>
+          <h2 id="teamPosterTitle" class="team-poster-title">生成隊伍圖</h2>
+        </div>
+        <button id="teamPosterClose" type="button" class="team-poster-close" aria-label="關閉預覽">×</button>
+      </header>
+      <div class="team-poster-body"><img id="teamPosterPreview" class="team-poster-preview" alt="隊伍圖片預覽" /></div>
+      <p class="team-poster-status" id="teamPosterFeedback" aria-live="polite"></p>
+      <div class="team-poster-actions">
+        <button id="teamPosterCopyText" class="team-poster-secondary" type="button">複製文字名單</button>
+        <button id="teamPosterCopyImage" class="team-poster-secondary" type="button">複製圖片</button>
+        <button id="teamPosterDownload" class="team-poster-primary" type="button">↓ 下載 PNG 圖片</button>
+      </div>
+    </section>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
@@ -14397,6 +14550,10 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       return /^\d{4,12}$/.test(String(pin || "").trim());
     }
 
+    function getBlackWorkers(slot){
+      return Array.isArray(slot?.blackWorkers) ? slot.blackWorkers : [];
+    }
+
     function getPendingMembers(slot){
       return Array.isArray(slot?.pendingMembers) ? slot.pendingMembers : [];
     }
@@ -14404,7 +14561,8 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     function slotHasName(slot, name){
       const key = normalizeName(name);
       return (Array.isArray(slot?.members) ? slot.members : []).some(m => normalizeName(m.name) === key)
-        || getPendingMembers(slot).some(m => normalizeName(m.name) === key);
+        || getPendingMembers(slot).some(m => normalizeName(m.name) === key)
+        || getBlackWorkers(slot).some(m => normalizeName(m.name) === key);
     }
 
     const TOWER_DIFFICULTIES = ["普通", "困難", "鬼神愁"];
@@ -14693,7 +14851,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       if(!q) return true;
       const members = Array.isArray(slot?.members) ? slot.members : [];
       const pendingMembers = getPendingMembers(slot);
-      return [...members, ...pendingMembers].some(m => normalizeName(m.name).toLowerCase().includes(q));
+      return [...members, ...pendingMembers, ...getBlackWorkers(slot)].some(m => normalizeName(m.name).toLowerCase().includes(q));
     }
 
     function getSlotUiPriority(slot, date){
@@ -16924,8 +17082,8 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       const members = Array.isArray(slot.members) ? slot.members : [];
       const pendingMembers = getPendingMembers(slot);
-      if(members.length > 0 || pendingMembers.length > 0){
-        alert("這個時間段已有正式報名或待確認申請，不能刪除。");
+      if(members.length > 0 || pendingMembers.length > 0 || getBlackWorkers(slot).length > 0){
+        alert("這個時間段已有正式報名、待確認申請或黑工，不能刪除。");
         return;
       }
 
@@ -16936,7 +17094,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
     async function confirmForceDeletePinSlot(dateKey, slotIndex){
       const slot = globalData?.[dateKey]?.slots?.[slotIndex];
-      if(!slot || !slot.isCustom || !isProtectedTeam(slot) || (Array.isArray(slot.members) && slot.members.length > 0)){
+      if(!slot || !slot.isCustom || !isProtectedTeam(slot) || (Array.isArray(slot.members) && slot.members.length > 0) || getBlackWorkers(slot).length > 0){
         alert("這支隊伍已不符合強制刪除條件，請重新整理後再試。");
         return;
       }
@@ -16958,7 +17116,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
           const index = day.slots.findIndex(item => item.id === targetId);
           if(index < 0) return {status:"missing"};
           const latest = day.slots[index];
-          if(!latest.isCustom || !isProtectedTeam(latest) || (Array.isArray(latest.members) && latest.members.length > 0)) return {status:"occupied"};
+          if(!latest.isCustom || !isProtectedTeam(latest) || (Array.isArray(latest.members) && latest.members.length > 0) || getBlackWorkers(latest).length > 0) return {status:"occupied"};
           const nextSlots = day.slots.filter(item => item.id !== targetId);
           sortSlots(nextSlots);
           // 與原本的 setDoc 寫入協定一致，Discord Worker 依賴此版本號。
@@ -16989,15 +17147,17 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       let confirmed = 0;
       let pending = 0;
       let activeTeams = 0;
+      let blackwork = 0;
       slots.forEach(slot => {
         if(!teamTypeMatchesFilter(slot)) return;
         const members = Array.isArray(slot.members) ? slot.members : [];
         const waiting = getPendingMembers(slot);
         confirmed += members.length;
         pending += waiting.length;
-        if(members.length || waiting.length) activeTeams += 1;
+        blackwork += getBlackWorkers(slot).length;
+        if(members.length || waiting.length || getBlackWorkers(slot).length) activeTeams += 1;
       });
-      return { slots, confirmed, pending, activeTeams, isEmpty:(confirmed + pending) === 0 };
+      return { slots, confirmed, pending, blackwork, activeTeams, isEmpty:(confirmed + pending + blackwork) === 0 };
     }
 
     function ensureSelectedDate(dates){
@@ -17026,7 +17186,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         const totalPeople = info.confirmed + info.pending;
         const meta = info.isEmpty
           ? "目前沒有報名"
-          : `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ""}`;
+          : `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ""}${info.blackwork ? ` · ${info.blackwork} 黑工` : ""}`;
         return `<button type="button" class="date-nav-btn${key === selectedDateKey ? " active" : ""}${key === todayKey ? " is-today" : ""}${isPinnedMonday ? " is-pinned-monday" : ""}${info.isEmpty ? " is-empty" : ""}" data-select-date="${key}">
           <span class="date-nav-day"><strong>${date.getDate()}</strong><span>${date.getMonth()+1}月</span></span>
           <span class="date-nav-main"><strong>${weekdayText(date)}${key === todayKey ? " · 今天" : ""}</strong><span>${meta}</span></span>
@@ -17056,7 +17216,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         jump.disabled = items.length === 0;
         jump.innerHTML = items.map(({date,key,info,isPinnedMonday}) => {
           const tags = `${key === todayKey ? " · 今天" : ""}${isPinnedMonday ? " · 固定" : ""}`;
-          const status = info.isEmpty ? "尚無人報名" : `${info.activeTeams}隊 · ${info.confirmed}人${info.pending ? ` · ${info.pending}待確認` : ""}`;
+          const status = info.isEmpty ? "尚無人報名" : `${info.activeTeams}隊 · ${info.confirmed}人${info.pending ? ` · ${info.pending}待確認` : ""}${info.blackwork ? ` · ${info.blackwork}黑工` : ""}`;
           return `<option value="${key}">${date.getMonth()+1}/${date.getDate()} ${weekdayText(date)}${tags}｜${status}</option>`;
         }).join("");
         jump.value = selectedDateKey;
@@ -17127,14 +17287,15 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
           const waiting = getPendingMembers(slot);
           const confirmedMember = members.find(m => normalizeName(m.name) === profileName);
           const pendingMember = waiting.find(m => normalizeName(m.name) === profileName);
-          if(!confirmedMember && !pendingMember) return;
+          const blackMember = getBlackWorkers(slot).find(m => normalizeName(m.name) === profileName);
+          if(!confirmedMember && !pendingMember && !blackMember) return;
           items.push({
             date,
             dateKey,
             slot,
             slotIndex,
-            member: confirmedMember || pendingMember,
-            state: confirmedMember ? "confirmed" : "pending"
+            member: confirmedMember || pendingMember || blackMember,
+            state: confirmedMember ? "confirmed" : pendingMember ? "pending" : "blackwork"
           });
         });
       });
@@ -17148,8 +17309,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       if(meta){
         const confirmed = items.filter(item => item.state === "confirmed").length;
         const pending = items.filter(item => item.state === "pending").length;
+        const blackwork = items.filter(item => item.state === "blackwork").length;
         meta.textContent = items.length
-          ? `${profile.name} · ${confirmed} 隊已報名${pending ? ` · ${pending} 隊待確認` : ""} · 點擊可直接定位到隊伍`
+          ? `${profile.name} · ${confirmed} 隊已報名${pending ? ` · ${pending} 隊待確認` : ""}${blackwork ? ` · ${blackwork} 隊黑工` : ""} · 點擊可定位隊伍`
           : `${profile.name} · 未來兩週目前沒有已報名隊伍`;
       }
 
@@ -17163,7 +17325,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         const count = Array.isArray(slot.members) ? slot.members.length : 0;
         const dateLabel = `${displayDate(date)} ${weekdayText(date)}`;
         const slotState = getSlotStatus(slot);
-        const statusLabel = slotState === "取消" ? "已取消" : (state === "confirmed" ? "已報名" : "待確認");
+        const statusLabel = slotState === "取消" ? "已取消" : (state === "confirmed" ? "已報名" : state === "blackwork" ? "黑工" : "待確認");
         const statusClass = slotState === "取消" ? "cancelled" : state;
         return `<button type="button" class="my-team-card ${statusClass}" data-my-jump-date="${dateKey}" data-my-jump-slot="${slotIndex}">
           <div class="my-team-card-top">
@@ -17177,7 +17339,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
           <div class="my-team-meta">
             <span>${count}/${maxPeople} 人</span>
             <span>${escapeHtml(member?.role || "未設定職業")}</span>
-            ${isProtectedTeam(slot) ? `<span>團長確認</span>` : ``}
+            ${state === "blackwork" ? `<span>不佔名額</span>` : isProtectedTeam(slot) ? `<span>團長確認</span>` : ``}
           </div>
           <div class="my-team-go">查看隊伍 →</div>
         </button>`;
@@ -17214,11 +17376,13 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
           const pendingMembers = getPendingMembers(slot);
           const confirmedCount = confirmedMembers.length;
           const pendingCount = pendingMembers.length;
-          if(confirmedCount + pendingCount <= 0) return;
+          const blackworkCount = getBlackWorkers(slot).length;
+          if(confirmedCount + pendingCount + blackworkCount <= 0) return;
 
           const isMine = !!previewName && (
             confirmedMembers.some(member => normalizeName(member?.name || "") === previewName) ||
-            pendingMembers.some(member => normalizeName(member?.name || "") === previewName)
+            pendingMembers.some(member => normalizeName(member?.name || "") === previewName) ||
+            getBlackWorkers(slot).some(member => normalizeName(member?.name || "") === previewName)
           );
           populated.push({ date, dateKey, slot, slotIndex, confirmedCount, pendingCount, isMine });
         });
@@ -17269,6 +17433,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
             <span>${confirmedCount}/${maxPeople} 人</span>
             ${missing.missingHeal > 0 ? `<span class="need-heal">缺補 ${missing.missingHeal}</span>` : `<span>補師達標</span>`}
             ${waiting.length ? `<span class="pending">待確認 ${waiting.length}</span>` : ""}
+            ${getBlackWorkers(slot).length ? `<span class="blackwork-preview-stat">黑工 ${getBlackWorkers(slot).length}</span>` : ""}
           </div>
           <div class="team-intro-go">前往報名 →</div>
         </button>`;
@@ -17299,6 +17464,350 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       }
     }
 
+
+    // ===== 生成隊伍圖（純 Canvas，本機運行，不修改 Firestore） =====
+    const posterElements = {
+      modal:document.getElementById('teamPosterModal'),
+      image:document.getElementById('teamPosterPreview'),
+      feedback:document.getElementById('teamPosterFeedback'),
+      copyText:document.getElementById('teamPosterCopyText'),
+      copyImage:document.getElementById('teamPosterCopyImage'),
+      download:document.getElementById('teamPosterDownload'),
+      close:document.getElementById('teamPosterClose')
+    };
+    let posterBlob = null;
+    let posterUrl = '';
+    let posterName = '';
+    let posterRosterText = '';
+    let posterRequestId = 0;
+    let posterPriorFocus = null;
+
+    function posterFeedback(message, error=false){
+      posterElements.feedback.textContent = message;
+      posterElements.feedback.style.color = error ? '#fda4af' : '';
+    }
+    function closeTeamPoster(){
+      posterRequestId++;
+      posterElements.modal.hidden = true;
+      document.body.style.removeProperty('--team-poster-open');
+      if(posterUrl){ URL.revokeObjectURL(posterUrl); posterUrl=''; }
+      posterElements.image.removeAttribute('src');
+      posterBlob = null;
+      if(posterPriorFocus?.isConnected) posterPriorFocus.focus();
+    }
+    posterElements.close.addEventListener('click', closeTeamPoster);
+    posterElements.modal.addEventListener('click', e => {if(e.target === posterElements.modal) closeTeamPoster();});
+    document.addEventListener('keydown', e => {
+      if(posterElements.modal.hidden) return;
+      if(e.key === 'Escape'){e.preventDefault();closeTeamPoster();}
+      if(e.key === 'Tab'){
+        const focusable=[posterElements.close,posterElements.copyText,posterElements.copyImage,posterElements.download];
+        const index=focusable.indexOf(document.activeElement);
+        if(e.shiftKey && index<=0){e.preventDefault();focusable[focusable.length-1].focus();}
+        else if(!e.shiftKey && index===focusable.length-1){e.preventDefault();focusable[0].focus();}
+      }
+    });
+
+    function posterRgb(hex,alpha=1){
+      const n=parseInt(hex.replace('#',''),16);
+      return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+    }
+    function posterRoundRect(ctx,x,y,w,h,r,fill,stroke){
+      r=Math.min(r,w/2,h/2);
+      ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
+      ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+      if(fill){ctx.fillStyle=fill;ctx.fill();}
+      if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}
+    }
+    const posterFonts='"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif';
+    function posterText(ctx,text,x,y,size=24,color='#f3f6ff',weight=600,maxWidth=Infinity){
+      ctx.font=`${weight} ${size}px ${posterFonts}`;
+      ctx.textBaseline='middle';ctx.fillStyle=color;
+      let t=String(text??'');
+      if(ctx.measureText(t).width>maxWidth){
+        while(t.length && ctx.measureText(t+'…').width>maxWidth)t=t.slice(0,-1);
+        t=t+'…';
+      }
+      ctx.fillText(t,x,y);return t;
+    }
+    function posterPalette(slot){
+      switch(normalizeSlot(slot).teamType){
+        case '天賦團':return {accent:'#f7b468',shade:'#bd7c41'};
+        case '競速團':return {accent:'#f296c5',shade:'#ba5e94'};
+        case '爬塔':return {accent:'#5ed3ba',shade:'#308e85'};
+        default:return {accent:'#88b2ff',shade:'#516bad'};
+      }
+    }
+    function posterRoleColor(role){
+      return ({'輸出':'#83b9ff','承傷':'#fac078','治療':'#6fe0b7','假奶':'#c7a5ff','增益':'#ffaac9'})[role]||'#9eabc2';
+    }
+    function posterBuildText(dateKey,slot){
+      const date=parseDateKey(dateKey);
+      const members=Array.isArray(slot.members)?getSortedMembersForDisplay(slot.members):[];
+      const status=getSlotStatus(slot);
+      const category=normalizeSlot(slot).teamType;
+      const max=getSlotMaxPeople(slot);
+      const label=`${dateKey} ${date?weekdayText(date):''} ${getSlotDisplayTime(slot)||'未定'}｜${normalizeSlot(slot).teamSize}人${category}｜第 ${slot.instance||1} 隊`;
+      const lines=[`【夢回花深處｜副本隊伍】`,label,`隊伍狀態：${status}｜已確認 ${members.length}/${max} 人`];
+      if(status==='時間更改')lines.push(`原定時間：${slot.time||'--:--'}`);
+      if(category==='爬塔'){
+        const tower=normalizeTowerSlot(slot);
+        lines.push(`爬塔：${getTowerFloorLabel(slot)} · ${tower.towerDifficulty}`);
+      }
+      lines.push('── 隊伍名單 ──');
+      members.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${m.role||'未指定'}${m._index===0?'（隊長）':''}${m.tag?' · '+m.tag:''}`));
+      for(let i=members.length;i<max;i++)lines.push(`${i+1}. （空位）`);
+      const blackWorkers=getBlackWorkers(slot);
+      if(blackWorkers.length){
+        lines.push(`── 黑工／候補（${blackWorkers.length} 人，不佔名額）──`);
+        blackWorkers.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${m.role||'未指定'}`));
+      }
+      return lines.join('\n');
+    }
+    function posterPaint(dateKey,slot){
+      const blackWorkers=getBlackWorkers(slot);
+      const extraRows=Math.ceil(blackWorkers.length/2);
+      const W=1200,H=1660+(extraRows ? 105+extraRows*99 : 0),ctxCanvas=document.createElement('canvas');
+      ctxCanvas.width=W;ctxCanvas.height=H;
+      const ctx=ctxCanvas.getContext('2d');
+      if(!ctx)throw new Error('此瀏覽器無法建立圖片');
+      const c=posterPalette(slot),data=normalizeSlot(slot),members=Array.isArray(slot.members)?getSortedMembersForDisplay(slot.members):[];
+      const max=getSlotMaxPeople(slot),date=parseDateKey(dateKey),count=members.length,pending=getPendingMembers(slot).length;
+      const status=getSlotStatus(slot);
+      const background=ctx.createLinearGradient(0,0,W,H);background.addColorStop(0,'#0c1426');background.addColorStop(.6,'#141d32');background.addColorStop(1,'#0d1627');
+      ctx.fillStyle=background;ctx.fillRect(0,0,W,H);
+      const glow=ctx.createRadialGradient(1050,135,0,1050,135,620);glow.addColorStop(0,posterRgb(c.accent,.19));glow.addColorStop(1,posterRgb(c.accent,0));ctx.fillStyle=glow;ctx.fillRect(360,0,840,780);
+      const glow2=ctx.createRadialGradient(0,1430,0,0,1430,690);glow2.addColorStop(0,'rgba(91,115,203,.11)');glow2.addColorStop(1,'rgba(91,115,203,0)');ctx.fillStyle=glow2;ctx.fillRect(0,740,700,920);
+      ctx.fillStyle=c.accent;ctx.fillRect(0,0,12,H);
+      // 頁首與分類色彩
+      posterRoundRect(ctx,76,69,48,48,14,posterRgb(c.accent,.17),posterRgb(c.accent,.37));
+      posterText(ctx,'✦',90,94,24,c.accent,800);
+      posterText(ctx,'夢回花深處',144,89,28,'#dfe9ff',800);
+      posterText(ctx,'PVE / TEAM ROSTER',865,89,19,'#8e9bb8',700);
+      posterText(ctx,'副本隊伍名單',76,168,59,'#f4f6ff',900);
+      // 大型時間與資訊卡
+      posterRoundRect(ctx,76,267,1048,218,30,'rgba(255,255,255,.045)','rgba(213,227,255,.12)');
+      ctx.fillStyle=c.accent;posterRoundRect(ctx,76,300,7,150,3,c.accent);
+      posterText(ctx,'開團時間',106,305,23,'#a6b2cf',700);
+      posterText(ctx,getSlotDisplayTime(slot)||'--:--',104,374,77,'#f5f8ff',900,480);
+      const readableDate=date?`${date.getFullYear()} 年 ${date.getMonth()+1} 月 ${date.getDate()} 日 · ${weekdayText(date)}`:dateKey;
+      posterText(ctx,readableDate,108,439,25,'#c1d0ea',700,650);
+      posterRoundRect(ctx,780,298,305,54,27,posterRgb(c.accent,.13),posterRgb(c.accent,.35));
+      posterText(ctx,`${data.teamSize} 人 · ${data.teamType.replace('團','')}`,815,325,26,c.accent,900,250);
+      posterText(ctx,`第 ${slot.instance||1} 隊`,800,390,26,'#f0f4ff',800);
+      posterText(ctx,status==='取消'?'已取消':status==='時間更改'?`時間更改（原 ${slot.time||'--:--'}）`:count>=max?'隊伍已滿':'招募中',800,440,23,status==='取消'?'#fda5ac':'#aab8d1',700,290);
+      // 隊伍條件及職業統計
+      const counts=[['輸出',countRole(members,'輸出'),'#83b9ff'],['承傷',countRole(members,'承傷'),'#fac078'],['治療',countRole(members,'治療'),'#6fe0b7'],['增益',countRole(members,'增益'),'#ffaac9']];
+      const sw=250,sy=515;
+      counts.forEach(([label,num,color],i)=>{
+        const x=76+i*266;
+        posterRoundRect(ctx,x,sy,sw,127,23,'rgba(255,255,255,.045)','rgba(255,255,255,.095)');
+        posterRoundRect(ctx,x+21,sy+25,9,9,4,color);
+        posterText(ctx,label,x+39,sy+30,22,'#aebbd5',700);
+        posterText(ctx,String(num),x+24,sy+92,47,'#f6f8ff',900);
+      });
+      let extra='';
+      if(data.teamType==='爬塔'){
+        const tower=normalizeTowerSlot(slot);
+        extra=`${getTowerFloorLabel(slot)} · ${tower.towerDifficulty}`;
+      }else{extra=`最低治療 ${getSlotMinHealer(slot)} 人`;}
+      posterText(ctx,extra,78,684,23,c.accent,750,950);
+      posterText(ctx,'已確認隊員',76,745,36,'#f1f5ff',850);
+      posterText(ctx,`${count} / ${max} 人`,949,748,30,c.accent,900);
+      posterRoundRect(ctx,76,782,1048,9,4,'rgba(255,255,255,.11)');
+      if(count>0)posterRoundRect(ctx,76,782,Math.max(9,1048*count/max),9,4,c.accent);
+      // 以 2 欄顯示 10 人；5 人隊保持單欄更清晰
+      const twoColumns=max>5,columns=twoColumns?2:1,cardWidth=twoColumns?512:1048,cardHeight=111,stepY=128,topY=822;
+      for(let i=0;i<max;i++){
+        const row=twoColumns?Math.floor(i/2):i,col=twoColumns?i%2:0;
+        const x=76+col*(cardWidth+24),y=topY+row*stepY,member=members[i];
+        posterRoundRect(ctx,x,y,cardWidth,cardHeight,19,member?'rgba(255,255,255,.065)':'rgba(255,255,255,.025)',member?'rgba(209,225,255,.13)':'rgba(209,225,255,.07)');
+        const roleColor=member?posterRoleColor(member.role):'#596680';
+        posterRoundRect(ctx,x+17,y+24,58,62,15,member?posterRgb(roleColor,.16):'rgba(255,255,255,.035)');
+        posterText(ctx,String(i+1).padStart(2,'0'),x+28,y+56,23,member?roleColor:'#64718b',900);
+        if(member){
+          const isLeader=member._index===0;
+          const maxNameWidth=twoColumns?268:710;
+          posterText(ctx,member.name||'未命名',x+95,y+41,29,'#f3f6ff',800,maxNameWidth);
+          posterText(ctx,member.role||'未指定',x+96,y+79,20,roleColor,800);
+          if(isLeader){
+            const tagX=x+cardWidth-102;
+            posterRoundRect(ctx,tagX,y+17,83,30,15,posterRgb(c.accent,.14),posterRgb(c.accent,.25));
+            posterText(ctx,'團長',tagX+17,y+33,17,c.accent,800);
+          }
+          const memberTag=String(member.tag||'').trim();
+          if(memberTag){
+            const textTag=memberTag.length>20?memberTag.slice(0,20)+'…':memberTag;
+            posterText(ctx,`# ${textTag}`,x+ (twoColumns?219:330),y+79,17,'#94a8c6',600,twoColumns?270:550);
+          }
+        }else{
+          posterText(ctx,'等待加入',x+98,y+55,25,'#70809c',650);
+          posterText(ctx,'空位',x+cardWidth-81,y+54,19,'#53647f',700);
+        }
+      }
+      if(blackWorkers.length){
+        const sectionY=1510;
+        posterText(ctx,`黑工／候補  ${blackWorkers.length} 人`,76,sectionY+3,31,'#6fe0ce',850);
+        blackWorkers.forEach((worker,i)=>{
+          const col=i%2,row=Math.floor(i/2),x=76+col*536,y=sectionY+35+row*99;
+          posterRoundRect(ctx,x,y,512,84,15,'rgba(78,191,173,.075)','rgba(110,220,199,.20)');
+          posterText(ctx,String(i+1).padStart(2,'0'),x+18,y+44,20,'#6fe0ce',800);
+          posterText(ctx,worker.name||'未命名',x+69,y+37,23,'#eef9f7',850,285);
+          posterText(ctx,worker.role||'未指定',x+70,y+65,17,posterRoleColor(worker.role),750,290);
+        });
+      }
+      ctx.beginPath();ctx.strokeStyle='rgba(220,233,255,.11)';ctx.moveTo(76,H-107);ctx.lineTo(1124,H-107);ctx.stroke();
+      posterText(ctx,'夢回花深處  ·  PVE REGISTRATION',78,H-59,19,'#667894',800);
+      posterText(ctx,'TEAM  /  '+String(slot.instance||1).padStart(2,'0'),943,H-59,18,c.accent,850);
+      return ctxCanvas;
+    }
+    async function openTeamPoster(dateKey,slotIndex){
+      const slot=globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot){alert('找不到這個隊伍，請整理日期後重試。');return;}
+      posterRequestId++;
+      const requestId=posterRequestId;
+      posterPriorFocus=document.activeElement;
+      posterElements.modal.hidden=false;
+      posterElements.image.removeAttribute('src');
+      posterElements.download.disabled=true;
+      posterElements.copyImage.disabled=true;
+      posterElements.copyText.disabled=true;
+      posterFeedback('正在生成隊伍圖片…');
+      posterElements.close.focus();
+      try{
+        if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,2000))]);
+        if(requestId!==posterRequestId)return;
+        // 生成時再次取最新資料；不包含 PIN 等隊伍管理設定
+        const current=globalData?.[dateKey]?.slots?.[slotIndex];
+        if(!current)throw new Error('隊伍資料已更新，請重新開啟選單。');
+        const canvas=posterPaint(dateKey,current);
+        const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG 產生失敗')),'image/png'));
+        if(requestId!==posterRequestId)return;
+        if(posterUrl)URL.revokeObjectURL(posterUrl);
+        posterBlob=blob;
+        posterUrl=URL.createObjectURL(blob);
+        posterElements.image.src=posterUrl;
+        posterRosterText=posterBuildText(dateKey,current);
+        const safeTime=(getSlotDisplayTime(current)||'時間未定').replace(/:/g,'');
+        posterName=`夢回花深處_隊伍_${dateKey}_${safeTime}_${normalizeSlot(current).teamType}_第${current.instance||1}隊.png`;
+        posterElements.download.disabled=false;
+        posterElements.copyImage.disabled=false;
+        posterElements.copyText.disabled=false;
+        posterFeedback('圖片已生成，可下載 PNG 或複製分享。');
+      }catch(error){
+        if(requestId!==posterRequestId)return;
+        console.error('生成隊伍圖失敗',error);
+        posterFeedback('生成失敗：'+(error?.message||'請使用較新的瀏覽器再試一次'),true);
+      }
+    }
+    posterElements.download.addEventListener('click',()=>{
+      if(!posterBlob||!posterUrl)return;
+      const a=document.createElement('a');a.href=posterUrl;a.download=posterName;
+      document.body.appendChild(a);a.click();a.remove();
+      posterFeedback('已開始下載 PNG。');
+    });
+    posterElements.copyImage.addEventListener('click',async()=>{
+      if(!posterBlob)return;
+      try{
+        if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined')throw new Error('目前瀏覽器不支援複製圖片；請改用下載 PNG。');
+        await navigator.clipboard.write([new ClipboardItem({'image/png':posterBlob})]);
+        posterFeedback('隊伍圖片已複製，可以貼到 Discord 或聊天視窗。');
+      }catch(error){posterFeedback(error?.message?.includes('不支援')?error.message:'無法複製圖片（需要 HTTPS 或瀏覽器授權），請改用下載 PNG。',true);}
+    });
+    posterElements.copyText.addEventListener('click',async()=>{
+      if(!posterRosterText)return;
+      try{
+        if(!navigator.clipboard?.writeText)throw new Error('目前瀏覽器不支援複製文字');
+        await navigator.clipboard.writeText(posterRosterText);
+        posterFeedback('隊伍文字名單已複製。');
+      }catch(error){posterFeedback('複製文字失敗；請確認瀏覽器剪貼簿權限。',true);}
+    });
+
+
+    /* 黑工獨立於 members／pendingMembers，避免影響名額及職業配置。 */
+    let currentBlackworkSignup = null;
+    const blackworkModal = document.getElementById('blackworkModal');
+    const blackworkName = document.getElementById('blackworkName');
+    const blackworkRole = document.getElementById('blackworkRole');
+    const blackworkConfirm = document.getElementById('blackworkConfirm');
+    let blackworkFocusReturn = null;
+    function closeBlackworkModal(){
+      blackworkModal.hidden = true;
+      currentBlackworkSignup = null;
+      if(blackworkFocusReturn?.isConnected) blackworkFocusReturn.focus();
+    }
+    function openBlackworkModal(dateKey, slotIndex){
+      const slot = globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot || !guardSignupTime(dateKey,slot,{showWarning:false})) return;
+      currentBlackworkSignup = {dateKey, slotIndex, syncRevision:scheduleRevision(globalData[dateKey])};
+      blackworkFocusReturn = document.activeElement;
+      const profile = getMyProfile(), defaults=getFormDefaults();
+      blackworkName.value = defaults.name || profile.name || '';
+      blackworkRole.value = CONFIG.roles.includes(defaults.role || profile.role) ? (defaults.role || profile.role) : '輸出';
+      blackworkModal.hidden = false;
+      blackworkName.focus();
+      blackworkName.select();
+    }
+    blackworkModal.addEventListener('click',event=>{
+      if(event.target===blackworkModal) closeBlackworkModal();
+    });
+    document.getElementById('blackworkCancel').addEventListener('click',closeBlackworkModal);
+    blackworkModal.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();closeBlackworkModal();}
+      if(event.key==='Enter' && event.target!==blackworkConfirm){event.preventDefault();void submitBlackworkSignup();}
+    });
+    blackworkConfirm.addEventListener('click',()=>void submitBlackworkSignup());
+    async function submitBlackworkSignup(){
+      if(!currentBlackworkSignup || blackworkConfirm.disabled) return;
+      const name=normalizeName(blackworkName.value),role=blackworkRole.value;
+      if(!name){alert('請填寫玩家名稱。');blackworkName.focus();return;}
+      if(!CONFIG.roles.includes(role)){alert('請選擇職業。');return;}
+      if(!guardDialogRevision(currentBlackworkSignup)) return;
+      const {dateKey,slotIndex}=currentBlackworkSignup;
+      const dayData=structuredClone(globalData[dateKey]);
+      const slot=dayData?.slots?.[slotIndex];
+      if(!slot || !guardSignupTime(dateKey,slot,{showWarning:false}))return;
+      if(slotHasName(slot,name)){alert('這個名字已經在正式、待確認或黑工名單中。');return;}
+      slot.blackWorkers=[...getBlackWorkers(slot),{name,role,joinedAt:Date.now()}];
+      blackworkConfirm.disabled=true;
+      try{
+        await setDoc(doc(db,CONFIG.collectionName,dateKey),dayData);
+        saveFormDefaults(name,role);
+        closeBlackworkModal();
+        render();
+      }catch(error){
+        console.error('黑工報名失敗',error);
+        if(!(error instanceof ScheduleSyncConflict))alert('黑工報名未成功：'+(error?.message||'請重試'));
+      }finally{blackworkConfirm.disabled=false;}
+    }
+    async function removeBlackworker(dateKey,slotIndex,workerIndex){
+      const slot=globalData?.[dateKey]?.slots?.[slotIndex];
+      const worker=getBlackWorkers(slot)[workerIndex];
+      if(!worker)return;
+      const expectedRevision=scheduleRevision(globalData[dateKey]);
+      const confirmed=await (typeof window.showAppConfirm==='function'
+        ? window.showAppConfirm(`確定移除黑工「${worker.name}」的報名？`,{title:'取消黑工報名',confirmText:'確認移除',tone:'danger'})
+        : Promise.resolve(window.confirm(`確定移除黑工「${worker.name}」的報名？`)));
+      if(!confirmed)return;
+      if(expectedRevision!==scheduleRevision(globalData[dateKey])){
+        alert('隊伍名單剛剛已更新，請重新確認黑工名單再操作。');return;
+      }
+      const dayData=structuredClone(globalData[dateKey]);
+      const latestSlot=dayData?.slots?.[slotIndex];
+      const list=getBlackWorkers(latestSlot);
+      if(!list[workerIndex] || normalizeName(list[workerIndex].name)!==normalizeName(worker.name)){
+        alert('此黑工報名已更新，請重新查看名單。');return;
+      }
+      latestSlot.blackWorkers=list.filter((_,index)=>index!==workerIndex);
+      try{
+        await setDoc(doc(db,CONFIG.collectionName,dateKey),dayData);
+        render();
+      }catch(error){
+        console.error('移除黑工失敗',error);
+        if(!(error instanceof ScheduleSyncConflict))alert('移除黑工失敗：'+(error?.message||'請重試'));
+      }
+    }
+
     function render(){
       if(isRendering) return;
       isRendering = true;
@@ -17323,7 +17832,8 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         const daySlots = dayData && Array.isArray(dayData.slots) ? dayData.slots : [];
         const dayMemberCount = daySlots.reduce((total, slot) => total + (Array.isArray(slot.members) ? slot.members.length : 0), 0);
         const dayPendingCount = daySlots.reduce((total, slot) => total + getPendingMembers(slot).length, 0);
-        const isEmptyDay = dayMemberCount + dayPendingCount === 0;
+        const dayBlackCount = daySlots.reduce((total, slot) => total + getBlackWorkers(slot).length, 0);
+        const isEmptyDay = dayMemberCount + dayPendingCount + dayBlackCount === 0;
         html += `
           <section class="day-card${dateKey === mondayKey ? " is-pinned-monday" : ""}" data-date-card="${dateKey}">
             <div class="day-head">
@@ -17364,6 +17874,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
             const members = Array.isArray(slot.members) ? slot.members : [];
             const pendingMembers = getPendingMembers(slot).map((member, pendingIndex) => ({ ...member, _pendingIndex:pendingIndex }));
             const sortedMembers = getSortedMembersForDisplay(members);
+            const blackWorkers = getBlackWorkers(slot);
             const maxPeople = getSlotMaxPeople(slot);
             const dpsCount = countRole(members, "輸出");
             const tankCount = countRole(members, "承傷");
@@ -17386,13 +17897,14 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
             const isSignupClosed = signupTiming.state === "closed";
             const allowedRoles = getAllowedRoles(members, slot);
             const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
-            const canDeleteCustomSlot = !!slot.isCustom && members.length === 0;
+            const canDeleteCustomSlot = !!slot.isCustom && members.length === 0 && pendingMembers.length === 0 && blackWorkers.length === 0;
             // PIN 空隊伍允許團長手動刪除（即使仍有待審核申請）。
-            const canForceDeletePinSlot = !!slot.isCustom && isProtectedTeam(slot) && members.length === 0;
+            const canForceDeletePinSlot = !!slot.isCustom && isProtectedTeam(slot) && members.length === 0 && blackWorkers.length === 0;
             const isRecommended = ["20:30", "21:15", "21:30", "22:00"].includes(slot.time);
             const isMyTeam = !!savedName && (
               members.some(m => normalizeName(m.name) === normalizeName(savedName)) ||
-              pendingMembers.some(m => normalizeName(m.name) === normalizeName(savedName))
+              pendingMembers.some(m => normalizeName(m.name) === normalizeName(savedName)) ||
+              blackWorkers.some(m => normalizeName(m.name) === normalizeName(savedName))
             );
             const quickProfile = getMyProfile();
             const quickName = normalizeName(quickProfile.name);
@@ -17434,6 +17946,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                     <span class="mobile-team-lowerline">
                       <span class="mobile-team-leader" title="${mobileLeaderText}"><span aria-hidden="true">♙</span> ${mobileLeaderText}</span>
                       <span class="mobile-team-state${isSlotCancelled ? " is-cancelled" : members.length >= maxPeople ? " is-full" : ""}">${mobileStateText}</span>
+                      ${blackWorkers.length ? `<span class="mobile-blackwork-count">黑工 ${blackWorkers.length}</span>` : ``}
                     </span>
                   </span>
                   <span class="mobile-team-end">
@@ -17598,6 +18111,21 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
             html += `
                 </div>
+                <div class="blackwork-block">
+                  <div class="blackwork-head">
+                    <span class="blackwork-title">黑工 / 候補 <span class="blackwork-count">${blackWorkers.length}</span></span>
+                    <span class="blackwork-caption">已領獎勵 · 不佔正式名額</span>
+                  </div>
+                  ${blackWorkers.length ? `<div class="blackwork-list">${blackWorkers.map((worker,index)=>`
+                    <div class="blackwork-person${savedName && normalizeName(worker.name)===normalizeName(savedName) ? ' blackwork-person-self' : ''}">
+                      <span class="role-badge ${roleClass(worker.role)}">${escapeHtml(worker.role || '未指定')}</span>
+                      <span class="blackwork-person-name" title="${escapeHtml(worker.name || '')}">${escapeHtml(worker.name || '未命名')}</span>
+                      <button type="button" class="blackwork-remove" data-action="remove-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="移除黑工 ${escapeHtml(worker.name || '')}" title="取消黑工報名">×</button>
+                    </div>`).join('')}</div>` : ''}
+                  <div class="blackwork-cta">
+                    <button type="button" class="blackwork-add" data-action="signup-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || isSignupClosed ? 'disabled' : ''}>＋ 黑工報名（不限人數）</button>
+                  </div>
+                </div>
 
                 <div class="slot-actions${isSlotCancelled || isSignupClosed || members.length >= maxPeople ? " signup-not-available" : ""}">
                   ${isSlotCancelled || isSignupClosed || members.length >= maxPeople ? `
@@ -17623,6 +18151,11 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                       ${isProtectedTeam(slot) ? "快速申請" : "快速報名"}
                     </button>
                   `}
+                </div>
+                <div class="slot-share-actions">
+                  <button type="button" class="share-team-btn" data-action="generate-team-poster" data-date="${dateKey}" data-slot="${slotIndex}">
+                    分享隊伍圖
+                  </button>
                 </div>
               </div>
             `;
@@ -17738,12 +18271,26 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       });
 
 
+      document.querySelectorAll('[data-action="signup-blackworker"]').forEach(btn=>{
+        btn.onclick=()=>openBlackworkModal(btn.dataset.date,Number(btn.dataset.slot));
+      });
+      document.querySelectorAll('[data-action="remove-blackworker"]').forEach(btn=>{
+        btn.onclick=()=>void removeBlackworker(btn.dataset.date,Number(btn.dataset.slot),Number(btn.dataset.worker));
+      });
+
       document.querySelectorAll('[data-action="batch-signup"]').forEach(btn => {
         btn.onclick = () => openBatchSignupModal(btn.dataset.date, Number(btn.dataset.slot));
       });
 
       document.querySelectorAll('[data-action="quick-signup"]').forEach(btn => {
         btn.onclick = () => quickSignup(btn.dataset.date, Number(btn.dataset.slot));
+      });
+
+      document.querySelectorAll('[data-action="generate-team-poster"]').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.slot-menu.open').forEach(menu => menu.classList.remove('open'));
+          void openTeamPoster(btn.dataset.date, Number(btn.dataset.slot));
+        };
       });
 
       document.querySelectorAll('[data-action="edit-team-type"]').forEach(btn => {
