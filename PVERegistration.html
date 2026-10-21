@@ -13399,6 +13399,67 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     @media(max-width:600px){.blackwork-block{padding:10px;margin-top:11px}.blackwork-list{grid-template-columns:minmax(0,1fr)}.blackwork-cta{margin-top:8px}.blackwork-dialog{padding:20px;border-radius:17px}.blackwork-person{min-height:39px}}
   </style>
 
+
+  <style id="pve-daily-poster-description-refresh">
+  /* Extended description toolbar, unified with existing form theme. */
+  #teamDescriptionInput{min-height:168px !important;line-height:1.7 !important;resize:vertical;}
+  #teamTypeModal .editor-toolbar{gap:7px;align-items:center;position:relative}
+  #teamTypeModal .editor-toolbar > button,
+  #teamTypeModal .editor-toolbar .description-pill-picker > button {min-height:35px;padding:7px 11px;font-size:12px;border-radius:10px;line-height:1.25;white-space:nowrap}
+  .description-pill-picker{position:relative}
+  .description-pill-menu{display:none;position:absolute;z-index:500;left:0;top:calc(100% + 7px);width:178px;max-height:235px;overflow-y:auto;padding:6px;border-radius:13px;border:1px solid var(--line,rgba(255,255,255,.15));background:var(--panel,#152139);box-shadow:0 16px 38px rgba(0,0,0,.27)}
+  .description-pill-picker.open .description-pill-menu{display:grid;gap:2px}
+  .description-pill-menu button{width:100%;background:transparent;border:0;display:flex;align-items:center;text-align:left;gap:9px;padding:8px 10px;color:var(--text,#eef2ff);font-weight:700;font-size:12px;border-radius:8px;box-shadow:none}
+  .description-pill-menu button:hover{background:var(--panel-soft,rgba(255,255,255,.09))}
+  .editor-pill-dot{display:inline-block;width:12px;height:12px;border-radius:100%;flex:none}
+  .editor-pill-dot.blue{background:#79b5fc}.editor-pill-dot.green{background:#5ed6ae}.editor-pill-dot.gold{background:#efbd61}.editor-pill-dot.pink{background:#ed8dba}.editor-pill-dot.purple{background:#b7a2fa}.editor-pill-dot.gray{background:#94a3b8}
+  .description-editor-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .description-editor-bottom .format-help{flex:1 1 190px;margin:0;font-size:11px;line-height:1.65;color:var(--muted,#a8b3cf)}
+  .description-preview-toggle{flex:none;min-height:32px;padding:6px 10px;border:1px solid var(--line,rgba(255,255,255,.14));border-radius:9px;background:var(--panel-soft,rgba(255,255,255,.06));color:var(--text,#eef2ff);font-size:11px}
+  .description-editor-preview[hidden]{display:none!important}
+  .description-editor-preview{border:1px solid var(--line,rgba(255,255,255,.14));padding:12px 14px;margin-top:10px;border-radius:13px;background:var(--panel-soft,rgba(255,255,255,.045));max-height:200px;overflow-y:auto}
+  .description-preview-label{display:block;font-size:10px;font-weight:800;margin-bottom:8px;color:var(--muted)}
+  .description-preview-empty{font-size:12px;color:var(--muted)}
+  .slot-description-body .description-pill{display:inline-flex;vertical-align:baseline;align-items:center;border:1px solid;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:850;line-height:1.55;margin:1px 2px;white-space:normal;max-width:100%;word-break:break-word}
+  .slot-description-body .description-pill-blue{color:#a8d3ff;background:rgba(62,145,238,.17);border-color:rgba(92,159,248,.34)}
+  .slot-description-body .description-pill-green{color:#8be8c9;background:rgba(36,171,131,.16);border-color:rgba(68,203,159,.35)}
+  .slot-description-body .description-pill-gold{color:#f5d298;background:rgba(214,149,56,.17);border-color:rgba(236,171,84,.37)}
+  .slot-description-body .description-pill-pink{color:#ffc0d9;background:rgba(208,88,148,.17);border-color:rgba(233,108,174,.35)}
+  .slot-description-body .description-pill-purple{color:#d1c3ff;background:rgba(139,92,246,.17);border-color:rgba(169,135,255,.38)}
+  .slot-description-body .description-pill-gray{color:#cfdbed;background:rgba(134,151,176,.16);border-color:rgba(157,174,199,.33)}
+  .slot-description-body .description-heading{display:block;font-size:15px;font-weight:900;color:var(--text,#f1f5ff);padding:5px 0 4px;border-bottom:1px solid var(--line,rgba(255,255,255,.13));margin:5px 0 3px}
+  .slot-description-body .description-list-item{display:flex;gap:9px;align-items:flex-start;margin:2px 0 3px;padding-left:2px;line-height:1.6}
+  .slot-description-body .description-list-mark{display:inline-block;min-width:16px;font-weight:900;color:var(--site-sea,#6ea8ff);flex:none}
+  .slot-description-body .description-note{display:inline-block;width:100%;padding:9px 12px;margin:4px 0;border-radius:10px;border:1px solid rgba(106,156,255,.28);border-left:3px solid #79aaff;background:rgba(90,146,231,.12);color:var(--text,#eef2ff);font-weight:650;line-height:1.6}
+  html[data-theme="light"] .slot-description-body .description-pill-blue{color:#205a99;background:#e6f1ff;border-color:#bdd8fa}
+  html[data-theme="light"] .slot-description-body .description-pill-green{color:#176952;background:#def6ee;border-color:#a7decc}
+  html[data-theme="light"] .slot-description-body .description-pill-gold{color:#895419;background:#fff1d8;border-color:#ecd09c}
+  html[data-theme="light"] .slot-description-body .description-pill-pink{color:#a23768;background:#ffe8f2;border-color:#f5bdd6}
+  html[data-theme="light"] .slot-description-body .description-pill-purple{color:#6140ac;background:#eee7ff;border-color:#cfc0f6}
+  html[data-theme="light"] .slot-description-body .description-pill-gray{color:#46576d;background:#eaf0f6;border-color:#d0dbe7}
+  html[data-theme="light"] .slot-description-body .description-note{background:#edf3ff;color:#273d5d;border-color:#aac9f2}
+  html[data-theme="light"] .slot-description-body .description-heading{color:#263954;border-bottom-color:#d7e0ed}
+  html[data-theme="light"] .description-editor-preview .slot-description-body{color:#263954!important}
+  html[data-theme="light"] .description-pill-menu{background:#fff;border-color:#dde5f0}
+  html[data-theme="light"] .description-pill-menu button{color:#273d55}
+  @media(max-width:650px){
+    #teamTypeModal .editor-toolbar > button,#teamTypeModal .editor-toolbar .description-pill-picker > button{padding:7px 9px;font-size:11px}
+    .description-pill-menu{left:auto;right:0}
+    .description-editor-bottom{align-items:flex-start}
+  }
+  /* Make tower attributes prominent in team cards without changing card controls. */
+  .tower-highlight-panel{margin:6px 0 11px;display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:8px;border-radius:13px;background:linear-gradient(120deg,rgba(49,177,150,.12),rgba(51,133,155,.07));border:1px solid rgba(76,200,166,.25)}
+  .tower-highlight-item{padding:6px 9px;min-width:0;border-radius:9px;background:rgba(255,255,255,.045)}
+  .tower-highlight-label{display:block;color:#78cdbd;font-size:10px;font-weight:800;margin-bottom:4px}
+  .tower-highlight-item strong{display:block;color:#c9ffed;font-size:20px;line-height:1.3;overflow-wrap:anywhere;font-weight:900}
+  .tower-highlight-item.difficulty strong{color:#f5d293}
+  html[data-theme="light"] .tower-highlight-panel{background:linear-gradient(120deg,#e9f9f3,#f1f8fa);border-color:#b7ddd1}
+  html[data-theme="light"] .tower-highlight-item{background:rgba(255,255,255,.75)}
+  html[data-theme="light"] .tower-highlight-label{color:#276e61}
+  html[data-theme="light"] .tower-highlight-item strong{color:#126554}
+  html[data-theme="light"] .tower-highlight-item.difficulty strong{color:#9e5915}
+  </style>
+
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -13805,7 +13866,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
             <div><strong style="color:var(--text);">重複報名</strong><br>同一隊伍內不能使用相同名字重複報名。</div>
             <div><strong style="color:var(--text);">我的資料</strong><br>你可以另存自己的名字與常用職業。之後表單可使用快速報名。</div>
             <div><strong style="color:var(--text);">批量隊伍資料</strong><br>你可以儲存不同的常用組合來批量組隊，以節省重複輸入時間。</div>
-            <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體和顏色。可用工具列直接套用。</div>
+            <div><strong style="color:var(--text);">隊伍說明格式</strong><br>支援粗體、斜體、底線、刪除線、螢光標記、彩色標籤、段落標題、清單及提醒框。</div>
             <div><strong style="color:var(--text);">競速團長確認</strong><br>競速團的新報名會先進入待確認。團長以建立隊伍時取得的 PIN 核准或拒絕；PIN 可自動生成或自行設定。</div>
             <div><strong style="color:var(--text);">新增日期與時間</strong><br>可新增 2 週內的時間，並分別設定 5人 / 10人、普通、天賦、競速、爬塔與最低補師數量。</div>
           </div>
@@ -13953,7 +14014,24 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       <div class="editor-toolbar">
         <button type="button" onclick="applyFormat('bold')"><b>B</b></button>
-        <button type="button" onclick="applyFormat('italic')"><i>I</i></button>
+        <button type="button" onclick="applyFormat('italic')" title="斜體"><i>I</i></button>
+        <button type="button" onclick="applyFormat('underline')" title="底線"><u>U</u></button>
+        <button type="button" onclick="applyFormat('strike')" title="刪除線"><s>S</s></button>
+        <button type="button" onclick="insertDescriptionHeading()" title="小標題">小標題</button>
+        <button type="button" onclick="insertDescriptionList('bullet')" title="項目清單">☷ 清單</button>
+        <button type="button" onclick="insertDescriptionList('number')" title="編號清單">1. 編號</button>
+        <div class="description-pill-picker" id="descriptionPillPicker">
+          <button type="button" onclick="toggleDescriptionPills(event)" aria-label="插入標籤">◉ 標籤 ▾</button>
+          <div class="description-pill-menu" aria-label="選擇標籤顏色">
+            <button type="button" onclick="applyDescriptionPill('blue')"><span class="editor-pill-dot blue"></span>藍色標籤</button>
+            <button type="button" onclick="applyDescriptionPill('green')"><span class="editor-pill-dot green"></span>綠色標籤</button>
+            <button type="button" onclick="applyDescriptionPill('gold')"><span class="editor-pill-dot gold"></span>金色標籤</button>
+            <button type="button" onclick="applyDescriptionPill('pink')"><span class="editor-pill-dot pink"></span>粉色標籤</button>
+            <button type="button" onclick="applyDescriptionPill('purple')"><span class="editor-pill-dot purple"></span>紫色標籤</button>
+            <button type="button" onclick="applyDescriptionPill('gray')"><span class="editor-pill-dot gray"></span>灰色標籤</button>
+          </div>
+        </div>
+        <button type="button" onclick="insertDescriptionNote()" title="重點提醒框">▣ 提醒框</button>
 
         <div class="color-picker" id="textColorPicker">
           <button type="button" onclick="toggleColorMenu(event)">🎨 文字</button>
@@ -13976,7 +14054,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         </div>
 
         <div class="highlight-picker" id="highlightPicker">
-          <button type="button" onclick="toggleHighlightMenu(event)">🖍 Highlight</button>
+          <button type="button" onclick="toggleHighlightMenu(event)">🖍 螢光標記</button>
           <div class="highlight-menu">
             <span title="紅底" style="background:#ff6b81" onclick="applyHighlight('red')"></span>
             <span title="玫紅底" style="background:#fb7185" onclick="applyHighlight('rose')"></span>
@@ -13998,11 +14076,17 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       <textarea
         id="teamDescriptionInput"
         class="signup-textarea"
-        placeholder="例如：&#10;**[highlight=orange]天賦團【説明】[/highlight]**&#10;請進入 **[color=pink]DC語音頻道[/color]**&#10;[highlight=blue]其他要求[/highlight]"
+        rows="7"
+        placeholder="例如：&#10;## 開團須知&#10;[pill=green]缺治療[/pill]　[pill=gold]語音必備[/pill]&#10;- 請提早 5 分鐘到場&#10;[highlight=yellow]記得加入語音頻道[/highlight]"
       ></textarea>
 
-      <div class="format-help">
-        支援格式：<code>**粗體**</code>、<code>*斜體*</code>、<code>[color=pink]文字[/color]</code>、<code>[highlight=orange]重點[/highlight]</code>。文字與 Highlight 已支援相同色系。
+      <div class="description-editor-bottom">
+        <span class="format-help">選取文字後按工具列可套用格式，也能加入標籤、標題、清單及提醒框。</span>
+        <button class="description-preview-toggle" id="descriptionPreviewToggle" type="button" onclick="toggleDescriptionPreview()" aria-expanded="false">預覽說明 ↓</button>
+      </div>
+      <div id="descriptionLivePreview" class="description-editor-preview" hidden>
+        <span class="description-preview-label">顯示預覽</span>
+        <div id="descriptionPreviewBody" class="slot-description-body"></div>
       </div>
 
       <div class="signup-modal-actions">
@@ -14142,7 +14226,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     <section class="team-poster-dialog" role="dialog" aria-modal="true" aria-labelledby="teamPosterTitle">
       <header class="team-poster-head">
         <div>
-          <span class="team-poster-kicker">TEAM ROSTER · PNG</span>
+          <span id="teamPosterKicker" class="team-poster-kicker">TEAM ROSTER · PNG</span>
           <h2 id="teamPosterTitle" class="team-poster-title">生成隊伍圖</h2>
         </div>
         <button id="teamPosterClose" type="button" class="team-poster-close" aria-label="關閉預覽">×</button>
@@ -14959,62 +15043,41 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     }
 
     function formatDescription(text){
-      if(!text) return "";
-
-      let t = text
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;");
-
-      t = t.replace(/\*\*(.*?)\*\*/gs, "<strong>$1</strong>");
-      t = t.replace(/\*(.*?)\*/gs, "<em>$1</em>");
-
-      const colors = {
-        red:"#ff6b81",
-        rose:"#fb7185",
-        orange:"#fb923c",
-        yellow:"#fbbf24",
-        gold:"#ffd76a",
-        green:"#34d399",
-        teal:"#2dd4bf",
-        cyan:"#22d3ee",
-        blue:"#6ea8ff",
-        indigo:"#818cf8",
-        purple:"#a78bfa",
-        pink:"#f472b6",
-        white:"#ffffff",
-        gray:"#94a3b8"
-      };
-
-      const highlights = {
-        red:"rgba(255,107,129,.30)",
-        rose:"rgba(251,113,133,.30)",
-        orange:"rgba(251,146,60,.32)",
-        yellow:"rgba(250,204,21,.34)",
-        gold:"rgba(255,215,106,.34)",
-        green:"rgba(52,211,153,.30)",
-        teal:"rgba(45,212,191,.30)",
-        cyan:"rgba(34,211,238,.30)",
-        blue:"rgba(96,165,250,.32)",
-        indigo:"rgba(129,140,248,.32)",
-        purple:"rgba(167,139,250,.32)",
-        pink:"rgba(244,114,182,.32)",
-        gray:"rgba(148,163,184,.30)"
-      };
-
-      t = t.replace(/\[color=(.*?)\](.*?)\[\/color\]/gs, (m, c, content) => {
-        const colorName = Object.prototype.hasOwnProperty.call(colors, c) ? c : "white";
-        const color = colors[colorName];
-        return `<span class="description-color" data-color="${colorName}" style="color:${color}">${content}</span>`;
+      if(!text) return '';
+      let t=escapeHtml(String(text));
+      // Existing markup remains supported. All color tokens are whitelisted.
+      const colors={red:'#ff6b81',rose:'#fb7185',orange:'#fb923c',yellow:'#fbbf24',gold:'#ffd76a',green:'#34d399',teal:'#2dd4bf',cyan:'#22d3ee',blue:'#6ea8ff',indigo:'#818cf8',purple:'#a78bfa',pink:'#f472b6',white:'#ffffff',gray:'#94a3b8'};
+      const highlights={red:'rgba(255,107,129,.30)',rose:'rgba(251,113,133,.30)',orange:'rgba(251,146,60,.32)',yellow:'rgba(250,204,21,.34)',gold:'rgba(255,215,106,.34)',green:'rgba(52,211,153,.30)',teal:'rgba(45,212,191,.30)',cyan:'rgba(34,211,238,.30)',blue:'rgba(96,165,250,.32)',indigo:'rgba(129,140,248,.32)',purple:'rgba(167,139,250,.32)',pink:'rgba(244,114,182,.32)',gray:'rgba(148,163,184,.30)'};
+      t=t.replace(/\[color=([a-z]+)\]([\s\S]*?)\[\/color\]/g,(m,c,content)=>{
+        if(!Object.prototype.hasOwnProperty.call(colors,c))return content;
+        return `<span class="description-color" data-color="${c}" style="color:${colors[c]}">${content}</span>`;
       });
-
-      t = t.replace(/\[highlight=(.*?)\](.*?)\[\/highlight\]/gs, (m, c, content) => {
-        const color = highlights[c] || highlights.yellow;
-        return `<mark class="description-highlight" style="background:${color}; color:#ffffff; padding:1px 5px; border-radius:6px;">${content}</mark>`;
+      t=t.replace(/\[highlight=([a-z]+)\]([\s\S]*?)\[\/highlight\]/g,(m,c,content)=>{
+        if(!Object.prototype.hasOwnProperty.call(highlights,c))return content;
+        return `<mark class="description-highlight" style="background:${highlights[c]};color:#fff;padding:1px 5px;border-radius:6px">${content}</mark>`;
       });
-
-      t = t.replace(/\n/g, "<br>");
-      return t.trim();
+      const pillColors=['blue','green','gold','pink','purple','gray'];
+      t=t.replace(/\[pill=([a-z]+)\]([\s\S]*?)\[\/pill\]/g,(m,c,content)=>{
+        if(!pillColors.includes(c)) return content;
+        return `<span class="description-pill description-pill-${c}">${content}</span>`;
+      });
+      t=t.replace(/\[note\]([\s\S]*?)\[\/note\]/g,(m,content)=>`<span class="description-note">${content}</span>`);
+      t=t.replace(/\*\*([\s\S]*?)\*\*/g,'<strong>$1</strong>');
+      t=t.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>');
+      t=t.replace(/__([^_\n]+)__/g,'<u>$1</u>');
+      t=t.replace(/~~([^~\n]+)~~/g,'<s>$1</s>');
+      const lines=t.split('\n').map(line=>{
+        if(/^##\s+/.test(line))return `<div class="description-heading">${line.replace(/^##\s+/,'')}</div>`;
+        if(/^[-•]\s+/.test(line))return `<div class="description-list-item"><span class="description-list-mark">•</span><span>${line.replace(/^[-•]\s+/,'')}</span></div>`;
+        const match=line.match(/^(\d{1,2})\.\s+(.+)$/);
+        if(match)return `<div class="description-list-item"><span class="description-list-mark">${match[1]}.</span><span>${match[2]}</span></div>`;
+        return line;
+      });
+      // Block elements manage their own spacing; avoid a blank line after every pill/list heading.
+      return lines.join('<br>')
+        .replace(/<br>(<div class="description-(?:heading|list-item)")/g,'$1')
+        .replace(/(<\/div>)<br>/g,'$1')
+        .trim();
     }
 
     function wrapText(textarea, before, after){
@@ -15040,18 +15103,25 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         wrapText(textarea, "**", "**");
       } else if(type === "italic"){
         wrapText(textarea, "*", "*");
+      } else if(type === "underline"){
+        wrapText(textarea, "__", "__");
+      } else if(type === "strike"){
+        wrapText(textarea, "~~", "~~");
       }
+      refreshDescriptionPreview();
     };
 
     window.toggleColorMenu = (event) => {
       event.stopPropagation();
       document.getElementById("highlightPicker")?.classList.remove("open");
+      document.getElementById("descriptionPillPicker")?.classList.remove("open");
       document.getElementById("textColorPicker")?.classList.toggle("open");
     };
 
     window.toggleHighlightMenu = (event) => {
       event.stopPropagation();
       document.getElementById("textColorPicker")?.classList.remove("open");
+      document.getElementById("descriptionPillPicker")?.classList.remove("open");
       document.getElementById("highlightPicker")?.classList.toggle("open");
     };
 
@@ -15060,6 +15130,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       if(!textarea) return;
       wrapText(textarea, `[color=${color}]`, `[/color]`);
       document.getElementById("textColorPicker")?.classList.remove("open");
+      refreshDescriptionPreview();
     };
 
     window.applyHighlight = (color) => {
@@ -15067,7 +15138,74 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       if(!textarea) return;
       wrapText(textarea, `[highlight=${color}]`, `[/highlight]`);
       document.getElementById("highlightPicker")?.classList.remove("open");
+      refreshDescriptionPreview();
     };
+
+    function refreshDescriptionPreview(){
+      const textarea=document.getElementById('teamDescriptionInput');
+      const preview=document.getElementById('descriptionPreviewBody');
+      if(!textarea || !preview)return;
+      preview.innerHTML=formatDescription(textarea.value) || '<span class="description-preview-empty">尚未填寫隊伍說明</span>';
+    }
+    window.toggleDescriptionPills=(event)=>{
+      event.stopPropagation();
+      document.getElementById('textColorPicker')?.classList.remove('open');
+      document.getElementById('highlightPicker')?.classList.remove('open');
+      document.getElementById('descriptionPillPicker')?.classList.toggle('open');
+    };
+    window.applyDescriptionPill=(color)=>{
+      if(!['blue','green','gold','pink','purple','gray'].includes(color))return;
+      const textarea=document.getElementById('teamDescriptionInput');
+      if(!textarea)return;
+      if(textarea.selectionStart===textarea.selectionEnd){
+        const offset=textarea.selectionStart;
+        textarea.setRangeText('標籤文字',offset,offset,'select');
+      }
+      wrapText(textarea,`[pill=${color}]`,'[/pill]');
+      document.getElementById('descriptionPillPicker')?.classList.remove('open');
+      refreshDescriptionPreview();
+    };
+    function insertDescriptionAtLine(prefix,suffix=''){
+      const textarea=document.getElementById('teamDescriptionInput');
+      if(!textarea)return;
+      const start=textarea.selectionStart,end=textarea.selectionEnd;
+      const selected=textarea.value.slice(start,end);
+      const before=textarea.value.slice(0,start);
+      const newLine=before.length>0 && !before.endsWith('\n')?'\n':'';
+      const addition=newLine+prefix+(selected||'文字')+suffix;
+      textarea.setRangeText(addition,start,end,'end');
+      textarea.focus();refreshDescriptionPreview();
+    }
+    window.insertDescriptionHeading=()=>insertDescriptionAtLine('## ');
+    window.insertDescriptionList=(kind)=>{
+      const textarea=document.getElementById('teamDescriptionInput');
+      if(!textarea)return;
+      const start=textarea.selectionStart,end=textarea.selectionEnd;
+      const selected=textarea.value.slice(start,end)||'項目一\n項目二';
+      const list=selected.split('\n').map((line,i)=>(kind==='number'?`${i+1}. `:'- ')+line).join('\n');
+      const before=textarea.value.slice(0,start);
+      textarea.setRangeText((before && !before.endsWith('\n')?'\n':'')+list,start,end,'end');
+      textarea.focus();refreshDescriptionPreview();
+    };
+    window.insertDescriptionNote=()=>{
+      const textarea=document.getElementById('teamDescriptionInput');
+      if(!textarea)return;
+      if(textarea.selectionStart===textarea.selectionEnd){
+        const position=textarea.selectionStart;
+        textarea.setRangeText('請留意開團安排',position,position,'select');
+      }
+      wrapText(textarea,'[note]','[/note]');refreshDescriptionPreview();
+    };
+    window.toggleDescriptionPreview=()=>{
+      const panel=document.getElementById('descriptionLivePreview');
+      const btn=document.getElementById('descriptionPreviewToggle');
+      if(!panel || !btn)return;
+      panel.hidden=!panel.hidden;
+      btn.setAttribute('aria-expanded',String(!panel.hidden));
+      btn.textContent=panel.hidden?'預覽說明 ↓':'收起預覽 ↑';
+      if(!panel.hidden)refreshDescriptionPreview();
+    };
+    document.getElementById('teamDescriptionInput')?.addEventListener('input',refreshDescriptionPreview);
 
     function buildDefaultDayData(dateObj){
       const slots = [];
@@ -15306,6 +15444,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         }
         if(!e.target.closest(".highlight-picker")){
           document.getElementById("highlightPicker")?.classList.remove("open");
+        }
+        if(!e.target.closest('.description-pill-picker')){
+          document.getElementById('descriptionPillPicker')?.classList.remove('open');
         }
 
         const select = document.getElementById("roleSelect");
@@ -17504,7 +17645,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       copyText:document.getElementById('teamPosterCopyText'),
       copyImage:document.getElementById('teamPosterCopyImage'),
       download:document.getElementById('teamPosterDownload'),
-      close:document.getElementById('teamPosterClose')
+      close:document.getElementById('teamPosterClose'),
+      title:document.getElementById('teamPosterTitle'),
+      kicker:document.getElementById('teamPosterKicker')
     };
     let posterBlob = null;
     let posterUrl = '';
@@ -17642,7 +17785,13 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         const tower=normalizeTowerSlot(slot);
         extra=`${getTowerFloorLabel(slot)} · ${tower.towerDifficulty}`;
       }else{extra=`最低治療 ${getSlotMinHealer(slot)} 人`;}
-      posterText(ctx,extra,78,684,23,c.accent,750,950);
+      if(data.teamType==='爬塔'){
+        posterRoundRect(ctx,76,659,1048,63,17,posterRgb(c.accent,.09),posterRgb(c.accent,.24));
+        posterText(ctx,`挑戰層數  ${getTowerFloorLabel(slot)}`,100,690,26,'#b5f7df',850,485);
+        posterText(ctx,`難度  ${normalizeTowerSlot(slot).towerDifficulty}`,622,690,26,'#f7d295',850,420);
+      }else{
+        posterText(ctx,extra,78,684,23,c.accent,750,950);
+      }
       posterText(ctx,'已確認隊員',76,745,36,'#f1f5ff',850);
       posterText(ctx,`${count} / ${max} 人`,949,748,30,c.accent,900);
       posterRoundRect(ctx,76,782,1048,9,4,'rgba(255,255,255,.11)');
@@ -17744,23 +17893,184 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     async function shareTeamImage(dateKey,slotIndex){
       const slot=globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot){ alert('找不到這個隊伍。'); return; }
-      try{
-        const asset=await generatePosterAsset(dateKey,slotIndex);
-        const file=new File([asset.blob], asset.name, {type:'image/png'});
-        if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-          await navigator.share({
-            title:'夢回花深處｜副本隊伍',
-            text:buildTeamShareText(dateKey,asset.slot),
-            files:[file]
-          });
-          return;
-        }
-      }catch(error){
-        if(error?.name==='AbortError') return;
-      }
       await openTeamPoster(dateKey,slotIndex);
-      posterFeedback('目前瀏覽器不支援直接分享圖片，已打開圖片預覽，可下載或複製圖片。');
+      posterFeedback('已打開圖片預覽，你可以直接下載或複製圖片分享。');
     }
+    function getDayPosterSlots(dateKey){
+      const dayData=globalData?.[dateKey];
+      const slots=Array.isArray(dayData?.slots)?dayData.slots:[];
+      return slots.map((slot,slotIndex)=>({slot,slotIndex})).sort((a,b)=>{
+        const timeA=getSlotSortTime(a.slot), timeB=getSlotSortTime(b.slot);
+        if(timeA!==timeB) return timeA.localeCompare(timeB);
+        const instanceA=Number(a.slot?.instance||1), instanceB=Number(b.slot?.instance||1);
+        if(instanceA!==instanceB) return instanceA-instanceB;
+        return a.slotIndex-b.slotIndex;
+      });
+    }
+    function buildDayPosterText(dateKey){
+      const date=parseDateKey(dateKey);
+      const items=getDayPosterSlots(dateKey);
+      const header=[`【夢回花深處｜每日招募總覽】`, `${dateKey} ${date?weekdayText(date):''}`];
+      if(!items.length) return header.concat(['目前沒有隊伍']).join('\n');
+      const lines=[...header, `共 ${items.length} 隊`,'── 隊伍列表 ──'];
+      items.forEach(({slot})=>{
+        const members=Array.isArray(slot.members)?getSortedMembersForDisplay(slot.members):[];
+        const pending=getPendingMembers(slot).length;
+        const black=getBlackWorkers(slot).length;
+        const max=getSlotMaxPeople(slot);
+        const missing=getSlotMissingInfo(slot);
+        const extra=normalizeSlot(slot).teamType==='爬塔' ? `｜${getTowerFloorLabel(slot)} ${normalizeTowerSlot(slot).towerDifficulty}` : '';
+        lines.push(`${getSlotDisplayTime(slot)||slot.time||'--:--'}｜第 ${slot.instance||1} 隊｜${normalizeSlot(slot).teamSize}人${teamTypeLabel(slot)}${extra}`);
+        lines.push(`已確認 ${members.length}/${max} 人｜待確認 ${pending}｜黑工/補位 ${black}${missing.missingHeal>0?`｜缺治療 x${missing.missingHeal}`:''}`);
+        if(members.length) lines.push('隊員：'+members.map(m=>`${m.name||'未命名'}(${m.role||'未指定'})`).join('、'));
+        else lines.push('隊員：目前尚未有人報名');
+      });
+      return lines.join('\n');
+    }
+    function dayPosterPaint(dateKey){
+      const items=getDayPosterSlots(dateKey);
+      const date=parseDateKey(dateKey);
+      const totalTeams=items.length;
+      const openTeams=items.filter(({slot})=>getSlotStatus(slot)!=='取消' && (slot.members||[]).length<getSlotMaxPeople(slot)).length;
+      const totalConfirmed=items.reduce((sum,{slot})=>sum+(Array.isArray(slot.members)?slot.members.length:0),0);
+      const totalBlack=items.reduce((sum,{slot})=>sum+getBlackWorkers(slot).length,0);
+      const W=1440, margin=70, gap=26;
+      const cols=totalTeams>=2?2:1;
+      const cardWidth=cols===2?637:1300;
+      const cardHeight=418, cardGap=26;
+      const rows=Math.max(1,Math.ceil(Math.max(totalTeams,1)/cols));
+      const startY=366, H=startY+rows*(cardHeight+cardGap)+105;
+      const canvas=document.createElement('canvas'); canvas.width=W;canvas.height=H;
+      const ctx=canvas.getContext('2d');
+      if(!ctx)throw new Error('瀏覽器無法建立圖片');
+      const bg=ctx.createLinearGradient(0,0,W,H);
+      bg.addColorStop(0,'#0d1526');bg.addColorStop(.55,'#111b2e');bg.addColorStop(1,'#0a1523');
+      ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+      let glow=ctx.createRadialGradient(1250,0,10,1250,0,720);
+      glow.addColorStop(0,'rgba(91,134,250,.23)');glow.addColorStop(1,'rgba(91,134,250,0)');
+      ctx.fillStyle=glow;ctx.fillRect(450,0,990,840);
+      ctx.save();ctx.strokeStyle='rgba(170,193,255,.024)';ctx.lineWidth=1;
+      for(let x=70;x<W;x+=62){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+      ctx.restore();
+      ctx.fillStyle='#82adf4';posterRoundRect(ctx,70,45,40,40,12,'rgba(114,165,255,.19)','rgba(139,178,255,.38)');
+      posterText(ctx,'✦',81,66,22,'#a0c4ff',850);
+      posterText(ctx,'夢回花深處',122,66,27,'#eaf1ff',850);
+      posterText(ctx,'PVE  /  RECRUITMENT',1083,65,20,'#8497b5',800,290);
+      posterText(ctx,'今日副本招募',70,137,18,'#89b2f3',900);
+      const dayText=date?`${date.getMonth()+1} 月 ${date.getDate()} 日`:`${dateKey}`;
+      posterText(ctx,dayText,67,210,74,'#f4f8ff',950,750);
+      const week=date?weekdayText(date):'';
+      posterText(ctx,`${week}  ·  ${dateKey}`,74,268,25,'#b5c5df',700,690);
+      const summary=[['全部隊伍',totalTeams],['尚有名額',openTeams],['已報名',totalConfirmed],['黑工／補位',totalBlack]];
+      summary.forEach(([label,value],i)=>{
+        const x=750+i*160;
+        posterRoundRect(ctx,x,142,148,112,19,'rgba(255,255,255,.043)','rgba(200,222,255,.105)');
+        posterText(ctx,String(value),x+18,186,44,'#f3f7ff',900,92);
+        posterText(ctx,label,x+18,225,17,'#9eb1ce',700,115);
+      });
+      posterText(ctx,'開團時間  /  招募進度',70,320,18,'#7c94b5',800,480);
+      ctx.strokeStyle='rgba(181,206,255,.15)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(345,320);ctx.lineTo(1370,320);ctx.stroke();
+      if(!totalTeams){
+        posterRoundRect(ctx,70,startY,1300,240,26,'rgba(255,255,255,.038)','rgba(255,255,255,.10)');
+        posterText(ctx,'目前尚無隊伍',105,startY+110,45,'#e4ecfc',850);
+      }
+      items.forEach(({slot},i)=>{
+        const col=i%cols,row=Math.floor(i/cols);
+        const x=margin+col*(cardWidth+gap),y=startY+row*(cardHeight+cardGap);
+        const members=Array.isArray(slot.members)?slot.members:[];
+        const max=getSlotMaxPeople(slot),count=members.length;
+        const black=getBlackWorkers(slot).length;
+        const pending=getPendingMembers(slot).length;
+        const tower=normalizeSlot(slot).teamType==='爬塔';
+        const canceled=getSlotStatus(slot)==='取消';
+        const full=count>=max;
+        const palette=posterPalette(slot);
+        const accent=palette.accent;
+        const status=canceled?'已取消':full?'已滿':'招募中';
+        posterRoundRect(ctx,x,y,cardWidth,cardHeight,25,'rgba(23,35,55,.96)','rgba(209,224,255,.14)');
+        posterRoundRect(ctx,x+16,y+20,5,cardHeight-40,3,accent);
+        posterText(ctx,`TEAM  ${String(slot.instance||1).padStart(2,'0')}`,x+37,y+45,17,'#889cb9',900,205);
+        posterText(ctx,status,x+cardWidth-117,y+45,17,canceled?'#f09aa8':full?'#e9c58e':'#84d9ba',800,105);
+        posterText(ctx,getSlotDisplayTime(slot)||slot.time||'--:--',x+35,y+122,51,'#f3f7ff',920,260);
+        posterText(ctx,teamTypeLabel(slot),x+322,y+121,23,accent,900,cardWidth-360);
+        if(tower){
+          const tw=normalizeTowerSlot(slot);
+          posterRoundRect(ctx,x+34,y+170,cardWidth-68,118,19,posterRgb(accent,.105),posterRgb(accent,.29));
+          const leftX=x+56,rightX=x+cardWidth/2+10;
+          posterText(ctx,'挑戰層數',leftX,y+199,16,'#9bc9c3',800,220);
+          posterText(ctx,getTowerFloorLabel(slot),leftX,y+254,40,'#bdf9e6',950,270);
+          ctx.strokeStyle='rgba(187,232,224,.17)';ctx.beginPath();ctx.moveTo(x+cardWidth/2,y+190);ctx.lineTo(x+cardWidth/2,y+268);ctx.stroke();
+          posterText(ctx,'挑戰難度',rightX,y+199,16,'#dbc49f',800,210);
+          const diffColor=tw.towerDifficulty==='鬼神愁'?'#f8a8b2':tw.towerDifficulty==='困難'?'#fbd18a':'#d2e9dd';
+          posterText(ctx,tw.towerDifficulty,rightX,y+254,40,diffColor,950,250);
+        } else {
+          posterRoundRect(ctx,x+34,y+170,cardWidth-68,118,19,'rgba(255,255,255,.036)','rgba(225,236,255,.085)');
+          posterText(ctx,'已報名',x+55,y+199,17,'#aebbd1',800);
+          posterText(ctx,`${count} / ${max}`,x+55,y+253,47,'#f4f7ff',950,230);
+          posterText(ctx,canceled?'報名已取消':full?'隊伍已滿':`還差 ${Math.max(0,max-count)} 人`,x+cardWidth-254,y+253,26,full?'#f7c68c':accent,850,220);
+        }
+        // Roles and occupancy, kept separate from the strong tower attributes.
+        const roles=[['輸出',countRole(members,'輸出'),'#83b9ff'],['承傷',countRole(members,'承傷'),'#fac078'],['治療',countRole(members,'治療'),'#6fe0b7'],['增益',countRole(members,'增益'),'#ffaac9']];
+        roles.forEach(([label,value,color],j)=>{
+          const rx=x+35+j*143;
+          posterRoundRect(ctx,rx,y+318,127,35,16,posterRgb(color,.10),posterRgb(color,.17));
+          posterText(ctx,`${label} ${value}`,rx+14,y+336,17,color,800,100);
+        });
+        ctx.strokeStyle='rgba(211,229,255,.11)';ctx.beginPath();ctx.moveTo(x+35,y+369);ctx.lineTo(x+cardWidth-35,y+369);ctx.stroke();
+        const lead=members.length?(members[0].name||'未命名'):'尚無隊員';
+        posterText(ctx,`隊長／首位  ${lead}`,x+35,y+394,17,'#adc0db',700,cardWidth*.54);
+        posterText(ctx,`待確認 ${pending}  ·  黑工 ${black}`,x+cardWidth-215,y+394,16,'#8ea5c2',700,200);
+      });
+      ctx.strokeStyle='rgba(197,219,255,.12)';ctx.beginPath();ctx.moveTo(70,H-87);ctx.lineTo(1370,H-87);ctx.stroke();
+      posterText(ctx,'夢回花深處   ·   PVE REGISTRATION',72,H-46,19,'#7a8da9',850,560);
+      posterText(ctx,`${dateKey}  /  ${totalTeams} 隊`,1115,H-46,18,'#8b9fbc',700,250);
+      return canvas;
+    }
+
+    async function generateDayPosterAsset(dateKey){
+      if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,2000))]);
+      const canvas=dayPosterPaint(dateKey);
+      const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG 產生失敗')),'image/png'));
+      return {
+        blob,
+        rosterText:buildDayPosterText(dateKey),
+        name:`夢回花深處_每日招募_${dateKey}.png`
+      };
+    }
+    async function openDayPoster(dateKey){
+      if(!globalData?.[dateKey]){alert('找不到這一天的資料，請稍後再試。');return;}
+      posterRequestId++;
+      const requestId=posterRequestId;
+      posterPriorFocus=document.activeElement;
+      posterElements.modal.hidden=false;
+      posterElements.image.removeAttribute('src');
+      posterElements.download.disabled=true;
+      posterElements.copyImage.disabled=true;
+      posterElements.copyText.disabled=true;
+      if(posterElements.kicker) posterElements.kicker.textContent='DAILY RECRUITMENT · PNG';
+      if(posterElements.title) posterElements.title.textContent=`${dateKey} 招募圖`;
+      posterFeedback('正在生成當日招募圖片…');
+      posterElements.close.focus();
+      try{
+        const asset=await generateDayPosterAsset(dateKey);
+        if(requestId!==posterRequestId)return;
+        if(posterUrl)URL.revokeObjectURL(posterUrl);
+        posterBlob=asset.blob;
+        posterUrl=URL.createObjectURL(asset.blob);
+        posterElements.image.src=posterUrl;
+        posterRosterText=asset.rosterText;
+        posterName=asset.name;
+        posterElements.download.disabled=false;
+        posterElements.copyImage.disabled=false;
+        posterElements.copyText.disabled=false;
+        posterFeedback('每日招募圖已生成，可下載 PNG 或複製分享。');
+      }catch(error){
+        if(requestId!==posterRequestId)return;
+        console.error('生成每日招募圖失敗',error);
+        posterFeedback('生成失敗：'+(error?.message||'請使用較新的瀏覽器再試一次'),true);
+      }
+    }
+
     async function openTeamPoster(dateKey,slotIndex){
       const slot=globalData?.[dateKey]?.slots?.[slotIndex];
       if(!slot){alert('找不到這個隊伍，請整理日期後重試。');return;}
@@ -17772,6 +18082,8 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       posterElements.download.disabled=true;
       posterElements.copyImage.disabled=true;
       posterElements.copyText.disabled=true;
+      if(posterElements.kicker) posterElements.kicker.textContent='TEAM ROSTER · PNG';
+      if(posterElements.title) posterElements.title.textContent='生成隊伍圖';
       posterFeedback('正在生成隊伍圖片…');
       posterElements.close.focus();
       try{
@@ -17936,6 +18248,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
               </div>
               <div class="day-actions">
                 ${isEmptyDay ? `<span class="day-empty-summary">目前無報名${daySlots.length ? `｜${daySlots.length} 個時段` : ""}</span>` : ``}
+                <button class="btn-ghost" data-action="generate-day-poster" data-date="${dateKey}">招募圖</button>
                 <button class="btn-ghost" data-action="add-time" data-date="${dateKey}">＋ 新增時間</button>
               </div>
             </div>
@@ -18088,7 +18401,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                       <div class="team-share-dropdown">
                         <button class="team-share-item link" type="button" data-action="share-team-link" data-date="${dateKey}" data-slot="${slotIndex}">分享鏈接</button>
                         <button class="team-share-item image" type="button" data-action="share-team-image" data-date="${dateKey}" data-slot="${slotIndex}">分享圖片</button>
-                        <button class="team-share-item preview" type="button" data-action="generate-team-poster" data-date="${dateKey}" data-slot="${slotIndex}">預覽圖片</button>
+                        
                       </div>
                     </div>
 
@@ -18116,6 +18429,11 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                   </div>
                 </div>
 
+                ${normalizeSlot(slot).teamType === "爬塔" ? `
+                  <div class="tower-highlight-panel" aria-label="爬塔層數與難度">
+                    <div class="tower-highlight-item"><span class="tower-highlight-label">挑戰層數</span><strong>${getTowerFloorLabel(slot)}</strong></div>
+                    <div class="tower-highlight-item difficulty"><span class="tower-highlight-label">挑戰難度</span><strong>${normalizeTowerSlot(slot).towerDifficulty}</strong></div>
+                  </div>` : ``}
                 <div class="slot-capacity-block">
                   <div class="slot-capacity-head">
                     <span>名額進度</span>
@@ -18381,6 +18699,10 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       document.querySelectorAll('[data-action="add-time"]').forEach(btn => {
         btn.onclick = () => addCustomTime(btn.dataset.date);
+      });
+
+      document.querySelectorAll('[data-action="generate-day-poster"]').forEach(btn => {
+        btn.onclick = () => void openDayPoster(btn.dataset.date);
       });
 
       document.querySelectorAll('[data-action="add-member"]').forEach(btn => {
