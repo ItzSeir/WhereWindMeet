@@ -13458,6 +13458,28 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
   html[data-theme="light"] .tower-highlight-label{color:#276e61}
   html[data-theme="light"] .tower-highlight-item strong{color:#126554}
   html[data-theme="light"] .tower-highlight-item.difficulty strong{color:#9e5915}
+
+  /* Personal 12/24-hour display switch: the underlying schedule stays HH:mm. */
+  html body .app-workspace .workspace-top-actions #timeFormatToggle{
+    display:inline-flex !important;align-items:center;justify-content:center;gap:7px !important;
+    min-height:42px !important;max-width:100%;flex:0 1 auto !important;
+    padding:9px 13px !important;border-radius:13px !important;
+    border:1px solid var(--ui-line,rgba(255,255,255,.16)) !important;
+    background:var(--ui-panel-2,rgba(255,255,255,.06)) !important;
+    color:var(--ui-text,#eef2ff) !important;
+    box-shadow:none !important;white-space:nowrap;font-size:12px !important;
+    font-weight:800 !important;letter-spacing:0 !important;
+  }
+  html body .app-workspace #timeFormatToggle svg{flex:0 0 auto;color:var(--ui-accent,#83b2ff)}
+  html body .app-workspace #timeFormatToggle .time-format-swap{font-size:14px;color:var(--ui-muted,#a8b3cf)}
+  html body .app-workspace #timeFormatToggle:hover{border-color:var(--ui-accent,#83b2ff) !important}
+  html body .app-workspace #timeFormatToggle:focus-visible{outline:2px solid var(--ui-accent,#83b2ff);outline-offset:3px}
+  @media(max-width:650px){
+    html body .app-workspace .workspace-top-actions #timeFormatToggle{min-height:38px !important;font-size:11px !important;padding:7px 9px !important;gap:5px !important}
+    html body .app-workspace .workspace-top-actions #timeFormatToggle svg{width:14px;height:14px}
+    html body .app-workspace .workspace-top-actions{gap:7px !important}
+    html body .app-workspace .team-intro-time{white-space:nowrap}
+  }
   </style>
 
 </head>
@@ -13523,6 +13545,11 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         <p class="workspace-subtitle">自由創建副本隊伍以及報名參團。</p>
       </div>
       <div class="workspace-top-actions">
+        <button type="button" class="time-format-toggle" id="timeFormatToggle" aria-label="切換十二小時或二十四小時制" title="切換時間顯示方式">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span id="timeFormatLabel">24 小時制</span>
+          <span class="time-format-swap" aria-hidden="true">⇄</span>
+        </button>
         <button type="button" class="workspace-primary-btn" id="addDateTimeBtn">＋ 建立隊伍</button>
       </div>
     </section>
@@ -14476,6 +14503,51 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     }
 
 
+    const TIME_FORMAT_STORAGE_KEY = "pve_registration_time_format_v1";
+    let preferredTimeFormat = (() => {
+      try { return localStorage.getItem(TIME_FORMAT_STORAGE_KEY) === "12" ? "12" : "24"; }
+      catch(e) { return "24"; }
+    })();
+
+    function formatDisplayTime(value){
+      const input=String(value ?? "").trim();
+      const match=/^([01]?\d|2[0-3]):([0-5]\d)$/.exec(input);
+      if(!match || preferredTimeFormat === "24") return input;
+      const hour=Number(match[1]);
+      return `${hour % 12 || 12}:${match[2]} ${hour < 12 ? "AM" : "PM"}`;
+    }
+    function syncTimeFormatToggle(){
+      const button=document.getElementById("timeFormatToggle");
+      const label=document.getElementById("timeFormatLabel");
+      if(label) label.textContent=preferredTimeFormat === "12" ? "12 小時制" : "24 小時制";
+      if(button){
+        const other=preferredTimeFormat === "12" ? "24" : "12";
+        button.setAttribute("aria-label", `目前為${preferredTimeFormat}小時制，切換至${other}小時制`);
+        button.title=`切換至 ${other} 小時制`;
+        button.setAttribute("aria-pressed", String(preferredTimeFormat === "12"));
+      }
+    }
+    function refreshTimePresetLabels(){
+      document.querySelectorAll(".time-preset[data-time]").forEach(button=>{
+        const time=button.dataset.time;
+        if(!time) return;
+        const recommended=button.querySelector("span");
+        const badge=recommended ? recommended.outerHTML : "";
+        button.innerHTML=`${formatDisplayTime(time)} ${badge}`;
+      });
+    }
+    function initTimeFormatToggle(){
+      syncTimeFormatToggle();
+      refreshTimePresetLabels();
+      document.getElementById("timeFormatToggle")?.addEventListener("click",()=>{
+        preferredTimeFormat=preferredTimeFormat === "12" ? "24" : "12";
+        try{localStorage.setItem(TIME_FORMAT_STORAGE_KEY,preferredTimeFormat);}catch(e){}
+        syncTimeFormatToggle();
+        refreshTimePresetLabels();
+        render();
+      });
+    }
+
     function getSlotStatus(slot){
       const raw = String(slot?.slotStatus || slot?.scheduleStatus || "準時").trim();
       if(raw === "changed" || raw === "timeChanged" || raw === "改時間") return "時間更改";
@@ -14541,7 +14613,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     function guardSignupTime(dateKey, slot, { showWarning = true } = {}){
       if(getSlotStatus(slot) === "取消"){ alert("此隊伍已取消，不能報名。"); return false; }
       const timing = getSignupTimingState(dateKey, slot);
-      const timeLabel = getSlotDisplayTime(slot) || slot?.time || "開團時間";
+      const timeLabel = formatDisplayTime(getSlotDisplayTime(slot) || slot?.time || "開團時間");
 
       if(timing.state === "closed") {
         if(timing.diffMs !== null && timing.diffMs <= 0){
@@ -14560,9 +14632,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     }
 
     function renderSlotTime(slot){
-      const originalTime = escapeHtml(slot?.time || "未設定時間");
+      const originalTime = escapeHtml(formatDisplayTime(slot?.time || "未設定時間"));
       const status = getSlotStatus(slot);
-      const changedTime = escapeHtml(getSlotChangedTime(slot));
+      const changedTime = escapeHtml(formatDisplayTime(getSlotChangedTime(slot)));
 
       if(status === "時間更改" && changedTime){
         return `
@@ -15780,7 +15852,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         if(index === slotIndex) return;
         const option = document.createElement("option");
         option.value = String(index);
-        option.textContent = `${slot.time}｜第 ${slot.instance || 1} 隊｜${teamTypeLabel(slot)}｜${(slot.members || []).length}/${getSlotMaxPeople(slot)}`;
+        option.textContent = `${formatDisplayTime(slot.time)}｜第 ${slot.instance || 1} 隊｜${teamTypeLabel(slot)}｜${(slot.members || []).length}/${getSlotMaxPeople(slot)}`;
         select.appendChild(option);
       });
 
@@ -15988,7 +16060,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       const leaderHeader = leaderDialog?.querySelector(".pve-form-header");
       if(leaderHeader) leaderHeader.dataset.tone = destructiveAction ? "danger" : "warn";
       const context = document.getElementById("leaderAuthContext");
-      if(context) context.textContent = `${teamTypeLabel(slot)}｜${slot.time}｜第 ${slot.instance || 1} 隊：${actionLabel}`;
+      if(context) context.textContent = `${teamTypeLabel(slot)}｜${formatDisplayTime(slot.time)}｜第 ${slot.instance || 1} 隊：${actionLabel}`;
       const input = document.getElementById("leaderAuthPinInput");
       const error = document.getElementById("leaderAuthError");
       if(input) input.value = "";
@@ -16104,7 +16176,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       statusSelect.value = getSlotStatus(slot);
       changedInput.value = getSlotChangedTime(slot) || slot.time || "";
-      info.innerHTML = `隊伍：<strong style="color:var(--text);">${escapeHtml(dateKey)}｜${escapeHtml(slot.time || "未設定時間")}｜第 ${slot.instance || 1} 隊</strong>`;
+      info.innerHTML = `隊伍：<strong style="color:var(--text);">${escapeHtml(dateKey)}｜${escapeHtml(formatDisplayTime(slot.time || "未設定時間"))}｜第 ${slot.instance || 1} 隊</strong>`;
 
       statusSelect.onchange = updateSlotStatusPreview;
       changedInput.oninput = updateSlotStatusPreview;
@@ -17258,7 +17330,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       }
       const initialRevision = scheduleRevision(initialDay);
       const originalId = original.id;
-      const originalTime = getSlotDisplayTime(original) || original.time || '未定時間';
+      const originalTime = formatDisplayTime(getSlotDisplayTime(original) || original.time || '未定時間');
       const message = `確定要刪除 ${dateKey} ${originalTime} 的第 ${original.instance || 1} 隊嗎？\n刪除後無法復原。`;
       const confirmed = typeof window.showAppConfirm === 'function'
         ? await window.showAppConfirm(message,{title:'刪除隊伍時間',confirmText:'確定刪除',tone:'danger'})
@@ -17295,7 +17367,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         return;
       }
       const waiting = getPendingMembers(slot).length;
-      const label = `${dateKey} ${slot.time}｜第 ${slot.instance || 1} 隊｜${normalizeSlot(slot).teamType}`;
+      const label = `${dateKey} ${formatDisplayTime(slot.time)}｜第 ${slot.instance || 1} 隊｜${normalizeSlot(slot).teamType}`;
       if(!(await window.showAppConfirm(`⚠️ 確定要永久刪除這支隊伍嗎？\n\n${label}\n已確認 0 人，待確認 ${waiting} 人。\n\n待確認申請也會一併移除，無法復原。`, { title: "強制刪除隊伍", confirmText: "確定刪除", tone: "danger" }))) return;
       try{
         const ref = doc(db, CONFIG.collectionName, dateKey);
@@ -17524,7 +17596,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
             <span class="my-team-state ${statusClass}">${statusLabel}</span>
           </div>
           <div class="my-team-main">
-            <strong>${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")}</strong>
+            <strong>${escapeHtml(formatDisplayTime(getSlotDisplayTime(slot) || slot.time || "--:--"))}</strong>
             <span>${escapeHtml(teamTypeLabel(slot))} · 第 ${slot.instance || 1} 隊</span>
           </div>
           <div class="my-team-meta">
@@ -17616,9 +17688,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         const instanceText = slot.instance ? `第 ${slot.instance} 隊` : "隊伍";
         const dateLabel = `${displayDate(date)} ${weekdayText(date)}`;
 
-        return `<button type="button" class="team-intro-card ${typeClass}${isMine ? " is-my-preview" : ""}" data-jump-date="${dateKey}" data-jump-slot="${slotIndex}" title="前往 ${escapeHtml(dateLabel)} ${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")} 報名">
+        return `<button type="button" class="team-intro-card ${typeClass}${isMine ? " is-my-preview" : ""}" data-jump-date="${dateKey}" data-jump-slot="${slotIndex}" title="前往 ${escapeHtml(dateLabel)} ${escapeHtml(formatDisplayTime(getSlotDisplayTime(slot) || slot.time || "--:--"))} 報名">
           <div class="team-intro-date-row"><div class="team-intro-date">${escapeHtml(dateLabel)}</div>${isMine ? `<span class="team-intro-mine">我的隊伍</span>` : ``}</div>
-          <div class="team-intro-top"><span class="team-intro-time">${escapeHtml(getSlotDisplayTime(slot) || slot.time || "--:--")}</span><span class="team-intro-type">${escapeHtml(teamTypeLabel(slot))}</span></div>
+          <div class="team-intro-top"><span class="team-intro-time">${escapeHtml(formatDisplayTime(getSlotDisplayTime(slot) || slot.time || "--:--"))}</span><span class="team-intro-type">${escapeHtml(teamTypeLabel(slot))}</span></div>
           <div class="team-intro-name">${escapeHtml(instanceText)} · ${maxPeople} 人編成</div>
           <div class="team-intro-meta">
             <span>${confirmedCount}/${maxPeople} 人</span>
@@ -17740,9 +17812,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       const status=getSlotStatus(slot);
       const category=normalizeSlot(slot).teamType;
       const max=getSlotMaxPeople(slot);
-      const label=`${dateKey} ${date?weekdayText(date):''} ${getSlotDisplayTime(slot)||'未定'}｜${normalizeSlot(slot).teamSize}人${category}｜第 ${slot.instance||1} 隊`;
+      const label=`${dateKey} ${date?weekdayText(date):''} ${formatDisplayTime(getSlotDisplayTime(slot)||'未定')}｜${normalizeSlot(slot).teamSize}人${category}｜第 ${slot.instance||1} 隊`;
       const lines=[`【夢回花深處｜副本隊伍】`,label,`隊伍狀態：${status}｜已確認 ${members.length}/${max} 人`];
-      if(status==='時間更改')lines.push(`原定時間：${slot.time||'--:--'}`);
+      if(status==='時間更改')lines.push(`原定時間：${formatDisplayTime(slot.time||'--:--')}`);
       if(category==='爬塔'){
         const tower=normalizeTowerSlot(slot);
         lines.push(`爬塔：${getTowerFloorLabel(slot)} · ${tower.towerDifficulty}`);
@@ -17782,13 +17854,13 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       posterRoundRect(ctx,76,267,1048,218,30,'rgba(255,255,255,.045)','rgba(213,227,255,.12)');
       ctx.fillStyle=c.accent;posterRoundRect(ctx,76,300,7,150,3,c.accent);
       posterText(ctx,'開團時間',106,305,23,'#a6b2cf',700);
-      posterText(ctx,getSlotDisplayTime(slot)||'--:--',104,374,77,'#f5f8ff',900,480);
+      posterText(ctx,formatDisplayTime(getSlotDisplayTime(slot)||'--:--'),104,374,63,'#f5f8ff',900,480);
       const readableDate=date?`${date.getFullYear()} 年 ${date.getMonth()+1} 月 ${date.getDate()} 日 · ${weekdayText(date)}`:dateKey;
       posterText(ctx,readableDate,108,439,25,'#c1d0ea',700,650);
       posterRoundRect(ctx,780,298,305,54,27,posterRgb(c.accent,.13),posterRgb(c.accent,.35));
       posterText(ctx,`${data.teamSize} 人 · ${data.teamType.replace('團','')}`,815,325,26,c.accent,900,250);
       posterText(ctx,`第 ${slot.instance||1} 隊`,800,390,26,'#f0f4ff',800);
-      posterText(ctx,status==='取消'?'已取消':status==='時間更改'?`時間更改（原 ${slot.time||'--:--'}）`:count>=max?'隊伍已滿':'招募中',800,440,23,status==='取消'?'#fda5ac':'#aab8d1',700,290);
+      posterText(ctx,status==='取消'?'已取消':status==='時間更改'?`時間更改（原 ${formatDisplayTime(slot.time||'--:--')}）`:count>=max?'隊伍已滿':'招募中',800,440,23,status==='取消'?'#fda5ac':'#aab8d1',700,290);
       // 隊伍條件及職業統計
       const counts=[['輸出',countRole(members,'輸出'),'#83b9ff'],['承傷',countRole(members,'承傷'),'#fac078'],['治療',countRole(members,'治療'),'#6fe0b7'],['增益',countRole(members,'增益'),'#ffaac9']];
       const sw=250,sy=515;
@@ -17881,7 +17953,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       return url.toString();
     }
     function buildTeamShareText(dateKey,slot){
-      const time=getSlotDisplayTime(slot)||slot?.time||'時間未定';
+      const time=formatDisplayTime(getSlotDisplayTime(slot)||slot?.time||'時間未定');
       return `夢回花深處｜${dateKey} ${time}｜${normalizeSlot(slot).teamSize}人${teamTypeLabel(slot)}｜第 ${slot.instance||1} 隊`;
     }
     async function shareTeamLink(dateKey,slotIndex){
@@ -17939,7 +18011,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         const max=getSlotMaxPeople(slot);
         const missing=getSlotMissingInfo(slot);
         const extra=normalizeSlot(slot).teamType==='爬塔' ? `｜${getTowerFloorLabel(slot)} ${normalizeTowerSlot(slot).towerDifficulty}` : '';
-        lines.push(`${getSlotDisplayTime(slot)||slot.time||'--:--'}｜第 ${slot.instance||1} 隊｜${normalizeSlot(slot).teamSize}人${teamTypeLabel(slot)}${extra}`);
+        lines.push(`${formatDisplayTime(getSlotDisplayTime(slot)||slot.time||'--:--')}｜第 ${slot.instance||1} 隊｜${normalizeSlot(slot).teamSize}人${teamTypeLabel(slot)}${extra}`);
         lines.push(`已確認 ${members.length}/${max} 人｜待確認 ${pending}｜黑工/補位 ${black}${missing.missingHeal>0?`｜缺治療 x${missing.missingHeal}`:''}`);
         if(members.length) lines.push('隊員：'+members.map(m=>`${m.name||'未命名'}(${m.role||'未指定'})`).join('、'));
         else lines.push('隊員：目前尚未有人報名');
@@ -18010,7 +18082,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         posterRoundRect(ctx,x+16,y+20,5,cardHeight-40,3,accent);
         posterText(ctx,`TEAM  ${String(slot.instance||1).padStart(2,'0')}`,x+37,y+45,17,'#889cb9',900,205);
         posterText(ctx,status,x+cardWidth-117,y+45,17,canceled?'#f09aa8':full?'#e9c58e':'#84d9ba',800,105);
-        posterText(ctx,getSlotDisplayTime(slot)||slot.time||'--:--',x+35,y+122,51,'#f3f7ff',920,260);
+        posterText(ctx,formatDisplayTime(getSlotDisplayTime(slot)||slot.time||'--:--'),x+35,y+122,45,'#f3f7ff',920,260);
         posterText(ctx,teamTypeLabel(slot),x+322,y+121,23,accent,900,cardWidth-360);
         if(tower){
           const tw=normalizeTowerSlot(slot);
@@ -18361,10 +18433,10 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                 <button type="button" class="mobile-team-toggle" data-action="mobile-team-toggle"
                   data-mobile-team-id="${escapeHtml(mobileTeamId)}"
                   aria-expanded="${mobileTeamIsOpen ? "true" : "false"}"
-                  aria-label="${escapeHtml(slot.time || "未設定時間")} 第 ${slot.instance || 1} 隊，${members.length} / ${maxPeople} 人，${mobileFirstMember ? `隊長 ${mobileFirstMember}` : "尚無隊長"}，${mobileTeamIsOpen ? "收合" : "展開"}隊伍詳情">
+                  aria-label="${escapeHtml(formatDisplayTime(slot.time || "未設定時間"))} 第 ${slot.instance || 1} 隊，${members.length} / ${maxPeople} 人，${mobileFirstMember ? `隊長 ${mobileFirstMember}` : "尚無隊長"}，${mobileTeamIsOpen ? "收合" : "展開"}隊伍詳情">
                   <span class="mobile-team-main">
                     <span class="mobile-team-topline">
-                      <strong class="mobile-team-time">${escapeHtml(getSlotChangedTime(slot) && slotScheduleStatus === "時間更改" ? getSlotChangedTime(slot) : slot.time || "未設定")}</strong>
+                      <strong class="mobile-team-time">${escapeHtml(formatDisplayTime(getSlotChangedTime(slot) && slotScheduleStatus === "時間更改" ? getSlotChangedTime(slot) : slot.time || "未設定"))}</strong>
                       <span class="mobile-team-number">第 ${slot.instance || 1} 隊</span>
                       <span class="mobile-team-type">${escapeHtml(normalizeSlot(slot).teamType.replace("團", ""))}</span>
                     </span>
@@ -18895,6 +18967,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     setupScrollFilterDropdown();
     bindMemberSearch();
     bindThemeToggle();
+    initTimeFormatToggle();
     document.getElementById("leaderAuthPinInput")?.addEventListener("keydown", (e) => {
       if(e.key === "Enter") confirmLeaderAuth();
     });
