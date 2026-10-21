@@ -13482,6 +13482,67 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
   }
   </style>
 
+<style id="pve-post-create-signup-flow-style">
+/* 不同於刪除警示：新增／報名成功採用細綠色頂線及中性色外框。 */
+html body .pve-signup-flow-box{
+  width:min(510px,100%) !important;
+  padding:25px !important;
+  overflow:hidden;
+  position:relative;
+  color:var(--pve-modal-text,var(--ui-text,#eef2ff));
+}
+html body .pve-signup-flow-box::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:4px;
+  background:linear-gradient(90deg,#34d399,#67d9be,#75b9f2);
+  z-index:2;
+}
+.pve-signup-flow-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.pve-signup-flow-icon{display:grid;place-items:center;flex:none;width:46px;height:46px;border-radius:15px;
+  background:rgba(52,211,153,.13);color:#47d5b0;border:1px solid rgba(52,211,153,.24);font-size:23px;font-weight:900}
+.pve-signup-flow-head-copy{min-width:0;flex:1}
+.pve-signup-flow-eyebrow{display:block;font-size:11px;color:var(--pve-modal-muted,var(--ui-muted,#a8b3cf));font-weight:750;margin-bottom:4px}
+.pve-signup-flow-head .confirm-modal-title{margin:0 !important;font-size:23px !important;line-height:1.3}
+.pve-signup-flow-team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+  background:var(--pve-modal-soft,var(--ui-panel-2,#222d40));
+  border:1px solid var(--pve-modal-border,var(--ui-line,rgba(255,255,255,.13)));
+  border-radius:15px;padding:14px;margin-bottom:18px}
+.pve-signup-flow-field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pve-signup-flow-field small{font-size:11px;color:var(--pve-modal-muted,var(--ui-muted,#a8b3cf))}
+.pve-signup-flow-field strong{font-size:13px;font-weight:850;color:var(--pve-modal-text,var(--ui-text,#eef2ff));overflow-wrap:anywhere}
+.pve-signup-flow-question{font-size:15px;font-weight:800;line-height:1.55;color:var(--pve-modal-text,var(--ui-text,#eef2ff));margin:0 0 8px}
+.pve-signup-flow-hint{font-size:12px;line-height:1.65;color:var(--pve-modal-muted,var(--ui-muted,#a8b3cf));margin:0 0 17px}
+.pve-signup-flow-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.pve-signup-flow-actions button{min-height:43px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:850}
+.pve-signup-flow-secondary{background:var(--pve-modal-soft,rgba(255,255,255,.06));border:1px solid var(--pve-modal-border,rgba(255,255,255,.14));color:var(--pve-modal-text,#eef2ff)}
+.pve-signup-flow-primary{background:linear-gradient(135deg,#4c9bdf,#7b62d2);border:1px solid rgba(181,198,245,.35);color:#fff}
+.pve-signup-flow-methods[hidden],#postCreateSignupAsk[hidden],#signupSuccessNotice[hidden]{display:none!important}
+.pve-signup-flow-methods{display:grid;gap:9px}
+.pve-signup-method{display:grid;grid-template-columns:40px minmax(0,1fr) 12px;align-items:center;gap:11px;
+  width:100%;text-align:left;border-radius:13px;padding:12px;background:var(--pve-modal-soft,rgba(255,255,255,.06));
+  border:1px solid var(--pve-modal-border,rgba(255,255,255,.14));color:var(--pve-modal-text,#eef2ff)}
+.pve-signup-method:hover,.pve-signup-method:focus-visible{border-color:#78a8e8;background:color-mix(in srgb,var(--pve-modal-soft,#17233b) 83%,#6ea8ff)}
+.pve-signup-method-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;
+  background:rgba(110,168,255,.12);color:#8bb9ff;font-size:18px;font-weight:900}
+.pve-signup-method strong{display:block;font-size:14px;font-weight:850;margin-bottom:3px}
+.pve-signup-method small{display:block;font-size:11px;color:var(--pve-modal-muted,var(--ui-muted,#a8b3cf));line-height:1.45;font-weight:500}
+.pve-signup-method-arrow{font-size:20px;color:var(--pve-modal-muted,#a8b3cf)}
+.pve-signup-flow-players{border:1px solid var(--pve-modal-border,rgba(255,255,255,.14));border-radius:13px;
+  padding:12px 14px;margin-bottom:12px;max-height:180px;overflow:auto}
+.pve-signup-flow-players strong{display:block;font-size:12px;margin-bottom:8px;color:var(--pve-modal-muted,#a8b3cf)}
+.pve-signup-flow-players div{font-size:13px;font-weight:700;line-height:1.7;overflow-wrap:anywhere}
+#signupSuccessModal[data-state="pending"] .pve-signup-flow-box::before{background:linear-gradient(90deg,#fbbf24,#e8ab62)}
+#signupSuccessModal[data-state="pending"] .pve-signup-flow-icon{background:rgba(245,158,11,.12);color:#e4aa50;border-color:rgba(245,158,11,.22)}
+html[data-theme="light"] .pve-signup-flow-icon{color:#138963;background:#e4f8f1;border-color:#bbe5d6}
+html[data-theme="light"] #signupSuccessModal[data-state="pending"] .pve-signup-flow-icon{color:#ae7119;background:#fff4df}
+html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7efff}
+@media(max-width:760px){
+  html body .pve-signup-flow-box{padding:22px 18px calc(22px + env(safe-area-inset-bottom)) !important;
+    max-height:min(88dvh,850px);overflow-y:auto;border-radius:24px 24px 0 0 !important}
+  .pve-signup-flow-head .confirm-modal-title{font-size:21px!important}
+  .pve-signup-flow-team{gap:10px;padding:12px}
+  .pve-signup-flow-actions button{font-size:12px}
+}
+</style>
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -14124,6 +14185,65 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
   </div>
 
 
+  <!-- 建團後可選擇是否立刻報名；由 slot.id 定位，不依賴排序後的陣列位置。 -->
+  <div id="postCreateSignupModal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="postCreateSignupTitle">
+    <div class="confirm-modal-box pve-signup-flow-box">
+      <div class="pve-signup-flow-head">
+        <span class="pve-signup-flow-icon" aria-hidden="true">✓</span>
+        <div class="pve-signup-flow-head-copy">
+          <span class="pve-signup-flow-eyebrow">夢回花深處 · 副本助手</span>
+          <h2 id="postCreateSignupTitle" class="confirm-modal-title">隊伍建立成功</h2>
+        </div>
+      </div>
+      <div id="postCreateSignupTeam" class="pve-signup-flow-team"></div>
+      <div id="postCreateSignupAsk">
+        <p class="pve-signup-flow-question">要現在報名剛建立的隊伍嗎？</p>
+        <p class="pve-signup-flow-hint">也可以稍後從隊伍卡片報名，不會影響已建立的隊伍。</p>
+        <div class="pve-signup-flow-actions">
+          <button type="button" id="postCreateSignupLater" class="pve-signup-flow-secondary">稍後再報</button>
+          <button type="button" id="postCreateSignupNow" class="pve-signup-flow-primary">立即選擇報名方式</button>
+        </div>
+      </div>
+      <div id="postCreateSignupMethods" class="pve-signup-flow-methods" hidden>
+        <p class="pve-signup-flow-question">選擇報名方式</p>
+        <button type="button" class="pve-signup-method" data-post-signup-method="normal">
+          <span class="pve-signup-method-icon">＋</span><span><strong>普通報名</strong><small>手動填寫玩家名稱與職業</small></span><span class="pve-signup-method-arrow">›</span>
+        </button>
+        <button type="button" class="pve-signup-method" data-post-signup-method="quick">
+          <span class="pve-signup-method-icon">⚡</span><span><strong>快速報名</strong><small>使用「我的資料」已儲存的名稱與職業</small></span><span class="pve-signup-method-arrow">›</span>
+        </button>
+        <button type="button" class="pve-signup-method" data-post-signup-method="batch">
+          <span class="pve-signup-method-icon">☷</span><span><strong>批量報名</strong><small>一次加入多位玩家，可使用常用名單</small></span><span class="pve-signup-method-arrow">›</span>
+        </button>
+        <div class="pve-signup-flow-actions">
+          <button type="button" id="postCreateSignupBack" class="pve-signup-flow-secondary">返回</button>
+          <button type="button" id="postCreateSignupSkip" class="pve-signup-flow-secondary">暫不報名</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 正式加入／待審核的統一回條，普通、快速、批量均會顯示。 -->
+  <div id="signupSuccessModal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="signupSuccessTitle">
+    <div class="confirm-modal-box pve-signup-flow-box">
+      <div class="pve-signup-flow-head">
+        <span id="signupSuccessIcon" class="pve-signup-flow-icon" aria-hidden="true">✓</span>
+        <div class="pve-signup-flow-head-copy">
+          <span class="pve-signup-flow-eyebrow">夢回花深處 · 副本助手</span>
+          <h2 id="signupSuccessTitle" class="confirm-modal-title">報名成功</h2>
+        </div>
+      </div>
+      <p id="signupSuccessMessage" class="pve-signup-flow-question"></p>
+      <div id="signupSuccessTeam" class="pve-signup-flow-team"></div>
+      <div id="signupSuccessPlayers" class="pve-signup-flow-players"></div>
+      <p id="signupSuccessNotice" class="pve-signup-flow-hint" hidden></p>
+      <div class="pve-signup-flow-actions">
+        <button type="button" id="signupSuccessDone" class="pve-signup-flow-secondary">完成</button>
+        <button type="button" id="signupSuccessViewTeam" class="pve-signup-flow-primary">查看隊伍</button>
+      </div>
+    </div>
+  </div>
+
   <div id="leaderPinRevealModal" class="confirm-modal">
     <div class="confirm-modal-box">
       <div class="confirm-modal-title">團長 PIN 已建立</div>
@@ -14411,6 +14531,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     let currentBatchSignup = null;
     let pendingLeaderAction = null;
     let currentRevealPin = "";
+    let postCreateSignupAfterPin = null;
+    let postCreateSignupTarget = null;
+    let latestSignupResultTarget = null;
     let editingBatchPresetIndex = -1;
     let currentSearchQuery = "";
     let currentTypeFilter = "all";
@@ -15744,7 +15867,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         slot.pendingMembers.push({ name, role, tag:"", note:"", requestedAt:Date.now() });
         await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
         closeModal();
-        alert("報名已送出，等待團長確認後才會正式加入隊伍。");
+        showSignupSuccess(dateKey,slot,[{name,role}],'普通報名');
         return;
       }
 
@@ -15756,6 +15879,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       closeModal();
+      showSignupSuccess(dateKey,slot,[{name,role}],'普通報名');
     };
 
     function openConfirmModal(dateKey, slotIndex, memberIndex){
@@ -16046,6 +16170,107 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       return { mode:"auto", pin:generateLeaderPin() };
     }
 
+    function locateSignupTeam(target){
+      if(!target?.dateKey || !target.slotId) return null;
+      const slots=globalData?.[target.dateKey]?.slots;
+      if(!Array.isArray(slots)) return null;
+      const index=slots.findIndex(slot=>slot?.id===target.slotId);
+      return index>=0 ? {dateKey:target.dateKey,slotIndex:index,slot:slots[index]} : null;
+    }
+    function signupTeamDetails(dateKey,slot){
+      const values=[
+        ['日期',dateKey],
+        ['開團時間',formatDisplayTime(getSlotDisplayTime(slot)||slot.time||'--:--')],
+        ['隊伍',teamTypeLabel(slot)],
+        ['編號',`第 ${slot.instance||1} 隊`]
+      ];
+      if(normalizeSlot(slot).teamType==='爬塔'){
+        values.push(['爬塔層數',getTowerFloorLabel(slot)],['挑戰難度',normalizeTowerSlot(slot).towerDifficulty]);
+      }
+      return values.map(([label,value])=>`<div class="pve-signup-flow-field"><small>${escapeHtml(label)}</small><strong>${escapeHtml(String(value))}</strong></div>`).join('');
+    }
+    function closePostCreateSignup(){
+      document.getElementById('postCreateSignupModal')?.classList.remove('show');
+      postCreateSignupTarget=null;
+    }
+    function openPostCreateSignup(target){
+      const found=locateSignupTeam(target);
+      if(!found){alert('隊伍已建立，但清單可能剛更新；請在隊伍列表中重新找到該隊報名。');return;}
+      postCreateSignupTarget={dateKey:target.dateKey,slotId:target.slotId};
+      document.getElementById('postCreateSignupTeam').innerHTML=signupTeamDetails(found.dateKey,found.slot);
+      document.getElementById('postCreateSignupAsk').hidden=false;
+      document.getElementById('postCreateSignupMethods').hidden=true;
+      document.getElementById('postCreateSignupTitle').textContent='隊伍建立成功';
+      document.getElementById('postCreateSignupModal').classList.add('show');
+      document.getElementById('postCreateSignupNow').focus();
+    }
+    function closeSignupSuccess(){
+      document.getElementById('signupSuccessModal').classList.remove('show');
+      latestSignupResultTarget=null;
+    }
+    function showSignupSuccess(dateKey,slot,players,method,errors=[]){
+      const waiting=isProtectedTeam(slot);
+      const modal=document.getElementById('signupSuccessModal');
+      modal.dataset.state=waiting?'pending':'success';
+      document.getElementById('signupSuccessIcon').textContent=waiting?'◷':'✓';
+      document.getElementById('signupSuccessTitle').textContent=waiting?'申請已送出':'報名成功';
+      document.getElementById('signupSuccessMessage').textContent=waiting
+        ? `已送出 ${players.length} 位玩家的報名申請，需等待團長確認後才算正式加入。`
+        : `已成功加入 ${players.length} 位玩家，以下是本次${method}的確認資訊。`;
+      document.getElementById('signupSuccessTeam').innerHTML=signupTeamDetails(dateKey,slot);
+      const roster=document.getElementById('signupSuccessPlayers');
+      roster.innerHTML=`<strong>${waiting?'本次待確認名單':'本次報名名單'} · ${escapeHtml(method)}</strong>`
+        +players.map(p=>`<div>${escapeHtml(p.name||'未命名')} · ${escapeHtml(p.role||'未指定')}</div>`).join('');
+      const notice=document.getElementById('signupSuccessNotice');
+      const rejected=errors.length?`未送出：${errors.slice(0,8).join('、')}${errors.length>8?'…':''}`:'';
+      notice.hidden=!waiting && !rejected;
+      notice.textContent=[waiting?'這是待審核申請，不會先佔用正式隊伍名額。':'',rejected].filter(Boolean).join('\n');
+      latestSignupResultTarget={dateKey,slotId:slot.id};
+      modal.classList.add('show');
+      document.getElementById('signupSuccessDone').focus();
+    }
+    document.getElementById('postCreateSignupLater').addEventListener('click',closePostCreateSignup);
+    document.getElementById('postCreateSignupSkip').addEventListener('click',closePostCreateSignup);
+    document.getElementById('postCreateSignupNow').addEventListener('click',()=>{
+      document.getElementById('postCreateSignupAsk').hidden=true;
+      document.getElementById('postCreateSignupMethods').hidden=false;
+      document.getElementById('postCreateSignupTitle').textContent='選擇報名方式';
+      document.querySelector('[data-post-signup-method="normal"]')?.focus();
+    });
+    document.getElementById('postCreateSignupBack').addEventListener('click',()=>{
+      document.getElementById('postCreateSignupAsk').hidden=false;
+      document.getElementById('postCreateSignupMethods').hidden=true;
+      document.getElementById('postCreateSignupTitle').textContent='隊伍建立成功';
+    });
+    document.querySelectorAll('[data-post-signup-method]').forEach(btn=>btn.addEventListener('click',()=>{
+      const found=locateSignupTeam(postCreateSignupTarget);
+      if(!found){closePostCreateSignup();alert('隊伍資料剛更新，請回到清單中選擇隊伍後報名。');return;}
+      const {dateKey,slotIndex,slot}=found;
+      const method=btn.dataset.postSignupMethod;
+      closePostCreateSignup();
+      if(method==='normal') void addMember(dateKey,slotIndex);
+      else if(method==='quick') void quickSignup(dateKey,slotIndex);
+      else if(method==='batch') openBatchSignupModal(dateKey,slotIndex);
+    }));
+    document.getElementById('signupSuccessDone').addEventListener('click',closeSignupSuccess);
+    document.getElementById('signupSuccessViewTeam').addEventListener('click',()=>{
+      const target=locateSignupTeam(latestSignupResultTarget);
+      closeSignupSuccess();
+      if(target)jumpToTeam(target.dateKey,target.slotIndex);
+      else alert('這支隊伍的位置已更新，請重新查看隊伍清單。');
+    });
+    ['postCreateSignupModal','signupSuccessModal'].forEach(id=>{
+      const modal=document.getElementById(id);
+      modal.addEventListener('click',event=>{if(event.target===modal){
+        if(id==='postCreateSignupModal')closePostCreateSignup();else closeSignupSuccess();
+      }});
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key!=='Escape')return;
+      if(document.getElementById('postCreateSignupModal').classList.contains('show')){event.preventDefault();closePostCreateSignup();}
+      if(document.getElementById('signupSuccessModal').classList.contains('show')){event.preventDefault();closeSignupSuccess();}
+    });
+
     function showLeaderPinReveal(pin){
       currentRevealPin = String(pin || "");
       const code = document.getElementById("leaderPinRevealCode");
@@ -16056,6 +16281,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     window.closeLeaderPinRevealModal = () => {
       currentRevealPin = "";
       document.getElementById("leaderPinRevealModal")?.classList.remove("show");
+      const created=postCreateSignupAfterPin;
+      postCreateSignupAfterPin=null;
+      if(created)openPostCreateSignup(created);
     };
 
     window.copyLeaderPin = async () => {
@@ -16651,7 +16879,9 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         ? Math.max(...sameTimeSlots.map(s => s.instance || 1)) + 1
         : 1;
 
+      const createdSlotId=crypto.randomUUID();
       dayData.slots.push({
+        id:createdSlotId,
         time,
         instance: nextInstance,
         members: [],
@@ -16681,7 +16911,13 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       syncFilterAfterNewSlot(teamType, teamSize);
       closeDateTimeModal();
-      if(revealPin) showLeaderPinReveal(revealPin);
+      const newTeam={dateKey,slotId:createdSlotId};
+      if(revealPin){
+        postCreateSignupAfterPin=newTeam;
+        showLeaderPinReveal(revealPin);
+      }else{
+        openPostCreateSignup(newTeam);
+      }
     };
 
     async function addMember(dateKey, slotIndex){
@@ -16749,7 +16985,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         }
         slot.pendingMembers.push({ name, role, tag:"", note:"", requestedAt:Date.now() });
         await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
-        alert("報名已送出，等待團長確認。");
+        showSignupSuccess(dateKey,slot,[{name,role}],'快速報名');
         return;
       }
 
@@ -16760,6 +16996,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       }
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      showSignupSuccess(dateKey,slot,[{name,role}],'快速報名');
     }
 
 
@@ -17251,6 +17488,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       const errors = [];
       const added = [];
+      const addedPlayers = [];
       const seenInInput = new Set();
 
       for(const player of players){
@@ -17293,6 +17531,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
           slot.members.push({ name:player.name, role:player.role, tag:"", note:"" });
         }
         added.push(player.name);
+        addedPlayers.push({name:player.name,role:player.role});
       }
 
       if(added.length === 0){
@@ -17306,12 +17545,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       closeBatchSignupModal();
-
-      if(isProtectedTeam(slot)){
-        alert(`已送出 ${added.length} 位待確認申請：${added.join("、")}${errors.length ? `\n\n以下未送出：\n${errors.slice(0, 10).join("\n")}` : ""}`);
-      }else if(errors.length > 0){
-        alert(`已加入 ${added.length} 位：${added.join("、")}\n\n以下未加入：\n${errors.slice(0, 10).join("\n")}`);
-      }
+      showSignupSuccess(dateKey,slot,addedPlayers,'批量報名',errors);
     };
 
     async function addCustomTime(dateKey){
