@@ -13291,35 +13291,58 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     .team-poster-actions button{padding:10px 16px;min-height:40px;border-radius:12px;font-weight:800;font-size:13px;border:1px solid var(--line,rgba(255,255,255,.13));cursor:pointer;white-space:nowrap}
     .team-poster-secondary{background:var(--panel-soft,rgba(255,255,255,.07));color:var(--text,#eef2ff)}
     .team-poster-primary{background:linear-gradient(135deg,#5e98f7,#8b5cf6);color:#fff;border-color:rgba(180,200,255,.36) !important}
-    .slot-share-actions{margin-top:10px;display:flex;}
-.share-team-btn{
-  width:100%;
+    .team-share-menu{position:relative;flex:0 0 auto;}
+.team-share-trigger{
+  min-width:42px;
+  height:42px;
+  padding:0 12px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:800;
+  color:#eef6ff;
+  background:linear-gradient(135deg, rgba(96,165,250,.20), rgba(139,92,246,.20));
+  border:1px solid rgba(180,200,255,.24);
+  box-shadow:0 8px 18px rgba(110,168,255,.08);
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  min-height:42px;
-  padding:10px 12px;
-  border-radius:14px;
-  font-size:13px;
-  font-weight:800;
-  color:#eef6ff;
-  background:linear-gradient(135deg, rgba(96,165,250,.24), rgba(139,92,246,.24));
-  border:1px solid rgba(180,200,255,.24);
-  box-shadow:0 8px 18px rgba(110,168,255,.08);
+  gap:6px;
 }
-.share-team-btn::before{content:'▧';font-size:16px;color:#a8d0ff;}
-.share-team-btn:hover{
-  background:linear-gradient(135deg, rgba(96,165,250,.34), rgba(139,92,246,.34));
+.team-share-trigger::before{content:'↗';font-size:15px;color:#a8d0ff;line-height:1;}
+.team-share-trigger:hover{
+  background:linear-gradient(135deg, rgba(96,165,250,.30), rgba(139,92,246,.30));
   box-shadow:0 10px 24px rgba(110,168,255,.14);
 }
-.share-team-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  filter:saturate(.55);
-  box-shadow:none;
-  transform:none;
+.team-share-dropdown{
+  position:absolute;
+  right:0;
+  top:calc(100% + 6px);
+  min-width:152px;
+  background:linear-gradient(180deg, rgba(23,31,48,.98), rgba(16,23,38,.98));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  padding:6px;
+  box-shadow:0 18px 40px rgba(0,0,0,.38);
+  display:none;
+  z-index:55;
 }
+.team-share-menu.open .team-share-dropdown{display:block;}
+.team-share-item{
+  width:100%;
+  text-align:left;
+  background:transparent;
+  color:var(--text);
+  border:none;
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+.team-share-item:hover{background:rgba(255,255,255,.08);}
+.team-share-item.link{color:#dbe7ff;}
+.team-share-item.image{color:#cfe9ff;}
+.team-share-item.preview{color:#f2deff;}
 .slot-menu-item.poster{color:var(--text,#eaf0ff);display:flex;align-items:center;gap:8px}
     .slot-menu-item.poster::before{content:'▧';font-size:17px;color:#84b9ff}
     @media(max-width:650px){
@@ -14099,8 +14122,8 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
   <!-- 黑工報名：獨立存放於 blackWorkers，不計入正式名額 -->
   <div id="blackworkModal" class="blackwork-modal" hidden>
     <section class="blackwork-dialog" role="dialog" aria-modal="true" aria-labelledby="blackworkDialogTitle">
-      <h2 class="blackwork-dialog-title" id="blackworkDialogTitle">黑工報名</h2>
-      <p class="blackwork-dialog-copy">已經領取過獎勵的協助者／候補，不佔正式隊伍名額，也沒有報名人數上限。</p>
+      <h2 class="blackwork-dialog-title" id="blackworkDialogTitle">黑工／補位報名</h2>
+      <p class="blackwork-dialog-copy">已領過獎勵、願意協助補位的玩家可在此報名。不限人數、不佔正式隊伍名額，亦不會自動轉為正式隊員。</p>
       <label class="signup-label" for="blackworkName">玩家名稱</label>
       <input id="blackworkName" class="signup-input" type="text" maxlength="80" autocomplete="off" placeholder="請輸入玩家名稱" />
       <label class="signup-label" for="blackworkRole">職業</label>
@@ -14253,6 +14276,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     let currentTypeFilter = "all";
     let currentSizeFilter = "all";
     let selectedDateKey = localStorage.getItem("registration_selected_date") || "";
+    let pendingSharedTeamJump = (()=>{ const params=new URLSearchParams(window.location.search); const date=params.get('teamDate'); const slot=params.get('teamSlot'); return date && slot!==null ? {dateKey:date, slotIndex:Number(slot)} : null; })();
     localStorage.setItem("registration_type_filter", "all");
     localStorage.setItem("registration_size_filter", "all");
     localStorage.removeItem("registration_activity_filter");
@@ -15296,6 +15320,12 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         });
 
         document.querySelectorAll(".slot-menu.open").forEach(menu => {
+          if(!menu.contains(e.target)){
+            menu.classList.remove("open");
+          }
+        });
+
+        document.querySelectorAll(".team-share-menu.open").forEach(menu => {
           if(!menu.contains(e.target)){
             menu.classList.remove("open");
           }
@@ -17559,7 +17589,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       for(let i=members.length;i<max;i++)lines.push(`${i+1}. （空位）`);
       const blackWorkers=getBlackWorkers(slot);
       if(blackWorkers.length){
-        lines.push(`── 黑工／候補（${blackWorkers.length} 人，不佔名額）──`);
+        lines.push(`── 黑工／補位（${blackWorkers.length} 人，不佔名額）──`);
         blackWorkers.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${m.role||'未指定'}`));
       }
       return lines.join('\n');
@@ -17647,7 +17677,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       }
       if(blackWorkers.length){
         const sectionY=1510;
-        posterText(ctx,`黑工／候補  ${blackWorkers.length} 人`,76,sectionY+3,31,'#6fe0ce',850);
+        posterText(ctx,`黑工／補位  ${blackWorkers.length} 人`,76,sectionY+3,31,'#6fe0ce',850);
         blackWorkers.forEach((worker,i)=>{
           const col=i%2,row=Math.floor(i/2),x=76+col*536,y=sectionY+35+row*99;
           posterRoundRect(ctx,x,y,512,84,15,'rgba(78,191,173,.075)','rgba(110,220,199,.20)');
@@ -17660,6 +17690,71 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       posterText(ctx,'夢回花深處  ·  PVE REGISTRATION',78,H-59,19,'#667894',800);
       posterText(ctx,'TEAM  /  '+String(slot.instance||1).padStart(2,'0'),943,H-59,18,c.accent,850);
       return ctxCanvas;
+    }
+    async function generatePosterAsset(dateKey,slotIndex){
+      if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,2000))]);
+      const current=globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!current) throw new Error('隊伍資料已更新，請重新開啟分享。');
+      const canvas=posterPaint(dateKey,current);
+      const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG 產生失敗')),'image/png'));
+      const safeTime=(getSlotDisplayTime(current)||'時間未定').replace(/:/g,'');
+      return {
+        slot:current,
+        blob,
+        rosterText:posterBuildText(dateKey,current),
+        name:`夢回花深處_隊伍_${dateKey}_${safeTime}_${normalizeSlot(current).teamType}_第${current.instance||1}隊.png`
+      };
+    }
+    function buildTeamShareUrl(dateKey,slotIndex){
+      const url=new URL(window.location.href);
+      url.searchParams.set('teamDate',dateKey);
+      url.searchParams.set('teamSlot',String(slotIndex));
+      return url.toString();
+    }
+    function buildTeamShareText(dateKey,slot){
+      const time=getSlotDisplayTime(slot)||slot?.time||'時間未定';
+      return `夢回花深處｜${dateKey} ${time}｜${normalizeSlot(slot).teamSize}人${teamTypeLabel(slot)}｜第 ${slot.instance||1} 隊`;
+    }
+    async function shareTeamLink(dateKey,slotIndex){
+      const slot=globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot){ alert('找不到這個隊伍。'); return; }
+      const url=buildTeamShareUrl(dateKey,slotIndex);
+      const text=buildTeamShareText(dateKey,slot);
+      try{
+        if(navigator.share){
+          await navigator.share({title:'夢回花深處｜副本隊伍', text, url});
+          return;
+        }
+      }catch(error){
+        if(error?.name==='AbortError') return;
+      }
+      try{
+        if(!navigator.clipboard?.writeText) throw new Error('目前瀏覽器不支援複製連結');
+        await navigator.clipboard.writeText(url);
+        alert('隊伍連結已複製，可以直接分享。');
+      }catch(error){
+        prompt('請手動複製隊伍連結：', url);
+      }
+    }
+    async function shareTeamImage(dateKey,slotIndex){
+      const slot=globalData?.[dateKey]?.slots?.[slotIndex];
+      if(!slot){ alert('找不到這個隊伍。'); return; }
+      try{
+        const asset=await generatePosterAsset(dateKey,slotIndex);
+        const file=new File([asset.blob], asset.name, {type:'image/png'});
+        if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+          await navigator.share({
+            title:'夢回花深處｜副本隊伍',
+            text:buildTeamShareText(dateKey,asset.slot),
+            files:[file]
+          });
+          return;
+        }
+      }catch(error){
+        if(error?.name==='AbortError') return;
+      }
+      await openTeamPoster(dateKey,slotIndex);
+      posterFeedback('目前瀏覽器不支援直接分享圖片，已打開圖片預覽，可下載或複製圖片。');
     }
     async function openTeamPoster(dateKey,slotIndex){
       const slot=globalData?.[dateKey]?.slots?.[slotIndex];
@@ -17675,21 +17770,14 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       posterFeedback('正在生成隊伍圖片…');
       posterElements.close.focus();
       try{
-        if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,2000))]);
-        if(requestId!==posterRequestId)return;
-        // 生成時再次取最新資料；不包含 PIN 等隊伍管理設定
-        const current=globalData?.[dateKey]?.slots?.[slotIndex];
-        if(!current)throw new Error('隊伍資料已更新，請重新開啟選單。');
-        const canvas=posterPaint(dateKey,current);
-        const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG 產生失敗')),'image/png'));
+        const asset=await generatePosterAsset(dateKey,slotIndex);
         if(requestId!==posterRequestId)return;
         if(posterUrl)URL.revokeObjectURL(posterUrl);
-        posterBlob=blob;
-        posterUrl=URL.createObjectURL(blob);
+        posterBlob=asset.blob;
+        posterUrl=URL.createObjectURL(asset.blob);
         posterElements.image.src=posterUrl;
-        posterRosterText=posterBuildText(dateKey,current);
-        const safeTime=(getSlotDisplayTime(current)||'時間未定').replace(/:/g,'');
-        posterName=`夢回花深處_隊伍_${dateKey}_${safeTime}_${normalizeSlot(current).teamType}_第${current.instance||1}隊.png`;
+        posterRosterText=asset.rosterText;
+        posterName=asset.name;
         posterElements.download.disabled=false;
         posterElements.copyImage.disabled=false;
         posterElements.copyText.disabled=false;
@@ -17990,6 +18078,15 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                       </span>
                     </div>
 
+                    <div class="team-share-menu">
+                      <button class="team-share-trigger" type="button" data-action="toggle-share-menu" aria-label="分享隊伍">分享</button>
+                      <div class="team-share-dropdown">
+                        <button class="team-share-item link" type="button" data-action="share-team-link" data-date="${dateKey}" data-slot="${slotIndex}">分享鏈接</button>
+                        <button class="team-share-item image" type="button" data-action="share-team-image" data-date="${dateKey}" data-slot="${slotIndex}">分享圖片</button>
+                        <button class="team-share-item preview" type="button" data-action="generate-team-poster" data-date="${dateKey}" data-slot="${slotIndex}">預覽圖片</button>
+                      </div>
+                    </div>
+
                     <div class="slot-menu">
                       <button class="slot-menu-trigger" data-action="toggle-slot-menu">⋯</button>
                       <div class="slot-menu-dropdown">
@@ -18113,8 +18210,8 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                 </div>
                 <div class="blackwork-block">
                   <div class="blackwork-head">
-                    <span class="blackwork-title">黑工 / 補位 <span class="blackwork-count">${blackWorkers.length}</span></span>
-                    <span class="blackwork-caption">幫忙補位 · 人數不夠幫忙進入隊伍</span>
+                    <span class="blackwork-title">黑工／補位 <span class="blackwork-count">${blackWorkers.length}</span></span>
+                    <span class="blackwork-caption">已領獎勵 · 協助補位、不佔名額</span>
                   </div>
                   ${blackWorkers.length ? `<div class="blackwork-list">${blackWorkers.map((worker,index)=>`
                     <div class="blackwork-person${savedName && normalizeName(worker.name)===normalizeName(savedName) ? ' blackwork-person-self' : ''}">
@@ -18123,7 +18220,7 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                       <button type="button" class="blackwork-remove" data-action="remove-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="移除黑工 ${escapeHtml(worker.name || '')}" title="取消黑工報名">×</button>
                     </div>`).join('')}</div>` : ''}
                   <div class="blackwork-cta">
-                    <button type="button" class="blackwork-add" data-action="signup-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || isSignupClosed ? 'disabled' : ''}>＋ 黑工報名（不限人數）</button>
+                    <button type="button" class="blackwork-add" data-action="signup-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" ${isSlotCancelled || isSignupClosed ? 'disabled' : ''}>＋ 黑工／補位報名（不限人數）</button>
                   </div>
                 </div>
 
@@ -18151,11 +18248,6 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
                       ${isProtectedTeam(slot) ? "快速申請" : "快速報名"}
                     </button>
                   `}
-                </div>
-                <div class="slot-share-actions">
-                  <button type="button" class="share-team-btn" data-action="generate-team-poster" data-date="${dateKey}" data-slot="${slotIndex}">
-                    分享隊伍圖
-                  </button>
                 </div>
               </div>
             `;
@@ -18262,6 +18354,24 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         };
       });
 
+      document.querySelectorAll('[data-action="toggle-share-menu"]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+
+          document.querySelectorAll(".member-menu.open,.slot-menu.open").forEach(menu => {
+            menu.classList.remove("open");
+          });
+
+          document.querySelectorAll(".team-share-menu.open").forEach(menu => {
+            if(menu !== btn.closest(".team-share-menu")){
+              menu.classList.remove("open");
+            }
+          });
+
+          btn.closest(".team-share-menu").classList.toggle("open");
+        };
+      });
+
       document.querySelectorAll('[data-action="add-time"]').forEach(btn => {
         btn.onclick = () => addCustomTime(btn.dataset.date);
       });
@@ -18284,6 +18394,20 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
 
       document.querySelectorAll('[data-action="quick-signup"]').forEach(btn => {
         btn.onclick = () => quickSignup(btn.dataset.date, Number(btn.dataset.slot));
+      });
+
+      document.querySelectorAll('[data-action="share-team-link"]').forEach(btn => {
+        btn.onclick = async () => {
+          document.querySelectorAll('.team-share-menu.open').forEach(menu => menu.classList.remove('open'));
+          await shareTeamLink(btn.dataset.date, Number(btn.dataset.slot));
+        };
+      });
+
+      document.querySelectorAll('[data-action="share-team-image"]').forEach(btn => {
+        btn.onclick = async () => {
+          document.querySelectorAll('.team-share-menu.open').forEach(menu => menu.classList.remove('open'));
+          await shareTeamImage(btn.dataset.date, Number(btn.dataset.slot));
+        };
       });
 
       document.querySelectorAll('[data-action="generate-team-poster"]').forEach(btn => {
@@ -18410,6 +18534,11 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
       }
 
       render();
+      if(pendingSharedTeamJump && pendingSharedTeamJump.dateKey){
+        const target = pendingSharedTeamJump;
+        pendingSharedTeamJump = null;
+        setTimeout(() => jumpToTeam(target.dateKey, target.slotIndex), 80);
+      }
     });
 
     await initializeVisibleDates();
@@ -19800,5 +19929,123 @@ html[data-theme="light"] body .app-workspace .signup-availability-symbol{
 })();
 
 </script>
+
+<style id="pve-light-share-blackwork-fix">
+/* 白天模式：黑工／補位與分享選單補齊專屬色彩；只作用於相關元件。 */
+html[data-theme="light"] body .app-workspace .blackwork-block{
+  background:linear-gradient(135deg,#eaf8f5 0%,#f5fbfa 65%,#fff 100%) !important;
+  border-color:#acdcd3 !important;
+  box-shadow:0 6px 18px rgba(34,125,110,.055) !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-title{color:#146f60 !important;}
+html[data-theme="light"] body .app-workspace .blackwork-title .blackwork-count{
+  color:#146f60 !important;background:#d8f1e9 !important;border-color:#aedbd0 !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-caption{color:#59768a !important;}
+html[data-theme="light"] body .app-workspace .blackwork-person{
+  background:#fff !important;border-color:#d4e7e3 !important;
+  box-shadow:0 2px 6px rgba(32,89,99,.035) !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-person-self{
+  background:#fff7e5 !important;border-color:#e8d4aa !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-person-name{color:#20364a !important;}
+html[data-theme="light"] body .app-workspace .blackwork-remove{
+  background:transparent !important;color:#b84156 !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-remove:hover{
+  background:#fdebef !important;color:#a82e45 !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-add{
+  background:#dbf4ed !important;color:#096f5d !important;border-color:#97d4c6 !important;
+  box-shadow:none !important;
+}
+html[data-theme="light"] body .app-workspace .blackwork-add:hover{
+  background:#c9ebe1 !important;border-color:#6ec1af !important;
+}
+html[data-theme="light"] body .app-workspace .mobile-blackwork-count,
+html[data-theme="light"] body .app-workspace .blackwork-preview-stat{
+  color:#116f60 !important;background:#e1f5ef !important;border-color:#b5dfd3 !important;
+}
+/* 分享按鈕、兩種選單不再保留深色背景和白字。 */
+html[data-theme="light"] body .app-workspace .team-share-trigger{
+  color:#34558d !important;background:linear-gradient(135deg,#eef4ff,#f3efff) !important;
+  border-color:#cbd9ef !important;box-shadow:0 3px 8px rgba(62,93,148,.06) !important;
+}
+html[data-theme="light"] body .app-workspace .team-share-trigger::before{color:#426fba !important;}
+html[data-theme="light"] body .app-workspace .team-share-trigger:hover{
+  color:#244779 !important;background:#e4edff !important;border-color:#abc5ef !important;
+}
+html[data-theme="light"] body .app-workspace .team-share-dropdown{
+  color:#263a56 !important;background:#fff !important;border-color:#dbe5f1 !important;
+  box-shadow:0 15px 36px rgba(48,71,113,.16) !important;
+}
+html[data-theme="light"] body .app-workspace .team-share-item,
+html[data-theme="light"] body .app-workspace .team-share-item.link,
+html[data-theme="light"] body .app-workspace .team-share-item.image,
+html[data-theme="light"] body .app-workspace .team-share-item.preview{
+  color:#263a56 !important;background:transparent !important;
+}
+html[data-theme="light"] body .app-workspace .team-share-item:hover{
+  color:#214d99 !important;background:#eef4ff !important;
+}
+/* 未展開的官方三點、隊員三點選單同時確保可讀性。 */
+html[data-theme="light"] body .app-workspace .slot-menu-trigger,
+html[data-theme="light"] body .app-workspace .menu-trigger{
+  color:#506384 !important;background:#eef2f9 !important;border-color:#d5dfed !important;
+}
+html[data-theme="light"] body .app-workspace .slot-menu-dropdown,
+html[data-theme="light"] body .app-workspace .member-menu-dropdown{
+  color:#263a56 !important;background:#fff !important;border-color:#dce5f1 !important;
+}
+/* 黑工報名與生成圖片視窗也使用淡色表面。 */
+html[data-theme="light"] body .blackwork-modal,
+html[data-theme="light"] body .team-poster-backdrop{
+  background:rgba(31,44,69,.35) !important;
+}
+html[data-theme="light"] body .blackwork-dialog,
+html[data-theme="light"] body .team-poster-dialog{
+  color:#20324b !important;background:#fff !important;border-color:#d9e3f0 !important;
+  box-shadow:0 24px 65px rgba(52,73,111,.16) !important;
+}
+html[data-theme="light"] body .blackwork-dialog-title,
+html[data-theme="light"] body .team-poster-title{color:#1f3049 !important;}
+html[data-theme="light"] body .blackwork-dialog-copy,
+html[data-theme="light"] body .team-poster-kicker,
+html[data-theme="light"] body .team-poster-subtitle,
+html[data-theme="light"] body .team-poster-status{color:#63748d !important;}
+html[data-theme="light"] body .blackwork-dialog .signup-label{color:#506581 !important;}
+html[data-theme="light"] body .blackwork-dialog .signup-input,
+html[data-theme="light"] body .blackwork-dialog .signup-select{
+  background:#f8faff !important;color:#20324b !important;border-color:#d4e0ee !important;
+}
+html[data-theme="light"] body .blackwork-cancel,
+html[data-theme="light"] body .team-poster-secondary,
+html[data-theme="light"] body .team-poster-close{
+  color:#304660 !important;background:#f1f5fb !important;border-color:#d8e1ee !important;
+}
+html[data-theme="light"] body .team-poster-head,
+html[data-theme="light"] body .team-poster-actions{border-color:#e0e7f1 !important;}
+html[data-theme="light"] body .team-poster-preview{border-color:#dce5f1 !important;}
+/* 手機展開隊伍時，給「分享 + ...」兩個按鍵完整寬度，不再彼此重疊。 */
+@media(max-width:768px){
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top > div:first-child{
+    padding-right:98px !important;
+  }
+  html body .app-workspace .slot-card.mobile-team-expanded > .slot-top .slot-top-right{
+    width:auto !important;min-width:0 !important;
+    max-width:none !important;display:flex !important;gap:5px !important;
+    justify-content:flex-end !important;align-items:center !important;
+  }
+  html body .app-workspace .team-share-trigger{
+    min-width:51px;height:34px;padding:0 8px;font-size:11px;
+  }
+  html body .app-workspace .team-share-trigger::before{font-size:13px;}
+  html body .app-workspace .slot-top-right .slot-menu-trigger{
+    min-width:34px;height:34px;padding:2px 7px;
+  }
+  html body .app-workspace .team-share-dropdown{min-width:146px;z-index:80;}
+}
+</style>
 </body>
 </html>
