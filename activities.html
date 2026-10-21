@@ -39,6 +39,17 @@
     .detail-card-head{display:flex;gap:10px;align-items:center;padding:13px 15px;border-bottom:1px solid var(--line)}.detail-card-ico{flex:0 0 35px;display:grid;place-items:center;width:35px;height:35px;border-radius:11px;background:color-mix(in srgb,var(--accent) 12%,var(--surface));color:var(--accent);font-size:19px}.detail-card-head h4{margin:0;flex:1;min-width:0;font-size:15px;overflow-wrap:anywhere}.detail-kind{font-size:10px;color:var(--muted);font-weight:800}
     .detail-photo{position:relative;display:block;width:100%;padding:0;border:0;background:var(--surface-3);cursor:zoom-in}.detail-photo img{display:block;width:100%;height:auto;max-height:680px;object-fit:contain;margin:auto}.detail-photo:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}.detail-zoom{position:absolute;bottom:12px;right:12px;padding:7px 10px;border-radius:99px;background:rgba(7,13,25,.75);color:white;font-weight:800;font-size:11px}
     .detail-note{margin:0;padding:12px 15px;color:var(--muted);font-size:13px;line-height:1.75}.detail-video{aspect-ratio:16/9;background:#090d18}.detail-video iframe{display:block;width:100%;height:100%;border:0}.detail-video-link{display:block;padding:12px 15px;color:var(--accent);font-size:12px;font-weight:800;text-align:right;text-decoration:none}.detail-video-link:hover{text-decoration:underline}.detail-invalid{padding:24px 16px;color:var(--muted);font-size:13px}.photo-grid .gallery-empty{grid-column:1/-1}
+    /* Section 03 photo gallery: top-left number pill, actual file/player name below. */
+    .photo-grid .photo-item{isolation:isolate;background:var(--surface-3);color:#fff;text-align:left}
+    .photo-grid .photo-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .photo-grid .photo-item::after{content:"";position:absolute;z-index:1;inset:40% 0 0;background:linear-gradient(180deg,transparent,rgba(4,9,22,.80));pointer-events:none}
+    .photo-grid .photo-item .photo-placeholder{display:none}
+    .gallery-photo-number{position:absolute;top:10px;left:10px;z-index:3;display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:26px;padding:0 9px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(10,17,32,.73);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);color:#fff;font-size:11px;font-weight:850;line-height:1}
+    .gallery-photo-name{position:absolute;z-index:3;bottom:0;left:0;right:0;padding:14px 12px 12px;color:#fff;font-size:13px;font-weight:800;line-height:1.45;text-shadow:0 1px 7px rgba(0,0,0,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .photo-failed{display:none;position:absolute;inset:0;align-items:center;justify-content:center;padding:14px;font-size:12px;color:var(--muted)}
+    .photo-grid .photo-item img.is-broken{display:none}
+    .photo-grid .photo-item img.is-broken+.photo-failed{display:flex}
+    @media(max-width:768px){.gallery-photo-number{top:8px;left:8px;min-width:25px;height:24px;font-size:10px}.gallery-photo-name{padding:12px 10px 10px;font-size:11px}}
     /* Section 03: video cards appear alongside folder-scanned photos. */
     .gallery-video-tile{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;aspect-ratio:4/3;overflow:hidden;padding:0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,#182340,#0a1020);cursor:pointer;color:#fff;text-align:center}
     .gallery-video-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.76;transition:transform .25s,opacity .25s}
@@ -741,6 +752,8 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
       featured：顯示在自動相簿上方的介紹、得獎圖片（按填寫順序）。
       works：作品，可填 YouTube 影片或圖片（按填寫順序）。
       galleryVideos：第 03 區「活動相簿」的手動影片清單；會和自動掃描照片一起顯示。
+      只放一部影片也可使用 {title:"玩家名", youtube:"影片網址"}；多部影片建議用 [{...},{...}]。
+      第 03 區自動識別圖片檔名（去掉副檔名）作為玩家名稱，左上角顯示編號。
       coverFile：選填，自訂活動封面路徑。
 
       在某個活動的 description 後增加，例如：
@@ -788,10 +801,12 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
     image: "assets/events/christmas-2025/info/2.最終成績.png"
   }
 ],
-        galleryVideos:  {
-    title: "青葉",
-    youtube: "https://www.youtube.com/embed/FjukiFZV87A?si=9UbvaQqr5Z2mafeB"
-  }
+        galleryVideos: [
+          {
+            title: "青葉",
+            youtube: "https://www.youtube.com/embed/FjukiFZV87A?si=9UbvaQqr5Z2mafeB"
+          }
+        ]
       }
     ].map(event=>({...event, cover:"", photos:[], photoStatus:event.folder?"loading":"ready"}));
 
@@ -853,7 +868,9 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
     }
     function manualImages(event){return [...featureItems(event,"featured"),...featureItems(event,"works")].filter(item=>item.type==="image")}
     function galleryVideoItems(event){
-      return (Array.isArray(event.galleryVideos)?event.galleryVideos:[]).map((raw,index)=>{
+      // Accept one object/link or an array, so a single video is never silently skipped.
+      const entries=Array.isArray(event.galleryVideos)?event.galleryVideos:(event.galleryVideos?[event.galleryVideos]:[]);
+      return entries.map((raw,index)=>{
         const item=typeof raw==="string"?{youtube:raw}:raw;
         if(!item||typeof item!=="object")return null;
         const link=String(item.youtube||item.video||item.url||"").trim();
@@ -871,6 +888,12 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
           thumbnail:item.thumbnail?photoRelativeUrl(item.thumbnail):youtube?`https://i.ytimg.com/vi/${youtube.id}/hqdefault.jpg`:""
         };
       }).filter(Boolean);
+    }
+    function photoDisplayName(src){
+      // GitHub file name (including Chinese and spaces) becomes the player's name.
+      let filename=String(src||"").split(/[?#]/)[0].split("/").pop()||"";
+      try{filename=decodeURIComponent(filename)}catch(_){}
+      return filename.replace(/\.[^.]+$/,"").trim()||"未命名玩家";
     }
     function photoCount(event){return event.photos.length+manualImages(event).length}
     function videoCount(event){return [...featureItems(event,"featured"),...featureItems(event,"works")].filter(item=>item.type==="youtube").length+galleryVideoItems(event).length}
@@ -965,10 +988,13 @@ html body #siteAnnouncement .wwma-progress[hidden] {display:none !important;}
       const featured=featureItems(event,"featured"),works=featureItems(event,"works");
       const manual=[...featured,...works].filter(item=>item.type==="image");
       activeGalleryVideos=galleryVideoItems(event);
-      lightboxPhotos=[...manual.map(item=>({src:photoRelativeUrl(item.url),caption:item.title})),...event.photos.map((src,index)=>({src,caption:`活動照片 ${index+1}`}))];
+      lightboxPhotos=[...manual.map(item=>({src:photoRelativeUrl(item.url),caption:item.title})),...event.photos.map(src=>({src,caption:photoDisplayName(src)}))];
       const offset=manual.length;
       const galleryVideosMarkup=activeGalleryVideos.map((item,index)=>`<button class="gallery-video-tile" type="button" data-gallery-video-index="${index}" aria-label="播放 ${escapeHtml(item.title)}">${item.thumbnail?`<img src="${escapeHtml(item.thumbnail)}" alt="" loading="lazy" onerror="this.style.display='none'">`:""}<span class="gallery-video-badge">${item.type==="youtube"?"YOUTUBE":"VIDEO"}</span><span class="gallery-video-play" aria-hidden="true">▶</span><span class="gallery-video-title">${escapeHtml(item.title)}</span></button>`).join("");
-      const galleryPhotosMarkup=event.photos.map((src,index)=>`<button class="photo-item" type="button" data-photo-index="${offset+index}" aria-label="查看第 ${index+1} 張照片"><span class="photo-placeholder">照片 ${index+1}</span><img src="${escapeHtml(src)}" alt="${escapeHtml(event.title)} 活動照片 ${index+1}" loading="lazy" onerror="this.style.display='none'"></button>`).join("");
+      const galleryPhotosMarkup=event.photos.map((src,index)=>{
+        const name=photoDisplayName(src);
+        return `<button class="photo-item" type="button" data-photo-index="${offset+index}" aria-label="查看 ${escapeHtml(name)} 的照片，第 ${index+1} 張"><img src="${escapeHtml(src)}" alt="${escapeHtml(name)}" loading="lazy" onerror="this.classList.add('is-broken')"><span class="photo-failed">圖片載入失敗</span><span class="gallery-photo-number" aria-hidden="true">${index+1}</span><span class="gallery-photo-name">${escapeHtml(name)}</span></button>`;
+      }).join("");
       const showGalleryMessage=!event.photos.length&&(event.photoStatus!=="ready"||!activeGalleryVideos.length);
       const galleryMessage=showGalleryMessage?`<div class="empty show gallery-empty"><strong>${event.photoStatus==="loading"?"照片讀取中":event.photoStatus==="error"?"相簿照片讀取失敗":"暫時沒有活動照片"}</strong><span>${event.photoStatus==="loading"?"正在掃描活動資料夾…":event.photoStatus==="error"?"無法取得 GitHub 照片清單，手動影片仍可使用。":"新增圖片至活動資料夾，或在 galleryVideos 填寫影片連結後將顯示。"}</span></div>`:"";
       const gallery=galleryVideosMarkup+galleryPhotosMarkup+galleryMessage;
