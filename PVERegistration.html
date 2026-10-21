@@ -15982,6 +15982,11 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
         return;
       }
       pendingLeaderAction = { dateKey, slotIndex, actionLabel, callback, syncRevision:scheduleRevision(globalData[dateKey]) };
+      const leaderDialog = document.getElementById("leaderAuthModal");
+      const destructiveAction = /刪除|移除|拒絕/.test(String(actionLabel || ""));
+      leaderDialog?.classList.toggle("is-destructive", destructiveAction);
+      const leaderHeader = leaderDialog?.querySelector(".pve-form-header");
+      if(leaderHeader) leaderHeader.dataset.tone = destructiveAction ? "danger" : "warn";
       const context = document.getElementById("leaderAuthContext");
       if(context) context.textContent = `${teamTypeLabel(slot)}｜${slot.time}｜第 ${slot.instance || 1} 隊：${actionLabel}`;
       const input = document.getElementById("leaderAuthPinInput");
@@ -17242,23 +17247,37 @@ html[data-theme="light"] body .app-workspace .team-intro-card.type-tower { --cat
     }
 
     async function deleteCustomSlot(dateKey, slotIndex){
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-      const slot = dayData.slots[slotIndex];
-      if(!slot) return;
-
-      if(!slot.isCustom){
-        alert("固定時間段不能刪除。");
-        return;
-      }
-
-      const members = Array.isArray(slot.members) ? slot.members : [];
-      const pendingMembers = getPendingMembers(slot);
-      if(members.length > 0 || pendingMembers.length > 0 || getBlackWorkers(slot).length > 0){
+      const initialDay = globalData?.[dateKey];
+      const original = initialDay?.slots?.[slotIndex];
+      if(!original) return;
+      if(!original.isCustom){ alert("固定時間段不能刪除。"); return; }
+      if((Array.isArray(original.members) && original.members.length) ||
+         getPendingMembers(original).length || getBlackWorkers(original).length){
         alert("這個時間段已有正式報名、待確認申請或黑工，不能刪除。");
         return;
       }
-
+      const initialRevision = scheduleRevision(initialDay);
+      const originalId = original.id;
+      const originalTime = getSlotDisplayTime(original) || original.time || '未定時間';
+      const message = `確定要刪除 ${dateKey} ${originalTime} 的第 ${original.instance || 1} 隊嗎？\n刪除後無法復原。`;
+      const confirmed = typeof window.showAppConfirm === 'function'
+        ? await window.showAppConfirm(message,{title:'刪除隊伍時間',confirmText:'確定刪除',tone:'danger'})
+        : window.confirm(message);
+      if(!confirmed) return;
+      const liveDay = globalData?.[dateKey];
+      const liveSlot = liveDay?.slots?.[slotIndex];
+      if(!liveDay || !liveSlot || scheduleRevision(liveDay) !== initialRevision ||
+         (originalId != null && liveSlot.id !== originalId)){
+        alert('隊伍資料已更新，請重新確認後再刪除。');
+        return;
+      }
+      const dayData = structuredClone(liveDay);
+      const slot = dayData.slots[slotIndex];
+      if(!slot?.isCustom || (Array.isArray(slot.members) && slot.members.length) ||
+         getPendingMembers(slot).length || getBlackWorkers(slot).length){
+        alert('隊伍目前不能刪除，請重新整理後再試。');
+        return;
+      }
       dayData.slots.splice(slotIndex, 1);
       sortSlots(dayData.slots);
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
@@ -20763,5 +20782,81 @@ html body:has(.team-poster-backdrop:not([hidden])){overflow:hidden;}
   });
 })();
 </script>
+
+<style id="pve-destructive-dialog-design">
+/* 刪除專用警示樣式，與「取消黑工報名」一致。非刪除彈窗不受影響。 */
+html body #confirmModal .confirm-modal-box,
+html body #leaderAuthModal.is-destructive .confirm-modal-box{
+  position:relative !important;
+  overflow:hidden;
+  border-color:var(--pve-modal-border,rgba(196,210,245,.17)) !important;
+}
+html body #confirmModal .confirm-modal-box::before,
+html body #leaderAuthModal.is-destructive .confirm-modal-box::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:5px;
+  border-radius:inherit;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  display:block !important;
+  position:absolute !important;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  width:100% !important;
+  height:5px !important;
+  margin:0 !important;
+  border-radius:0 !important;
+  background:linear-gradient(90deg,#fb7185 0%,#ef4444 65%,#dc3156 100%) !important;
+  box-shadow:0 2px 12px rgba(239,68,68,.22);
+  pointer-events:none;
+  z-index:2;
+}
+html body #confirmModal .confirm-modal-box,
+html body #leaderAuthModal.is-destructive .confirm-modal-box{
+  padding-top:max(23px,1.45rem) !important;
+}
+html body #confirmModal .pve-form-header .pve-modal-glyph,
+html body #leaderAuthModal.is-destructive .pve-form-header .pve-modal-glyph{
+  color:#fb7185 !important;
+  background:rgba(244,63,94,.13) !important;
+  border-color:rgba(244,63,94,.25) !important;
+}
+html body #leaderAuthModal.is-destructive .signup-confirm-btn{
+  background:linear-gradient(135deg,#f36f87,#dd455e) !important;
+  color:#fff !important;
+  border-color:rgba(255,181,192,.25) !important;
+}
+html body .pve-dialog-root .pve-dialog[data-tone="danger"]{
+  border-color:var(--pve-modal-border,rgba(196,210,245,.17)) !important;
+}
+html body .pve-dialog-root .pve-dialog[data-tone="danger"]::before{
+  height:5px;
+  background:linear-gradient(90deg,#fb7185 0%,#ef4444 65%,#dc3156 100%) !important;
+  box-shadow:0 2px 12px rgba(239,68,68,.20);
+}
+html body .pve-dialog-root .pve-dialog[data-tone="danger"] .pve-dialog-icon{
+  color:#fb7185 !important;
+}
+html[data-theme="light"] body #confirmModal .confirm-modal-box,
+html[data-theme="light"] body #leaderAuthModal.is-destructive .confirm-modal-box,
+html[data-theme="light"] body .pve-dialog-root .pve-dialog[data-tone="danger"]{
+  border-color:var(--pve-modal-border,#dce5f0) !important;
+}
+html[data-theme="light"] body #confirmModal .pve-form-header .pve-modal-glyph,
+html[data-theme="light"] body #leaderAuthModal.is-destructive .pve-form-header .pve-modal-glyph{
+  color:#ca3d59 !important;
+  background:#fff0f2 !important;
+  border-color:#f4bdc7 !important;
+}
+@media(max-width:768px){
+  html body #confirmModal .confirm-modal-box,
+  html body #leaderAuthModal.is-destructive .confirm-modal-box{
+    padding-top:24px !important;
+  }
+}
+</style>
 </body>
 </html>
