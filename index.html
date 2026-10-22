@@ -1612,6 +1612,22 @@ body[data-site-page="index"] .timeline-party-strip{z-index:9;min-height:0}
   }
   body[data-site-page="index"] .focus-current-line::after{font-size:8px}
 }
+/* Current-time indicator must sit BEHIND activity cards and the daily party lane. */
+body[data-site-page="index"] .focus-current-line{z-index:1;}
+body[data-site-page="index"] .focus-current-line::after{display:none;}
+body[data-site-page="index"] .timeline-now-line{z-index:1;}
+/* The time itself remains legible in the left clock ruler, not over the event. */
+body[data-site-page="index"] .is-focused-week .focus-current-time-label{
+  position:absolute;left:0;right:4px;z-index:2;
+  display:block;width:auto;transform:translateY(-50%);text-align:right;
+  color:var(--accent);font-size:10px;font-weight:900;font-variant-numeric:tabular-nums;
+  padding:3px 5px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));
+  border-radius:6px;background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.12);
+  pointer-events:none;
+}
+@media(max-width:768px){
+  body[data-site-page="index"] .is-focused-week .focus-current-time-label{font-size:9px;padding:3px 2px;right:2px;}
+}
 </style>
 
 </head>
@@ -2058,10 +2074,15 @@ window.addEventListener('scroll', () => {
     // One unique clock label per actual time, including 21:00 only ONCE.
     const tickMinutes=[startMinute, startMinute+30,stripStart,1320,endMinute]
       .filter((minute,index,list)=>minute>=startMinute && minute<=endMinute && list.indexOf(minute)===index);
+    const currentMinutes=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+    const showCurrent=currentMinutes>=startMinute && currentMinutes<=endMinute;
+    const currentClock=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
     const ruler=`<div class="focus-time-ruler" style="height:${height}px">${tickMinutes.map(m=>{
       const label=`${pad(Math.floor(m/60))}:${pad(m%60)}`;
+      // The highlighted current clock replaces a nearby static tick to avoid colliding labels.
+      if(showCurrent && Math.abs(yFor(m)-yFor(currentMinutes))<20)return '';
       return `<span class="focus-time-label ${m===stripStart?'is-party-start':''}" style="top:${yFor(m).toFixed(1)}px">${label}</span>`;
-    }).join('')}</div>`;
+    }).join('')}${showCurrent?`<span class="focus-current-time-label" style="top:${yFor(currentMinutes).toFixed(1)}px" aria-label="現在 ${currentClock}">${currentClock}</span>`:''}</div>`;
 
     const renderSegment=(ev,date,from,to,segmentType)=>{
       const startY=yFor(from), segmentHeight=Math.max(0,yFor(to)-startY);
