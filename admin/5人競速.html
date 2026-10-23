@@ -2531,6 +2531,114 @@ body{
   color:var(--red);
 }
 
+
+/* ===== v48 three phases, larger reading sizes, live standings ===== */
+body{font-size:17px}
+.page{width:min(1720px,calc(100% - 36px))}
+.workspace{grid-template-columns:minmax(360px,405px) minmax(0,1fr);gap:18px}
+.hero h1{font-size:clamp(32px,3vw,42px)}
+.badge,.badge.sub{font-size:14px!important}
+.nav a,.theme-btn,.btn,.cycle select{font-size:14px!important}
+.cycle-meta,.cross,.state-pill,.sync-pill,.small,.label{font-size:13px!important}
+.panel-title h2,.board-head h2{font-size:26px!important}
+.board-head p,.create-head strong,.quick-head strong{font-size:15px!important}
+.player-name,.selected-name,.team-summary-name{font-size:18px!important}
+.player-role,.player-metric span,.role-chip,.team-member-names,.team-updated-at,.quick-count,.chip,.team-meta{font-size:12px!important}
+.player-metric strong,.quick-rank{font-size:19px!important}
+.player-row{min-height:70px;gap:9px}
+.player-list{gap:8px}
+.metric-tabs button,.prof-filter,.search,.field label,.input,.select,.team-actions button,.team-actions select,.save-result,.quick-create{font-size:14px!important}
+.field label,.simple-label,.result-box span,.quick-stat span,.stat span{font-size:12px!important}
+.result-box strong,.stat strong,.quick-stat strong{font-size:19px!important}
+.quick-name,.roster-title strong,.create-head strong{font-size:16px!important}
+.quick-card{min-height:120px}
+.team-summary-bar{gap:12px!important}
+.simple-value,.simple-rank .simple-value{font-size:19px!important}
+.simple-count,.team-type-tag,.team-collapse-btn,.roster-batch-btn,.slot-actions button,.add-slot{font-size:13px!important}
+.slot strong{font-size:15px!important}
+.slot span,.slot .limit,.slot-no{font-size:12px!important}
+.slot{min-height:112px;padding:11px 8px}
+.result-box small,.single-record-note,.review-note,.shared-note,.filter-note,.history-editable-note{font-size:12px!important}
+.picker-player strong,.batch-player-name{font-size:16px!important}
+.picker-player span,.batch-player-note,.batch-role-chip,.role-dropdown-option{font-size:13px!important}
+.modal-sub,.modal-card .small,.modal-card label{font-size:13px!important}
+.modal-title{font-size:24px!important}
+.phase-switcher{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 16px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.phase-caption{font-size:12px;font-weight:900;letter-spacing:.06em;color:var(--muted)}
+.phase-heading{font-size:21px;font-weight:950;margin:3px 0}
+.phase-description{color:var(--muted);font-size:13px;line-height:1.6}
+.phase-buttons{display:grid;grid-template-columns:repeat(3,minmax(102px,1fr));gap:8px;min-width:min(425px,100%)}
+.phase-btn{min-height:60px;padding:9px 14px;border:1px solid var(--line2);border-radius:12px;background:var(--surface2);color:var(--text);font-size:17px;font-weight:950;transition:background .15s,border-color .15s}
+.phase-btn span{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-top:2px}
+.phase-btn.active{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 16%,var(--surface2));box-shadow:inset 0 0 0 1px var(--blue)}
+.phase-btn.active span{color:var(--blue)}
+.phase-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:13px}
+.phase-summary-card{padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+.phase-summary-card span{display:block;color:var(--muted);font-size:12px;font-weight:800}
+.phase-summary-card strong{display:block;font-size:23px;line-height:1.4;margin-top:3px;font-weight:950}
+.phase-summary-card.warning strong{color:var(--red)}
+.drop-flag{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border:1px solid transparent;border-radius:7px;font-size:12px!important;font-weight:950;white-space:nowrap}
+.drop-flag.best{border-color:color-mix(in srgb,var(--green) 36%,var(--line));background:color-mix(in srgb,var(--green) 10%,var(--surface2));color:var(--green)}
+.drop-flag.unranked{color:var(--muted);background:var(--surface3);border-color:var(--line)}
+.team-summary-main .drop-flag{margin-top:5px}
+.phase-standings{margin-top:24px;border:1px solid var(--line);border-radius:19px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.phase-standings-header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:22px 22px 17px}
+.phase-standings-header h2{font-size:27px;margin:0 0 5px}
+.phase-standings-header p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+.standings-actions{display:flex;gap:8px;flex-wrap:wrap}
+.standings-legend{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 22px;background:var(--surface2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.standings-scroll{width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.standings-table{width:100%;min-width:max-content;border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums}
+.standings-table th{position:sticky;top:0;background:var(--surface3);color:var(--text);font-size:13px;font-weight:900;text-align:center;padding:15px 12px;border-bottom:2px solid var(--line2);white-space:nowrap}
+.standings-table td{background:var(--surface);border-bottom:1px solid var(--line);padding:12px 10px;text-align:center;font-size:14px;line-height:1.4}
+.standings-table tbody tr:nth-child(even) td{background:var(--surface2)}
+.standings-table tbody tr:last-child td{border-bottom:0}
+.standings-table td.name-col{text-align:left;min-width:166px;font-weight:900}
+.standings-table td.rank-col{font-size:20px;color:var(--purple);font-weight:950}
+.standings-table td.time-col{font-size:18px;font-weight:950;color:var(--text)}
+.standings-table td.player-cell{min-width:112px;padding:9px 8px}
+.standings-table .player-cell-name{display:block;font-weight:850;font-size:14px;word-break:break-word}
+.standings-table td.player-best{background:color-mix(in srgb,var(--green) 8%,var(--surface))!important}
+.standings-table td.player-external{background:color-mix(in srgb,var(--orange) 11%,var(--surface))!important}
+.standings-table .drop-flag{margin-top:5px;font-size:10.5px!important}
+.standings-empty{padding:28px;text-align:center;font-size:14px;color:var(--muted)}
+.standings-foot{padding:13px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.65}
+@media(max-width:1100px){.workspace{grid-template-columns:1fr}.player-panel{position:relative;top:auto}.player-list{max-height:380px}}
+@media(max-width:760px){
+ .page{width:calc(100% - 20px);padding-top:145px}
+ .phase-switcher{padding:14px;gap:13px}
+ .phase-heading{font-size:19px}
+ .phase-buttons{min-width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .phase-btn{font-size:15px;min-height:58px;padding:6px 3px}
+ .phase-summary{gap:6px}.phase-summary-card{padding:10px 8px}.phase-summary-card span{font-size:11px}.phase-summary-card strong{font-size:20px}
+ .phase-standings-header{padding:16px;align-items:flex-start}.phase-standings-header h2{font-size:22px}
+ .standings-legend{padding:10px 14px}
+ .standings-table th{font-size:12px;padding:12px 9px}.standings-table td{font-size:13px}
+ .team-summary-bar{grid-template-columns:minmax(0,1fr) auto!important}
+ .slot{min-height:105px}
+}
+
+/* ===== v50 first-phase completed marker and muted drop visuals ===== */
+.phase1-listed-badge{display:inline-flex;align-items:center;flex-shrink:0;gap:4px;padding:3px 8px;border:1px solid color-mix(in srgb,var(--green) 39%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--green) 10%,var(--surface2));color:var(--green);font-size:12px!important;font-weight:900;white-space:nowrap;line-height:1.35}
+.phase1-listed-badge.tiny{font-size:11px!important;padding:2px 6px}
+.player-name-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-width:0}
+.player-name-line .player-name{min-width:0;overflow-wrap:anywhere}
+.picker-player-name-line,.batch-player-name-line{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.slot .phase1-listed-badge{display:inline-flex;margin:6px auto 3px;font-size:11px!important}
+.phase-btn .phase-btn-marker{display:block;margin:5px auto 0;padding:3px 5px;width:max-content;max-width:100%;font-size:11px;font-weight:900;color:var(--green);background:color-mix(in srgb,var(--green) 10%,var(--surface2));border:1px solid color-mix(in srgb,var(--green) 30%,var(--line));border-radius:7px;white-space:normal}
+.phase1-notice{display:block;margin:0 0 14px;padding:10px 14px;border:1px solid color-mix(in srgb,var(--green) 25%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--green) 5%,var(--surface));color:var(--muted);font-size:13px;line-height:1.65}
+.phase1-notice strong{color:var(--text)}
+.phase1-notice[hidden]{display:none!important}
+.standings-table td.player-out{background:color-mix(in srgb,var(--muted) 7%,var(--surface))!important}
+.standings-table td.player-out .player-cell-name{color:var(--soft)!important;text-decoration:none!important;opacity:.55}
+@media(max-width:760px){.phase-btn .phase-btn-marker{font-size:10px}.player-name-line{gap:5px}.phase1-listed-badge{font-size:11px!important}}
+
+/* Phase-specific member controls */
+.roster-copy-btn{min-height:37px;padding:7px 12px;border:1px solid color-mix(in srgb,var(--blue) 48%,var(--line));border-radius:10px;background:color-mix(in srgb,var(--blue) 9%,var(--surface));color:var(--blue);font-size:13px;font-weight:850}
+.roster-copy-btn:hover{background:color-mix(in srgb,var(--blue) 18%,var(--surface))}
+.roster-title strong{font-size:16px}
+.roster-title-actions{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+@media(max-width:760px){.roster-title{align-items:flex-start;flex-direction:column}.roster-title-actions{width:100%}.roster-copy-btn,.roster-batch-btn{flex:1;white-space:normal}}
 </style>
 </head>
 <body>
@@ -2565,6 +2673,17 @@ body{
     </div>
   </section>
 
+
+  <section class="phase-switcher" aria-label="副本期數切換">
+    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div><div class="phase-description">每一期都要重新建立隊伍；隊伍、成員及成績完全獨立。第一期原有隊伍不會自動帶到第二、三期。</div></div>
+    <div class="phase-buttons" id="phaseButtons" role="group" aria-label="選擇期數">
+      <button type="button" class="phase-btn active" data-phase="1">第一期<span>查看成績</span></button>
+      <button type="button" class="phase-btn" data-phase="2">第二期<span>查看成績</span></button>
+      <button type="button" class="phase-btn" data-phase="3">第三期<span>查看成績</span></button>
+    </div>
+  </section>
+  <div class="phase-summary" id="phaseSummary" aria-live="polite"></div>
+  <div class="phase1-notice" id="phase1Notice" hidden aria-live="polite"></div>
   <section class="workspace">
     <aside class="panel player-panel" id="playerPanel">
       <div class="panel-head">
@@ -2609,6 +2728,16 @@ body{
       <div class="quick"><div class="quick-head"><strong>隊伍排名</strong><span>遊戲排名 · 總通關時間</span></div><div class="quick-grid" id="quickGrid"></div></div>
       <div class="team-list" id="teamList"></div>
     </section>
+  </section>
+
+  <section class="phase-standings" id="phaseStandings" aria-label="當期隊伍總表">
+    <div class="phase-standings-header">
+      <div><h2 id="standingsTitle">第一期 · 隊伍總表</h2><p id="standingsSubtitle">與 PNG 相同的欄位；成績更新後即時同步顯示。</p></div>
+      <div class="standings-actions"><button type="button" class="btn primary" id="bottomPngBtn">↓ 下載本期 PNG</button><button type="button" class="btn" id="bottomExcelBtn">↓ 匯出本期 Excel</button></div>
+    </div>
+    <div class="standings-legend"><span class="drop-flag best">個人最佳</span><span>第二、三期會提醒第一期已上榜的玩家；各期隊伍及成績皆獨立。</span></div>
+    <div class="standings-scroll" id="standingsScroll"><div class="standings-empty">選擇副本後會自動顯示隊伍成績。</div></div>
+    <div class="standings-foot">每個副本的三期隊伍互不共用。切換到第二期或第三期後，請在本期自行建立新隊伍；不會沿用前一期的隊名、隊員或成績。</div>
   </section>
 </main>
 
@@ -2820,6 +2949,217 @@ const fmtDate=s=>{if(!s)return"—";const [y,m,d]=String(s).split("-").map(Numbe
 
 let players=[],playerArchive={},dungeons=[],activeDungeonId="",professions=["未設定"];
 let teams=[],records=[],limit=2,selectedDungeonId="",metricMode="count";
+
+const PHASE_NAMES={1:"第一期",2:"第二期",3:"第三期"};
+const PHASE_VIEW_CACHE=`wwm_speed_phase_view_v1_${SIZE}`;
+let selectedPhase=1;
+let phaseSelections={};
+function recordPhase(r){const n=Number(r?.phase||1);return n===2||n===3?n:1}
+function phaseResult(team,phase=selectedPhase){
+  if(!team)return null;
+  const fromMap=team.phaseResults?.[String(phase)];
+  return fromMap||(phase===1?team.currentResult||null:null);
+}
+function setPhaseResult(team,phase,value){
+  team.phaseResults={...(team.phaseResults||{}),[String(phase)]:value};
+  if(phase===1)team.currentResult=value;
+}
+// Keep the old Phase 1 roster fields for compatibility.
+// Every team now belongs to exactly ONE phase; teams do not follow into the next phase.
+// Previously entered Phase 2/3 data is migrated into separate team documents.
+function phaseMembersOf(team,phase=selectedPhase){
+  if(!team)return Array(SIZE).fill(null);
+  let members;
+  if(phase===1) members=team.members;
+  else if(Object.prototype.hasOwnProperty.call(team.phaseMembers||{},String(phase))) members=team.phaseMembers[String(phase)];
+  else members=(phaseResult(team,phase)?.roster||[]).map((m,i)=>m?(m.external?(m.id&&isOutsiderToken(m.id)?m.id:`external:legacy_p${phase}_${i}`):m.id||null):null);
+  return Array.from({length:SIZE},(_,i)=>members?.[i]||null);
+}
+function phaseOutsidersOf(team,phase=selectedPhase){
+  if(!team)return {};
+  if(phase===1)return team.externalMembers||{};
+  const custom=team.phaseExternalMembers?.[String(phase)];
+  if(custom&&typeof custom==="object")return custom;
+  const fromSnapshot={};
+  (phaseResult(team,phase)?.roster||[]).forEach((m,i)=>{
+    if(m?.external){const key=m.id&&isOutsiderToken(m.id)?m.id:`external:legacy_p${phase}_${i}`;fromSnapshot[key]={name:m.name||"外人"}}
+  });
+  return fromSnapshot;
+}
+function setPhaseRoster(team,members,outsiders=phaseOutsidersOf(team)){
+  const clean=Array.from({length:SIZE},(_,i)=>members?.[i]||null);
+  if(selectedPhase===1){team.members=clean;team.externalMembers={...outsiders}}
+  else{
+    team.phaseMembers={...(team.phaseMembers||{}),[String(selectedPhase)]:clean};
+    team.phaseExternalMembers={...(team.phaseExternalMembers||{}),[String(selectedPhase)]:{...outsiders}};
+  }
+}
+function phaseRosterHasMembers(team,phase=selectedPhase){return phaseMembersOf(team,phase).some(Boolean)}
+function persistPhaseRosterChange(team){
+  // A one-record-per-phase leaderboard must follow the roster as it is edited.
+  // This only touches the currently selected phase; earlier phases are stable.
+  const active=phaseResult(team);
+  let rec=null;
+  if(active){
+    const roster=rosterSnapshotFromTeam(team);
+    const stamp=Date.now();
+    setPhaseResult(team,selectedPhase,{...active,roster,updatedAtMs:stamp});
+    rec=records.find(r=>r.id===active.recordId);
+    if(rec){rec.roster=roster;rec.updatedAtMs=stamp;rec._sync="pending"}
+  }
+  team.updatedAtMs=Date.now();team._sync="pending";
+  saveLocalPage();renderAll();
+  if(rec)syncRecord(rec);
+  syncTeam(team);
+}
+function rememberPhase(){
+  if(!selectedDungeonId)return;
+  phaseSelections[selectedDungeonId]=selectedPhase;
+  try{localStorage.setItem(PHASE_VIEW_CACHE,JSON.stringify(phaseSelections))}catch(e){}
+}
+function restorePhase(){selectedPhase=[1,2,3].includes(Number(phaseSelections[selectedDungeonId]))?Number(phaseSelections[selectedDungeonId]):1}
+// One-time backwards-compatible migration: teams saved by previous versions
+// shared a single team object among all three phases. Only phases containing
+// explicitly entered player names or recorded results are moved to new teams.
+// Empty Phase 2/3 placeholders NEVER become teams.
+function legacyPhaseHasData(t,phase){
+  if(t._phaseSplitV2||teamPeriod(t)!==1)return false;
+  const result=t.phaseResults?.[String(phase)];
+  const people=t.phaseMembers?.[String(phase)];
+  return !!(Number(result?.timeMs)>0||(Array.isArray(people)&&people.some(Boolean)));
+}
+function legacyPhaseTeamId(id,phase){return `${id}__separate_phase_${phase}`}
+function legacyPhaseClone(t,phase){
+  const oldResult=t.phaseResults?.[String(phase)]||null;
+  const oldMembers=t.phaseMembers?.[String(phase)];
+  const members=Array.isArray(oldMembers)&&oldMembers.some(Boolean)
+    ? oldMembers
+    : (oldResult?.roster||[]).map((m,i)=>m?(m.external?(m.id&&isOutsiderToken(m.id)?m.id:`external:legacy_p${phase}_${i}`):m.id||null):null);
+  return{
+    id:legacyPhaseTeamId(t.id,phase),dungeonId:t.dungeonId,phase,size:SIZE,
+    name:t.name||`${SIZE}人固定隊`,note:t.note||"",mode:t.mode||"normal",
+    members:Array(SIZE).fill(null),externalMembers:{},
+    phaseMembers:{[String(phase)]:Array.from({length:SIZE},(_,i)=>members?.[i]||null)},
+    phaseExternalMembers:{[String(phase)]:{...phaseOutsidersOf(t,phase)}},
+    currentResult:null,phaseResults:oldResult?{[String(phase)]:{...oldResult}}:{},
+    createdAt:t.createdAt||Date.now(),updatedAtMs:Date.now(),_sync:"pending"
+  };
+}
+function splitLegacyLocalPhaseTeams(){
+  const exists=new Set(teams.map(t=>t.id));
+  const added=[];
+  for(const t of [...teams]){
+    if(teamPeriod(t)!==1||t._phaseSplitV2)continue;
+    let migrated=false;
+    for(const phase of [2,3]){
+      if(!legacyPhaseHasData(t,phase))continue;
+      const id=legacyPhaseTeamId(t.id,phase);
+      if(!exists.has(id)){
+        added.push(legacyPhaseClone(t,phase));
+        exists.add(id);
+      }
+      for(const r of records){
+        if(r.teamId===t.id&&recordPhase(r)===phase){r.teamId=id;r._sync="pending"}
+      }
+      migrated=true;
+    }
+    if(migrated){t.phase=1;t._phaseSplitV2=true;t._sync="pending"}
+  }
+  if(added.length){teams.push(...added)}
+  return added.length;
+}
+
+function phaseMemberStatus(member,result,bestByPlayer,countMap){
+  if(!member)return"empty";
+  if(member.external)return"external";
+  const key=member.id?`id:${member.id}`:`name:${norm(member.name||"")}`;
+  const count=countMap.get(key)||0;
+  if(count<=1)return"single";
+  return isPlayerBestRecord(member,result,bestByPlayer)?"best":"out";
+}
+// This is a per-dungeon, per-5/10-person hint. Only Phase 1 teams with
+// a positive manually entered game rank count as having ranked. Use the
+// saved run roster, not the team's later editable roster, when available.
+// No later-phase team, member or result is copied or locked by this hint.
+function firstPhaseListedPlayers(){
+  const ids=new Set(),legacyNames=new Set(),unique=new Set();
+  for(const team of visibleTeams(1)){
+    const result=phaseResult(team,1);
+    const rank=Number(result?.rank||0);
+    if(!Number.isInteger(rank)||rank<=0)continue;
+    const members=Array.isArray(result.roster)&&result.roster.length
+      ? result.roster
+      : phaseMembersOf(team,1).map(v=>v?slotPerson(team,v,1):null);
+    for(const m of members){
+      if(!m||m.external)continue;
+      if(m.id){ids.add(m.id);unique.add(`id:${m.id}`)}
+      else if(norm(m.name||"")){legacyNames.add(norm(m.name));unique.add(`name:${norm(m.name)}`)}
+    }
+  }
+  return{ids,legacyNames,count:unique.size};
+}
+function wasFirstPhaseListed(member,listed=firstPhaseListedPlayers()){
+  if(selectedPhase===1||!member||member.external)return false;
+  if(member.id&&listed.ids.has(member.id))return true;
+  return !!(member.name&&listed.legacyNames.has(norm(member.name)));
+}
+function firstPhaseBadge(member,listed){
+  return wasFirstPhaseListed(member,listed)
+    ? '<span class="phase1-listed-badge" title="本副本第一期已上榜，不必再上一次">✓ 第一期已上榜</span>'
+    : '';
+}
+function renderPhaseSwitcher(){
+  const listed=firstPhaseListedPlayers();
+  document.querySelectorAll("[data-phase]").forEach(b=>{
+    const num=Number(b.dataset.phase);
+    b.classList.toggle("active",num===selectedPhase);
+    b.setAttribute("aria-pressed",String(num===selectedPhase));
+    const periodTeams=visibleTeams(num);
+    const scored=periodTeams.filter(t=>!!phaseResult(t,num)).length;
+    b.querySelector("span").textContent=periodTeams.length?`${periodTeams.length} 隊 · ${scored} 隊有成績`:"尚未建立隊伍";
+    let marker=b.querySelector(".phase-btn-marker");
+    if(num>1&&listed.count){
+      if(!marker){marker=document.createElement("small");marker.className="phase-btn-marker";b.appendChild(marker)}
+      marker.textContent=`第一期已上榜 ${listed.count} 人`;
+    }else{marker?.remove()}
+  });
+  const note=$("phase1Notice");
+  note.hidden=selectedPhase===1||!listed.count;
+  if(!note.hidden)note.innerHTML=`<strong>第一期已上榜 ${listed.count} 人</strong>：姓名旁標示「✓ 第一期已上榜」的玩家，已在本副本第一期取得遊戲排名，不必為了上榜再打一次。此為提醒，不影響本期自由建立隊伍。`;
+}
+function renderPhaseSummary(){
+  const all=visibleTeams(), scored=all.filter(t=>!!phaseResult(t));
+  const ranks=scored.map(t=>manualRankOf(t)).filter(r=>r!==null);
+  const bestRank=ranks.length?`#${Math.min(...ranks)}`:"—";
+  $("phaseSummary").innerHTML=`
+    <div class="phase-summary-card"><span>${PHASE_NAMES[selectedPhase]} · 有成績隊伍</span><strong>${scored.length} / ${all.length}</strong></div>
+    <div class="phase-summary-card"><span>最佳遊戲排名</span><strong>${bestRank}</strong></div>
+    <div class="phase-summary-card"><span>尚未記錄成績隊伍</span><strong>${all.length-scored.length} 隊</strong></div>`;
+}
+function renderStandings(){
+  const dg=currentDungeon(),exportTeams=buildExportTeams();
+  $("standingsTitle").textContent=`${dg?.name||"副本"} · ${PHASE_NAMES[selectedPhase]}隊伍總表`;
+  $("standingsSubtitle").textContent=`${SIZE} 人競速 · ${exportTeams.length} 隊已記錄 / ${visibleTeams().length} 隊 · 依遊戲排名排列 · 可橫向捲動`;
+  const wrap=$("standingsScroll");
+  if(!dg){wrap.innerHTML='<div class="standings-empty">請先選擇副本。</div>';return}
+  if(!visibleTeams().length){wrap.innerHTML='<div class="standings-empty">本期尚未建立隊伍，請先建立本期專屬隊伍。</div>';return}
+  const best=buildBestRecordByPlayer(exportTeams),count=buildPlayerRecordCountMap(exportTeams),listed=firstPhaseListedPlayers();
+  const headers=["遊戲排名","隊伍名字","類型",...Array.from({length:SIZE},(_,i)=>`玩家 ${i+1}`),"BOSS 1","BOSS 2","總通關時間"];
+  const scoredIds=new Set(exportTeams.map(x=>x.team.id));
+  const items=[...exportTeams,...visibleTeams().filter(t=>!scoredIds.has(t.id)).map(t=>({team:t,result:null,roster:Array.from({length:SIZE},(_,i)=>rosterSnapshotFromTeam(t)[i]||null)}))];
+  wrap.innerHTML=`<table class="standings-table"><thead><tr>${headers.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${items.map(({team,result,roster})=>{
+    const rank=result&&Number(result.rank)>0?`#${Number(result.rank)}`:"—";
+    const memberCells=Array.from({length:SIZE},(_,i)=>{
+      const m=roster[i];const status=result?phaseMemberStatus(m,result,best,count):(m?.external?"external":"single");
+      let flag="";
+      if(status==="best")flag='<span class="drop-flag best">個人最佳</span>';
+      else if(status==="external")flag='<span class="drop-flag unranked">外人</span>';
+      return `<td class="player-cell player-${status}"><span class="player-cell-name">${esc(m?.name||"—")}</span>${firstPhaseBadge(m,listed)}${flag}</td>`;
+    }).join("");
+    return `<tr><td class="rank-col">${rank}</td><td class="name-col">${esc(team.name)}</td><td>${esc(teamModeLabel(team))}</td>${memberCells}<td>${result?fmtOptionalTime(result.boss1Ms):"—"}</td><td>${result?fmtOptionalTime(result.boss2Ms):"—"}</td><td class="time-col">${result?fmtTime(result.timeMs):"未記錄"}</td></tr>`;
+  }).join("")}</tbody></table>`;
+}
+
 const selectedPlayerIds=new Set();
 let pickerTeamId="",pickerIndex=-1,editingTeamId="";
 let selectedProfessionFilter="";
@@ -2963,6 +3303,10 @@ function loadLocal(){
   }catch(e){console.warn(e)}
   normalizeAllPlayers();
   if(!selectedDungeonId)selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
+  try{phaseSelections=JSON.parse(localStorage.getItem(PHASE_VIEW_CACHE)||"{}")||{}}catch(e){phaseSelections={}}
+  restorePhase();
+  splitLegacyLocalPhaseTeams();
+  saveLocalPage();
 }
 function saveLocalSharedPlayers(){normalizeAllPlayers();localStorage.setItem(SHARED_PLAYER_CACHE,JSON.stringify({players,archive:playerArchive}))}
 function saveLocalCycles(){localStorage.setItem(SHARED_CYCLE_CACHE,JSON.stringify({dungeons,activeDungeonId}))}
@@ -3032,15 +3376,16 @@ function refreshPickerProfessionFilters(){
 
 const currentDungeon=()=>dungeons.find(d=>d.id===selectedDungeonId);
 const isReview=()=>!!selectedDungeonId&&!!activeDungeonId&&selectedDungeonId!==activeDungeonId;
-const visibleTeams=()=>teams.filter(t=>t.dungeonId===selectedDungeonId);
-const visibleRecords=()=>records.filter(r=>r.dungeonId===selectedDungeonId);
+const teamPeriod=t=>[2,3].includes(Number(t?.phase))?Number(t.phase):1;
+const visibleTeams=(phase=selectedPhase)=>teams.filter(t=>t.dungeonId===selectedDungeonId&&teamPeriod(t)===phase);
+const visibleRecords=()=>records.filter(r=>r.dungeonId===selectedDungeonId&&recordPhase(r)===selectedPhase);
 const getPlayer=id=>players.find(p=>p.id===id)||playerArchive[id]||null;
 const teamHistory=t=>visibleRecords().filter(r=>r.teamId===t.id).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 const teamBest=t=>teamHistory(t).slice().sort((a,b)=>Number(a.timeMs)-Number(b.timeMs))[0]||null;
 function normalizeTeamMode(team){return team?.mode==="challenge"?"challenge":"normal"}
 function teamModeLabel(team){return normalizeTeamMode(team)==="challenge"?"挑戰":"普通"}
 function manualRankOf(team){
-  const n=Number(team?.currentResult?.rank||0);
+  const n=Number(phaseResult(team)?.rank||0);
   return Number.isInteger(n)&&n>0?n:null;
 }
 function sortTeamsByManualRank(list){
@@ -3049,8 +3394,8 @@ function sortTeamsByManualRank(list){
     if(ar!==null&&br!==null&&ar!==br)return ar-br;
     if(ar!==null&&br===null)return -1;
     if(ar===null&&br!==null)return 1;
-    const at=Number(a.currentResult?.timeMs||Infinity);
-    const bt=Number(b.currentResult?.timeMs||Infinity);
+    const at=Number(phaseResult(a)?.timeMs||Infinity);
+    const bt=Number(phaseResult(b)?.timeMs||Infinity);
     if(at!==bt)return at-bt;
     return String(a.name||"").localeCompare(String(b.name||""),"zh-Hant");
   });
@@ -3116,7 +3461,7 @@ function firestoreTimestampToMs(value){
 function teamUpdatedMs(team){
   return Math.max(
     Number(team?.updatedAtMs||0),
-    Number(team?.currentResult?.updatedAtMs||0),
+    Number(phaseResult(team)?.updatedAtMs||0),
     firestoreTimestampToMs(team?.updatedAt),
     Number(team?.createdAt||0)
   );
@@ -3132,26 +3477,29 @@ function fmtTeamUpdated(team){
 function isOutsiderToken(v){
   return typeof v==="string"&&v.startsWith("external:");
 }
-function getOutsider(team,token){
-  return team?.externalMembers?.[token]||null;
+function getOutsider(team,token,phase=selectedPhase){
+  return phaseOutsidersOf(team,phase)[token]||null;
 }
-function slotPerson(team,value){
+function slotPerson(team,value,phase=selectedPhase){
   if(!value)return null;
   if(isOutsiderToken(value)){
-    const ext=getOutsider(team,value);
+    const ext=getOutsider(team,value,phase);
     return{id:value,name:ext?.name||"外人",role:"外人",external:true};
   }
   const p=getPlayer(value);
-  return p?{...p,external:false}:null;
+  if(p)return {...p,external:false};
+  // Keep archived roster names visible even if a player was removed from the shared list.
+  const archived=(phaseResult(team,phase)?.roster||[]).find(m=>m?.id===value&&!m.external);
+  return archived?{...archived,external:false}:null;
 }
-function rosterSnapshotFromTeam(team){
-  return (team.members||[]).filter(Boolean).map(v=>{
-    const p=slotPerson(team,v);
+function rosterSnapshotFromTeam(team,phase=selectedPhase){
+  return phaseMembersOf(team,phase).filter(Boolean).map(v=>{
+    const p=slotPerson(team,v,phase);
     return p?{id:p.id,name:p.name||"外人",role:p.external?"外人":playerRolesText(p),roles:p.external?["外人"]:normalizeRoles(p),external:!!p.external}:null;
   }).filter(Boolean);
 }
-function memberDisplayNames(team){
-  return (team.members||[]).filter(Boolean).map(v=>slotPerson(team,v)?.name||"外人");
+function memberDisplayNames(team,phase=selectedPhase){
+  return phaseMembersOf(team,phase).filter(Boolean).map(v=>slotPerson(team,v,phase)?.name||"外人");
 }
 function rosterMemberKey(team,value){
   if(!value)return"";
@@ -3161,7 +3509,7 @@ function rosterMemberKey(team,value){
   }
   return`player:${value}`;
 }
-function rosterSignature(team,members=team?.members||[]){
+function rosterSignature(team,members=phaseMembersOf(team)){
   const filled=Array.from({length:SIZE},(_,i)=>members?.[i]||null).filter(Boolean);
   if(!filled.length)return"";
   return filled.map(v=>rosterMemberKey(team,v)).sort().join("|");
@@ -3198,23 +3546,24 @@ function toggleTeam(teamId){
   renderTeams();
 }
 function playerStats(pid){
-  const current=visibleTeams().filter(t=>t.currentResult?.roster?.some(m=>m.id===pid));
+  const current=visibleTeams().filter(t=>phaseResult(t)?.roster?.some(m=>m.id===pid));
   const currentRecords=current.map(t=>{
-    const id=t.currentResult?.recordId;
-    return visibleRecords().find(r=>r.id===id) || (t.currentResult?{
-      ...t.currentResult,
+    const active=phaseResult(t);
+    const id=active?.recordId;
+    return visibleRecords().find(r=>r.id===id) || (active?{
+      ...active,
       id:id||"",
       teamId:t.id,
       teamName:t.name,
-      mode:t.currentResult.mode||normalizeTeamMode(t)
+      mode:active.mode||normalizeTeamMode(t)
     }:null);
   }).filter(Boolean);
   const best=bestRecordByGameRank(currentRecords);
   return{count:current.length,best,hist:currentRecords,hit:limit>0&&current.length>=limit};
 }
 function teamMatchesPlayer(t,pid){
-  if((t.members||[]).includes(pid))return true;
-  if(t.currentResult?.roster?.some(m=>m.id===pid))return true;
+  if(phaseMembersOf(t).includes(pid))return true;
+  if(phaseResult(t)?.roster?.some(m=>m.id===pid))return true;
   return teamHistory(t).some(r=>r.roster?.some(m=>m.id===pid));
 }
 function selectedFilterPlayers(){
@@ -3246,7 +3595,9 @@ function renderCycle(){
   $("dungeonSelect").innerHTML=dungeons.length?dungeons.slice().reverse().map(d=>`<option value="${esc(d.id)}"${d.id===selectedDungeonId?" selected":""}>${esc(d.name)}${d.id===activeDungeonId?"（目前）":""}</option>`).join(""):`<option value="">尚未建立副本</option>`;
   const review=isReview(),dg=currentDungeon();
   $("cycleState").textContent=review?"過往副本":"目前副本";$("cycleState").className=`state-pill ${review?"review":"current"}`;
-  $("cycleMeta").textContent=dg?`建立 ${fmtDate(dg.createdAt)} · ${SIZE} 人隊伍 ${visibleTeams().length} 支${dg.note?` · ${dg.note}`:""}`:"請先建立副本";
+  $("cycleMeta").textContent=dg?`建立 ${fmtDate(dg.createdAt)} · ${SIZE} 人隊伍 ${visibleTeams().length} 支 · ${PHASE_NAMES[selectedPhase]}${dg.note?` · ${dg.note}`:""}`:"請先建立副本";
+  const createLabel=document.querySelector("#teamCreateForm .create-head strong");
+  if(createLabel)createLabel.textContent=`＋ ${PHASE_NAMES[selectedPhase]} · 建立新隊伍`;
   $("backCurrentBtn").hidden=!review;
   $("editDungeonBtn").disabled=!dg;
   $("deleteDungeonBtn").disabled=!dg;
@@ -3257,6 +3608,7 @@ function renderPlayers(){
   const q=norm($("playerSearch").value);
   renderProfessionFilter();
   const selected=selectedFilterPlayers();
+  const firstListed=firstPhaseListedPlayers();
 
   const list=players
     .filter(p=>(!q||playerSearchText(p).includes(q))&&playerHasProfession(p,selectedProfessionFilter))
@@ -3277,7 +3629,7 @@ function renderPlayers(){
   $("playerList").innerHTML=list.length?list.map(p=>{
     const s=playerStats(p.id);
     const metric=metricMode==="count"
-      ? `<div class="player-metric"><strong class="${s.hit?"warn":""}">${s.count}${limit?` / ${limit}`:""}</strong><span>上榜</span></div>`
+      ? `<div class="player-metric"><strong class="${s.hit?"warn":""}">${s.count}${limit?` / ${limit}`:""}</strong><span>當期紀錄</span></div>`
       : `<div class="player-metric"><strong class="best">${bestRecordDisplay(s.best)}</strong><span>最佳紀錄</span></div>`;
 
     const roleChips=normalizeRoles(p).map(r=>`<span class="role-chip">${esc(r)}</span>`).join("");
@@ -3285,7 +3637,7 @@ function renderPlayers(){
     return`<div class="player-row ${selectedPlayerIds.has(p.id)?"selected":""}" data-player="${esc(p.id)}">
       <button type="button" class="player-more" data-player-more="${esc(p.id)}" aria-label="更多選項">⋯</button>
       <div>
-        <div class="player-name">${esc(p.name)}</div>
+        <div class="player-name-line"><div class="player-name">${esc(p.name)}</div>${firstPhaseBadge(p,firstListed)}</div>
         <div class="role-chips">${roleChips}</div>
         ${p.note?`<div class="player-role">${esc(p.note)}</div>`:""}
       </div>
@@ -3311,10 +3663,10 @@ function renderSelectedPlayer(){
     const s=playerStats(p.id);
     $("selectedPlayerName").textContent=p.name;
     $("selectedPlayerMeta").textContent=playerRolesText(p);
+    if(wasFirstPhaseListed(p))$("selectedPlayerMeta").insertAdjacentHTML("beforeend",firstPhaseBadge(p));
     $("selectedPlayerStats").innerHTML=
       `<div class="stat"><span>目前上榜</span><strong>${s.count}${limit?`/${limit}`:""}</strong></div>`+
-      `<div class="stat"><span>最佳紀錄</span><strong>${bestRecordDisplay(s.best)}</strong></div>`+
-      `<div class="stat"><span>相關隊伍</span><strong>${related.length}</strong></div>`;
+      `<div class="stat"><span>最佳紀錄</span><strong>${bestRecordDisplay(s.best)}</strong></div>`;
     return;
   }
 
@@ -3334,8 +3686,10 @@ function renderSelectedPlayer(){
 function renderQuick(){
   const list=sortTeamsByManualRank(filteredVisibleTeams());
   $("quickGrid").innerHTML=list.length?list.map(t=>{
-    const members=(t.members||[]).filter(Boolean).map(v=>slotPerson(t,v)).filter(Boolean);
+    const cur=phaseResult(t);
+    const members=phaseMembersOf(t).filter(Boolean).map(v=>slotPerson(t,v)).filter(Boolean);
     const rank=manualRankOf(t),mode=normalizeTeamMode(t);
+    const listed=firstPhaseListedPlayers();
     return`<button class="quick-card" data-jump="${esc(t.id)}">
       <div class="quick-top">
         <div class="quick-name-wrap"><div class="quick-name">${esc(t.name)}</div><span class="team-type-tag ${mode}">${teamModeLabel(t)}</span></div>
@@ -3343,15 +3697,16 @@ function renderQuick(){
       </div>
       <div class="quick-stats">
         <div class="quick-stat"><span>遊戲排名</span><strong class="quick-rank">${rank?`#${rank}`:"—"}</strong></div>
-        <div class="quick-stat"><span>總通關時間</span><strong>${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</strong></div>
+        <div class="quick-stat"><span>總通關時間</span><strong>${phaseResult(t)?fmtTime(phaseResult(t).timeMs):"—"}</strong></div>
       </div>
-      <div class="chips">${members.length?members.map(p=>`<span class="chip">${esc(p.name)}</span>`).join(""):`<span class="chip">尚未排人</span>`}</div>
+      <div class="chips">${members.length?members.map(p=>`<span class="chip">${esc(p.name)}${wasFirstPhaseListed(p,listed)?" ✓":""}</span>`).join(""):`<span class="chip">尚未排人</span>`}</div>
     </button>`;
-  }).join(""):`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`目前還沒有 ${SIZE} 人固定隊伍。`}</div>`;
+  }).join(""):`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`${PHASE_NAMES[selectedPhase]}還沒有建立隊伍，請使用上方「建立新隊伍」。`}</div>`;
 }
 function slotHtml(t,i){
-  const raw=(t.members||[])[i],p=slotPerson(t,raw);
+  const raw=phaseMembersOf(t)[i],p=slotPerson(t,raw);
   const s=p&&!p.external?playerStats(p.id):null;
+  const p1badge=firstPhaseBadge(p);
 
   if(!p){
     return`<div class="slot"><span class="slot-no">${i+1}</span><button class="add-slot" data-pick="${esc(t.id)}" data-index="${i}">＋ 加入玩家 / 外人</button></div>`;
@@ -3359,6 +3714,7 @@ function slotHtml(t,i){
 
   return`<div class="slot filled"><span class="slot-no">${i+1}</span><div>
     <strong>${esc(p.name)}</strong>
+    ${p1badge}
     ${p.external
       ? `<span class="outsider-pill">外人 · 不計次數</span>`
       : `<span>${esc(p.external?"外人":playerRolesText(p))}</span><span class="limit ${s?.hit?"warn":""}">${SIZE}榜 ${s?.count||0}${limit?`/${limit}`:""}</span>`
@@ -3367,7 +3723,7 @@ function slotHtml(t,i){
   </div></div>`;
 }
 function resultHtml(t){
-  const cur=t.currentResult||null;
+  const cur=phaseResult(t);
   const rank=Number(cur?.rank||0)>0?Number(cur.rank):null;
 
   return`<div class="result-card">
@@ -3422,7 +3778,7 @@ function resultHtml(t){
       <button class="save-result" data-save-result="${esc(t.id)}">${cur?"更新紀錄":"儲存紀錄"}</button>
     </div>
 
-    <div class="single-record-note">每支隊伍只保留一筆紀錄，之後儲存會直接更新這筆資料。</div>
+    <div class="single-record-note">${PHASE_NAMES[selectedPhase]}專屬隊伍：本期的隊員與成績只屬於本期，不會出現在其他期數。</div>
   </div>`;
 }
 function renderTeams(){
@@ -3431,7 +3787,7 @@ function renderTeams(){
 
   $("boardSub").textContent=selected.length
     ? `${selected.length} 人篩選 · ${list.length} 支隊伍`
-    : `${visibleTeams().length} 支隊伍`;
+    : `${PHASE_NAMES[selectedPhase]} · ${visibleTeams().length} 支隊伍`;
 
   if(!currentDungeon()){
     $("teamList").innerHTML=`<div class="empty">尚無副本</div>`;
@@ -3439,7 +3795,7 @@ function renderTeams(){
   }
 
   if(!list.length){
-    $("teamList").innerHTML=`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":"尚無隊伍"}</div>`;
+    $("teamList").innerHTML=`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`本副本${PHASE_NAMES[selectedPhase]}尚無隊伍，請在本期建立新隊伍。`}</div>`;
     return;
   }
 
@@ -3471,7 +3827,7 @@ function renderTeams(){
 
           <div class="simple-time">
             <div class="simple-label">總時間</div>
-            <div class="simple-value">${t.currentResult?fmtTime(t.currentResult.timeMs):"—"}</div>
+            <div class="simple-value">${phaseResult(t)?fmtTime(phaseResult(t).timeMs):"—"}</div>
           </div>
 
           <button type="button" class="team-collapse-btn" data-toggle-team="${esc(t.id)}">${expanded?"收合":"展開"}</button>
@@ -3492,7 +3848,7 @@ function renderTeams(){
         ${resultHtml(t)}
 
         <div class="roster-title">
-          <strong>隊伍成員</strong>
+          <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
           <div class="roster-title-actions">
             <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 批量選擇隊友</button>
           </div>
@@ -3504,10 +3860,13 @@ function renderTeams(){
 }
 function renderAll(){
   renderCycle();
+  renderPhaseSwitcher();
   renderPlayers();
   renderSelectedPlayer();
   renderQuick();
   renderTeams();
+  renderPhaseSummary();
+  renderStandings();
   document.querySelectorAll("[data-metric]").forEach(b=>b.classList.toggle("active",b.dataset.metric===metricMode));
 }
 
@@ -3515,10 +3874,10 @@ function createTeam(){
   const dg=currentDungeon();if(!dg){alert("請先建立或選擇目前副本。");return}
   const name=$("createTeamName").value.trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
   const note=$("createTeamNote").value.trim();
-  const team={id:uid("team"),dungeonId:dg.id,size:SIZE,name,note,mode:"normal",members:Array(SIZE).fill(null),externalMembers:{},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now(),_sync:"pending"};
+  const team={id:uid("team"),dungeonId:dg.id,phase:selectedPhase,size:SIZE,name,note,mode:"normal",members:Array(SIZE).fill(null),externalMembers:{},phaseMembers:{"2":[],"3":[]},phaseExternalMembers:{"2":{},"3":{}},currentResult:null,createdAt:Date.now(),updatedAtMs:Date.now(),_sync:"pending"};
   teams.push(team);expandedTeamIds.clear();expandedTeamIds.add(team.id);selectedPlayerIds.clear();$("playerSearch").value="";$("createTeamName").value="";$("createTeamNote").value="";
   saveLocalPage();renderAll();document.getElementById(`team-${team.id}`)?.scrollIntoView({behavior:"smooth",block:"center"});
-  toast(`${name} 已建立`);
+  toast(`${PHASE_NAMES[selectedPhase]}「${name}」已建立`);
   syncTeam(team);
 }
 function openPicker(teamId,index){
@@ -3533,14 +3892,15 @@ function openPicker(teamId,index){
 function renderPicker(){
   const t=teams.find(x=>x.id===pickerTeamId);
   const q=norm($("pickerSearch").value);
-  const used=new Set((t?.members||[]).filter(v=>v&&!isOutsiderToken(v)));
+  const used=new Set(phaseMembersOf(t).filter(v=>v&&!isOutsiderToken(v)));
 
   refreshPickerProfessionFilters();
 
+  const listed=firstPhaseListedPlayers();
   const list=players.filter(p=>
     (!q||norm(`${p.name} ${playerRolesText(p)} ${p.note||""}`).includes(q)) &&
     playerHasProfession(p,pickerProfessionFilter) &&
-    (!used.has(p.id)||(t?.members||[])[pickerIndex]===p.id)
+    (!used.has(p.id)||phaseMembersOf(t)[pickerIndex]===p.id)
   );
 
   $("pickerTitle").textContent=`選擇第 ${pickerIndex+1} 位玩家`;
@@ -3549,7 +3909,7 @@ function renderPicker(){
     const roles=normalizeRoles(p).map(r=>`<span class="picker-player-role">${esc(r)}</span>`).join("");
     return`<button class="picker-player" data-pick-player="${esc(p.id)}">
       <div>
-        <strong>${esc(p.name)}</strong>
+        <div class="picker-player-name-line"><strong>${esc(p.name)}</strong>${firstPhaseBadge(p,listed)}</div>
         <div class="picker-player-roles">${roles}</div>
         ${p.note?`<span>${esc(p.note)}</span>`:""}
       </div>
@@ -3564,7 +3924,7 @@ function openBatchPicker(teamId){
 
   batchTeamId=teamId;
   batchSelectedIds=new Set(
-    (t.members||[])
+    phaseMembersOf(t)
       .filter(v=>v&&!isOutsiderToken(v)&&players.some(p=>p.id===v))
   );
   batchProfessionFilter="";
@@ -3580,9 +3940,10 @@ function renderBatchPicker(){
   refreshPickerProfessionFilters();
 
   const q=norm($("batchPickerSearch").value);
-  const outsiderCount=(t.members||[]).filter(isOutsiderToken).length;
+  const outsiderCount=phaseMembersOf(t).filter(isOutsiderToken).length;
   const internalCapacity=Math.max(0,SIZE-outsiderCount);
 
+  const listed=firstPhaseListedPlayers();
   const list=players
     .filter(p=>
       (!q||norm(`${p.name} ${playerRolesText(p)} ${p.note||""}`).includes(q)) &&
@@ -3596,7 +3957,7 @@ function renderBatchPicker(){
     return`<label class="batch-player ${selected?"selected":""}" data-batch-player="${esc(p.id)}">
       <input type="checkbox"${selected?" checked":""}>
       <div>
-        <div class="batch-player-name">${esc(p.name)}</div>
+        <div class="batch-player-name-line"><div class="batch-player-name">${esc(p.name)}</div>${firstPhaseBadge(p,listed)}</div>
         <div class="batch-player-roles">${roles}</div>
         ${p.note?`<div class="batch-player-note">${esc(p.note)}</div>`:""}
       </div>
@@ -3615,7 +3976,7 @@ function renderBatchPicker(){
 function toggleBatchPlayer(playerId){
   const t=teams.find(x=>x.id===batchTeamId);
   if(!t)return;
-  const outsiderCount=(t.members||[]).filter(isOutsiderToken).length;
+  const outsiderCount=phaseMembersOf(t).filter(isOutsiderToken).length;
   const internalCapacity=Math.max(0,SIZE-outsiderCount);
 
   if(batchSelectedIds.has(playerId)){
@@ -3637,7 +3998,7 @@ function applyBatchPlayers(){
   const t=teams.find(x=>x.id===batchTeamId);
   if(!t)return;
 
-  const existingMembers=Array.from({length:SIZE},(_,i)=>(t.members||[])[i]||null);
+  const existingMembers=phaseMembersOf(t);
   const externalSlots=existingMembers
     .map((v,i)=>isOutsiderToken(v)?{index:i,value:v}:null)
     .filter(Boolean);
@@ -3670,15 +4031,11 @@ function applyBatchPlayers(){
     next[empty]=pid;
   }
 
-  t.members=next;
-  t.updatedAtMs=Date.now();
-  t._sync="pending";
+  setPhaseRoster(t,next);
   expandedTeamIds.add(t.id);
 
-  saveLocalPage();
   closeModal("batchPickerModal");
-  renderAll();
-  syncTeam(t);
+  persistPhaseRosterChange(t);
   warnDuplicateRoster(t);
   toast(`已套用 ${selected.length} 位幫內玩家`);
 }
@@ -3688,30 +4045,28 @@ function assignOutsider(teamId,index){
   const typed=prompt("外人名稱（可留空，留空就顯示「外人」）：","");
   if(typed===null)return;
   const token=`external:${uid("guest")}`;
-  t.externalMembers=t.externalMembers&&typeof t.externalMembers==="object"?t.externalMembers:{};
-  t.externalMembers[token]={name:typed.trim()||"外人"};
-  t.members=Array.from({length:SIZE},(_,i)=>(t.members||[])[i]||null);
-  const old=t.members[index];
-  if(isOutsiderToken(old)&&t.externalMembers[old])delete t.externalMembers[old];
-  t.members[index]=token;
-  t.updatedAtMs=Date.now();
-  t._sync="pending";
+  const outsiders={...phaseOutsidersOf(t)};
+  outsiders[token]={name:typed.trim()||"外人"};
+  const members=phaseMembersOf(t);
+  const old=members[index];
+  if(isOutsiderToken(old))delete outsiders[old];
+  members[index]=token;
+  setPhaseRoster(t,members,outsiders);
   expandedTeamIds.add(t.id);
-  saveLocalPage();
   closeModal("pickerModal");
-  renderAll();
-  syncTeam(t);
+  persistPhaseRosterChange(t);
   warnDuplicateRoster(t);
 }
 function assignPlayer(teamId,index,pid){
   const t=teams.find(x=>x.id===teamId),p=players.find(x=>x.id===pid);if(!t||!p)return;
-  const existing=(t.members||[]).indexOf(pid);if(existing>=0&&existing!==index){alert(`${p.name} 已在這支隊伍裡`);return}
-  t.members=Array.from({length:SIZE},(_,i)=>(t.members||[])[i]||null);const old=t.members[index];if(isOutsiderToken(old)&&t.externalMembers?.[old])delete t.externalMembers[old];t.members[index]=pid;t.updatedAtMs=Date.now();t._sync="pending";playerArchive[p.id]={...p};
+  const members=phaseMembersOf(t);
+  const existing=members.indexOf(pid);if(existing>=0&&existing!==index){alert(`${p.name} 已在這支隊伍裡`);return}
+  const outsiders={...phaseOutsidersOf(t)};
+  const old=members[index];if(isOutsiderToken(old))delete outsiders[old];
+  members[index]=pid;setPhaseRoster(t,members,outsiders);playerArchive[p.id]={...p};
   saveLocalSharedPlayers();
-  saveLocalPage();
   closeModal("pickerModal");
-  renderAll();
-  syncTeam(t);
+  persistPhaseRosterChange(t);
   syncSharedPlayers();
   warnDuplicateRoster(t);
 }
@@ -3728,11 +4083,11 @@ function requestRemovePlayer(teamId,pid){
 }
 function removePlayer(teamId,pid){
   const t=teams.find(x=>x.id===teamId);if(!t)return;
-  if(isOutsiderToken(pid)&&t.externalMembers?.[pid])delete t.externalMembers[pid];
-  t.members=(t.members||[]).map(x=>x===pid?null:x);
-  t.updatedAtMs=Date.now();t._sync="pending";
+  const outsiders={...phaseOutsidersOf(t)};
+  if(isOutsiderToken(pid))delete outsiders[pid];
+  setPhaseRoster(t,phaseMembersOf(t).map(x=>x===pid?null:x),outsiders);
   expandedTeamIds.add(t.id);
-  saveLocalPage();renderAll();syncTeam(t);
+  persistPhaseRosterChange(t);
 }
 async function saveResult(teamId){
   const t=teams.find(x=>x.id===teamId);
@@ -3778,7 +4133,7 @@ async function saveResult(teamId){
     return;
   }
 
-  const filled=(t.members||[]).filter(Boolean);
+  const filled=phaseMembersOf(t).filter(Boolean);
   const roster=rosterSnapshotFromTeam(t);
 
   if(roster.length!==filled.length){
@@ -3788,21 +4143,22 @@ async function saveResult(teamId){
 
   const internal=roster.filter(m=>!m.external&&players.some(p=>p.id===m.id));
   const over=internal.filter(m=>{
-    const other=visibleTeams().filter(x=>x.id!==t.id&&x.currentResult?.roster?.some(r=>r.id===m.id&&!r.external)).length;
+    const other=visibleTeams().filter(x=>x.id!==t.id&&phaseResult(x)?.roster?.some(r=>r.id===m.id&&!r.external)).length;
     return limit>0&&other+1>limit;
   }).map(m=>m.name);
 
   if(over.length&&!confirm(`以下玩家會超過上榜限制：\n${over.join("、")}\n\n仍要儲存嗎？`))return;
 
-  const existingRecordId=t.currentResult?.recordId || `record_${t.id}`;
+  const existingRecordId=phaseResult(t)?.recordId || (selectedPhase===1?`record_${t.id}`:`record_${t.id}_p${selectedPhase}`);
   const existingCreatedAt=
     records.find(r=>r.id===existingRecordId)?.createdAtMs ||
-    t.currentResult?.createdAtMs ||
+    phaseResult(t)?.createdAtMs ||
     Date.now();
 
   const rec={
     id:existingRecordId,
     dungeonId:t.dungeonId,
+    phase:selectedPhase,
     teamId:t.id,
     teamName:t.name,
     size:SIZE,
@@ -3819,13 +4175,13 @@ async function saveResult(teamId){
     _sync:"pending"
   };
 
-  // Keep exactly one local record for this team.
-  records=records.filter(r=>r.teamId!==t.id || r.id===existingRecordId);
+  // Keep exactly one record for each team AND phase. Preserve other phases.
+  records=records.filter(r=>r.teamId!==t.id || recordPhase(r)!==selectedPhase || r.id===existingRecordId);
   const idx=records.findIndex(r=>r.id===existingRecordId);
   if(idx>=0)records[idx]=rec;
   else records.push(rec);
 
-  t.currentResult={
+  setPhaseResult(t,selectedPhase,{
     recordId:rec.id,
     mode:rec.mode,
     rank:rec.rank,
@@ -3837,22 +4193,22 @@ async function saveResult(teamId){
     roster:rec.roster,
     createdAtMs:rec.createdAtMs,
     updatedAtMs:rec.updatedAtMs
-  };
+  });
   t.updatedAtMs=rec.updatedAtMs;
   t._sync="pending";
 
   saveLocalPage();
   renderAll();
 
-  syncRecord(rec);
-  syncTeam(t);
-  cleanupExtraTeamRecordsRemote(t.id,rec.id);
+  await syncRecord(rec);
+  await syncTeam(t);
+  await cleanupExtraTeamRecordsRemote(t.id,rec.id,selectedPhase);
 
   toast(`${t.name} 紀錄已更新`);
 }
 function firstTeamRecord(teamId){
   return records
-    .filter(r=>r.teamId===teamId)
+    .filter(r=>r.teamId===teamId&&recordPhase(r)===selectedPhase)
     .slice()
     .sort((a,b)=>
       Number(a.createdAtMs||0)-Number(b.createdAtMs||0) ||
@@ -3938,8 +4294,8 @@ async function saveRecordEdit(){
   r.updatedAtMs=Date.now();
   r._sync="pending";
 
-  if(t.currentResult?.recordId===r.id){
-    t.currentResult={
+  if(phaseResult(t,recordPhase(r))?.recordId===r.id){
+    setPhaseResult(t,recordPhase(r),{
       recordId:r.id,
       mode:r.mode||normalizeTeamMode(t),
       rank:r.rank??null,
@@ -3950,7 +4306,7 @@ async function saveRecordEdit(){
       note:r.note||"",
       roster:r.roster||[],
       updatedAtMs:r.updatedAtMs
-    };
+    });
     t.updatedAtMs=r.updatedAtMs;
     t._sync="pending";
   }
@@ -3988,9 +4344,9 @@ async function deleteRecordConfirmed(teamId,recordId){
 
   records=records.filter(x=>x.id!==recordId);
 
-  if(t.currentResult?.recordId===recordId){
+  if(phaseResult(t,recordPhase(r))?.recordId===recordId){
     const remaining=records
-      .filter(x=>x.teamId===teamId&&x.dungeonId===t.dungeonId)
+      .filter(x=>x.teamId===teamId&&x.dungeonId===t.dungeonId&&recordPhase(x)===recordPhase(r))
       .slice()
       .sort((a,b)=>
         Number(b.createdAtMs||0)-Number(a.createdAtMs||0) ||
@@ -3998,7 +4354,7 @@ async function deleteRecordConfirmed(teamId,recordId){
       );
 
     const latest=remaining[0]||null;
-    t.currentResult=latest?{
+    setPhaseResult(t,recordPhase(r),latest?{
       recordId:latest.id,
       mode:latest.mode||normalizeTeamMode(t),
       rank:latest.rank??null,
@@ -4008,7 +4364,7 @@ async function deleteRecordConfirmed(teamId,recordId){
       date:latest.date,
       note:latest.note||"",
       roster:latest.roster||[]
-    }:null;
+    }:null);
     t.updatedAtMs=Date.now();
     t._sync="pending";
   }
@@ -4315,6 +4671,7 @@ function createDungeon(){
   dungeons.push({id,name,note,createdAt:today()});
   activeDungeonId=id;
   selectedDungeonId=id;
+  restorePhase();
   saveLocalCycles();
   closeModal("dungeonModal");
   renderAll();
@@ -4403,7 +4760,7 @@ async function deleteDungeonConfirmed(dungeonId){
   if(activeDungeonId===dungeonId)activeDungeonId=dungeons.at(-1)?.id||"";
   if(selectedDungeonId===dungeonId)selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
   expandedTeamIds.clear();selectedPlayerIds.clear();
-  saveLocalPage();saveLocalCycles();purgeDungeonFromLocalCaches(dungeonId);renderAll();
+  restorePhase();saveLocalPage();saveLocalCycles();purgeDungeonFromLocalCaches(dungeonId);renderAll();
   toast(`副本「${dg.name}」已刪除`);
   await deleteDungeonRemote(dungeonId);
 }
@@ -4453,8 +4810,11 @@ document.addEventListener("click",e=>{
 });
 function bindUI(){
   $("teamCreateForm").addEventListener("submit",e=>{e.preventDefault();createTeam()});
-  $("dungeonSelect").addEventListener("change",()=>{selectedDungeonId=$("dungeonSelect").value;selectedPlayerIds.clear();renderAll()});
-  $("backCurrentBtn").addEventListener("click",()=>{selectedDungeonId=activeDungeonId;selectedPlayerIds.clear();renderAll()});
+  $("dungeonSelect").addEventListener("change",()=>{selectedDungeonId=$("dungeonSelect").value;restorePhase();selectedPlayerIds.clear();renderAll()});
+  $("phaseButtons").addEventListener("click",e=>{const button=e.target.closest("[data-phase]");if(!button||!currentDungeon())return;selectedPhase=Number(button.dataset.phase);rememberPhase();selectedPlayerIds.clear();renderAll()});
+  $("bottomPngBtn").addEventListener("click",exportPNG);
+  $("bottomExcelBtn").addEventListener("click",exportExcel);
+  $("backCurrentBtn").addEventListener("click",()=>{selectedDungeonId=activeDungeonId;restorePhase();selectedPlayerIds.clear();renderAll()});
   $("newDungeonBtn").addEventListener("click",()=>{$("newDungeonName").value="";$("newDungeonNote").value="";openModal("dungeonModal")});
   $("saveDungeonBtn").addEventListener("click",createDungeon);
   $("editDungeonBtn").addEventListener("click",openDungeonEdit);
@@ -4607,9 +4967,9 @@ function sheet(name,headers,rows){
 }
 function buildExportTeams(){
   return sortTeamsByManualRank(visibleTeams())
-    .filter(t=>t.currentResult)
+    .filter(t=>phaseResult(t))
     .map(t=>{
-      const result=t.currentResult||{};
+      const result=phaseResult(t)||{};
       const roster=Array.isArray(result.roster)&&result.roster.length
         ? result.roster
         : rosterSnapshotFromTeam(t);
@@ -4845,7 +5205,7 @@ function exportExcel(){
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");
     a.href=url;
-    a.download=`${SIZE}人競速_${dg.name||"副本"}_排名.xls`;
+    a.download=`${SIZE}人競速_${dg.name||"副本"}_${PHASE_NAMES[selectedPhase]}_排名.xls`;
     a.style.display="none";
 
     document.body.appendChild(a);
@@ -4916,6 +5276,8 @@ function exportPNG(){
   }
 
   const bestByPlayer=buildBestRecordByPlayer(exportTeams);
+  const countedPlayers=buildPlayerRecordCountMap(exportTeams);
+  const firstListed=firstPhaseListedPlayers();
 
   function fitText(ctx,text,maxWidth){
     let s=String(text??"");
@@ -4967,8 +5329,8 @@ function exportPNG(){
   const side=28;
   const titleH=82;
   const headerH=46;
-  const rowH=44;
-  const footerH=20;
+  const rowH=selectedPhase===1?64:82;
+  const footerH=38;
   const tableW=cols.reduce((sum,col)=>sum+col.width,0);
   const width=tableW+side*2;
   const height=side*2+titleH+headerH+rowH*rows.length+footerH;
@@ -4989,7 +5351,7 @@ function exportPNG(){
 
   ctx.fillStyle="#5d6c86";
   ctx.font='600 16px Arial';
-  ctx.fillText(`${dg.name||"目前副本"} · 共 ${rows.length} 隊 · 依遊戲排名排序`,side,side+52);
+  ctx.fillText(`${dg.name||"目前副本"} · ${PHASE_NAMES[selectedPhase]} · 共 ${rows.length} 隊 · 依遊戲排名排序`,side,side+52);
 
   const tableX=side;
   const tableY=side+titleH;
@@ -5051,7 +5413,7 @@ function exportPNG(){
       const count=playerTeamCount(member);
 
       if(count>1 && !isBest){
-        ctx.fillStyle="#e7e6e6";
+        ctx.fillStyle="#f0f2f5";
         ctx.fillRect(x,top,w,rowH);
       }
     });
@@ -5109,7 +5471,7 @@ function exportPNG(){
             color="#111111";
             font='900 15px Arial';
           } else if(hasMulti){
-            color="#7f7f7f";
+            color="#9aa5b4";
             font='700 15px Arial';
           } else {
             color="#223250";
@@ -5127,10 +5489,26 @@ function exportPNG(){
       const maxW = col.align==="left" ? w-18 : w-12;
       const shown = fitText(ctx, safeText, maxW);
       const tx = col.align==="left" ? x+10 : x+w/2;
-      ctx.fillText(shown, tx, top+rowH/2);
+      ctx.fillText(shown, tx, top+(col.key.startsWith("p") ? 22 : rowH/2));
+      if(/^p\d+$/.test(col.key) && value && !value.external){
+        const status=phaseMemberStatus(value,row.result,bestByPlayer,countedPlayers);
+        if(status==="best"){
+          ctx.fillStyle="#168653";
+          ctx.font='900 12px "Noto Sans TC",Arial';
+          ctx.textAlign="center";
+          ctx.fillText("個人最佳",x+w/2,top+47);
+        }
+        if(selectedPhase>1 && wasFirstPhaseListed(value,firstListed)){
+          ctx.fillStyle="#168653";
+          ctx.font='900 11px "Noto Sans TC",Arial';
+          ctx.textAlign="center";
+          ctx.fillText("第一期已上榜",x+w/2,top+66);
+        }
+      }
     });
   });
 
+  ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle="#64748b";ctx.font='600 13px "Noto Sans TC",Arial';ctx.fillText("各期隊伍及成績獨立；第二、三期會提醒第一期已上榜的玩家",side,tableY+headerH+rows.length*rowH+22);
   try{
     canvas.toBlob(blob=>{
       if(!blob){
@@ -5140,7 +5518,7 @@ function exportPNG(){
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a");
       a.href=url;
-      a.download=`5人競速_${dg.name||"副本"}_表格戰績.png`;
+      a.download=`5人競速_${dg.name||"副本"}_${PHASE_NAMES[selectedPhase]}_表格戰績.png`;
       a.style.display="none";
       document.body.appendChild(a);
       a.click();
@@ -5213,6 +5591,7 @@ async function initFirebase(){
 
     await loadSharedRemote();
     await migrateOldPageIfNeeded();
+    await migrateRemotePhaseTeams();
 
     subscribeRemote();
 
@@ -5305,6 +5684,7 @@ async function loadSharedRemote(){
   if(!selectedDungeonId||!dungeons.some(d=>d.id===selectedDungeonId)){
     selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
   }
+  restorePhase();
 
   renderAll();
 }
@@ -5347,6 +5727,7 @@ async function migrateOldPageIfNeeded(){
       id:t.id||uid("team"),
       dungeonId:t.dungeonId||activeDungeonId,
       size:SIZE,
+      phase:teamPeriod(t),
       name:t.name||`${SIZE}人固定隊`,
       note:t.note||"",
       mode:t.mode==="challenge"?"challenge":"normal",
@@ -5355,6 +5736,9 @@ async function migrateOldPageIfNeeded(){
         ? t.externalMembers
         : {},
       currentResult:t.currentResult||null,
+      phaseResults:t.phaseResults||{},
+      phaseMembers:t.phaseMembers||{},
+      phaseExternalMembers:t.phaseExternalMembers||{},
       createdAt:t.createdAt||Date.now(),
       updatedAtMs:Date.now()
     };
@@ -5394,6 +5778,7 @@ async function migrateOldPageIfNeeded(){
     const rec={
       id:r.id||uid("rec"),
       dungeonId:r.dungeonId||activeDungeonId,
+      phase:recordPhase(r),
       teamId:r.teamId||"",
       teamName:r.teamName||"固定隊伍",
       size:SIZE,
@@ -5414,6 +5799,49 @@ async function migrateOldPageIfNeeded(){
       {...rec,updatedAt:serverTimestamp()}
     ).catch(()=>{});
   }
+}
+
+async function migrateRemotePhaseTeams(){
+  // Preserve real Phase 2/3 records that were entered in the previous shared-
+  // team version. Never copy an empty Phase 1 team into a later phase.
+  if(!fbOnline||!fb)return;
+  const {db,collection,getDocs,doc,setDoc,serverTimestamp}=fb;
+  try{
+    const teamSnap=await getDocs(collection(db,"competition",`speed_${SIZE}`,"teams"));
+    const remoteTeams=new Map();
+    teamSnap.forEach(ds=>remoteTeams.set(ds.id,{...ds.data(),id:ds.id}));
+    const sourceTeams=[...remoteTeams.values()].filter(t=>teamPeriod(t)===1&&!t._phaseSplitV2);
+    const sourceWithData=sourceTeams.filter(t=>[2,3].some(phase=>legacyPhaseHasData(t,phase)));
+    if(!sourceWithData.length)return;
+    const recordSnap=await getDocs(collection(db,"competition",`speed_${SIZE}`,"records"));
+    const remoteRecords=[];
+    recordSnap.forEach(ds=>remoteRecords.push({...ds.data(),id:ds.id}));
+    for(const t of sourceWithData){
+      let split=false;
+      for(const phase of [2,3]){
+        if(!legacyPhaseHasData(t,phase))continue;
+        const id=legacyPhaseTeamId(t.id,phase);
+        if(!remoteTeams.has(id)){
+          const clone=legacyPhaseClone(t,phase);
+          const { _sync, ...data }=clone;
+          await setDoc(doc(db,"competition",`speed_${SIZE}`,"teams",id),{
+            ...data,updatedAt:serverTimestamp()
+          });
+          remoteTeams.set(id,clone);
+        }
+        for(const r of remoteRecords){
+          if(r.teamId===t.id&&recordPhase(r)===phase){
+            await setDoc(doc(db,"competition",`speed_${SIZE}`,"records",r.id),{teamId:id},{merge:true});
+          }
+        }
+        split=true;
+      }
+      if(split){
+        await setDoc(doc(db,"competition",`speed_${SIZE}`,"teams",t.id),
+          {phase:1,_phaseSplitV2:true},{merge:true});
+      }
+    }
+  }catch(e){console.warn("Phase team migration could not complete",e)}
 }
 
 async function flushLocalPageToFirebase(){
@@ -5496,7 +5924,7 @@ async function syncTeam(team){
   saveLocalPage();if(!fbOnline||!fb){team._sync="local";saveLocalPage();renderAll();return}
   team._sync="pending";saveLocalPage();renderAll();setSync("saving","同步中");
   try{
-    const clean={id:team.id,dungeonId:team.dungeonId,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},currentResult:team.currentResult||null,createdAt:team.createdAt||Date.now(),updatedAtMs:Number(team.updatedAtMs||team.createdAt||Date.now())};
+    const clean={id:team.id,dungeonId:team.dungeonId,phase:teamPeriod(team),_phaseSplitV2:!!team._phaseSplitV2,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},phaseMembers:team.phaseMembers||{},phaseExternalMembers:team.phaseExternalMembers||{},currentResult:team.currentResult||null,phaseResults:team.phaseResults||{},createdAt:team.createdAt||Date.now(),updatedAtMs:Number(team.updatedAtMs||team.createdAt||Date.now())};
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"teams",team.id),{...clean,updatedAt:fb.serverTimestamp()});
     team._sync="synced";saveLocalPage();setSync("ok","已同步");renderAll();
   }catch(e){console.warn(e);team._sync="local";saveLocalPage();setSync("local","本機暫存");renderAll()}
@@ -5504,7 +5932,7 @@ async function syncTeam(team){
 async function syncRecord(rec){
   saveLocalPage();if(!fbOnline||!fb){rec._sync="local";saveLocalPage();return}
   try{
-    const clean={id:rec.id,dungeonId:rec.dungeonId,teamId:rec.teamId,teamName:rec.teamName,size:SIZE,mode:rec.mode==="challenge"?"challenge":"normal",rank:Number(rec.rank||0)>0?Number(rec.rank):null,boss1Ms:Number(rec.boss1Ms||0)||null,boss2Ms:Number(rec.boss2Ms||0)||null,timeMs:rec.timeMs,date:rec.date,note:rec.note||"",roster:rec.roster||[],createdAtMs:rec.createdAtMs||Date.now(),updatedAtMs:Number(rec.updatedAtMs||Date.now())};
+    const clean={id:rec.id,dungeonId:rec.dungeonId,phase:recordPhase(rec),teamId:rec.teamId,teamName:rec.teamName,size:SIZE,mode:rec.mode==="challenge"?"challenge":"normal",rank:Number(rec.rank||0)>0?Number(rec.rank):null,boss1Ms:Number(rec.boss1Ms||0)||null,boss2Ms:Number(rec.boss2Ms||0)||null,timeMs:rec.timeMs,date:rec.date,note:rec.note||"",roster:rec.roster||[],createdAtMs:rec.createdAtMs||Date.now(),updatedAtMs:Number(rec.updatedAtMs||Date.now())};
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"records",rec.id),{...clean,updatedAt:fb.serverTimestamp()});
     rec._sync="synced";saveLocalPage();
   }catch(e){console.warn(e);rec._sync="local";saveLocalPage()}
@@ -5530,7 +5958,7 @@ async function deleteDungeonRemote(dungeonId){
     alert("本機已刪除副本，但 Firebase 有部分資料未成功刪除。請檢查網路後重新整理確認。");
   }
 }
-async function cleanupExtraTeamRecordsRemote(teamId,keepRecordId){
+async function cleanupExtraTeamRecordsRemote(teamId,keepRecordId,phase=1){
   if(!fbOnline||!fb)return;
   try{
     const snap=await fb.getDocs(
@@ -5539,7 +5967,7 @@ async function cleanupExtraTeamRecordsRemote(teamId,keepRecordId){
     const jobs=[];
     snap.forEach(ds=>{
       const data=ds.data();
-      if(data?.teamId===teamId&&ds.id!==keepRecordId){
+      if(data?.teamId===teamId&&recordPhase(data)===phase&&ds.id!==keepRecordId){
         jobs.push(fb.deleteDoc(ds.ref));
       }
     });
