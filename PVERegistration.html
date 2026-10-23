@@ -13625,6 +13625,164 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     }
   </style>
 
+
+  <style id="pve-full-date-scroll-navigation">
+    /* 全日期展開：右側依日期先後顯示，左側固定導覽只負責定位。 */
+    html body .app-workspace #days{display:flex !important;flex-direction:column;gap:0 !important;}
+    html body .app-workspace #days > .day-card{flex:0 0 auto;scroll-margin-top:110px;}
+    html body .app-workspace #days > .day-card + .day-card{margin-top:20px !important;}
+    /* 空日期只放一行提示，不再佔用大塊空白；仍可直接新增時間。 */
+    html body .app-workspace #days > .day-card.no-slots .slot-list{display:block !important;}
+    html body .app-workspace #days > .day-card.no-slots .activity-empty-note{
+      min-height:52px !important;padding:11px 15px !important;
+      border-radius:12px !important;font-size:12px !important;
+      text-align:left !important;justify-content:flex-start !important;
+    }
+    @media (max-width:768px){
+      html body .app-workspace #days > .day-card{scroll-margin-top:108px !important;}
+      html body .app-workspace #days > .day-card + .day-card{margin-top:15px !important;}
+    }
+  </style>
+
+
+  <style id="pve-active-date-section-clarity">
+    /* 左側保留全部日期；右側只顯示有人報名的日期和使用者明確點開的空日期。 */
+    html body .app-workspace #days > section.day-card{
+      display:block !important;
+      padding:13px !important;
+      border:1.5px solid rgba(133,166,230,.38) !important;
+      border-radius:19px !important;
+      background:linear-gradient(180deg,rgba(103,145,216,.065),rgba(105,132,205,.018)) !important;
+      box-shadow:0 8px 26px rgba(0,0,0,.12),inset 0 1px 0 rgba(211,229,255,.045) !important;
+      overflow:visible !important;
+    }
+    html body .app-workspace #days > section.day-card + section.day-card{
+      margin-top:19px !important;
+    }
+    html body .app-workspace #days > section.day-card .day-head{
+      position:relative !important;
+      margin:0 0 13px !important;
+      padding:12px 14px 12px 17px !important;
+      border:1px solid rgba(133,166,230,.30) !important;
+      border-left:4px solid var(--ui-accent) !important;
+      border-radius:12px !important;
+      background:linear-gradient(100deg,rgba(101,144,214,.14),rgba(113,142,208,.035)) !important;
+      box-shadow:0 2px 10px rgba(0,0,0,.045) !important;
+    }
+    html body .app-workspace #days > section.day-card .day-title{
+      font-weight:900 !important;
+    }
+    html[data-theme="light"] body .app-workspace #days > section.day-card{
+      border-color:rgba(76,109,174,.40) !important;
+      background:linear-gradient(180deg,#f9fbff,#f4f7ff) !important;
+      box-shadow:0 8px 22px rgba(56,77,119,.09) !important;
+    }
+    html[data-theme="light"] body .app-workspace #days > section.day-card .day-head{
+      border-color:rgba(90,122,185,.28) !important;
+      border-left-color:#6178d8 !important;
+      background:linear-gradient(100deg,#eaf0ff,#f7f9ff) !important;
+    }
+    html body .app-workspace #days > .days-no-active{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+      padding:48px 18px;border-radius:17px;border:1px dashed var(--ui-line-strong);
+      background:var(--ui-panel);text-align:center;color:var(--ui-muted);
+    }
+    html body .app-workspace #days > .days-no-active strong{font-size:16px;color:var(--ui-text);}
+    html body .app-workspace #days > .days-no-active span:last-child{font-size:12px;line-height:1.7;}
+    html body .app-workspace #days > .days-no-active-icon{font-size:28px;color:var(--ui-accent);}
+    @media (max-width:768px){
+      html body .app-workspace #days > section.day-card{padding:10px !important;border-radius:15px !important;}
+      html body .app-workspace #days > section.day-card .day-head{padding:10px 11px 10px 13px !important;margin-bottom:10px !important;}
+      html body .app-workspace #days > section.day-card + section.day-card{margin-top:13px !important;}
+    }
+  </style>
+
+
+  <style id="pve-date-layout-repair-and-activity-stripes">
+    /* 修復舊版 grid/sticky/day-head 規則殘留造成日期標題消失與上方大片空白。 */
+    html body .app-workspace #days > section.day-card{
+      display:flex !important;flex-direction:column !important;
+      align-items:stretch !important;justify-content:flex-start !important;
+      min-height:0 !important;height:auto !important;width:100% !important;
+      grid-template-columns:none !important;
+    }
+    html body .app-workspace #days > section.day-card > .day-head{
+      display:flex !important;position:relative !important;
+      top:auto !important;left:auto !important;right:auto !important;
+      flex:0 0 auto !important;order:0 !important;
+      width:100% !important;height:auto !important;min-height:62px !important;
+      max-height:none !important;align-self:stretch !important;
+      visibility:visible !important;opacity:1 !important;
+      z-index:1 !important;
+      align-items:center !important;justify-content:space-between !important;
+      margin:0 0 12px !important;
+    }
+    html body .app-workspace #days > section.day-card > .slot-list{
+      display:grid !important;position:relative !important;
+      grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+      order:1 !important;width:100% !important;min-width:0 !important;
+      margin:0 !important;padding:0 !important;
+      gap:12px !important;align-items:start !important;
+    }
+    html body .app-workspace #days > section.day-card.no-slots > .slot-list{display:block !important;}
+    html body .app-workspace #days > section.day-card .day-head .day-title{
+      display:block !important;visibility:visible !important;opacity:1 !important;
+    }
+    /* 左側日期狀態：有人（青綠）、有隊伍但無人（藍）、沒有隊伍（中性）。 */
+    html body .app-workspace #dateNavigator .date-nav-btn{
+      position:relative !important;isolation:isolate;overflow:hidden !important;
+    }
+    html body .app-workspace #dateNavigator .date-nav-btn.has-participants::before,
+    html body .app-workspace #dateNavigator .date-nav-btn.has-teams-only::before{
+      content:"" !important;position:absolute !important;
+      top:8px !important;bottom:8px !important;left:0 !important;
+      width:4px !important;border-radius:0 4px 4px 0 !important;
+      pointer-events:none !important;z-index:2 !important;
+    }
+    html body .app-workspace #dateNavigator .date-nav-btn.has-participants::before{
+      background:#4bd4b2 !important;box-shadow:0 0 12px rgba(75,212,178,.38) !important;
+    }
+    html body .app-workspace #dateNavigator .date-nav-btn.has-teams-only::before{
+      background:#6d9eff !important;box-shadow:0 0 10px rgba(109,158,255,.28) !important;
+    }
+    html body .app-workspace #dateNavigator .date-nav-btn.has-participants{
+      border-color:rgba(75,212,178,.29) !important;
+      background:linear-gradient(90deg,rgba(52,174,147,.09),transparent 62%),var(--ui-panel) !important;
+    }
+    html body .app-workspace #dateNavigator .date-nav-btn.has-teams-only{
+      border-color:rgba(109,158,255,.24) !important;
+      background:linear-gradient(90deg,rgba(94,144,240,.08),transparent 62%),var(--ui-panel) !important;
+    }
+    html body .app-workspace #dateNavigator .date-nav-btn.active{
+      border-color:rgba(130,156,255,.70) !important;
+      box-shadow:inset 0 0 0 1px rgba(124,156,255,.38),0 3px 12px rgba(0,0,0,.10) !important;
+    }
+    html[data-theme="light"] body .app-workspace #dateNavigator .date-nav-btn.has-participants{
+      background:linear-gradient(90deg,rgba(52,174,147,.11),transparent 65%),#fff !important;
+      border-color:rgba(34,151,129,.24) !important;
+    }
+    html[data-theme="light"] body .app-workspace #dateNavigator .date-nav-btn.has-teams-only{
+      background:linear-gradient(90deg,rgba(94,144,240,.11),transparent 65%),#fff !important;
+      border-color:rgba(82,127,207,.26) !important;
+    }
+    .pve-date-indicator-legend{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:3px 4px 9px;color:var(--ui-muted);font-size:11px;font-weight:750;}
+    .pve-date-indicator-legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+    .pve-date-indicator-legend i{width:4px;height:13px;border-radius:4px;display:inline-block;}
+    .pve-date-indicator-legend .participants{background:#4bd4b2;}
+    .pve-date-indicator-legend .teams{background:#6d9eff;}
+    @media (max-width:768px){
+      html body .app-workspace #days > section.day-card > .slot-list{
+        grid-template-columns:minmax(0,1fr) !important;gap:10px !important;
+      }
+      html body .app-workspace #days > section.day-card > .day-head{
+        min-height:60px !important;margin:0 0 10px !important;
+      }
+      .pve-date-indicator-legend{padding:1px 3px 7px;font-size:10px;gap:10px;}
+      html body .app-workspace #dateNavigator .date-nav-btn.has-participants::before,
+      html body .app-workspace #dateNavigator .date-nav-btn.has-teams-only::before{top:7px !important;bottom:7px !important;}
+    }
+  </style>
+
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -13749,6 +13907,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
               <button type="button" class="side-icon-btn" id="refreshBtn" title="整理日期">↻</button>
             </div>
           </div>
+          <div class="pve-date-indicator-legend" aria-label="日期狀態"><span><i class="participants" aria-hidden="true"></i>已有報名</span><span><i class="teams" aria-hidden="true"></i>有隊伍</span></div>
           <div id="dateNavigator" class="date-navigator"></div>
 
           <div class="sidebar-divider"></div>
@@ -14473,7 +14632,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     <section class="team-poster-dialog" role="dialog" aria-modal="true" aria-labelledby="teamPosterTitle">
       <header class="team-poster-head">
         <div>
-          <span id="teamPosterKicker" class="team-poster-kicker">隊伍清單 · PNG</span>
+          <span id="teamPosterKicker" class="team-poster-kicker">TEAM ROSTER · PNG</span>
           <h2 id="teamPosterTitle" class="team-poster-title">生成隊伍圖</h2>
         </div>
         <button id="teamPosterClose" type="button" class="team-poster-close" aria-label="關閉預覽">×</button>
@@ -14639,6 +14798,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     let currentTypeFilter = "all";
     let currentSizeFilter = "all";
     let selectedDateKey = localStorage.getItem("registration_selected_date") || "";
+    // 本次瀏覽明確打開的空日期：其餘無人報名日期僅保留在左側導覽，不預設佔右側空間。
+    let manuallyOpenedDateKey = "";
     let lastRenderedMobileDateItems = [];
     let pendingSharedTeamJump = (()=>{ const params=new URLSearchParams(window.location.search); const date=params.get('teamDate'); const slot=params.get('teamSlot'); return date && slot!==null ? {dateKey:date, slotIndex:Number(slot)} : null; })();
     localStorage.setItem("registration_type_filter", "all");
@@ -14722,28 +14883,16 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       return nextMonday;
     }
 
+    // 前端展示未來完整 14 天；即使 Firestore 還沒有該日期的資料，也顯示日期區塊。
     function getDatesToShow(){
       const today = getTodayStart();
-      const twoWeekEnd = getTwoWeekEnd();
-      const dateMap = new Map();
+      return Array.from({length:14}, (_, i) => addDays(today, i));
+    }
 
-      Array.from({length: CONFIG.daysToShow}, (_, i) => addDays(today, i)).forEach(date => {
-        dateMap.set(formatDate(date), date);
-      });
-
-      const nextMonday = getNextMonday();
-      if(nextMonday >= today && nextMonday <= twoWeekEnd){
-        dateMap.set(formatDate(nextMonday), nextMonday);
-      }
-
-      Object.keys(globalData || {}).forEach(dateKey => {
-        const date = parseDateKey(dateKey);
-        if(date && date >= today && date <= twoWeekEnd){
-          dateMap.set(dateKey, date);
-        }
-      });
-
-      return Array.from(dateMap.values()).sort((a,b) => a - b);
+    // 僅維持既有的自動排程範圍，不因展示 14 天就額外寫入空白日期。
+    function getDatesToInitialize(){
+      const today = getTodayStart();
+      return Array.from({length:CONFIG.daysToShow}, (_, i) => addDays(today, i));
     }
 
     function sortSlots(slots){
@@ -15638,7 +15787,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     }
 
     async function initializeVisibleDates(){
-      const dates = getDatesToShow();
+      const dates = getDatesToInitialize();
       for(const dateObj of dates){
         const dateKey = formatDate(dateObj);
         try { await ensureDateDoc(dateKey, dateObj); }
@@ -17010,6 +17159,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
       sortSlots(dayData.slots);
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+      // 建立成功後，即使沒人報名，也能立即找到剛建立的隊伍。
+      manuallyOpenedDateKey=dateKey;
+      selectedDateKey=dateKey;
+      localStorage.setItem("registration_selected_date",selectedDateKey);
       syncFilterAfterNewSlot(teamType, teamSize);
       closeDateTimeModal();
       const newTeam={dateKey,slotId:createdSlotId};
@@ -17776,7 +17929,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       let activeTeams = 0;
       let blackwork = 0;
       slots.forEach(slot => {
-        if(!teamTypeMatchesFilter(slot)) return;
+        // 日期導覽反映該日實際報名人數，不因目前選擇的團隊類型篩選而誤標成空日期。
         const members = Array.isArray(slot.members) ? slot.members : [];
         const waiting = getPendingMembers(slot);
         confirmed += members.length;
@@ -17784,7 +17937,17 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         blackwork += getBlackWorkers(slot).length;
         if(members.length || waiting.length || getBlackWorkers(slot).length) activeTeams += 1;
       });
-      return { slots, confirmed, pending, blackwork, activeTeams, isEmpty:(confirmed + pending + blackwork) === 0 };
+      return { slots, confirmed, pending, blackwork, activeTeams, hasTeams:slots.length>0, hasParticipants:(confirmed+pending+blackwork)>0, isEmpty:(confirmed + pending + blackwork) === 0 };
+    }
+
+    // 不受隊伍類型或搜尋篩選影響：只要任一人已報名、待確認或黑工補位，右側便顯示該日期。
+    function dateHasParticipants(dateKey){
+      const slots=Array.isArray(globalData?.[dateKey]?.slots) ? globalData[dateKey].slots : [];
+      return slots.some(slot =>
+        (Array.isArray(slot.members) && slot.members.length>0)
+        || getPendingMembers(slot).length>0
+        || getBlackWorkers(slot).length>0
+      );
     }
 
     function ensureSelectedDate(dates){
@@ -17832,10 +17995,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(summary) summary.textContent=items.length ? `可切換 ${items.length} 個日期` : '目前沒有日期資料';
       if(!list) return;
       const todayKey=formatDate(getTodayStart());
-      list.innerHTML=items.length ? items.map(({date,key,info,isPinnedMonday})=>{
+      list.innerHTML=items.length ? items.map(({date,key,info})=>{
         const selectedNow=key===selectedDateKey;
-        const meta=info.isEmpty ? '尚無人報名' : `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ''}${info.blackwork ? ` · ${info.blackwork} 黑工` : ''}`;
-        const badges=[key===todayKey?'<span class="mobile-date-picker-badge today">今天</span>':'',isPinnedMonday?'<span class="mobile-date-picker-badge fixed">固定</span>':''].filter(Boolean).join('');
+        const meta=info.hasParticipants ? `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ''}${info.blackwork ? ` · ${info.blackwork} 黑工` : ''}` : info.hasTeams ? `${info.slots.length} 隊 · 尚無人報名` : '目前沒有隊伍';
+        const badges=key===todayKey?'<span class="mobile-date-picker-badge today">今天</span>':'';
         return `<button type="button" class="mobile-date-picker-item${selectedNow?' active':''}" data-mobile-pick-date="${key}" aria-pressed="${selectedNow}">
           <span class="mobile-date-picker-item-main">
             <span class="mobile-date-picker-item-title">${date.getMonth()+1}/${date.getDate()} ${weekdayText(date)}</span>
@@ -17874,22 +18037,26 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(!nav) return;
       ensureSelectedDate(dates);
       const todayKey = formatDate(getTodayStart());
-      const mondayKey = formatDate(getNextMonday());
-      const items = dates.map(date => {
+      // 左側與手機日期清單：只固定顯示今天起 5 天；第 6–14 天僅在有人
+      // 正式報名、待審核或黑工補位時出現。不要過濾右側隊伍與 Firebase 資料。
+      const items = dates.map((date, dayIndex) => {
         const key = formatDate(date);
         const info = getDateActivity(key);
-        return { date, key, info, isPinnedMonday:key === mondayKey };
-      });
+        return { date, key, info, dayIndex };
+      }).filter(item => item.dayIndex < 5 || item.info.hasParticipants);
 
-      const buttonHtml = ({date,key,info,isPinnedMonday=false}) => {
+      const buttonHtml = ({date,key,info}) => {
         const totalPeople = info.confirmed + info.pending;
-        const meta = info.isEmpty
-          ? "目前沒有報名"
-          : `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ""}${info.blackwork ? ` · ${info.blackwork} 黑工` : ""}`;
-        return `<button type="button" class="date-nav-btn${key === selectedDateKey ? " active" : ""}${key === todayKey ? " is-today" : ""}${isPinnedMonday ? " is-pinned-monday" : ""}${info.isEmpty ? " is-empty" : ""}" data-select-date="${key}">
+        const activityClass = info.hasParticipants ? ' has-participants' : info.hasTeams ? ' has-teams-only' : ' is-empty';
+        const meta = info.hasParticipants
+          ? `${info.activeTeams} 隊 · ${info.confirmed} 人${info.pending ? ` · ${info.pending} 待確認` : ''}${info.blackwork ? ` · ${info.blackwork} 黑工` : ''}`
+          : info.hasTeams ? `${info.slots.length} 隊 · 尚無人報名` : '目前沒有隊伍';
+        const countLabel = info.hasParticipants ? String(totalPeople) : info.hasTeams ? `${info.slots.length}隊` : '空';
+        const mobileCount = info.hasParticipants ? `${info.activeTeams}隊 · ${totalPeople}人` : info.hasTeams ? `${info.slots.length}隊` : '尚無隊伍';
+        return `<button type="button" class="date-nav-btn${key===selectedDateKey?' active':''}${key===todayKey?' is-today':''}${activityClass}" data-select-date="${key}">
           <span class="date-nav-day"><strong>${date.getDate()}</strong><span>${date.getMonth()+1}月</span></span>
-          <span class="date-nav-main"><strong>${weekdayText(date)}${key === todayKey ? " · 今天" : ""}</strong><span>${meta}</span></span>
-          <span class="date-nav-count"><span class="date-count-default">${info.isEmpty ? "空" : totalPeople}</span><span class="date-count-mobile">${info.isEmpty ? "尚無人" : `${info.activeTeams}隊 · ${totalPeople}人`}</span></span>
+          <span class="date-nav-main"><strong>${weekdayText(date)}${key===todayKey?' · 今天':''}</strong><span>${meta}</span></span>
+          <span class="date-nav-count"><span class="date-count-default">${countLabel}</span><span class="date-count-mobile">${mobileCount}</span></span>
         </button>`;
       };
 
@@ -17899,23 +18066,50 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         if(!items.some(item => item.key === key)) return;
         selectedDateKey = key;
         localStorage.setItem("registration_selected_date", selectedDateKey);
-        render();
-        if(window.innerWidth < 769){
-          requestAnimationFrame(() => {
-            if(selectedDateKey !== key) return;
-            const target = Array.from(document.querySelectorAll("[data-date-card]")).find(card => card.dataset.dateCard === key);
-            const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-            target?.scrollIntoView({behavior, block:"start"});
-          });
-        }
+        // 空日期只有在玩家選中時才顯示；選擇其他日期便收回先前展開的空日期。
+        const nextOpened=dateHasParticipants(key) ? "" : key;
+        const shouldRedraw=manuallyOpenedDateKey!==nextOpened;
+        manuallyOpenedDateKey=nextOpened;
+        if(shouldRedraw) render();
+        // 已有隊伍的日期不必重建卡片，僅更新導覽高亮與捲動位置。
+        nav.querySelectorAll('[data-select-date]').forEach(button=>{
+          const active=button.dataset.selectDate===key;
+          button.classList.toggle('active',active);
+          button.setAttribute('aria-pressed',String(active));
+        });
+        const jump=document.getElementById('mobileDateJump');
+        if(jump) jump.value=key;
+        const current=items.find(item=>item.key===key);
+        const jumpLabel=document.getElementById('mobileDateJumpLabel');
+        if(jumpLabel && current) jumpLabel.textContent=`${current.date.getMonth()+1}/${current.date.getDate()}`;
+        document.querySelectorAll('[data-mobile-pick-date]').forEach(button=>{
+          const active=button.dataset.mobilePickDate===key;
+          button.classList.toggle('active',active);
+          button.setAttribute('aria-pressed',String(active));
+        });
+        requestAnimationFrame(()=>{
+          const target=Array.from(document.querySelectorAll('[data-date-card]'))
+            .find(card=>card.dataset.dateCard===key);
+          const behavior=window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
+          target?.scrollIntoView({behavior,block:'start'});
+          if(window.innerWidth<=768){
+            const active=nav.querySelector('.date-nav-btn.active');
+            if(active){
+              const navRect=nav.getBoundingClientRect(),activeRect=active.getBoundingClientRect();
+              const left=nav.scrollLeft+activeRect.left-navRect.left-(nav.clientWidth-activeRect.width)/2;
+              nav.scrollTo({left:Math.max(0,left),behavior});
+            }
+            lastMobileDateKey=key;
+          }
+        });
       }
 
       const jump = document.getElementById("mobileDateJump");
       if(jump){
         jump.disabled = items.length === 0;
-        jump.innerHTML = items.map(({date,key,info,isPinnedMonday}) => {
-          const tags = `${key === todayKey ? " · 今天" : ""}${isPinnedMonday ? " · 固定" : ""}`;
-          const status = info.isEmpty ? "尚無人報名" : `${info.activeTeams}隊 · ${info.confirmed}人${info.pending ? ` · ${info.pending}待確認` : ""}${info.blackwork ? ` · ${info.blackwork}黑工` : ""}`;
+        jump.innerHTML = items.map(({date,key,info}) => {
+          const tags = `${key === todayKey ? " · 今天" : ""}`;
+          const status = !info.hasParticipants ? (info.hasTeams ? `${info.slots.length}隊 · 尚無人報名` : "目前沒有隊伍") : `${info.activeTeams}隊 · ${info.confirmed}人${info.pending ? ` · ${info.pending}待確認` : ""}${info.blackwork ? ` · ${info.blackwork}黑工` : ""}`;
           return `<option value="${key}">${date.getMonth()+1}/${date.getDate()} ${weekdayText(date)}${tags}｜${status}</option>`;
         }).join("");
         jump.value = selectedDateKey;
@@ -17934,7 +18128,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         const item = items.find(item => item.key === btn.dataset.selectDate);
         if(item){
           const info = item.info;
-          const status = info.isEmpty ? "尚無人報名" : `${info.activeTeams}隊，${info.confirmed}人已報名${info.pending ? `，${info.pending}人待確認` : ""}`;
+          const status = !info.hasParticipants ? (info.hasTeams ? `${info.slots.length}隊，尚無人報名` : "目前沒有隊伍") : `${info.activeTeams}隊，${info.confirmed}人已報名${info.pending ? `，${info.pending}人待確認` : ""}`;
           btn.setAttribute("aria-label", `${item.date.getMonth()+1}月${item.date.getDate()}日 ${weekdayText(item.date)}，${status}`);
         }
         btn.onclick = () => chooseDate(btn.dataset.selectDate || "");
@@ -17957,6 +18151,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(!targetDate) return;
       selectedDateKey = targetDate;
       localStorage.setItem("registration_selected_date", selectedDateKey);
+      // 分享連結可能指向尚無人報名的隊伍，仍要能展開並定位。
+      manuallyOpenedDateKey=dateHasParticipants(targetDate) ? "" : targetDate;
       render();
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -18590,7 +18786,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       posterElements.download.disabled=true;
       posterElements.copyImage.disabled=true;
       posterElements.copyText.disabled=true;
-      if(posterElements.kicker) posterElements.kicker.textContent='隊伍清單 · PNG';
+      if(posterElements.kicker) posterElements.kicker.textContent='DAILY RECRUITMENT · PNG';
       if(posterElements.title) posterElements.title.textContent=`${dateKey} 招募圖`;
       posterFeedback('正在生成當日招募圖片…');
       posterElements.close.focus();
@@ -18625,7 +18821,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       posterElements.download.disabled=true;
       posterElements.copyImage.disabled=true;
       posterElements.copyText.disabled=true;
-      if(posterElements.kicker) posterElements.kicker.textContent='隊伍清單 · PNG';
+      if(posterElements.kicker) posterElements.kicker.textContent='TEAM ROSTER · PNG';
       if(posterElements.title) posterElements.title.textContent='生成隊伍圖';
       posterFeedback('正在生成隊伍圖片…');
       posterElements.close.focus();
@@ -18762,16 +18958,24 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
       const allDates = getDatesToShow();
       ensureSelectedDate(allDates);
+      // 右側只展開有報名紀錄的日期，以及玩家剛剛主動點開的那一天。
+      const dates=allDates.filter(date=>{
+        const key=formatDate(date);
+        return dateHasParticipants(key) || key===manuallyOpenedDateKey;
+      });
+      if(dates.length && !dates.some(date=>formatDate(date)===selectedDateKey)){
+        selectedDateKey=formatDate(dates[0]);
+        localStorage.setItem('registration_selected_date',selectedDateKey);
+      }
       renderDateNavigator(allDates);
-      const mondayKey = formatDate(getNextMonday());
-      const dates = [selectedDateKey, mondayKey]
-        .filter((key, index, keys) => key && keys.indexOf(key) === index)
-        .map(key => allDates.find(date => formatDate(date) === key))
-        .filter(Boolean);
       const daysEl = document.getElementById("days");
       const myProfile = getMyProfile();
       const savedName = myProfile.name;
-      let html = "";
+      let html = dates.length ? "" : `<div class="days-no-active" role="status">
+        <span class="days-no-active-icon" aria-hidden="true">◷</span>
+        <strong>目前還沒有已報名的隊伍</strong>
+        <span>可以從左側選擇任一日期，查看時段或建立新隊伍。</span>
+      </div>`;
 
       dates.forEach(date => {
         const dateKey = formatDate(date);
@@ -18783,7 +18987,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         const dayBlackCount = daySlots.reduce((total, slot) => total + getBlackWorkers(slot).length, 0);
         const isEmptyDay = dayMemberCount + dayPendingCount + dayBlackCount === 0;
         html += `
-          <section class="day-card${dateKey === mondayKey ? " is-pinned-monday" : ""}" data-date-card="${dateKey}">
+          <section class="day-card${daySlots.length ? "" : " no-slots"}${isEmptyDay ? " no-registrations" : " has-registrations"}" data-date-card="${dateKey}">
             <div class="day-head">
               <div>
                 <h2 class="day-title">${displayDate(date)}</h2>
@@ -19118,6 +19322,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
               </div>
             `;
           });
+        }else{
+          html += `<div class="activity-empty-note">這一天還沒有隊伍，點「＋ 新增時間」即可建立。</div>`;
         }
 
         html += `
@@ -19392,7 +19598,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
       globalData = nextData;
 
-      const dates = getDatesToShow();
+      const dates = getDatesToInitialize();
       let needInit = false;
 
       dates.forEach(dateObj => {
