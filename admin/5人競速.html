@@ -2639,6 +2639,412 @@ body{font-size:17px}
 .roster-title strong{font-size:16px}
 .roster-title-actions{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
 @media(max-width:760px){.roster-title{align-items:flex-start;flex-direction:column}.roster-title-actions{width:100%}.roster-copy-btn,.roster-batch-btn{flex:1;white-space:normal}}
+
+
+/* ===== Requested UI polish / modal create / focus stats ===== */
+.page{width:min(1880px,calc(100% - 20px))!important}
+.topbar{width:min(1460px,calc(100% - 24px))!important}
+.workspace{grid-template-columns:minmax(360px,440px) minmax(0,1fr)!important;gap:22px!important}
+.hero-actions{gap:10px!important}
+.cycle{padding:20px 22px!important}
+.board,.panel{box-shadow:0 18px 52px rgba(5,10,25,.24)!important}
+.create-box{padding:18px!important;border-radius:18px!important}
+.create-entry-cta{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.create-entry-copy{display:grid;gap:5px}
+.create-entry-copy strong{font-size:20px;line-height:1.15}
+.create-entry-copy span{color:var(--muted);font-size:13px;line-height:1.7}
+.create-modal-open{min-width:190px}
+.phase-summary{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px!important}
+.phase-summary .summary-box,.phase-summary > div{min-height:92px}
+.player-row{position:relative;overflow:hidden;border-left:4px solid transparent!important}
+.player-row.grouped,.picker-player.grouped,.batch-player.grouped{border-left-color:var(--group-accent)!important}
+.group-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;border:1px solid color-mix(in srgb,var(--group-accent) 42%,var(--line));background:color-mix(in srgb,var(--group-accent) 12%,var(--surface2));color:var(--group-accent);font-size:11px;font-weight:900;line-height:1}
+.player-name-line{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.player-more{z-index:2}
+.player-row .group-pill{margin-right:2px}
+.player-role{font-size:11px!important;line-height:1.45}
+.role-chips,.picker-player-roles,.batch-player-roles{display:none!important}
+.board-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.board-head-actions .btn{white-space:nowrap}
+.stats-focus-btn{border-color:color-mix(in srgb,var(--blue) 45%,var(--line));color:var(--blue)}
+.team-summary-bar{grid-template-columns:minmax(0,1.4fr) 110px 86px 110px 120px auto!important}
+.team-summary-main{min-width:0}
+.team-member-names{font-size:13px!important;line-height:1.6}
+.team-updated-at{font-size:11px!important}
+.team-top{padding:16px!important}
+.team-body{padding:16px!important}
+.result-card{padding:14px!important}
+.result-summary{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.result-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;align-items:end}
+.result-entry-grid .field:last-of-type{grid-column:1/-1}
+.result-entry-grid .save-result{grid-column:1/-1;min-height:48px;font-size:13px!important}
+.roster-title{margin-top:12px!important;padding-top:12px;border-top:1px solid var(--line)}
+.roster-title strong{font-size:17px!important}
+.roster-batch-btn{min-height:40px;padding:8px 14px;border-radius:11px;border:1px solid color-mix(in srgb,var(--blue) 42%,var(--line));background:color-mix(in srgb,var(--blue) 10%,var(--surface));color:var(--blue);font-size:13px;font-weight:900}
+.roster{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important;gap:10px!important}
+.slot{min-height:96px!important;border-radius:12px!important;padding:12px!important}
+.slot strong{font-size:14px!important;line-height:1.35}
+.slot span{font-size:11px!important;line-height:1.45}
+.slot-empty-note{display:block;color:var(--muted);font-size:12px;line-height:1.6}
+.slot-actions{margin-top:8px!important}
+.slot-actions button{min-height:30px;padding:5px 8px;font-size:11px!important}
+.team-picker-wide{width:min(960px,100%)!important}
+.modal-card{padding:24px!important;border-radius:22px!important;background:color-mix(in srgb,var(--surface) 94%,transparent)!important;backdrop-filter:blur(18px)}
+.modal-title{font-size:24px!important}
+.modal-sub{font-size:12.5px!important}
+.create-team-modal .modal-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.create-team-modal .modal-kicker{color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.14em}
+.create-team-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:14px}
+.create-panel{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface2)}
+.create-panel h3{margin:0 0 12px;font-size:17px}
+.create-panel .field{gap:6px}
+.mode-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mode-card{position:relative;display:block;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);cursor:pointer;transition:.18s}
+.mode-card input{position:absolute;opacity:0;pointer-events:none}
+.mode-card strong{display:block;font-size:16px}
+.mode-card span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.55}
+.mode-card.active{border-color:color-mix(in srgb,var(--blue) 62%,var(--line));background:color-mix(in srgb,var(--blue) 12%,var(--surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 32%,transparent)}
+.create-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.create-result-grid .field.total-field,.create-result-grid .field.rank-field{grid-column:span 1}
+.emphasis-field .input,.emphasis-field .select{border-color:color-mix(in srgb,var(--blue) 55%,var(--line));background:color-mix(in srgb,var(--blue) 8%,var(--surface))}
+.emphasis-label{display:flex;align-items:center;gap:8px}
+.emphasis-badge{display:inline-flex;padding:2px 7px;border-radius:999px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue);font-size:10px;font-weight:900;border:1px solid color-mix(in srgb,var(--blue) 35%,var(--line))}
+.create-help{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.65}
+.batch-mode-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:var(--surface2)}
+.batch-mode-strip label{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:900}
+.batch-mode-strip span{color:var(--muted);font-size:12px;line-height:1.55}
+.batch-picker-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:52vh;overflow:auto;padding-right:2px}
+.batch-player{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);cursor:pointer}
+.batch-player input{width:18px;height:18px}
+.batch-player.selected{border-color:color-mix(in srgb,var(--blue) 56%,var(--line));background:color-mix(in srgb,var(--blue) 10%,var(--surface2))}
+.batch-player-name-line{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.batch-player-name{font-size:14px;font-weight:900}
+.batch-player-note{color:var(--muted);font-size:11px;line-height:1.45}
+.batch-player-count{font-size:12px;font-weight:900;color:var(--blue)}
+.batch-selection-bar{position:sticky;bottom:0;margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--surface) 96%,transparent);backdrop-filter:blur(14px)}
+.batch-selection-bar strong{font-size:15px}
+.batch-selection-bar span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+.batch-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.batch-action-btn{min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:13px;font-weight:900}
+.batch-action-btn.primary{background:linear-gradient(135deg,var(--blue),var(--purple));border:0;color:#fff}
+.batch-action-btn.ghost{color:var(--blue)}
+.picker-player,.batch-player{box-shadow:none!important}
+.picker-player strong{font-size:14px!important}
+.focus-stats-modal .modal-card{width:min(1240px,100%)!important}
+.focus-stats-layout{display:grid;gap:14px}
+.focus-stats-quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.focus-stats-quick .quick-card{cursor:default}
+.focus-standings-wrap{max-height:58vh;overflow:auto;border:1px solid var(--line);border-radius:16px;background:var(--surface2);padding:10px}
+.focus-stats-empty{padding:24px;text-align:center;color:var(--muted)}
+.phase-standings{margin-top:18px!important}
+.standings-table{font-size:13px!important}
+.standings-table th,.standings-table td{padding:10px 12px!important;vertical-align:middle}
+body.stats-focus-mode .panel{display:none}
+body.stats-focus-mode .workspace{grid-template-columns:1fr!important}
+body.stats-focus-mode .quick{display:none}
+body.stats-focus-mode .phase-standings{margin-top:14px}
+@media(max-width:1200px){.workspace{grid-template-columns:1fr!important}.player-panel{position:relative;top:auto!important}.team-summary-bar{grid-template-columns:minmax(0,1fr) repeat(4,auto)!important}.create-team-grid{grid-template-columns:1fr}.batch-picker-list{grid-template-columns:1fr}.result-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:760px){
+  .page{width:calc(100% - 12px)!important;padding-top:144px!important}
+  .topbar{width:calc(100% - 12px)!important}
+  .cycle,.board,.panel,.phase-switcher,.phase-standings{border-radius:18px!important}
+  .hero-actions{width:100%}
+  .hero-actions .btn{flex:1 1 calc(50% - 8px);min-width:0}
+  .create-entry-cta{align-items:flex-start}
+  .create-modal-open{width:100%}
+  .phase-summary{grid-template-columns:1fr!important}
+  .player-panel{order:2}.board{order:1}
+  .team-summary-bar{grid-template-columns:1fr 1fr!important}
+  .team-summary-bar .team-collapse-btn{grid-column:1/-1}
+  .result-entry-grid,.create-result-grid,.mode-card-grid{grid-template-columns:1fr!important}
+  .modal-card{padding:18px!important;border-radius:18px!important}
+  .create-team-modal .modal-title-row{flex-direction:column}
+  .standings-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .batch-mode-strip{align-items:flex-start;flex-direction:column}
+  .batch-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .batch-actions .primary,.batch-actions .ghost{grid-column:1/-1}
+  .focus-stats-quick{grid-template-columns:1fr}
+}
+
+
+/* ===== v15: occupation category badges, native tabs and expanded create modal ===== */
+#teamCreateModal .modal-card.create-team-modal{
+  width:min(1180px,calc(100vw - 42px))!important;
+  max-width:1180px!important;
+  max-height:min(94dvh,960px)!important;
+  padding:clamp(20px,2vw,34px)!important;
+  overflow-y:auto!important;
+  border-radius:25px!important;
+  box-shadow:0 30px 100px rgba(0,0,0,.42)!important;
+}
+#teamCreateModal .modal-title{font-size:30px!important;line-height:1.3}
+#teamCreateModal .modal-sub{font-size:14px!important;max-width:780px;line-height:1.75}
+#teamCreateModal .create-team-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:stretch}
+#teamCreateModal .create-panel{padding:24px;border-radius:19px;min-width:0}
+#teamCreateModal .create-panel h3{font-size:20px;margin-bottom:18px}
+#teamCreateModal .create-panel .field label{font-size:14px!important;line-height:1.5}
+#teamCreateModal .create-panel .input{height:52px;padding:10px 13px;font-size:15px!important;border-radius:11px}
+#teamCreateModal .mode-card{min-height:119px;padding:18px;display:flex;flex-direction:column;justify-content:center}
+#teamCreateModal .mode-card strong{font-size:18px}
+#teamCreateModal .mode-card span{font-size:13px;line-height:1.65}
+#teamCreateModal .create-result-grid{gap:16px 12px}
+#teamCreateModal .create-help{font-size:13px;line-height:1.7;margin-top:17px}
+#teamCreateModal .modal-actions{gap:10px;margin-top:23px}
+#teamCreateModal .modal-actions .btn{min-height:50px;min-width:140px;font-size:14px}
+#statsFocusBtn{white-space:nowrap}
+#focusStandingsToggleBtn{display:none!important}
+.profession-badges{display:inline-flex;align-items:center;flex-wrap:wrap;gap:5px;flex:0 0 auto}
+.profession-pill{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:3px 8px;border-radius:9px;
+  color:var(--job-tone);border:1px solid color-mix(in srgb,var(--job-tone) 38%,var(--line));
+  background:color-mix(in srgb,var(--job-tone) 13%,var(--surface2));font-size:11px;font-weight:900;white-space:nowrap;line-height:1.2}
+html[data-theme="light"] .profession-pill{color:color-mix(in srgb,var(--job-tone) 65%,#17233c);
+  background:color-mix(in srgb,var(--job-tone) 12%,#fff)}
+.player-row.profession-grouped,.picker-player.profession-grouped,.batch-player.profession-grouped{border-left:4px solid var(--job-tone)!important}
+.player-row.profession-grouped .player-name-line{gap:8px}
+.player-name-line .profession-badges,.batch-player-name-line .profession-badges{margin-right:2px}
+.player-row .player-role:empty{display:none}
+.player-row .player-role{font-size:11px!important}
+.player-panel .player-list{gap:8px!important}
+.speed-view-tabs{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  padding:8px;margin:17px 0 16px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+.speed-view-tabs-main{display:flex;align-items:stretch;gap:7px;flex:1;min-width:0}
+.speed-view-tab{flex:0 0 auto;min-height:50px;padding:11px 23px;border:1px solid transparent;border-radius:12px;
+  background:transparent;color:var(--muted);font-size:15px;font-weight:900;transition:background .15s,color .15s}
+.speed-view-tab:hover{background:var(--surface2);color:var(--text)}
+.speed-view-tab.active,.speed-view-tab[aria-selected="true"]{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;
+  box-shadow:0 8px 23px color-mix(in srgb,var(--blue) 25%,transparent)}
+.speed-view-tab:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.speed-view-tabs-info{color:var(--muted);font-size:12px;font-weight:750;padding:0 12px}
+.rank-view-pane{display:grid;gap:16px;min-width:0;margin-top:3px}
+.rank-view-pane[hidden],.page .workspace[hidden],.page .phase-standings[hidden]{display:none!important}
+.rank-view-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  padding:23px 25px;border:1px solid var(--line);border-radius:19px;background:linear-gradient(135deg,color-mix(in srgb,var(--blue) 7%,var(--surface)),color-mix(in srgb,var(--purple) 6%,var(--surface)))}
+.rank-view-intro h2{font-size:26px;margin:4px 0 7px;line-height:1.3}
+.rank-view-intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.75}
+.rank-data-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.rank-data-kpi{padding:17px 19px;border:1px solid var(--line);border-radius:17px;background:var(--surface)}
+.rank-data-kpi span{display:block;color:var(--muted);font-size:12px;font-weight:800}
+.rank-data-kpi strong{display:block;margin-top:8px;font-size:28px;font-weight:950;color:var(--text);font-variant-numeric:tabular-nums}
+.rank-data-kpi.primary strong{color:var(--blue)}
+.rank-data-kpi.success strong{color:var(--green)}
+.rank-player-panel{min-width:0;padding:22px;border:1px solid var(--line);border-radius:19px;background:var(--surface)}
+.rank-player-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.rank-player-panel-head h3{margin:0 0 5px;font-size:22px}
+.rank-player-panel-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.rank-player-search{width:min(330px,100%);height:44px;padding:9px 13px;border-radius:11px;border:1px solid var(--line);background:var(--surface2);color:var(--text);outline:none;font-size:14px}
+.rank-player-scroll{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:14px;max-height:65vh;overflow-y:auto}
+.rank-player-table{border-collapse:collapse;width:100%;min-width:820px;font-size:13px}
+.rank-player-table th{text-align:left;position:sticky;top:0;z-index:1;background:var(--surface3);color:var(--muted);font-size:12px;white-space:nowrap}
+.rank-player-table th,.rank-player-table td{padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:middle}
+.rank-player-table tr:last-child td{border-bottom:0}
+.rank-player-table tbody tr:hover{background:color-mix(in srgb,var(--blue) 4%,var(--surface))}
+.rank-player-id{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-width:200px}
+.rank-player-name{font-weight:950;font-size:15px;white-space:nowrap}
+.rank-player-rank{font-size:17px;font-weight:950;color:var(--purple)}
+.rank-player-time{font-variant-numeric:tabular-nums;font-weight:900}
+.rank-player-teams{color:var(--muted);max-width:390px;line-height:1.55}
+.rank-empty{padding:26px 14px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}
+.rank-mobile-list{display:none;gap:9px}
+.rank-mobile-item{padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--surface2)}
+.rank-mobile-head{display:flex;align-items:flex-start;justify-content:space-between;gap:9px;margin-bottom:12px}
+.rank-mobile-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rank-mobile-stat{border:1px solid var(--line);border-radius:9px;padding:8px;background:var(--surface)}
+.rank-mobile-stat span{display:block;color:var(--muted);font-size:10px}
+.rank-mobile-stat strong{display:block;margin-top:4px;font-size:14px;font-weight:900}
+.rank-mobile-team{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.6}
+.rank-view-pane .phase-standings{margin-top:0!important}
+.rank-view-pane .standings-scroll{overflow-x:auto;max-width:100%}
+@media(max-width:1000px){
+  #teamCreateModal .modal-card.create-team-modal{width:min(900px,calc(100vw - 22px))!important}
+  #teamCreateModal .create-team-grid{grid-template-columns:1fr!important;gap:12px}
+  .rank-data-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .speed-view-tabs{padding:6px;margin:12px 0 13px;border-radius:15px}
+  .speed-view-tabs-main{width:100%;gap:5px}
+  .speed-view-tab{flex:1;min-width:0;min-height:47px;padding:10px 8px;font-size:13px}
+  .speed-view-tabs-info{width:100%;font-size:11px;padding:0 7px 4px}
+  .rank-view-intro{padding:17px;border-radius:16px}
+  .rank-view-intro h2{font-size:21px}
+  .rank-data-kpis{gap:8px}
+  .rank-data-kpi{padding:12px;border-radius:12px}
+  .rank-data-kpi span{font-size:10px}
+  .rank-data-kpi strong{font-size:22px}
+  .rank-player-panel{padding:13px;border-radius:15px}
+  .rank-player-panel-head h3{font-size:18px}
+  .rank-player-search{width:100%}
+  .rank-player-scroll{display:none}
+  .rank-mobile-list{display:grid}
+  .rank-player-name{font-size:14px}
+  .rank-player-id{min-width:0;gap:6px}
+  .rank-mobile-head .rank-player-id{align-items:flex-start}
+  .rank-mobile-stats{gap:5px}
+  .rank-mobile-stat{padding:7px 6px}
+  #teamCreateModal{padding:8px!important;align-items:center}
+  #teamCreateModal .modal-card.create-team-modal{width:100%!important;max-height:calc(100dvh - 16px)!important;
+    padding:18px!important;border-radius:18px!important}
+  #teamCreateModal .modal-title{font-size:23px!important}
+  #teamCreateModal .create-panel{padding:15px;border-radius:14px}
+  #teamCreateModal .create-panel h3{font-size:17px;margin-bottom:12px}
+  #teamCreateModal .mode-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #teamCreateModal .mode-card{min-height:100px;padding:12px}
+  #teamCreateModal .mode-card strong{font-size:15px}
+  #teamCreateModal .mode-card span{font-size:11px}
+  #teamCreateModal .create-result-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px}
+  #teamCreateModal .create-result-grid .field{min-width:0}
+  #teamCreateModal .create-result-grid .field.total-field,#teamCreateModal .create-result-grid .field.rank-field{grid-column:span 1!important}
+  #teamCreateModal .create-panel .field label{font-size:12px!important}
+  #teamCreateModal .create-panel .input{font-size:14px!important;height:47px}
+  #teamCreateModal .modal-actions .btn{min-width:0;flex:1}
+}
+
+
+/* v15 mobile header and form finishing pass */
+@media(max-width:760px){
+  .page{padding-top:176px!important}
+  .topbar{top:9px!important}
+  .topbar-inner{padding:10px 12px!important;gap:7px!important}
+  .topbar .brand{gap:5px!important;max-width:100%}
+  .topbar .badge{padding:7px 9px;font-size:12px!important}
+  .topbar .nav-wrap{display:flex!important;flex-wrap:nowrap!important;width:100%;min-width:0;gap:7px!important}
+  .topbar .nav{flex:1 1 auto;min-width:0;width:0!important;overflow-x:auto!important;white-space:nowrap;scrollbar-width:none}
+  .topbar .nav::-webkit-scrollbar{display:none}
+  .topbar .nav a{font-size:11px!important;padding:9px 10px!important}
+  .topbar .theme-btn{flex:0 0 auto!important;min-width:67px!important;padding:7px 8px!important;white-space:nowrap!important;
+    font-size:11px!important;height:39px!important}
+  #teamCreateModal .modal-actions{position:sticky;bottom:-18px;margin:18px -18px -18px!important;padding:13px 18px!important;
+    background:var(--surface);border-top:1px solid var(--line);z-index:5;border-radius:0 0 16px 16px}
+}
+
+
+/* ===== Team detail workspace: large modal rather than inline expand ===== */
+#teamDetailModal{z-index:8650; padding:20px; align-items:center;}
+#teamDetailModal .team-detail-dialog{
+ width:min(1490px,calc(100vw - 40px))!important;
+ max-height:calc(100dvh - 40px)!important;
+ padding:0!important;
+ display:flex;flex-direction:column;overflow:hidden;
+ border:1px solid var(--line2);border-radius:26px!important;
+ background:var(--surface)!important;
+ box-shadow:0 32px 110px rgba(0,0,0,.52);
+}
+.team-detail-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 28px 18px;border-bottom:1px solid var(--line);flex:0 0 auto;background:linear-gradient(125deg,color-mix(in srgb,var(--blue) 8%,var(--surface)),var(--surface) 55%,color-mix(in srgb,var(--purple) 8%,var(--surface)));}
+.team-detail-heading-text{min-width:0;flex:1}
+.team-detail-eyebrow{color:var(--blue);font-size:12px;font-weight:900;letter-spacing:.12em}
+#teamDetailHeading{margin:6px 0 7px;font-size:clamp(23px,2.7vw,33px);line-height:1.27;overflow-wrap:anywhere;letter-spacing:-.025em}
+.team-detail-subtitle{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:14px;font-weight:750}
+.team-detail-close{height:46px;min-width:94px;padding:9px 17px;border:1px solid var(--line2);border-radius:13px;background:var(--surface2);color:var(--text);font-size:15px;font-weight:900;flex-shrink:0}
+.team-detail-close:hover{border-color:var(--blue);color:var(--blue)}
+.team-detail-scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;min-height:0;flex:1;padding:20px 26px 28px;scrollbar-width:thin}
+.team-detail-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:19px}
+.team-detail-kpi{border:1px solid var(--line);border-radius:15px;padding:14px 18px;background:var(--surface2);min-width:0}
+.team-detail-kpi span{display:block;font-size:13px;font-weight:850;color:var(--muted);line-height:1.4}
+.team-detail-kpi strong{display:block;margin-top:6px;font-size:clamp(22px,2vw,29px);font-weight:950;color:var(--text);line-height:1.2;overflow-wrap:anywhere}
+.team-detail-kpi.highlight{border-color:color-mix(in srgb,var(--blue) 46%,var(--line));background:color-mix(in srgb,var(--blue) 9%,var(--surface2))}
+.team-detail-kpi.highlight strong{color:var(--blue)}
+.team-detail-kpi.rank strong{color:var(--purple)}
+.team-detail-layout{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(0,1fr);gap:18px;align-items:start}
+.team-detail-section{min-width:0;padding:18px;border:1px solid var(--line);border-radius:19px;background:var(--surface2)}
+.team-detail-section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.team-detail-section-title h3{margin:0;font-size:22px;line-height:1.4;color:var(--text)}
+.team-detail-section-title span{font-size:12px;color:var(--muted);font-weight:700}
+#teamDetailModal .result-card{background:var(--surface)!important;border-radius:16px;padding:16px!important;margin:0 0 16px}
+#teamDetailModal .result-summary{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;margin-bottom:17px!important}
+#teamDetailModal .result-box{padding:13px;border-radius:13px;min-width:0;background:var(--surface2)}
+#teamDetailModal .result-box span{font-size:13px!important;line-height:1.3}
+#teamDetailModal .result-box strong{font-size:clamp(21px,2.15vw,30px)!important;line-height:1.3;margin-top:5px;overflow-wrap:anywhere}
+#teamDetailModal .result-box small{font-size:11px!important;line-height:1.5}
+#teamDetailModal .result-entry-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:13px!important;align-items:end}
+#teamDetailModal .result-entry-grid .field{min-width:0;display:grid;gap:6px}
+#teamDetailModal .result-entry-grid .field label{font-size:13px!important;font-weight:900;color:var(--text)}
+#teamDetailModal .result-entry-grid .input{height:48px!important;min-width:0;padding:10px 12px;font-size:16px!important;border-radius:11px}
+#teamDetailModal .result-entry-grid .save-result{grid-column:1/-1;min-height:51px!important;font-size:15px!important}
+#teamDetailModal .single-record-note{font-size:12px!important;line-height:1.65;margin-top:12px;color:var(--muted)}
+#teamDetailModal .team-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-start;padding:0;margin:14px 0 0}
+#teamDetailModal .team-actions button,#teamDetailModal .team-actions select{min-height:42px;font-size:13px!important;padding:8px 12px;border-radius:11px}
+#teamDetailModal .roster-title{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:0!important;border:0!important;margin:0 0 14px!important}
+#teamDetailModal .roster-title strong{font-size:17px!important}
+#teamDetailModal .roster-title-actions{margin-left:auto}
+#teamDetailModal .roster-batch-btn{min-height:43px;padding:9px 15px;font-size:14px!important;white-space:normal;text-align:center}
+#teamDetailModal .roster{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}
+#teamDetailModal .roster .slot{min-width:0;min-height:122px!important;padding:16px 10px!important;border-radius:14px!important}
+#teamDetailModal .roster .slot strong{font-size:17px!important;overflow-wrap:anywhere;line-height:1.5}
+#teamDetailModal .roster .slot span{font-size:12px!important;line-height:1.45}
+#teamDetailModal .roster .slot .slot-no{position:absolute;top:7px;left:9px;font-size:11px!important}
+#teamDetailModal .roster .slot .limit{font-size:12px!important;padding:4px 8px}
+#teamDetailModal .roster .slot .phase1-listed-badge{font-size:11px!important;margin:6px auto 4px}
+#teamDetailModal .slot-actions button{min-height:35px!important;min-width:58px;font-size:12px!important;padding:6px 10px}
+#teamDetailModal .team-detail-footer{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 26px;border-top:1px solid var(--line);background:var(--surface);flex:0 0 auto}
+#teamDetailModal .team-detail-footer .btn{min-width:112px;min-height:43px;font-size:14px}
+body.team-detail-open{overflow:hidden}
+/* Team list is always compact; expanded controls exist only in the modal. */
+#teamList .team-body{display:none!important}
+#teamList .team-card{border-radius:16px;box-shadow:none}
+#teamList .team-card .team-top{padding:17px 18px!important}
+#teamList .team-summary-bar{align-items:center;gap:13px!important}
+#teamList .team-summary-name{font-size:20px!important;line-height:1.45}
+#teamList .team-member-names{font-size:14px!important;line-height:1.65}
+#teamList .simple-label{font-size:12px!important}
+#teamList .simple-value{font-size:21px!important}
+#teamList .team-collapse-btn{min-height:43px!important;min-width:83px!important;padding:9px 15px!important;font-size:13px!important}
+#teamList .team-collapse-btn:hover{color:var(--blue);border-color:var(--blue)}
+@media(max-width:1100px){
+ #teamDetailModal .team-detail-layout{grid-template-columns:1fr}
+ #teamDetailModal .roster{grid-template-columns:repeat(auto-fit,minmax(175px,1fr))!important}
+ #teamDetailModal .team-detail-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ #teamDetailModal{padding:6px!important;align-items:stretch}
+ #teamDetailModal .team-detail-dialog{width:100%!important;max-height:calc(100dvh - 12px)!important;border-radius:19px!important;margin:auto}
+ .team-detail-heading{padding:15px 16px 13px;gap:10px;align-items:flex-start}
+ #teamDetailHeading{font-size:22px}
+ .team-detail-eyebrow{font-size:10px}
+ .team-detail-subtitle{font-size:12px}
+ .team-detail-close{height:40px;min-width:67px;padding:7px 10px;font-size:13px}
+ .team-detail-scroll{padding:12px 12px 20px}
+ .team-detail-overview{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px;margin-bottom:12px}
+ .team-detail-kpi{padding:11px 12px;border-radius:12px}
+ .team-detail-kpi span{font-size:11px}
+ .team-detail-kpi strong{font-size:22px}
+ .team-detail-layout{grid-template-columns:1fr;gap:12px}
+ .team-detail-section{padding:12px;border-radius:15px}
+ .team-detail-section-title h3{font-size:18px}
+ #teamDetailModal .result-summary{gap:7px!important}
+ #teamDetailModal .result-box{padding:10px}
+ #teamDetailModal .result-box span{font-size:11px!important}
+ #teamDetailModal .result-box strong{font-size:21px!important}
+ #teamDetailModal .result-card{padding:11px!important}
+ #teamDetailModal .result-entry-grid{gap:9px!important}
+ #teamDetailModal .result-entry-grid .input{height:46px!important;font-size:15px!important;padding:8px 10px}
+ #teamDetailModal .result-entry-grid .field label{font-size:12px!important}
+ #teamDetailModal .roster-title{align-items:flex-start;flex-direction:column}
+ #teamDetailModal .roster-title-actions{width:100%;margin-left:0}
+ #teamDetailModal .roster-batch-btn{width:100%}
+ #teamDetailModal .roster{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+ #teamDetailModal .roster .slot{min-height:109px!important;padding:13px 7px!important}
+ #teamDetailModal .roster .slot strong{font-size:14px!important}
+ #teamDetailModal .roster .slot .slot-no{top:4px;left:6px}
+ #teamDetailModal .team-detail-footer{padding:11px 13px}
+ #teamList .team-summary-name{font-size:17px!important}
+ #teamList .team-member-names{font-size:12px!important}
+ #teamList .team-collapse-btn{width:100%;font-size:13px!important}
+}
+@media(max-width:370px){#teamDetailModal .roster{grid-template-columns:1fr!important}}
+
+
+/* Compact copy-first layout */
+.create-entry-copy{gap:0!important}
+.create-entry-copy strong{font-size:17px!important}
+.create-entry-cta{min-height:62px}
+.create-panel h3{display:flex;align-items:center;gap:9px}
+.form-opt{font-size:12px;font-weight:750;color:var(--muted);line-height:1}
+.create-team-modal .modal-title-row{margin-bottom:12px!important}
+.create-team-modal .mode-card{min-height:66px;display:flex;align-items:center;justify-content:center;padding:13px!important}
+.create-team-modal .mode-card strong{font-size:17px;text-align:center}
+.create-team-modal .create-panel{padding:18px!important}
+.batch-mode-strip{padding-block:9px!important}
+.team-detail-section-title{align-items:center}
+@media(max-width:760px){.create-entry-cta{min-height:unset}.create-team-modal .mode-card{min-height:57px}}
 </style>
 </head>
 <body>
@@ -2675,7 +3081,7 @@ body{font-size:17px}
 
 
   <section class="phase-switcher" aria-label="副本期數切換">
-    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div><div class="phase-description">每一期都要重新建立隊伍；隊伍、成員及成績完全獨立。第一期原有隊伍不會自動帶到第二、三期。</div></div>
+    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div><div class="phase-description">各期隊伍與成績獨立</div></div>
     <div class="phase-buttons" id="phaseButtons" role="group" aria-label="選擇期數">
       <button type="button" class="phase-btn active" data-phase="1">第一期<span>查看成績</span></button>
       <button type="button" class="phase-btn" data-phase="2">第二期<span>查看成績</span></button>
@@ -2703,7 +3109,7 @@ body{font-size:17px}
 
     <section class="board">
       <div class="board-head">
-        <div><h2>5 人固定隊伍</h2><p id="boardSub">建立隊伍後會立即顯示在下方。</p></div>
+        <div><h2>5 人固定隊伍</h2><p id="boardSub"></p></div>
         <div class="board-head-actions">
           <button type="button" class="btn collapse-all-btn" id="collapseAllTeamsBtn">全部收合</button>
         </div>
@@ -2725,7 +3131,7 @@ body{font-size:17px}
         <div class="selected-stats" id="selectedPlayerStats"></div>
       </section>
 
-      <div class="quick"><div class="quick-head"><strong>隊伍排名</strong><span>遊戲排名 · 總通關時間</span></div><div class="quick-grid" id="quickGrid"></div></div>
+      <div class="quick"><div class="quick-head"><strong>隊伍排名</strong></div><div class="quick-grid" id="quickGrid"></div></div>
       <div class="team-list" id="teamList"></div>
     </section>
   </section>
@@ -2735,11 +3141,42 @@ body{font-size:17px}
       <div><h2 id="standingsTitle">第一期 · 隊伍總表</h2><p id="standingsSubtitle">與 PNG 相同的欄位；成績更新後即時同步顯示。</p></div>
       <div class="standings-actions"><button type="button" class="btn primary" id="bottomPngBtn">↓ 下載本期 PNG</button><button type="button" class="btn" id="bottomExcelBtn">↓ 匯出本期 Excel</button></div>
     </div>
-    <div class="standings-legend"><span class="drop-flag best">個人最佳</span><span>第二、三期會提醒第一期已上榜的玩家；各期隊伍及成績皆獨立。</span></div>
+    <div class="standings-legend"><span class="drop-flag best">個人最佳</span></div>
     <div class="standings-scroll" id="standingsScroll"><div class="standings-empty">選擇副本後會自動顯示隊伍成績。</div></div>
-    <div class="standings-foot">每個副本的三期隊伍互不共用。切換到第二期或第三期後，請在本期自行建立新隊伍；不會沿用前一期的隊名、隊員或成績。</div>
+    
   </section>
 </main>
+
+
+<div class="modal team-detail-modal" id="teamDetailModal" role="dialog" aria-modal="true" aria-labelledby="teamDetailHeading">
+  <div class="modal-card team-detail-dialog" role="document">
+    <header class="team-detail-heading">
+      <div class="team-detail-heading-text">
+        <div class="team-detail-eyebrow" id="teamDetailEyebrow">TEAM DETAIL</div>
+        <h2 id="teamDetailHeading">隊伍詳情</h2>
+        <div class="team-detail-subtitle" id="teamDetailSubtitle"></div>
+      </div>
+      <button type="button" class="team-detail-close" id="closeTeamDetailBtn" aria-label="關閉隊伍詳情">✕ 關閉</button>
+    </header>
+    <div class="team-detail-scroll" id="teamDetailScroll">
+      <div class="team-detail-overview" id="teamDetailOverview"></div>
+      <div class="team-detail-layout">
+        <section class="team-detail-section" aria-label="成績資料及編輯">
+          <div class="team-detail-section-title"><h3>成績資料</h3></div>
+          <div id="teamDetailResult"></div>
+          <div id="teamDetailActions"></div>
+        </section>
+        <section class="team-detail-section" aria-label="隊伍成員編輯">
+          <div class="team-detail-section-title"><h3>隊伍成員</h3></div>
+          <div id="teamDetailRoster"></div>
+        </section>
+      </div>
+    </div>
+    <footer class="team-detail-footer">
+      <button type="button" class="btn" id="teamDetailDoneBtn">完成・關閉</button>
+    </footer>
+  </div>
+</div>
 
 <div class="modal" id="dungeonModal"><div class="modal-card">
   <h2 class="modal-title">建立新副本</h2>
@@ -3125,7 +3562,7 @@ function renderPhaseSwitcher(){
   });
   const note=$("phase1Notice");
   note.hidden=selectedPhase===1||!listed.count;
-  if(!note.hidden)note.innerHTML=`<strong>第一期已上榜 ${listed.count} 人</strong>：姓名旁標示「✓ 第一期已上榜」的玩家，已在本副本第一期取得遊戲排名，不必為了上榜再打一次。此為提醒，不影響本期自由建立隊伍。`;
+  if(!note.hidden)note.innerHTML=`<strong>第一期已上榜 ${listed.count} 人</strong>：標示玩家本期無需重複上榜。`;
 }
 function renderPhaseSummary(){
   const all=visibleTeams(), scored=all.filter(t=>!!phaseResult(t));
@@ -3139,7 +3576,7 @@ function renderPhaseSummary(){
 function renderStandings(){
   const dg=currentDungeon(),exportTeams=buildExportTeams();
   $("standingsTitle").textContent=`${dg?.name||"副本"} · ${PHASE_NAMES[selectedPhase]}隊伍總表`;
-  $("standingsSubtitle").textContent=`${SIZE} 人競速 · ${exportTeams.length} 隊已記錄 / ${visibleTeams().length} 隊 · 依遊戲排名排列 · 可橫向捲動`;
+  $("standingsSubtitle").textContent=`${SIZE} 人競速 · ${exportTeams.length} 隊已記錄 / ${visibleTeams().length} 隊 · 依排名排列`;
   const wrap=$("standingsScroll");
   if(!dg){wrap.innerHTML='<div class="standings-empty">請先選擇副本。</div>';return}
   if(!visibleTeams().length){wrap.innerHTML='<div class="standings-empty">本期尚未建立隊伍，請先建立本期專屬隊伍。</div>';return}
@@ -3731,17 +4168,17 @@ function resultHtml(t){
       <div class="result-box">
         <span>遊戲排名</span>
         <strong class="manual-rank-value">${rank?`#${rank}`:"—"}</strong>
-        <small>手動記錄遊戲內名次</small>
+        
       </div>
       <div class="result-box">
         <span>BOSS 1</span>
         <strong class="boss-time-value">${fmtOptionalTime(cur?.boss1Ms)}</strong>
-        <small>選填</small>
+        
       </div>
       <div class="result-box">
         <span>BOSS 2</span>
         <strong class="boss-time-value">${fmtOptionalTime(cur?.boss2Ms)}</strong>
-        <small>選填</small>
+        
       </div>
       <div class="result-box">
         <span>總通關時間</span>
@@ -3778,7 +4215,7 @@ function resultHtml(t){
       <button class="save-result" data-save-result="${esc(t.id)}">${cur?"更新紀錄":"儲存紀錄"}</button>
     </div>
 
-    <div class="single-record-note">${PHASE_NAMES[selectedPhase]}專屬隊伍：本期的隊員與成績只屬於本期，不會出現在其他期數。</div>
+    
   </div>`;
 }
 function renderTeams(){
@@ -3795,7 +4232,7 @@ function renderTeams(){
   }
 
   if(!list.length){
-    $("teamList").innerHTML=`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`本副本${PHASE_NAMES[selectedPhase]}尚無隊伍，請在本期建立新隊伍。`}</div>`;
+    $("teamList").innerHTML=`<div class="empty">${selectedPlayerIds.size?"沒有同時符合所選玩家的隊伍。":`${PHASE_NAMES[selectedPhase]}尚無隊伍。`}</div>`;
     return;
   }
 
@@ -6029,6 +6466,830 @@ loadLocal();
 bindUI();
 renderAll();
 initFirebase();
+
+/* ===== requested competition UI upgrade ===== */
+(function(){
+  function hashHue(text){
+    let h=0;
+    const str=String(text||"");
+    for(let i=0;i<str.length;i++)h=(h*31+str.charCodeAt(i))%360;
+    return h;
+  }
+  function playerGroupKey(player){
+    const name=String(player?.name||player||"").trim();
+    const inner=(name.match(/[\[【](.*?)[\]】]/)||[])[1]||name;
+    const head=inner.split(/[·・‧•．.\-－_\s]/)[0]||inner;
+    return head.replace(/[\[\]【】]/g,"").trim().slice(0,2) || "未分";
+  }
+  function playerGroupColor(player){
+    const key=playerGroupKey(player);
+    const hue=hashHue(key);
+    return `hsl(${hue} 78% 68%)`;
+  }
+  function playerGroupBadge(player){
+    const key=playerGroupKey(player);
+    return `<span class="group-pill" style="--group-accent:${playerGroupColor(player)}">${esc(key)}</span>`;
+  }
+  function playerGroupStyle(player){
+    return `style="--group-accent:${playerGroupColor(player)}"`;
+  }
+
+  function ensureEnhancedMarkup(){
+    const heroActions=document.querySelector('.hero-actions');
+    if(heroActions && !document.getElementById('statsFocusBtn')){
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='btn stats-focus-btn';
+      btn.id='statsFocusBtn';
+      btn.textContent='上榜數據';
+      const playersBtn=document.getElementById('playersBtn');
+      heroActions.insertBefore(btn,playersBtn||heroActions.lastElementChild);
+    }
+
+    const form=document.getElementById('teamCreateForm');
+    if(form && !form.dataset.enhancedCreate){
+      form.dataset.enhancedCreate='1';
+      form.innerHTML=`<div class="create-entry-cta">
+        <div class="create-entry-copy">
+          <strong id="teamCreatePhaseCaption">${PHASE_NAMES[selectedPhase]} · 隊伍</strong>
+          
+        </div>
+        <button type="button" class="quick-create create-modal-open" id="openTeamCreateModalBtn">＋ 開新隊伍</button>
+      </div>`;
+    }
+
+    if(!document.getElementById('teamCreateModal')){
+      document.body.insertAdjacentHTML('beforeend',`
+        <div class="modal" id="teamCreateModal"><div class="modal-card create-team-modal">
+          <div class="modal-title-row">
+            <div>
+              
+              <h2 class="modal-title">建立新隊伍</h2>
+              
+            </div>
+          </div>
+          <div class="create-team-grid">
+            <section class="create-panel">
+              <h3>基本資料</h3>
+              <div class="field"><label>隊伍名稱</label><input class="input" id="modalCreateTeamName" placeholder="隊伍名稱"></div>
+              <div class="field" style="margin-top:10px"><label>隊伍備註（選填）</label><input class="input" id="modalCreateTeamNote" placeholder="備註（選填）"></div>
+              <div class="field" style="margin-top:12px">
+                <label class="emphasis-label">副本類型</label>
+                <div class="mode-card-grid" id="createModeCardGrid">
+                  <label class="mode-card active" data-mode-card="normal"><input type="radio" name="createTeamMode" value="normal" checked><strong>普通本</strong></label>
+                  <label class="mode-card" data-mode-card="challenge"><input type="radio" name="createTeamMode" value="challenge"><strong>挑戰本</strong></label>
+                </div>
+              </div>
+              
+            </section>
+            <section class="create-panel">
+              <h3>通關成績 <small class="form-opt">選填</small></h3>
+              <div class="create-result-grid">
+                <div class="field emphasis-field rank-field"><label class="emphasis-label">遊戲排名</label><input class="input" id="modalCreateRank" type="number" min="1" step="1" placeholder="109"></div>
+                <div class="field emphasis-field total-field"><label class="emphasis-label">總通關時間</label><input class="input" id="modalCreateTotalTime" placeholder="12:04"></div>
+                <div class="field"><label>BOSS 1 時間（選填）</label><input class="input" id="modalCreateBoss1" placeholder="01:30"></div>
+                <div class="field"><label>BOSS 2 時間（選填）</label><input class="input" id="modalCreateBoss2" placeholder="04:25"></div>
+              </div>
+              
+            </section>
+          </div>
+          <div class="modal-actions"><button class="btn" data-close="teamCreateModal">取消</button><button class="btn primary" id="saveCreateTeamModalBtn">建立隊伍</button></div>
+        </div></div>`);
+      document.querySelectorAll('#teamCreateModal [data-close]').forEach(b=>b.addEventListener('click',()=>closeModal('teamCreateModal')));
+      document.getElementById('teamCreateModal').addEventListener('click',e=>{if(e.target.id==='teamCreateModal')closeModal('teamCreateModal')});
+    }
+
+    if(!document.getElementById('statsFocusModal')){
+      document.body.insertAdjacentHTML('beforeend',`
+        <div class="modal focus-stats-modal" id="statsFocusModal"><div class="modal-card">
+          <h2 class="modal-title">玩家上榜數據總覽</h2>
+          
+          <div class="focus-stats-layout" id="statsFocusContent"></div>
+          <div class="modal-actions"><button class="btn" data-close="statsFocusModal">關閉</button></div>
+        </div></div>`);
+      document.querySelectorAll('#statsFocusModal [data-close]').forEach(b=>b.addEventListener('click',()=>closeModal('statsFocusModal')));
+      document.getElementById('statsFocusModal').addEventListener('click',e=>{if(e.target.id==='statsFocusModal')closeModal('statsFocusModal')});
+    }
+
+    const batchCard=document.querySelector('#batchPickerModal .modal-card');
+    if(batchCard && !document.getElementById('batchModeToggleWrap')){
+      const sub=document.createElement('div');
+      sub.id='batchModeToggleWrap';
+      sub.className='batch-mode-strip';
+      sub.innerHTML=`<label><input type="checkbox" id="batchModeToggle" checked> 批量選擇</label>`;
+      batchCard.insertBefore(sub,document.getElementById('batchPickerList'));
+    }
+
+    if(document.getElementById('batchPickerModal') && !document.getElementById('batchOutsiderBtn')){
+      const actions=document.querySelector('#batchPickerModal .batch-actions');
+      if(actions){
+        const btn=document.createElement('button');
+        btn.type='button';
+        btn.className='batch-action-btn ghost';
+        btn.id='batchOutsiderBtn';
+        btn.textContent='＋ 外人';
+        actions.insertBefore(btn,actions.firstChild);
+      }
+    }
+  }
+
+  function syncEnhancedView(){
+    ensureEnhancedMarkup();
+    const btn=document.getElementById('openTeamCreateModalBtn');
+    const cap=document.getElementById('teamCreatePhaseCaption');
+    if(cap)cap.textContent=`${PHASE_NAMES[selectedPhase]} · 隊伍`;
+    if(btn)btn.disabled=!currentDungeon();
+    const focusBtn=document.getElementById('statsFocusBtn');
+    if(focusBtn)focusBtn.disabled=!currentDungeon();
+    if(document.getElementById('statsFocusModal')?.classList.contains('show'))renderStatsFocusPanel();
+  }
+
+  function setCreateModeCards(){
+    document.querySelectorAll('[data-mode-card]').forEach(card=>{
+      const input=card.querySelector('input');
+      card.classList.toggle('active',!!input?.checked);
+    });
+  }
+
+  function fillCreateDefaults(){
+    const nextIndex=(visibleTeams().length||0)+1;
+    const teamName=document.getElementById('modalCreateTeamName');
+    if(teamName && !teamName.value.trim())teamName.value=`${SIZE}人 · 第 ${nextIndex} 隊`;
+    const teamNote=document.getElementById('modalCreateTeamNote');
+    if(teamNote)teamNote.value='';
+    ['modalCreateRank','modalCreateTotalTime','modalCreateBoss1','modalCreateBoss2'].forEach(id=>{const el=document.getElementById(id); if(el)el.value='';});
+    const normal=document.querySelector('input[name="createTeamMode"][value="normal"]');
+    if(normal)normal.checked=true;
+    setCreateModeCards();
+  }
+
+  function openEnhancedTeamModal(){
+    if(!currentDungeon()){
+      alert('請先建立或選擇目前副本。');
+      return;
+    }
+    fillCreateDefaults();
+    openModal('teamCreateModal');
+  }
+
+  function renderStatsFocusPanel(){
+    const wrap=document.getElementById('statsFocusContent');
+    if(!wrap)return;
+    const phaseSummary=document.getElementById('phaseSummary');
+    const quickGrid=document.getElementById('quickGrid');
+    const standingsTitle=document.getElementById('standingsTitle');
+    const standingsSubtitle=document.getElementById('standingsSubtitle');
+    const standingsScroll=document.getElementById('standingsScroll');
+    if(!currentDungeon()){
+      wrap.innerHTML='<div class="focus-stats-empty">請先建立或選擇副本。</div>';
+      return;
+    }
+    wrap.innerHTML=`
+      <section>
+        <div class="phase-heading" style="margin-bottom:8px">${esc(standingsTitle?.textContent||`${PHASE_NAMES[selectedPhase]} · 上榜數據`)}</div>
+        <div class="modal-sub" style="margin:0 0 12px">${esc(standingsSubtitle?.textContent||'')}</div>
+        <div class="phase-summary">${phaseSummary?.innerHTML||''}</div>
+      </section>
+      <section>
+        <div class="phase-caption" style="margin-bottom:8px">TEAM QUICK VIEW</div>
+        <div class="focus-stats-quick">${quickGrid?.innerHTML||'<div class="focus-stats-empty">目前沒有隊伍。</div>'}</div>
+      </section>
+      <section>
+        <div class="phase-caption" style="margin-bottom:8px">STANDINGS TABLE</div>
+        <div class="focus-standings-wrap">${standingsScroll?.innerHTML||'<div class="focus-stats-empty">尚無資料。</div>'}</div>
+      </section>`;
+  }
+
+  const _origRenderPlayers=renderPlayers;
+  renderPlayers=function(){
+    const q=norm($('playerSearch').value);
+    renderProfessionFilter();
+    const selected=selectedFilterPlayers();
+    const firstListed=firstPhaseListedPlayers();
+
+    const list=players
+      .filter(p=>(!q||playerSearchText(p).includes(q))&&playerHasProfession(p,selectedProfessionFilter))
+      .sort((a,b)=>{
+        const A=playerStats(a.id),B=playerStats(b.id);
+        if(metricMode==='count'&&B.count!==A.count)return B.count-A.count;
+        if(metricMode==='best'){
+          const av=A.best?.timeMs||Infinity,bv=B.best?.timeMs||Infinity;
+          if(av!==bv)return av-bv;
+        }
+        return a.name.localeCompare(b.name,'zh-Hant');
+      });
+
+    $('playerCount').textContent=`${list.length} 人 · 5/10 共用`;
+    $('filterNote').classList.toggle('show',selected.length>0);
+    $('filterName').textContent=selected.map(p=>p.name).join('、');
+
+    $('playerList').innerHTML=list.length?list.map(p=>{
+      const s=playerStats(p.id);
+      const metric=metricMode==='count'
+        ? `<div class="player-metric"><strong>${s.count}${limit?` / ${limit}`:''}</strong><span>當期上榜次數</span></div>`
+        : `<div class="player-metric"><strong class="best">${bestRecordDisplay(s.best)}</strong><span>最佳紀錄</span></div>`;
+      return`<div class="player-row grouped ${selectedPlayerIds.has(p.id)?'selected':''}" data-player="${esc(p.id)}" ${playerGroupStyle(p)}>
+        <button type="button" class="player-more" data-player-more="${esc(p.id)}" aria-label="更多選項">⋯</button>
+        <div>
+          <div class="player-name-line">${playerGroupBadge(p)}<div class="player-name">${esc(p.name)}</div>${firstPhaseBadge(p,firstListed)}</div>
+          <div class="player-role">${p.note?esc(p.note):''}</div>
+        </div>
+        ${metric}
+      </div>`;
+    }).join(''):`<div class="empty">沒有符合條件的玩家。</div>`;
+  };
+
+  renderSelectedPlayer=function(){
+    const panel=$('selectedPlayerPanel');
+    const selected=selectedFilterPlayers();
+    if(!selected.length){panel.classList.remove('show','multi-selected');return;}
+    const related=filteredVisibleTeams();
+    panel.classList.add('show');
+    panel.classList.toggle('multi-selected',selected.length>1);
+    if(selected.length===1){
+      const p=selected[0];
+      const s=playerStats(p.id);
+      $('selectedPlayerName').innerHTML=`${playerGroupBadge(p)} ${esc(p.name)}`;
+      $('selectedPlayerMeta').textContent=p.note||'玩家上榜摘要';
+      if(wasFirstPhaseListed(p))$('selectedPlayerMeta').insertAdjacentHTML('beforeend',firstPhaseBadge(p));
+      $('selectedPlayerStats').innerHTML=
+        `<div class="stat"><span>目前上榜</span><strong>${s.count}${limit?`/${limit}`:''}</strong></div>`+
+        `<div class="stat"><span>最佳紀錄</span><strong>${bestRecordDisplay(s.best)}</strong></div>`+
+        `<div class="stat"><span>分類</span><strong>${esc(playerGroupKey(p))}</strong></div>`;
+      return;
+    }
+    const ids=[...selectedPlayerIds];
+    const commonRecords=visibleRecords().filter(r=>ids.every(pid=>r.roster?.some(m=>m.id===pid)));
+    const best=bestRecordByGameRank(commonRecords);
+    $('selectedPlayerName').textContent=`已選 ${selected.length} 人`;
+    $('selectedPlayerMeta').textContent=selected.map(p=>p.name).join('、');
+    $('selectedPlayerStats').innerHTML=
+      `<div class="stat"><span>篩選玩家</span><strong>${selected.length}</strong></div>`+
+      `<div class="stat"><span>共同隊伍</span><strong>${related.length}</strong></div>`+
+      `<div class="stat"><span>共同最佳</span><strong>${bestRecordDisplay(best)}</strong></div>`;
+  };
+
+  renderQuick=function(){
+    const list=sortTeamsByManualRank(filteredVisibleTeams());
+    $('quickGrid').innerHTML=list.length?list.map(t=>{
+      const members=phaseMembersOf(t).filter(Boolean).map(v=>slotPerson(t,v)).filter(Boolean);
+      const rank=manualRankOf(t),mode=normalizeTeamMode(t);
+      const listed=firstPhaseListedPlayers();
+      return`<button class="quick-card" data-jump="${esc(t.id)}">
+        <div class="quick-top">
+          <div class="quick-name-wrap"><div class="quick-name">${esc(t.name)}</div><span class="team-type-tag ${mode}">${teamModeLabel(t)}</span></div>
+          <span class="quick-count">${members.length}/${SIZE}</span>
+        </div>
+        <div class="quick-stats">
+          <div class="quick-stat"><span>遊戲排名</span><strong class="quick-rank">${rank?`#${rank}`:'—'}</strong></div>
+          <div class="quick-stat"><span>總通關時間</span><strong>${phaseResult(t)?fmtTime(phaseResult(t).timeMs):'—'}</strong></div>
+        </div>
+        <div class="chips">${members.length?members.map(p=>`<span class="chip">${esc(p.name)}${wasFirstPhaseListed(p,listed)?' ✓':''}</span>`).join(''):`<span class="chip">尚未排人</span>`}</div>
+      </button>`;
+    }).join(''):`<div class="empty">${selectedPlayerIds.size?'沒有同時符合所選玩家的隊伍。':`${PHASE_NAMES[selectedPhase]}尚無隊伍。`}</div>`;
+  };
+
+  slotHtml=function(t,i){
+    const raw=phaseMembersOf(t)[i],p=slotPerson(t,raw);
+    const s=p&&!p.external?playerStats(p.id):null;
+    const p1badge=firstPhaseBadge(p);
+    if(!p){
+      return`<div class="slot"><span class="slot-no">${i+1}</span><div><strong>空位</strong></div></div>`;
+    }
+    return`<div class="slot filled"><span class="slot-no">${i+1}</span><div>
+      <strong>${esc(p.name)}</strong>
+      ${p1badge}
+      ${p.external
+        ? `<span class="outsider-pill">外人 · 不計次數</span>`
+        : `<span class="limit">${SIZE}榜 ${s?.count||0}${limit?`/${limit}`:''}</span>`
+      }
+      <div class="slot-actions"><button data-remove="${esc(t.id)}" data-player="${esc(raw)}">移除</button></div>
+    </div></div>`;
+  };
+
+  renderTeams=function(){
+    const list=sortTeamsByManualRank(filteredVisibleTeams());
+    const selected=selectedFilterPlayers();
+    $('boardSub').textContent=selected.length ? `${selected.length} 人篩選 · ${list.length} 支隊伍` : `${PHASE_NAMES[selectedPhase]} · ${visibleTeams().length} 支隊伍`;
+    if(!currentDungeon()){$('teamList').innerHTML=`<div class="empty">尚無副本</div>`;return;}
+    if(!list.length){$('teamList').innerHTML=`<div class="empty">${selectedPlayerIds.size?'沒有同時符合所選玩家的隊伍。':`${PHASE_NAMES[selectedPhase]}尚無隊伍。`}</div>`;return;}
+    $('teamList').innerHTML=list.map(t=>{
+      const cls=t._sync==='pending'?'pending':t._sync==='local'?'local':'';
+      const expanded=expandedTeamIds.has(t.id);
+      const names=memberDisplayNames(t);
+      const rank=manualRankOf(t);
+      return`<article class="team-card ${cls} ${expanded?'expanded':''}" id="team-${esc(t.id)}">
+        <div class="team-top">
+          <div class="team-summary-bar" data-toggle-team="${esc(t.id)}">
+            <div class="team-summary-main">
+              <div class="team-summary-name">${esc(t.name)}</div>
+              <div class="team-member-names ${names.length?'':'empty'}">${names.length?esc(names.join('、')):'尚未加入隊員'}</div>
+              <div class="team-updated-at">${fmtTeamUpdated(t)}</div>
+            </div>
+            <div class="team-summary-type"><span class="team-type-tag ${normalizeTeamMode(t)}">${teamModeLabel(t)}</span></div>
+            <div class="simple-count">${names.length}/${SIZE}</div>
+            <div class="simple-rank"><div class="simple-label">排名</div><div class="simple-value">${rank?`#${rank}`:'—'}</div></div>
+            <div class="simple-time"><div class="simple-label">總時間</div><div class="simple-value">${phaseResult(t)?fmtTime(phaseResult(t).timeMs):'—'}</div></div>
+            <button type="button" class="team-collapse-btn" data-toggle-team="${esc(t.id)}">${expanded?'收合':'展開'}</button>
+          </div>
+        </div>
+        <div class="team-body">
+          <div class="team-actions">
+            <select class="team-type-select" data-team-type="${esc(t.id)}">
+              <option value="normal"${normalizeTeamMode(t)==='normal'?' selected':''}>普通</option>
+              <option value="challenge"${normalizeTeamMode(t)==='challenge'?' selected':''}>挑戰</option>
+            </select>
+            <button data-edit="${esc(t.id)}">編輯名稱</button>
+            <button data-retry="${esc(t.id)}">重新同步</button>
+            <button data-delete="${esc(t.id)}">🗑 刪除隊伍</button>
+          </div>
+          ${resultHtml(t)}
+          <div class="roster-title">
+            <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
+            <div class="roster-title-actions">
+              <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 新增／調整隊友</button>
+            </div>
+          </div>
+          <div class="roster">${Array.from({length:SIZE},(_,i)=>slotHtml(t,i)).join('')}</div>
+        </div>
+      </article>`;
+    }).join('');
+  };
+
+  createTeam=function(){
+    const dg=currentDungeon();
+    if(!dg){alert('請先建立或選擇目前副本。');return}
+    const name=(document.getElementById('modalCreateTeamName')?.value||'').trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
+    const note=(document.getElementById('modalCreateTeamNote')?.value||'').trim();
+    const mode=document.querySelector('input[name="createTeamMode"]:checked')?.value==='challenge'?'challenge':'normal';
+    const rankRaw=(document.getElementById('modalCreateRank')?.value||'').trim();
+    const totalRaw=(document.getElementById('modalCreateTotalTime')?.value||'').trim();
+    const boss1Raw=(document.getElementById('modalCreateBoss1')?.value||'').trim();
+    const boss2Raw=(document.getElementById('modalCreateBoss2')?.value||'').trim();
+    const anyResult=rankRaw||totalRaw||boss1Raw||boss2Raw;
+    const boss1Ms=parseOptionalTime(boss1Raw);
+    const boss2Ms=parseOptionalTime(boss2Raw);
+    if(Number.isNaN(boss1Ms)||Number.isNaN(boss2Ms)){
+      alert('BOSS 時間格式不正確，請使用 1:30、01:30 等格式。');
+      return;
+    }
+    let result=null;
+    if(anyResult){
+      const totalMs=parseOptionalTime(totalRaw);
+      if(Number.isNaN(totalMs)||!Number(totalMs)){
+        alert('若要建立時直接寫入成績，請填正確的總通關時間。');
+        return;
+      }
+      const rank=rankRaw?Math.max(1,Number(rankRaw)||0):null;
+      result={timeMs:Number(totalMs),rank:rank||null,boss1Ms:boss1Ms||null,boss2Ms:boss2Ms||null,date:today(),note:''};
+    }
+    const team={id:uid('team'),dungeonId:dg.id,phase:selectedPhase,size:SIZE,name,note,mode,members:Array(SIZE).fill(null),externalMembers:{},phaseMembers:{'2':[],'3':[]},phaseExternalMembers:{'2':{},'3':{}},currentResult:null,phaseResults:{},createdAt:Date.now(),updatedAtMs:Date.now(),_sync:'pending'};
+    if(result)setPhaseResult(team,selectedPhase,result);
+    teams.push(team);
+    expandedTeamIds.clear();
+    expandedTeamIds.add(team.id);
+    selectedPlayerIds.clear();
+    const qs=document.getElementById('playerSearch'); if(qs)qs.value='';
+    saveLocalPage();
+    closeModal('teamCreateModal');
+    renderAll();
+    document.getElementById(`team-${team.id}`)?.scrollIntoView({behavior:'smooth',block:'center'});
+    toast(`${PHASE_NAMES[selectedPhase]}「${name}」已建立`);
+    syncTeam(team);
+  };
+
+  renderPicker=function(){
+    const t=teams.find(x=>x.id===pickerTeamId);
+    const q=norm($('pickerSearch').value);
+    const used=new Set(phaseMembersOf(t).filter(v=>v&&!isOutsiderToken(v)));
+    refreshPickerProfessionFilters();
+    const listed=firstPhaseListedPlayers();
+    const list=players.filter(p=>(!q||norm(`${p.name} ${p.note||''}`).includes(q)) && playerHasProfession(p,pickerProfessionFilter) && (!used.has(p.id)||phaseMembersOf(t)[pickerIndex]===p.id));
+    $('pickerTitle').textContent=`選擇第 ${pickerIndex+1} 位玩家`;
+    $('pickerList').innerHTML=list.length?list.map(p=>`<button class="picker-player grouped" data-pick-player="${esc(p.id)}" ${playerGroupStyle(p)}><div><div class="picker-player-name-line">${playerGroupBadge(p)}<strong>${esc(p.name)}</strong>${firstPhaseBadge(p,listed)}</div>${p.note?`<span>${esc(p.note)}</span>`:''}</div><span>${playerStats(p.id).count}${limit?`/${limit}`:''} 次</span></button>`).join(''):`<div class="empty">沒有符合條件的玩家。</div>`;
+  };
+
+  openBatchPicker=function(teamId){
+    const t=teams.find(x=>x.id===teamId); if(!t)return;
+    batchTeamId=teamId;
+    batchSelectedIds=new Set(phaseMembersOf(t).filter(v=>v&&!isOutsiderToken(v)&&players.some(p=>p.id===v)));
+    batchProfessionFilter='';
+    $('batchPickerSearch').value='';
+    refreshPickerProfessionFilters();
+    ensureEnhancedMarkup();
+    const toggle=document.getElementById('batchModeToggle');
+    if(toggle)toggle.checked=true;
+    renderBatchPicker();
+    openModal('batchPickerModal');
+  };
+
+  renderBatchPicker=function(){
+    const t=teams.find(x=>x.id===batchTeamId); if(!t)return;
+    refreshPickerProfessionFilters();
+    const q=norm($('batchPickerSearch').value);
+    const outsiderCount=phaseMembersOf(t).filter(isOutsiderToken).length;
+    const internalCapacity=Math.max(0,SIZE-outsiderCount);
+    const listed=firstPhaseListedPlayers();
+    const list=players.filter(p=>(!q||norm(`${p.name} ${p.note||''}`).includes(q)) && playerHasProfession(p,batchProfessionFilter)).sort((a,b)=>a.name.localeCompare(b.name,'zh-Hant'));
+    $('batchPickerList').innerHTML=list.length?list.map(p=>{
+      const selected=batchSelectedIds.has(p.id);
+      return`<label class="batch-player grouped ${selected?'selected':''}" data-batch-player="${esc(p.id)}" ${playerGroupStyle(p)}>
+        <input type="checkbox"${selected?' checked':''}>
+        <div>
+          <div class="batch-player-name-line">${playerGroupBadge(p)}<div class="batch-player-name">${esc(p.name)}</div>${firstPhaseBadge(p,listed)}</div>
+          ${p.note?`<div class="batch-player-note">${esc(p.note)}</div>`:''}
+        </div>
+        <div class="batch-player-count">${playerStats(p.id).count}${limit?`/${limit}`:''} 次</div>
+      </label>`;
+    }).join(''):`<div class="empty">沒有符合條件的玩家。</div>`;
+    const selectedCount=batchSelectedIds.size;
+    $('batchSelectedCount').textContent=`已選 ${selectedCount} / ${internalCapacity}`;
+    $('batchSelectedCount').classList.toggle('over',selectedCount>internalCapacity);
+    $('batchCapacityText').textContent=outsiderCount?`外人 ${outsiderCount} · 可選 ${internalCapacity}`:`可選 ${internalCapacity}`;
+    $('batchApplyBtn').disabled=selectedCount>internalCapacity;
+  };
+
+  function addOutsiderFromBatch(){
+    const t=teams.find(x=>x.id===batchTeamId); if(!t)return;
+    const members=phaseMembersOf(t);
+    const empty=members.findIndex(v=>!v);
+    if(empty<0){ toast('隊伍已滿'); return; }
+    const typed=prompt('外人名稱（可留空，留空就顯示「外人」）：','');
+    if(typed===null)return;
+    const token=`external:${uid('guest')}`;
+    const outsiders={...phaseOutsidersOf(t)};
+    outsiders[token]={name:typed.trim()||'外人'};
+    members[empty]=token;
+    setPhaseRoster(t,members,outsiders);
+    persistPhaseRosterChange(t);
+    warnDuplicateRoster(t);
+    renderAll();
+    renderBatchPicker();
+  }
+
+  const _origBindUI = bindUI;
+  // bindUI already ran earlier; attach extra listeners separately.
+
+  function attachEnhancementListeners(){
+    ensureEnhancedMarkup();
+    const openBtn=document.getElementById('openTeamCreateModalBtn');
+    if(openBtn && !openBtn.dataset.bound){openBtn.dataset.bound='1';openBtn.addEventListener('click',openEnhancedTeamModal)}
+    const saveBtn=document.getElementById('saveCreateTeamModalBtn');
+    if(saveBtn && !saveBtn.dataset.bound){saveBtn.dataset.bound='1';saveBtn.addEventListener('click',createTeam)}
+    document.querySelectorAll('input[name="createTeamMode"]').forEach(input=>{
+      if(input.dataset.bound)return; input.dataset.bound='1'; input.addEventListener('change',setCreateModeCards);
+    });
+    const focusBtn=document.getElementById('statsFocusBtn');
+    if(focusBtn && !focusBtn.dataset.bound){focusBtn.dataset.bound='1';focusBtn.addEventListener('click',()=>{renderStatsFocusPanel();openModal('statsFocusModal')})}
+    const batchToggle=document.getElementById('batchModeToggle');
+    if(batchToggle && !batchToggle.dataset.bound){batchToggle.dataset.bound='1';batchToggle.addEventListener('change',renderBatchPicker)}
+    const outsiderBtn=document.getElementById('batchOutsiderBtn');
+    if(outsiderBtn && !outsiderBtn.dataset.bound){outsiderBtn.dataset.bound='1';outsiderBtn.addEventListener('click',addOutsiderFromBatch)}
+    const collapseBtn=document.getElementById('collapseAllTeamsBtn');
+    const boardActions=document.querySelector('.board-head-actions');
+    if(boardActions && collapseBtn && !document.getElementById('focusStandingsToggleBtn')){
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='btn';
+      btn.id='focusStandingsToggleBtn';
+      btn.textContent='專注看上榜';
+      btn.addEventListener('click',()=>{document.body.classList.toggle('stats-focus-mode'); btn.textContent=document.body.classList.contains('stats-focus-mode')?'返回完整畫面':'專注看上榜';});
+      boardActions.insertBefore(btn,collapseBtn);
+    }
+  }
+
+  const _origRenderAll=renderAll;
+  renderAll=function(){
+    _origRenderAll();
+    syncEnhancedView();
+    attachEnhancementListeners();
+  };
+
+  setTimeout(()=>{
+    ensureEnhancedMarkup();
+    attachEnhancementListeners();
+    setCreateModeCards();
+    renderAll();
+  },0);
+})();
+
+
+
+/* ===== v15: genuine management / leaderboard tabs + occupation badge fix ===== */
+(function(){
+  const COLORS=['#7eafff','#b79aff','#6cd6b4','#ffc07a','#ed91cb','#8bd5eb','#c1c974','#f9a4a4','#b4a1eb'];
+  const FIRST_COLOR={"破竹":"#83b1ff","牽絲":"#c29aff","鳴金":"#f3b877","裂石":"#7cd6bb","青冥":"#92c7f4","九流":"#eaa3c4"};
+  const keyForRole=(role)=>{
+    const r=String(role||'').replace(/[【】\[\]()（）\s]/g,'').trim();
+    return (!r||r==='未設定')?'未設定':Array.from(r).slice(0,2).join('');
+  };
+  const categoriesFor=(p)=>{
+    if(!p)return ['未設定'];
+    const roles=normalizeRoles(p);
+    const cats=[...new Set(roles.map(keyForRole))];
+    return cats.length?cats:['未設定'];
+  };
+  const colorFor=(category)=>{
+    if(category==='未設定')return '#9baac6';
+    if(FIRST_COLOR[category])return FIRST_COLOR[category];
+    let h=0;for(const ch of category)h=(h*33+ch.charCodeAt(0))%COLORS.length;
+    return COLORS[h];
+  };
+  const categoryBadges=(p)=>`<span class="profession-badges">${categoriesFor(p).map(cat=>`<span class="profession-pill" style="--job-tone:${colorFor(cat)}" title="職業分類">${esc(cat)}</span>`).join('')}</span>`;
+
+  function occupationSwap(container,selector,idAttr){
+    if(!container)return;
+    container.querySelectorAll(selector).forEach(row=>{
+      const pid=row.dataset[idAttr];
+      const player=getPlayer(pid);
+      if(!player)return;
+      const line=row.querySelector('.player-name-line, .picker-player-name-line, .batch-player-name-line');
+      if(!line)return;
+      line.querySelectorAll('.group-pill,.profession-badges').forEach(x=>x.remove());
+      line.insertAdjacentHTML('afterbegin',categoryBadges(player));
+      row.style.setProperty('--job-tone',colorFor(categoriesFor(player)[0]));
+      row.classList.add('profession-grouped');
+      const sub=row.querySelector('.player-role');
+      if(sub&&sub.textContent.trim().startsWith('點一下可篩選'))sub.remove();
+    });
+  }
+  function normalizeVisibleProfessionLabels(){
+    occupationSwap(document.getElementById('playerList'),'.player-row[data-player]','player');
+    occupationSwap(document.getElementById('pickerList'),'.picker-player[data-pick-player]','pickPlayer');
+    occupationSwap(document.getElementById('batchPickerList'),'.batch-player[data-batch-player]','batchPlayer');
+    const selectedPanel=document.getElementById('selectedPlayerPanel');
+    if(selectedPanel?.classList.contains('show')&&selectedPlayerIds.size===1){
+      const player=getPlayer([...selectedPlayerIds][0]);
+      if(player){
+        const selectedName=document.getElementById('selectedPlayerName');
+        selectedName?.querySelectorAll('.group-pill,.profession-badges').forEach(x=>x.remove());
+        selectedName?.insertAdjacentHTML('afterbegin',categoryBadges(player)+' ');
+      }
+    }
+  }
+
+  let activeView='manage';
+  let rankSearch='';
+  function setupTabs(){
+    const host=document.querySelector('main.page');
+    const ws=host?.querySelector('.workspace');
+    const existingStandings=host?.querySelector('.phase-standings');
+    if(!host||!ws||!existingStandings)return;
+    if(!document.getElementById('speedViewTabs')){
+      const bar=document.createElement('nav');
+      bar.className='speed-view-tabs';bar.id='speedViewTabs';bar.setAttribute('aria-label','切換競速檢視');
+      bar.innerHTML=`
+        <div class="speed-view-tabs-main" role="tablist" aria-label="競速頁面檢視">
+          <button type="button" class="speed-view-tab active" id="manageTab" role="tab" aria-controls="manageView" aria-selected="true">隊伍管理</button>
+          <button type="button" class="speed-view-tab" id="rankingTab" role="tab" aria-controls="rankView" aria-selected="false">詳細上榜數據</button>
+        </div>
+        `;
+      ws.before(bar);
+      ws.id='manageView';ws.setAttribute('role','tabpanel');ws.setAttribute('aria-labelledby','manageTab');
+      const view=document.createElement('section');
+      view.id='rankView';view.className='rank-view-pane';view.hidden=true;
+      view.setAttribute('role','tabpanel');view.setAttribute('aria-labelledby','rankingTab');
+      view.innerHTML=`
+        <div class="rank-view-intro">
+          <div><div class="phase-caption">RANKING DETAILS</div><h2 id="rankViewHeading">本期上榜數據</h2>
+            </div>
+          <div class="standings-actions"><button type="button" class="btn primary" id="rankViewPNG">下載本期 PNG</button><button type="button" class="btn" id="rankViewExcel">匯出 Excel</button></div>
+        </div>
+        <div class="rank-data-kpis" id="rankViewKpis"></div>
+        <section class="rank-player-panel">
+          <div class="rank-player-panel-head"><div><h3>玩家上榜詳情</h3><p>僅統計有遊戲排名的隊伍</p></div>
+          <input type="search" id="rankPlayerSearch" class="rank-player-search" placeholder="搜尋玩家 / 職業 / 隊伍…" aria-label="搜尋上榜玩家">
+          </div>
+          <div class="rank-player-scroll" id="rankPlayerTable"></div>
+          <div class="rank-mobile-list" id="rankPlayerMobile"></div>
+        </section>`;
+      ws.after(view);
+      view.appendChild(existingStandings);
+      document.getElementById('rankViewPNG').addEventListener('click',exportPNG);
+      document.getElementById('rankViewExcel').addEventListener('click',exportExcel);
+      document.getElementById('manageTab').addEventListener('click',()=>switchView('manage'));
+      document.getElementById('rankingTab').addEventListener('click',()=>switchView('ranking'));
+      document.getElementById('rankPlayerSearch').addEventListener('input',e=>{rankSearch=e.target.value;renderRankData()});
+      const jumpButton=document.createElement('button');
+      jumpButton.type='button';jumpButton.className='btn';jumpButton.id='jumpRankingBtn';jumpButton.textContent='查看詳細上榜 →';
+      jumpButton.addEventListener('click',()=>switchView('ranking'));
+      const actions=document.querySelector('.board-head-actions');
+      if(actions)actions.prepend(jumpButton);
+    }
+    switchView(activeView,false);
+  }
+  function switchView(view,scroll=true){
+    activeView=view==='ranking'?'ranking':'manage';
+    const ranking=activeView==='ranking';
+    const workspace=document.getElementById('manageView');
+    const stats=document.getElementById('rankView');
+    if(workspace)workspace.hidden=ranking;
+    if(stats)stats.hidden=!ranking;
+    ['manage','ranking'].forEach(name=>{
+      const el=document.getElementById(name==='manage'?'manageTab':'rankingTab');
+      if(!el)return;
+      const isActive=name===activeView;
+      el.classList.toggle('active',isActive);
+      el.setAttribute('aria-selected',String(isActive));
+      el.tabIndex=isActive?0:-1;
+    });
+    document.body.classList.remove('stats-focus-mode');
+    if(ranking)renderRankData();
+    if(scroll)document.getElementById('speedViewTabs')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function rankedPlayers(){
+    const map=new Map();
+    const rankedTeams=buildExportTeams().filter(({result})=>Number.isInteger(Number(result?.rank))&&Number(result.rank)>0);
+    for(const item of rankedTeams){
+      const {team,result,roster}=item;
+      const rank=Number(result.rank),timeMs=Number(result.timeMs)||0;
+      for(const m of roster){
+        if(!m||m.external||!m.name)continue;
+        const key=m.id?`id:${m.id}`:`name:${norm(m.name)}`;
+        let row=map.get(key);
+        if(!row){
+          row={name:m.name,id:m.id||'',player:m.id?getPlayer(m.id):players.find(p=>norm(p.name)===norm(m.name)),count:0,bestRank:null,bestTime:Infinity,teams:[]};
+          map.set(key,row);
+        }
+        row.count++;
+        if(row.bestRank===null||rank<row.bestRank)row.bestRank=rank;
+        if(timeMs>0&&timeMs<row.bestTime)row.bestTime=timeMs;
+        row.teams.push(team.name);
+      }
+    }
+    return {rows:[...map.values()].sort((a,b)=>a.bestRank-b.bestRank||(a.bestTime-b.bestTime)||a.name.localeCompare(b.name,'zh-Hant')),rankedTeams};
+  }
+  function renderRankData(){
+    const table=document.getElementById('rankPlayerTable'),mobile=document.getElementById('rankPlayerMobile');
+    if(!table||!mobile)return;
+    const {rows,rankedTeams}=rankedPlayers();
+    const q=norm(rankSearch);
+    const filtered=rows.filter(x=>!q||norm(`${x.name} ${(x.player?normalizeRoles(x.player).join(' '):'')} ${x.teams.join(' ')}`).includes(q));
+    const kpis=document.getElementById('rankViewKpis');
+    const best=rankedTeams.length?Math.min(...rankedTeams.map(x=>Number(x.result.rank))):null;
+    const fastest=rankedTeams.length?Math.min(...rankedTeams.map(x=>Number(x.result.timeMs)||Infinity)):Infinity;
+    const listed=firstPhaseListedPlayers();
+    if(kpis)kpis.innerHTML=`
+      <div class="rank-data-kpi primary"><span>本期已上榜玩家</span><strong>${rows.length} 人</strong></div>
+      <div class="rank-data-kpi"><span>有正式排名隊伍</span><strong>${rankedTeams.length} 隊</strong></div>
+      <div class="rank-data-kpi"><span>本期最佳遊戲名次</span><strong>${best!==null?'#'+best:'—'}</strong></div>
+      <div class="rank-data-kpi success"><span>${selectedPhase===1?'目前期數':'第一期已上榜提醒'}</span><strong>${selectedPhase===1?PHASE_NAMES[selectedPhase]:listed.count+' 人'}</strong></div>`;
+    const title=document.getElementById('rankViewHeading');
+    if(title)title.textContent=`${currentDungeon()?.name||'副本'} · ${PHASE_NAMES[selectedPhase]}上榜數據`;
+    const playerCell=x=>`<div class="rank-player-id"><div class="profession-badges">${x.player?categoriesFor(x.player).map(c=>`<span class="profession-pill" style="--job-tone:${colorFor(c)}">${esc(c)}</span>`).join(''):''}</div><span class="rank-player-name">${esc(x.name)}</span>${firstPhaseBadge({id:x.id,name:x.name},listed)}</div>`;
+    if(!filtered.length){
+      const msg=rankedTeams.length?'沒有符合搜尋的上榜玩家。':'本期尚無上榜紀錄。';
+      table.innerHTML=`<div class="rank-empty">${msg}</div>`;
+      mobile.innerHTML=`<div class="rank-empty">${msg}</div>`;
+      return;
+    }
+    table.innerHTML=`<table class="rank-player-table"><thead><tr><th>玩家 / 職業分類</th><th>上榜次數</th><th>最佳遊戲排名</th><th>最佳總時間</th><th>上榜隊伍</th></tr></thead><tbody>${filtered.map(x=>`<tr><td>${playerCell(x)}</td><td>${x.count}</td><td><span class="rank-player-rank">#${x.bestRank}</span></td><td class="rank-player-time">${x.bestTime<Infinity?fmtTime(x.bestTime):'—'}</td><td class="rank-player-teams">${esc([...new Set(x.teams)].join('、'))}</td></tr>`).join('')}</tbody></table>`;
+    mobile.innerHTML=filtered.map(x=>`<article class="rank-mobile-item"><div class="rank-mobile-head">${playerCell(x)}<span class="rank-player-rank">#${x.bestRank}</span></div><div class="rank-mobile-stats"><div class="rank-mobile-stat"><span>上榜次數</span><strong>${x.count}</strong></div><div class="rank-mobile-stat"><span>最佳排名</span><strong>#${x.bestRank}</strong></div><div class="rank-mobile-stat"><span>最佳總時間</span><strong>${x.bestTime<Infinity?fmtTime(x.bestTime):'—'}</strong></div></div><div class="rank-mobile-team">上榜隊伍：${esc([...new Set(x.teams)].join('、'))}</div></article>`).join('');
+  }
+
+  // Old "上榜數據" button should switch tabs, not open the obsolete popup.
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#statsFocusBtn')){
+      e.preventDefault();e.stopImmediatePropagation();switchView('ranking');
+    }
+  },true);
+  const handleRendered=()=>{normalizeVisibleProfessionLabels();setupTabs();if(activeView==='ranking')renderRankData()};
+  const existingRenderPlayers=renderPlayers;
+  renderPlayers=function(){const out=existingRenderPlayers.apply(this,arguments);normalizeVisibleProfessionLabels();return out};
+  const existingRenderPicker=renderPicker;
+  renderPicker=function(){const out=existingRenderPicker.apply(this,arguments);normalizeVisibleProfessionLabels();return out};
+  const existingBatchRender=renderBatchPicker;
+  renderBatchPicker=function(){const out=existingBatchRender.apply(this,arguments);normalizeVisibleProfessionLabels();return out};
+  const oldRenderSelected=renderSelectedPlayer;
+  renderSelectedPlayer=function(){const out=oldRenderSelected.apply(this,arguments);normalizeVisibleProfessionLabels();return out};
+  const oldRenderAll=renderAll;
+  renderAll=function(){const out=oldRenderAll.apply(this,arguments);handleRendered();return out};
+  setupTabs();
+  handleRendered();
+})();
+
+
+/* ===== Large team detail modal — replaces inline team expansion ===== */
+(function(){
+  const markupById=new Map();
+  let openedTeamId=null;
+  let previousFocus=null;
+  const modal=document.getElementById('teamDetailModal');
+  if(!modal)return;
+  const byId=id=>document.getElementById(id);
+  const currentTeam=()=>openedTeamId?visibleTeams().find(t=>t.id===openedTeamId):null;
+  const shown=()=>modal.classList.contains('show');
+  function closeDetails(){
+    if(!shown())return;
+    modal.classList.remove('show');
+    document.body.classList.remove('team-detail-open');
+    openedTeamId=null;
+    if(previousFocus?.isConnected){previousFocus.focus({preventScroll:true});}
+    previousFocus=null;
+  }
+  function kpi(label,value,kind=''){
+    return `<div class="team-detail-kpi ${kind}"><span>${esc(label)}</span><strong>${esc(String(value))}</strong></div>`;
+  }
+  function showDetails(teamId){
+    const team=visibleTeams().find(t=>t.id===teamId);
+    if(!team)return;
+    previousFocus=document.activeElement;
+    openedTeamId=teamId;
+    drawDetails();
+    modal.classList.add('show');
+    document.body.classList.add('team-detail-open');
+    const scroller=byId('teamDetailScroll');
+    if(scroller)scroller.scrollTop=0;
+    byId('closeTeamDetailBtn')?.focus({preventScroll:true});
+  }
+  function drawDetails(){
+    const team=currentTeam();
+    if(!team){closeDetails();return;}
+    const markup=markupById.get(team.id);
+    if(!markup){closeDetails();return;}
+    byId('teamDetailHeading').textContent=team.name||'未命名隊伍';
+    byId('teamDetailEyebrow').textContent=`${SIZE} 人競速 · ${PHASE_NAMES[selectedPhase]} · 隊伍詳情`;
+    const subtitle=byId('teamDetailSubtitle');
+    subtitle.replaceChildren();
+    const mode=document.createElement('span');
+    mode.className='team-type-tag '+normalizeTeamMode(team);
+    mode.textContent=teamModeLabel(team);
+    const size=document.createElement('span');
+    size.textContent=`${memberDisplayNames(team).length} / ${SIZE} 人`;
+    const note=document.createElement('span');
+    note.textContent=team.note||'';
+    subtitle.append(mode,size);if(team.note)subtitle.append(note);
+    const result=phaseResult(team);
+    const rank=manualRankOf(team);
+    byId('teamDetailOverview').innerHTML=
+      kpi('遊戲排名',rank?'#'+rank:'—','rank')+
+      kpi('總通關時間',result?fmtTime(result.timeMs):'尚未記錄','highlight')+
+      kpi('BOSS 1',fmtOptionalTime(result?.boss1Ms))+
+      kpi('BOSS 2',fmtOptionalTime(result?.boss2Ms));
+
+    const container=document.createElement('div');
+    container.innerHTML=markup;
+    const resultCard=container.querySelector('.result-card');
+    const actions=container.querySelector('.team-actions');
+    const rosterTitle=container.querySelector('.roster-title');
+    const roster=container.querySelector('.roster');
+    const resultHost=byId('teamDetailResult'),actionHost=byId('teamDetailActions'),rosterHost=byId('teamDetailRoster');
+    resultHost.replaceChildren(); actionHost.replaceChildren(); rosterHost.replaceChildren();
+    if(resultCard)resultHost.append(resultCard);
+    if(actions)actionHost.append(actions);
+    if(rosterTitle)rosterHost.append(rosterTitle);
+    if(roster)rosterHost.append(roster);
+  }
+  const oldToggleTeam=toggleTeam;
+  toggleTeam=function(teamId){showDetails(teamId)};
+  const oldRenderTeams=renderTeams;
+  renderTeams=function(){
+    const ret=oldRenderTeams.apply(this,arguments);
+    markupById.clear();
+    document.querySelectorAll('#teamList .team-card').forEach(card=>{
+      const body=card.querySelector('.team-body');
+      const teamId=card.id?.startsWith('team-')?card.id.slice(5):null;
+      if(teamId&&body){markupById.set(teamId,body.innerHTML);body.remove()}
+      card.classList.remove('expanded');
+      const button=card.querySelector('.team-collapse-btn');
+      if(button){button.textContent='詳情';button.setAttribute('aria-label','開啟隊伍詳情彈窗');}
+    });
+    if(openedTeamId)drawDetails();
+    return ret;
+  };
+
+  modal.addEventListener('click',e=>{
+    if(e.target===modal){closeDetails();return;}
+    const node=e.target.closest('[data-batch-team],[data-pick],[data-remove],[data-save-result],[data-edit],[data-retry],[data-delete]');
+    if(!node)return;
+    if(node.dataset.batchTeam){openBatchPicker(node.dataset.batchTeam);return;}
+    if(node.dataset.pick){openPicker(node.dataset.pick,Number(node.dataset.index));return;}
+    if(node.dataset.remove){requestRemovePlayer(node.dataset.remove,node.dataset.player);return;}
+    if(node.dataset.saveResult){saveResult(node.dataset.saveResult);return;}
+    if(node.dataset.edit){editTeam(node.dataset.edit);return;}
+    if(node.dataset.retry){const t=teams.find(x=>x.id===node.dataset.retry);if(t){t._sync='pending';renderAll();syncTeam(t)}return;}
+    if(node.dataset.delete){requestDeleteTeam(node.dataset.delete);return;}
+  });
+  modal.addEventListener('change',e=>{
+    const mode=e.target.closest('[data-team-type]');
+    if(mode)setTeamMode(mode.dataset.teamType,mode.value);
+  });
+  byId('closeTeamDetailBtn').addEventListener('click',closeDetails);
+  byId('teamDetailDoneBtn').addEventListener('click',closeDetails);
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape'||!shown())return;
+    const nested=document.querySelectorAll('.modal.show:not(#teamDetailModal)');
+    if(nested.length)return;
+    e.preventDefault();closeDetails();
+  });
+  document.addEventListener('click',e=>{
+    const item=e.target.closest('#quickGrid [data-jump]');
+    if(item){e.preventDefault();e.stopImmediatePropagation();showDetails(item.dataset.jump);return;}
+    if(e.target.closest('#phaseButtons [data-phase],#dungeonSelect,#manageTab,#rankingTab'))closeDetails();
+  },true);
+  renderTeams();
+})();
+
 </script>
 </body>
 </html>
