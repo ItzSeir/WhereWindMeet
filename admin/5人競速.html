@@ -3045,6 +3045,149 @@ body.team-detail-open{overflow:hidden}
 .batch-mode-strip{padding-block:9px!important}
 .team-detail-section-title{align-items:center}
 @media(max-width:760px){.create-entry-cta{min-height:unset}.create-team-modal .mode-card{min-height:57px}}
+/* ===== v18: unified roster editor, profile and guest modals ===== */
+#teamDetailModal .roster-batch-btn,
+#teamDetailModal button[data-batch-team]{
+  display:inline-flex!important;align-items:center;justify-content:center;gap:9px;
+  min-height:50px!important;padding:11px 21px!important;
+  border:1px solid rgba(255,255,255,.23)!important;
+  border-radius:14px!important;
+  background:linear-gradient(125deg,#548de9,#8263e0)!important;color:#fff!important;
+  box-shadow:0 12px 24px rgba(81,111,225,.28)!important;
+  font-size:16px!important;font-weight:950!important;letter-spacing:.01em;
+}
+#teamDetailModal .roster-batch-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+#teamDetailModal .roster-title{align-items:center!important;gap:14px!important}
+#teamDetailModal .roster-title-actions{margin-left:auto}
+#batchPickerModal{z-index:9700; padding:14px}
+#batchPickerModal .team-picker-wide{display:flex;flex-direction:column;width:min(1080px,100%)!important;
+  max-height:calc(100dvh - 28px)!important;min-height:min(620px,calc(100dvh - 28px));
+  padding:0!important;overflow:hidden;border-radius:24px!important}
+#batchPickerModal .picker-new-head{padding:21px 23px 13px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+#batchPickerModal .picker-new-head h2{font-size:25px!important;margin:0!important}
+#batchPickerModal .picker-new-head p{font-size:13px;color:var(--muted);margin:5px 0 0}
+#batchPickerModal .picker-close-new{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0;
+  border:1px solid var(--line);border-radius:12px;color:var(--text);background:var(--surface2);font-size:22px}
+#batchPickerModal .picker-toolbar{display:flex;align-items:center;gap:10px;padding:17px 23px 0!important;margin:0!important}
+#batchPickerModal .picker-toolbar #batchPickerSearch{flex:1;min-width:0;height:48px!important;margin:0!important;font-size:15px!important}
+#batchPickerModal #batchProfessionFilter{display:none!important}
+#batchPickerModal .batch-mode-strip{margin:0!important;padding:12px 23px!important;border:0!important;border-radius:0!important;background:transparent!important;align-items:center!important}
+#batchPickerModal .batch-mode-strip label{font-size:14px!important;gap:10px!important;cursor:pointer}
+#batchPickerModal .batch-mode-strip input{width:19px;height:19px;accent-color:var(--blue)}
+#batchPickerModal #batchPickerList{min-height:120px;flex:1;max-height:none!important;overflow-y:auto!important;align-content:start;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:11px 23px 20px!important}
+#batchPickerModal .batch-player{position:relative;min-width:0;min-height:83px!important;padding:12px 14px!important;gap:11px!important;border-radius:14px!important;cursor:pointer}
+#batchPickerModal .batch-player-name{font-size:16px!important;overflow-wrap:anywhere}
+#batchPickerModal .batch-player-count{font-size:13px!important;white-space:nowrap}
+#batchPickerModal .batch-player .batch-player-note{font-size:11px}
+#batchPickerModal .batch-player[data-single-mode="true"] input[type="checkbox"]{display:none!important}
+#batchPickerModal .batch-player .picker-edit-profile{display:inline-grid;place-items:center;width:31px;height:31px;flex:0 0 31px;
+ border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--muted);font-size:15px!important;z-index:2}
+#batchPickerModal .batch-player .picker-edit-profile:hover{color:var(--blue);border-color:var(--blue)}
+#batchPickerModal .batch-player[data-single-mode="true"]:not(.selected):after{content:"加入";font-size:11px;font-weight:900;color:var(--blue);padding:4px 8px;border:1px solid color-mix(in srgb,var(--blue) 35%,var(--line));border-radius:9px}
+#batchPickerModal .batch-selection-bar{flex:0 0 auto;bottom:auto;margin:0!important;border:0!important;border-top:1px solid var(--line)!important;
+ border-radius:0!important;background:var(--surface)!important;padding:16px 23px 18px!important;z-index:2}
+#batchPickerModal .batch-selection-bar strong{font-size:16px!important}
+#batchPickerModal .batch-actions{display:flex!important;gap:9px!important;flex-wrap:wrap!important;margin-top:10px!important}
+#batchPickerModal .batch-actions .batch-action-btn{min-height:43px!important;border-radius:12px!important;font-size:13px!important}
+#batchPickerModal .batch-actions #batchApplyBtn{flex:1;min-width:180px;font-size:15px!important}
+#batchPickerModal .picker-primary-actions{display:flex;gap:9px;flex:0 0 auto;padding:10px 23px 0}
+#batchPickerModal .picker-create-profile,#batchPickerModal .picker-create-guest{display:inline-flex;justify-content:center;align-items:center;gap:7px;
+ min-height:45px;padding:10px 17px;border-radius:12px;border:1px solid color-mix(in srgb,var(--blue) 42%,var(--line));
+ background:color-mix(in srgb,var(--blue) 10%,var(--surface2));color:var(--blue);font-size:14px;font-weight:900}
+#batchPickerModal .picker-create-profile{background:linear-gradient(125deg,#598eea,#8267db);color:white;border-color:transparent;box-shadow:0 8px 17px rgba(88,110,225,.2)}
+#batchPickerModal .picker-create-guest{color:var(--text)}
+#batchPickerModal .picker-guest-list{display:flex;flex-wrap:wrap;gap:8px;padding:0 23px 8px}
+#batchPickerModal .picker-guest-chip{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border:1px solid color-mix(in srgb,var(--orange) 33%,var(--line));
+ border-radius:999px;background:color-mix(in srgb,var(--orange) 7%,var(--surface2));color:var(--text);font-size:12px;font-weight:800}
+#batchPickerModal .picker-guest-chip.muted{opacity:.48;text-decoration:line-through}
+#batchPickerModal .picker-guest-chip button{padding:2px 4px;border:0;background:transparent;color:var(--orange);font-weight:900;font-size:12px}
+#batchPickerModal #batchOutsiderBtn{display:none!important}
+#batchPickerModal #batchClearBtn{color:var(--muted)!important}
+#batchPickerModal .batch-selection-bar #batchCapacityText{font-size:12px}
+#pickerProfessionFilter{display:none!important}
+#pickerModal .picker-outsider{border-radius:12px}
+#rosterGuestModal,#rosterProfileModal{z-index:11100;padding:13px}
+#rosterConfirmModal{z-index:11800;padding:12px}
+#confirmDeleteModal{z-index:11900}
+#rosterGuestModal .modal-card,#rosterProfileModal .modal-card,#rosterConfirmModal .modal-card{width:min(570px,100%)!important;
+ max-height:calc(100dvh - 26px)!important;overflow-y:auto!important;border:1px solid var(--line2)!important;
+ border-radius:23px!important;padding:26px!important;background:var(--surface)!important;box-shadow:0 30px 100px rgba(0,0,0,.48)}
+#rosterProfileModal .modal-card{width:min(730px,100%)!important}
+.roster-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.roster-modal-head h2{font-size:23px!important;margin:0!important}
+.roster-modal-close{width:37px;height:37px;flex:0 0 37px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:22px}
+.roster-form-row{display:grid;gap:7px;margin-top:13px}
+.roster-form-row label{font-size:13px;color:var(--text);font-weight:850}
+.roster-form-row input,.roster-form-row textarea{width:100%;border:1px solid var(--line2);border-radius:12px;background:var(--surface2);color:var(--text);
+ min-height:49px;padding:11px 13px;font-size:15px;outline:0}
+.roster-form-row textarea{min-height:80px;resize:vertical}
+.roster-form-row input:focus,.roster-form-row textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)}
+.roster-role-picker{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0;max-height:180px;overflow:auto;padding:2px}
+.roster-role-picker label{position:relative;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid var(--line);border-radius:999px;
+ background:var(--surface2);font-size:12px;font-weight:800}
+.roster-role-picker label:has(input:checked){background:color-mix(in srgb,var(--blue) 12%,var(--surface2));border-color:color-mix(in srgb,var(--blue) 54%,var(--line));color:var(--blue)}
+.roster-role-picker input{width:16px;height:16px;accent-color:var(--blue)}
+.roster-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:23px}
+.roster-modal-actions button{min-height:46px;padding:10px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:900}
+.roster-modal-actions .primary{color:#fff;border-color:transparent;background:linear-gradient(125deg,#588deb,#8968dc)}
+.roster-modal-actions .danger{color:#fff;border-color:transparent;background:linear-gradient(125deg,#e65e76,#c34966)}
+#rosterConfirmTitle{font-size:24px!important}
+.roster-confirm-message{font-size:15px;line-height:1.8;color:var(--text);white-space:pre-line;margin:9px 0 2px}
+.roster-form-error{min-height:16px;color:var(--red);font-size:12px;font-weight:800;margin-top:6px}
+@media(max-width:760px){
+ #teamDetailModal .roster-batch-btn{width:100%;min-height:50px!important}
+ #batchPickerModal{padding:6px!important}
+ #batchPickerModal .team-picker-wide{width:100%!important;max-height:calc(100dvh - 12px)!important;min-height:0!important;border-radius:18px!important}
+ #batchPickerModal .picker-new-head{padding:17px 14px 11px}
+ #batchPickerModal .picker-new-head h2{font-size:21px!important}
+ #batchPickerModal .picker-toolbar{padding:12px 14px 0!important}
+ #batchPickerModal .picker-primary-actions{padding:9px 14px 0;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+ #batchPickerModal .picker-create-profile,#batchPickerModal .picker-create-guest{padding:10px 8px;font-size:12px;min-height:44px}
+ #batchPickerModal .batch-mode-strip{padding:9px 14px!important}
+ #batchPickerModal #batchPickerList{grid-template-columns:1fr!important;gap:7px;padding:8px 14px 12px!important}
+ #batchPickerModal .batch-player{min-height:70px!important;padding:10px!important}
+ #batchPickerModal .batch-player-name{font-size:14px!important}
+ #batchPickerModal .picker-guest-list{padding:0 14px 8px}
+ #batchPickerModal .batch-selection-bar{padding:12px 14px calc(12px + env(safe-area-inset-bottom))!important}
+ #batchPickerModal .batch-actions{display:grid!important;grid-template-columns:1fr 1fr!important}
+ #batchPickerModal .batch-actions #batchApplyBtn{grid-column:1/-1;min-width:0}
+ #rosterGuestModal,#rosterProfileModal,#rosterConfirmModal{padding:7px!important;align-items:center}
+ #rosterGuestModal .modal-card,#rosterProfileModal .modal-card,#rosterConfirmModal .modal-card{width:100%!important;border-radius:18px!important;padding:19px!important;max-height:calc(100dvh - 14px)!important}
+ .roster-modal-actions button{flex:1;min-width:0;padding:10px 8px}
+}
+
+
+/* Ranking colors: orange challenge rows, green personal bests. */
+.standings-table tbody tr.standings-challenge-row td{
+  background:color-mix(in srgb,var(--orange) 11%,var(--surface))!important;
+}
+.standings-table tbody tr.standings-challenge-row:nth-child(even) td{
+  background:color-mix(in srgb,var(--orange) 13%,var(--surface2))!important;
+}
+.standings-table tbody tr.standings-challenge-row td:first-child{
+  box-shadow:inset 5px 0 0 color-mix(in srgb,var(--orange) 90%,var(--text));
+}
+.standings-table .mode-pill{display:inline-flex;align-items:center;justify-content:center;min-width:50px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;font-weight:900;font-size:12px;white-space:nowrap;color:var(--muted);background:var(--surface2)}
+.standings-table .mode-pill.challenge,.standings-legend .mode-pill.challenge{background:color-mix(in srgb,var(--orange) 17%,var(--surface));border-color:color-mix(in srgb,var(--orange) 55%,var(--line));color:var(--orange)}
+.standings-table .mode-pill.challenge{font-size:13px}
+.standings-legend .mode-pill{display:inline-flex;align-items:center;padding:4px 9px;border:1px solid var(--line);border-radius:7px;font-size:12px;font-weight:900}
+.standings-table tbody tr.standings-challenge-row td.player-best,
+.standings-table td.player-best{
+  background:color-mix(in srgb,var(--green) 17%,var(--surface))!important;
+}
+.standings-table tbody tr.standings-challenge-row td.player-out,
+.standings-table td.player-out{
+  background:color-mix(in srgb,var(--muted) 11%,var(--surface2))!important;
+}
+.standings-table tbody tr.standings-challenge-row td.player-external{
+  background:color-mix(in srgb,var(--orange) 22%,var(--surface))!important;
+}
+@media(max-width:760px){
+ .standings-table .mode-pill{padding:4px 8px;font-size:11px}
+ .standings-table tbody tr.standings-challenge-row td:first-child{box-shadow:inset 4px 0 0 var(--orange)}
+}
+
 </style>
 </head>
 <body>
@@ -3141,7 +3284,7 @@ body.team-detail-open{overflow:hidden}
       <div><h2 id="standingsTitle">第一期 · 隊伍總表</h2><p id="standingsSubtitle">與 PNG 相同的欄位；成績更新後即時同步顯示。</p></div>
       <div class="standings-actions"><button type="button" class="btn primary" id="bottomPngBtn">↓ 下載本期 PNG</button><button type="button" class="btn" id="bottomExcelBtn">↓ 匯出本期 Excel</button></div>
     </div>
-    <div class="standings-legend"><span class="drop-flag best">個人最佳</span></div>
+    <div class="standings-legend"><span class="drop-flag best">個人最佳</span><span class="mode-pill challenge">挑戰本</span></div>
     <div class="standings-scroll" id="standingsScroll"><div class="standings-empty">選擇副本後會自動顯示隊伍成績。</div></div>
     
   </section>
@@ -3366,6 +3509,33 @@ body.team-detail-open{overflow:hidden}
   </div>
 </div></div>
 
+<div class="modal" id="rosterGuestModal" role="dialog" aria-modal="true" aria-labelledby="rosterGuestTitle">
+ <div class="modal-card">
+  <div class="roster-modal-head"><h2 id="rosterGuestTitle">新增外人</h2><button type="button" class="roster-modal-close" data-roster-close="rosterGuestModal" aria-label="關閉">×</button></div>
+  <div class="roster-form-row"><label for="rosterGuestName">外人名稱</label><input id="rosterGuestName" maxlength="40" placeholder="輸入玩家名稱" autocomplete="off"></div>
+  <div class="roster-form-error" id="rosterGuestError" role="alert"></div>
+  <div class="roster-modal-actions"><button type="button" data-roster-close="rosterGuestModal">取消</button><button type="button" class="primary" id="rosterGuestSave">加入選擇</button></div>
+ </div>
+</div>
+<div class="modal" id="rosterProfileModal" role="dialog" aria-modal="true" aria-labelledby="rosterProfileTitle">
+ <div class="modal-card">
+  <div class="roster-modal-head"><h2 id="rosterProfileTitle">新增玩家資料</h2><button type="button" class="roster-modal-close" data-roster-close="rosterProfileModal" aria-label="關閉">×</button></div>
+  <div class="roster-form-row"><label for="rosterProfileName">玩家名稱</label><input id="rosterProfileName" maxlength="60" placeholder="輸入玩家名稱" autocomplete="off"></div>
+  <div class="roster-form-row"><label>職業（可複選／選填）</label><div class="roster-role-picker" id="rosterProfileRoles"></div></div>
+  <div class="roster-form-row"><label for="rosterProfileNewRole">其他職業（選填）</label><input id="rosterProfileNewRole" maxlength="45" placeholder="找不到職業時可直接輸入"></div>
+  <div class="roster-form-row"><label for="rosterProfileNote">備註（選填）</label><textarea id="rosterProfileNote" rows="2" placeholder="備註"></textarea></div>
+  <div class="roster-form-error" id="rosterProfileError" role="alert"></div>
+  <div class="roster-modal-actions"><button type="button" data-roster-close="rosterProfileModal">取消</button><button type="button" class="primary" id="rosterProfileSave">儲存玩家資料</button></div>
+ </div>
+</div>
+<div class="modal" id="rosterConfirmModal" role="dialog" aria-modal="true" aria-labelledby="rosterConfirmTitle">
+ <div class="modal-card">
+  <div class="roster-modal-head"><h2 id="rosterConfirmTitle">確認操作</h2><button type="button" class="roster-modal-close" id="rosterConfirmX" aria-label="關閉">×</button></div>
+  <p class="roster-confirm-message" id="rosterConfirmMessage"></p>
+  <div class="roster-modal-actions"><button type="button" id="rosterConfirmCancel">取消</button><button type="button" class="primary" id="rosterConfirmYes">確認</button></div>
+ </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -3511,8 +3681,10 @@ function phaseMemberStatus(member,result,bestByPlayer,countMap){
   if(member.external)return"external";
   const key=member.id?`id:${member.id}`:`name:${norm(member.name||"")}`;
   const count=countMap.get(key)||0;
-  if(count<=1)return"single";
-  return isPlayerBestRecord(member,result,bestByPlayer)?"best":"out";
+  // Even a player's only recorded appearance can be their personal best.
+  // Preserve the subdued styling for non-best appearances only when multiple records exist.
+  if(isPlayerBestRecord(member,result,bestByPlayer))return"best";
+  return count>1?"out":"single";
 }
 // This is a per-dungeon, per-5/10-person hint. Only Phase 1 teams with
 // a positive manually entered game rank count as having ranked. Use the
@@ -3593,7 +3765,9 @@ function renderStandings(){
       else if(status==="external")flag='<span class="drop-flag unranked">外人</span>';
       return `<td class="player-cell player-${status}"><span class="player-cell-name">${esc(m?.name||"—")}</span>${firstPhaseBadge(m,listed)}${flag}</td>`;
     }).join("");
-    return `<tr><td class="rank-col">${rank}</td><td class="name-col">${esc(team.name)}</td><td>${esc(teamModeLabel(team))}</td>${memberCells}<td>${result?fmtOptionalTime(result.boss1Ms):"—"}</td><td>${result?fmtOptionalTime(result.boss2Ms):"—"}</td><td class="time-col">${result?fmtTime(result.timeMs):"未記錄"}</td></tr>`;
+    const challenge=normalizeTeamMode(team)==="challenge";
+    const modeMarkup=challenge?'<span class="mode-pill challenge">挑戰本</span>':'<span class="mode-pill">普通</span>';
+    return `<tr class="${challenge?"standings-challenge-row":"standings-normal-row"}"><td class="rank-col">${rank}</td><td class="name-col">${esc(team.name)}</td><td>${modeMarkup}</td>${memberCells}<td>${result?fmtOptionalTime(result.boss1Ms):"—"}</td><td>${result?fmtOptionalTime(result.boss2Ms):"—"}</td><td class="time-col">${result?fmtTime(result.timeMs):"未記錄"}</td></tr>`;
   }).join("")}</tbody></table>`;
 }
 
@@ -5566,6 +5740,7 @@ function exportExcel(){
     "排名",
     ...Array.from({length:SIZE},(_,i)=>`玩家${i+1}`),
     "隊伍名字",
+    "類型",
     "BOSS 1",
     "BOSS 2",
     "總通關時間"
@@ -5581,13 +5756,16 @@ function exportExcel(){
       exportPlayerCell(roster[i],result,bestByPlayer,countMap)
     );
 
+    const isChallenge=normalizeTeamMode(team)==="challenge";
+    const modeStyle=isChallenge?"Challenge":"";
     return[
-      rank,
+      {value:rank,style:modeStyle},
       ...playerCells,
-      team.name||"",
-      result.boss1Ms?fmtTime(result.boss1Ms):"",
-      result.boss2Ms?fmtTime(result.boss2Ms):"",
-      result.timeMs?fmtTime(result.timeMs):""
+      {value:team.name||"",style:modeStyle},
+      {value:isChallenge?"挑戰本":"普通",style:modeStyle},
+      {value:result.boss1Ms?fmtTime(result.boss1Ms):"",style:modeStyle},
+      {value:result.boss2Ms?fmtTime(result.boss2Ms):"",style:modeStyle},
+      {value:result.timeMs?fmtTime(result.timeMs):"",style:modeStyle}
     ];
   });
 
@@ -5613,7 +5791,13 @@ function exportExcel(){
   </Style>
 
   <Style ss:ID="BestName">
-   <Font ss:Bold="1" ss:Color="#111111"/>
+   <Interior ss:Color="#DFF4E7" ss:Pattern="Solid"/>
+   <Font ss:Bold="1" ss:Color="#116A43"/>
+  </Style>
+
+  <Style ss:ID="Challenge">
+   <Interior ss:Color="#FFF0D7" ss:Pattern="Solid"/>
+   <Font ss:Bold="1" ss:Color="#93590C"/>
   </Style>
 
   <Style ss:ID="Slower">
@@ -5825,8 +6009,14 @@ function exportPNG(){
   rows.forEach((row,rowIndex)=>{
     const top=tableY+headerH+rowIndex*rowH;
 
-    ctx.fillStyle=rowIndex%2===0 ? "#ffffff" : "#f7f9fc";
+    ctx.fillStyle=row.modeKey==="challenge"
+      ? (rowIndex%2===0?"#FFF2DD":"#FCE9C9")
+      : (rowIndex%2===0?"#ffffff":"#f7f9fc");
     ctx.fillRect(tableX,top,tableW,rowH);
+    if(row.modeKey==="challenge"){
+      ctx.fillStyle="#DA9A39";
+      ctx.fillRect(tableX,top,5,rowH);
+    }
 
     // highlights on player cells based on best game rank
     row.players.forEach((member,pi)=>{
@@ -5849,7 +6039,10 @@ function exportPNG(){
       const isBest=isPlayerBestRecord(member,row.result,bestByPlayer);
       const count=playerTeamCount(member);
 
-      if(count>1 && !isBest){
+      if(isBest){
+        ctx.fillStyle="#DFF3E9";
+        ctx.fillRect(x,top,w,rowH);
+      } else if(count>1){
         ctx.fillStyle="#f0f2f5";
         ctx.fillRect(x,top,w,rowH);
       }
@@ -6807,7 +7000,7 @@ initFirebase();
           <div class="roster-title">
             <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
             <div class="roster-title-actions">
-              <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 新增／調整隊友</button>
+              <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 新增隊友</button>
             </div>
           </div>
           <div class="roster">${Array.from({length:SIZE},(_,i)=>slotHtml(t,i)).join('')}</div>
@@ -7288,6 +7481,375 @@ initFirebase();
     if(e.target.closest('#phaseButtons [data-phase],#dungeonSelect,#manageTab,#rankingTab'))closeDetails();
   },true);
   renderTeams();
+})();
+
+/* ===== v18: one roster picker, inline profiles, guest dialog, confirmations ===== */
+(function(){
+  const el=id=>document.getElementById(id);
+  let newGuests=[];
+  let removedGuests=new Set();
+  let renamedGuests=new Map();
+  let guestEditingToken=null;
+  let profileEditingId=null;
+  let confirmCallback=null;
+  let confirmReturnFocus=null;
+  let inAction=false;
+  let preferSingle=true;
+  const activeTeam=()=>teams.find(t=>t.id===batchTeamId&&t.dungeonId===selectedDungeonId&&teamPeriod(t)===selectedPhase);
+  const guestName=(t,tok)=>renamedGuests.get(tok)||phaseOutsidersOf(t)[tok]?.name||'外人';
+  const $modal=id=>el(id)?.classList.contains('show');
+  const openSheet=(id,focusId)=>{openModal(id);requestAnimationFrame(()=>el(focusId)?.focus({preventScroll:true}))};
+  const closeSheet=id=>closeModal(id);
+  const showError=(id,value)=>{el(id).textContent=value||''};
+
+  function confirmStep({title='確認操作',message='',confirmText='確認',danger=false,doIt}){
+    if(inAction)return;
+    confirmReturnFocus=document.activeElement;
+    confirmCallback=typeof doIt==='function'?doIt:null;
+    el('rosterConfirmTitle').textContent=title;
+    el('rosterConfirmMessage').textContent=message;
+    const btn=el('rosterConfirmYes');
+    btn.textContent=confirmText;
+    btn.className=danger?'danger':'primary';
+    openSheet('rosterConfirmModal','rosterConfirmYes');
+  }
+  function closeConfirm(){
+    closeSheet('rosterConfirmModal');
+    confirmCallback=null;
+    if(confirmReturnFocus?.isConnected)confirmReturnFocus.focus({preventScroll:true});
+    confirmReturnFocus=null;
+  }
+  el('rosterConfirmCancel').addEventListener('click',closeConfirm);
+  el('rosterConfirmX').addEventListener('click',closeConfirm);
+  el('rosterConfirmModal').addEventListener('click',e=>{if(e.target===el('rosterConfirmModal'))closeConfirm()});
+  el('rosterConfirmYes').addEventListener('click',async()=>{
+    if(inAction)return;
+    const action=confirmCallback;
+    if(!action){closeConfirm();return}
+    inAction=true;
+    closeSheet('rosterConfirmModal');
+    confirmCallback=null;
+    try{await action()}catch(err){console.error('Roster action failed',err);toast('操作失敗，請重試')}
+    finally{inAction=false;confirmReturnFocus=null}
+  });
+
+  document.querySelectorAll('[data-roster-close]').forEach(btn=>btn.addEventListener('click',()=>closeSheet(btn.dataset.rosterClose)));
+  ['rosterGuestModal','rosterProfileModal'].forEach(id=>el(id).addEventListener('click',e=>{if(e.target===el(id))closeSheet(id)}));
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    for(const id of ['rosterConfirmModal','rosterProfileModal','rosterGuestModal']){
+      if($modal(id)){e.preventDefault();e.stopImmediatePropagation();id==='rosterConfirmModal'?closeConfirm():closeSheet(id);break}
+    }
+  },true);
+
+  function keptExistingGuests(t){
+    return phaseMembersOf(t).filter(token=>isOutsiderToken(token)&&!removedGuests.has(token));
+  }
+  function capacity(t){
+    return Math.max(0,SIZE-keptExistingGuests(t).length-newGuests.length);
+  }
+  function guestsInDraft(t){
+    const old=keptExistingGuests(t).map(token=>({token,name:guestName(t,token),isNew:false}));
+    return old.concat(newGuests.map(x=>({...x,isNew:true})));
+  }
+  function refreshGuestChips(){
+    const host=el('pickerGuestDrafts'),t=activeTeam();
+    if(!host)return;
+    if(!t){host.replaceChildren();return}
+    const items=guestsInDraft(t);
+    host.innerHTML=items.map(g=>`<span class="picker-guest-chip">
+      <span>外人 · ${esc(g.name)}</span>
+      <button type="button" data-edit-guest="${esc(g.token)}" aria-label="修改外人">編輯</button>
+      <button type="button" data-remove-guest="${esc(g.token)}" aria-label="移除此人">×</button>
+    </span>`).join('');
+  }
+  function updatePickerUI(){
+    const t=activeTeam();if(!t||!$modal('batchPickerModal'))return;
+    const bulk=!!el('batchModeToggle')?.checked;
+    el('batchPickerList').querySelectorAll('[data-batch-player]').forEach(row=>{
+      row.dataset.singleMode=String(!bulk);
+      const pid=row.dataset.batchPlayer;
+      const person=players.find(p=>p.id===pid);
+      if(person&&!row.querySelector('.picker-edit-profile')){
+        const btn=document.createElement('button');
+        btn.type='button';btn.className='picker-edit-profile';btn.dataset.editProfile=pid;
+        btn.title='編輯這位玩家的資料';btn.setAttribute('aria-label',`編輯${person.name}的資料`);btn.textContent='✎';
+        row.append(btn);
+      }
+    });
+    const max=capacity(t),chosen=batchSelectedIds.size;
+    el('batchSelectedCount').textContent=`已選 ${chosen} / ${max} 位玩家`;
+    el('batchCapacityText').textContent=`${guestsInDraft(t).length} 位外人 · 隊伍總額 ${SIZE} 人`;
+    el('batchApplyBtn').disabled=chosen>max || chosen+guestsInDraft(t).length>SIZE;
+    el('batchApplyBtn').textContent='確認隊伍名單';
+    const summary=el('pickerCurrentTeamSummary');
+    if(summary)summary.textContent=`${PHASE_NAMES[selectedPhase]} · ${t.name}`;
+    refreshGuestChips();
+  }
+  function preparePickerUI(){
+    const modal=el('batchPickerModal');
+    const card=modal.querySelector('.team-picker-wide');
+    const heading=card.querySelector('.modal-title');
+    if(!card.querySelector('.picker-new-head')){
+      const header=document.createElement('div');header.className='picker-new-head';
+      header.innerHTML='<div><h2>新增／調整隊友</h2><p id="pickerCurrentTeamSummary"></p></div><button type="button" class="picker-close-new" id="pickerNewClose" aria-label="關閉">×</button>';
+      card.insertBefore(header,heading);
+      heading.hidden=true;
+      const actions=document.createElement('div');actions.className='picker-primary-actions';
+      actions.innerHTML='<button type="button" id="pickerCreateProfile" class="picker-create-profile">＋ 新增玩家資料</button><button type="button" id="pickerCreateGuest" class="picker-create-guest">＋ 新增外人</button>';
+      const search=card.querySelector('.picker-toolbar');search.after(actions);
+      const guestDiv=document.createElement('div');guestDiv.id='pickerGuestDrafts';guestDiv.className='picker-guest-list';
+      const list=el('batchPickerList');list.before(guestDiv);
+      const modeStrip=el('batchModeToggleWrap');if(modeStrip)modeStrip.querySelector('label')?.lastChild?.remove();
+      card.querySelector('#batchPickerSearch').placeholder='搜尋玩家名稱或備註';
+      el('pickerNewClose').addEventListener('click',()=>closeSheet('batchPickerModal'));
+      el('pickerCreateProfile').addEventListener('click',()=>openProfile(null,'batch'));
+      el('pickerCreateGuest').addEventListener('click',()=>openGuest(null,'batch'));
+      if(el('batchModeToggleWrap')){
+        const t=el('batchModeToggleWrap');t.title='勾選後可同時勾選或取消多位玩家';
+      }
+    }
+    if(!el('pickerModal').querySelector('#pickerInlineNewProfile')){
+      const btn=document.createElement('button');btn.type='button';btn.id='pickerInlineNewProfile';btn.className='picker-outsider';
+      btn.innerHTML='<strong>＋ 新增玩家資料</strong><span>新增後直接加入 →</span>';
+      el('pickerOutsiderBtn').before(btn);
+      btn.addEventListener('click',()=>openProfile(null,'single'));
+    }
+    updatePickerUI();
+  }
+
+  // Existing player picker machinery remains the data source. Extend its rendering with a better toolbar.
+  const previousOpenBatchPicker=openBatchPicker;
+  openBatchPicker=function(id){
+    newGuests=[];removedGuests=new Set();renamedGuests=new Map();guestEditingToken=null;
+    previousOpenBatchPicker(id);
+    preferSingle=true;
+    preparePickerUI();
+    const toggle=el('batchModeToggle');if(toggle)toggle.checked=false;
+    updatePickerUI();
+    setTimeout(()=>el('batchPickerSearch')?.focus({preventScroll:true}),20);
+  };
+  const previousRenderBatchPicker=renderBatchPicker;
+  renderBatchPicker=function(){
+    const out=previousRenderBatchPicker.apply(this,arguments);
+    updatePickerUI();
+    return out;
+  };
+  preparePickerUI();
+
+  function chooseOnePlayer(pid){
+    const t=activeTeam(),p=players.find(x=>x.id===pid);if(!t||!p)return;
+    if(batchSelectedIds.has(pid)){toast(`${p.name} 已在名單中`);return}
+    if(batchSelectedIds.size>=capacity(t)){toast('隊伍人數已滿，請先移除其他隊員');return}
+    const next=new Set(batchSelectedIds);next.add(pid);
+    confirmStep({title:'確認加入隊友',message:`將「${p.name}」加入「${t.name}」？`,confirmText:'確認加入',doIt:()=>{
+      batchSelectedIds=next;saveDraft(t);toast(`${p.name} 已加入隊伍`);
+    }});
+  }
+
+  function compileDraft(t){
+    const previous=phaseMembersOf(t);
+    const updatedOutsiders={...phaseOutsidersOf(t)};
+    for(const removed of removedGuests)delete updatedOutsiders[removed];
+    for(const [tok,name] of renamedGuests)if(!removedGuests.has(tok))updatedOutsiders[tok]={name};
+    for(const guest of newGuests)updatedOutsiders[guest.token]={name:guest.name};
+    const result=Array(SIZE).fill(null);
+    // Retain previously occupied slot order whenever possible.
+    previous.forEach((pid,i)=>{
+      if(isOutsiderToken(pid)&&!removedGuests.has(pid))result[i]=pid;
+      else if(pid&&!isOutsiderToken(pid)&&batchSelectedIds.has(pid))result[i]=pid;
+    });
+    for(const p of batchSelectedIds){
+      if(result.includes(p))continue;
+      const empty=result.indexOf(null);if(empty<0)break;
+      result[empty]=p;
+    }
+    for(const guest of newGuests){
+      const empty=result.indexOf(null);if(empty<0)break;
+      result[empty]=guest.token;
+    }
+    return {members:result,outsiders:updatedOutsiders};
+  }
+  function saveDraft(t){
+    if(!t||!activeTeam()||activeTeam().id!==t.id)return;
+    if(batchSelectedIds.size>capacity(t)){toast('隊伍人數已滿');return}
+    const {members,outsiders}=compileDraft(t);
+    setPhaseRoster(t,members,outsiders);
+    expandedTeamIds.add(t.id);
+    closeSheet('batchPickerModal');
+    persistPhaseRosterChange(t);
+    warnDuplicateRoster(t);
+    newGuests=[];removedGuests.clear();renamedGuests.clear();
+  }
+  function confirmDraft(){
+    const t=activeTeam();if(!t)return;
+    const {members}=compileDraft(t);
+    const names=members.filter(Boolean).map(tok=>{
+      if(isOutsiderToken(tok)){
+        return renamedGuests.get(tok)||newGuests.find(x=>x.token===tok)?.name||phaseOutsidersOf(t)[tok]?.name||'外人';
+      }
+      return getPlayer(tok)?.name||'未知玩家';
+    });
+    confirmStep({title:'確認隊伍名單',message:`${t.name}\n${members.filter(Boolean).length}/${SIZE} 人\n${names.join('、')||'本次將清空隊伍成員'}`,confirmText:'確認儲存',doIt:()=>{
+      saveDraft(t);toast('隊伍名單已更新');
+    }});
+  }
+
+  // Capture before legacy delegated listeners to prevent duplicate operations.
+  document.addEventListener('click',e=>{
+    const target=e.target;
+    if(target.closest('#batchApplyBtn')){
+      e.preventDefault();e.stopImmediatePropagation();confirmDraft();return;
+    }
+    if(target.closest('#batchOutsiderBtn')){
+      e.preventDefault();e.stopImmediatePropagation();openGuest(null,'batch');return;
+    }
+    if(target.closest('#pickerOutsiderBtn')){
+      e.preventDefault();e.stopImmediatePropagation();openGuest(null,'single');return;
+    }
+    if(target.closest('#batchPickerList')){
+      const edit=target.closest('[data-edit-profile]');
+      if(edit){e.preventDefault();e.stopImmediatePropagation();openProfile(edit.dataset.editProfile,'batch');return}
+      const row=target.closest('[data-batch-player]');
+      if(!row)return;
+      e.preventDefault();e.stopImmediatePropagation();
+      const t=activeTeam();if(!t)return;
+      const pid=row.dataset.batchPlayer;
+      if(!el('batchModeToggle').checked){chooseOnePlayer(pid);return}
+      if(batchSelectedIds.has(pid))batchSelectedIds.delete(pid);
+      else if(batchSelectedIds.size>=capacity(t)){toast('隊伍人數已滿');return}
+      else batchSelectedIds.add(pid);
+      renderBatchPicker();return;
+    }
+    if(target.closest('#pickerList [data-pick-player]')){
+      const b=target.closest('[data-pick-player]');
+      e.preventDefault();e.stopImmediatePropagation();
+      const p=players.find(x=>x.id===b.dataset.pickPlayer),t=teams.find(x=>x.id===pickerTeamId);
+      if(!p||!t)return;
+      confirmStep({title:'確認加入隊友',message:`將「${p.name}」加入「${t.name}」？`,confirmText:'確認加入',doIt:()=>{assignPlayer(t.id,pickerIndex,p.id)}});
+    }
+  },true);
+
+  el('batchModeToggle')?.addEventListener('change',e=>{
+    e.stopImmediatePropagation();
+    renderBatchPicker();
+  },true);
+
+  el('pickerGuestDrafts').addEventListener('click',e=>{
+    const edit=e.target.closest('[data-edit-guest]');
+    if(edit){openGuest(edit.dataset.editGuest,'batch');return}
+    const remove=e.target.closest('[data-remove-guest]');
+    if(!remove)return;
+    const token=remove.dataset.removeGuest;
+    const match=newGuests.find(x=>x.token===token);
+    if(match)newGuests=newGuests.filter(x=>x.token!==token);
+    else if(removedGuests.has(token))removedGuests.delete(token);
+    else removedGuests.add(token);
+    renderBatchPicker();
+  });
+
+  function openGuest(token=null,origin='batch'){
+    const t=origin==='single'?teams.find(x=>x.id===pickerTeamId):activeTeam();
+    if(!t)return;
+    const avail=origin==='single' ? 1 : SIZE-keptExistingGuests(t).length-newGuests.length-batchSelectedIds.size;
+    if(!token&&avail<=0){toast('隊伍已滿，請先移除其他隊員');return}
+    guestEditingToken=token;
+    const saved=newGuests.find(x=>x.token===token);
+    const name=token?(saved?.name||guestName(t,token)):'';
+    el('rosterGuestTitle').textContent=token?'修改外人':'新增外人';
+    el('rosterGuestName').value=name;
+    el('rosterGuestSave').textContent=token?'儲存修改':'加入選擇';
+    el('rosterGuestModal').dataset.origin=origin;
+    showError('rosterGuestError','');
+    openSheet('rosterGuestModal','rosterGuestName');
+  }
+  el('rosterGuestSave').addEventListener('click',()=>{
+    const name=el('rosterGuestName').value.trim()||'外人';
+    const origin=el('rosterGuestModal').dataset.origin;
+    const t=origin==='single'?teams.find(x=>x.id===pickerTeamId):activeTeam();
+    if(!t)return;
+    const token=guestEditingToken;
+    confirmStep({title:token?'確認修改外人':'確認加入外人',message:`${name}\n${t.name}`,confirmText:'確認',doIt:()=>{
+      if(origin==='single'){
+        const tok=token||`external:${uid('guest')}`;
+        const members=phaseMembersOf(t),outsiders={...phaseOutsidersOf(t)};
+        const prior=members[pickerIndex];
+        if(isOutsiderToken(prior)&&prior!==tok)delete outsiders[prior];
+        members[pickerIndex]=tok;outsiders[tok]={name};
+        setPhaseRoster(t,members,outsiders);closeSheet('pickerModal');
+        persistPhaseRosterChange(t);warnDuplicateRoster(t);
+      }else if(token){
+        const existing=newGuests.find(x=>x.token===token);
+        if(existing)existing.name=name;else renamedGuests.set(token,name);
+        renderBatchPicker();
+      }else{
+        newGuests.push({token:`external:${uid('guest')}`,name});
+        renderBatchPicker();
+      }
+      closeSheet('rosterGuestModal');
+      guestEditingToken=null;
+      toast(origin==='single'?'外人已加入隊伍':'外人已加入待確認名單');
+    }});
+  });
+  el('rosterGuestName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();el('rosterGuestSave').click()}});
+
+  function availableRoles(){
+    return [...new Set([...professions,...players.flatMap(p=>normalizeRoles(p))].map(s=>String(s||'').trim()).filter(r=>r&&r!=='未設定'))].sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+  }
+  function openProfile(pid=null,origin='batch'){
+    const profile=pid?players.find(x=>x.id===pid):null;
+    profileEditingId=profile?.id||null;
+    el('rosterProfileModal').dataset.origin=origin;
+    el('rosterProfileTitle').textContent=profile?'編輯玩家資料':'新增玩家資料';
+    el('rosterProfileName').value=profile?.name||(!pid?(origin==='batch'?el('batchPickerSearch')?.value.trim()||'':el('pickerSearch')?.value.trim()||''):'');
+    el('rosterProfileNote').value=profile?.note||'';
+    el('rosterProfileNewRole').value='';
+    const assigned=new Set(profile?normalizeRoles(profile):[]);
+    el('rosterProfileRoles').innerHTML=availableRoles().map(r=>`<label><input type="checkbox" value="${esc(r)}"${assigned.has(r)?' checked':''}><span>${esc(r)}</span></label>`).join('')||'<span class="small">尚無職業分類</span>';
+    el('rosterProfileSave').textContent=profile?'儲存修改':'新增並選入隊伍';
+    showError('rosterProfileError','');
+    openSheet('rosterProfileModal','rosterProfileName');
+  }
+  el('rosterProfileSave').addEventListener('click',()=>{
+    const name=el('rosterProfileName').value.trim(),note=el('rosterProfileNote').value.trim();
+    if(!name){showError('rosterProfileError','請填寫玩家名稱');return}
+    const duplicate=players.find(p=>p.id!==profileEditingId&&norm(p.name)===norm(name));
+    if(duplicate){showError('rosterProfileError',`「${name}」已存在，請選擇現有玩家或修改該玩家資料`);return}
+    const origin=el('rosterProfileModal').dataset.origin;
+    const current=profileEditingId?players.find(p=>p.id===profileEditingId):null;
+    const specialRole=el('rosterProfileNewRole').value.trim();
+    const roles=[...new Set([...el('rosterProfileRoles').querySelectorAll('input:checked')].map(x=>x.value).concat(specialRole?[specialRole]:[]))];
+    const team=origin==='batch'?activeTeam():teams.find(x=>x.id===pickerTeamId);
+    if(!current&&origin==='batch'&&team&&batchSelectedIds.size>=capacity(team)){
+      showError('rosterProfileError','隊伍已滿，請先移除其他隊員');return;
+    }
+    const msg=current?`修改「${current.name}」的玩家資料？\n資料會同步至 5 人及 10 人競速。`:`新增「${name}」到共用玩家資料，並選入目前隊伍？`;
+    confirmStep({title:current?'確認修改玩家':'確認新增玩家',message:msg,confirmText:'確認儲存',doIt:()=>{
+      const id=current?.id||uid('p');
+      const newProfile=normalizePlayer({...(current||{}),id,name,note,roles,role:roles[0]||'未設定'});
+      if(current)players=players.map(p=>p.id===id?newProfile:p);
+      else players.push(newProfile);
+      playerArchive[id]={...newProfile};
+      if(specialRole&&!professions.includes(specialRole)){
+        professions=[...professions,specialRole];saveLocalProf();syncProfessions();
+      }
+      saveLocalSharedPlayers();syncSharedPlayers();
+      if(!current){
+        if(origin==='single'&&team){
+          assignPlayer(team.id,pickerIndex,id);
+        }else if(origin==='batch')batchSelectedIds.add(id);
+      }
+      closeSheet('rosterProfileModal');
+      renderAll();
+      if(origin==='batch'&&$modal('batchPickerModal'))renderBatchPicker();
+      if(origin==='single'&&$modal('pickerModal'))renderPicker();
+      toast(current?'玩家資料已更新':'玩家已新增');
+      profileEditingId=null;
+    }});
+  });
+
+  // Do not close the underlying roster dialog when user confirms from a nested sheet.
+  preparePickerUI();
 })();
 
 </script>
