@@ -3084,7 +3084,7 @@ body.team-detail-open{overflow:hidden}
 #batchPickerModal .batch-player .picker-edit-profile{display:inline-grid;place-items:center;width:31px;height:31px;flex:0 0 31px;
  border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--muted);font-size:15px!important;z-index:2}
 #batchPickerModal .batch-player .picker-edit-profile:hover{color:var(--blue);border-color:var(--blue)}
-#batchPickerModal .batch-player[data-single-mode="true"]:not(.selected):after{content:"加入";font-size:11px;font-weight:900;color:var(--blue);padding:4px 8px;border:1px solid color-mix(in srgb,var(--blue) 35%,var(--line));border-radius:9px}
+
 #batchPickerModal .batch-selection-bar{flex:0 0 auto;bottom:auto;margin:0!important;border:0!important;border-top:1px solid var(--line)!important;
  border-radius:0!important;background:var(--surface)!important;padding:16px 23px 18px!important;z-index:2}
 #batchPickerModal .batch-selection-bar strong{font-size:16px!important}
@@ -3186,6 +3186,127 @@ body.team-detail-open{overflow:hidden}
 @media(max-width:760px){
  .standings-table .mode-pill{padding:4px 8px;font-size:11px}
  .standings-table tbody tr.standings-challenge-row td:first-child{box-shadow:inset 4px 0 0 var(--orange)}
+}
+
+
+/* Roster picker: permanently multi-select, no mode checkbox or single-player Add button. */
+#batchPickerModal #batchModeToggleWrap{display:none!important}
+#batchPickerModal .batch-player[data-single-mode="true"]:not(.selected)::after{display:none!important;content:none!important}
+#batchPickerModal .batch-player input[type="checkbox"]{display:block!important;accent-color:var(--blue)}
+#batchPickerModal .batch-player.selected{background:color-mix(in srgb,var(--blue) 13%,var(--surface2))!important;border-color:var(--blue)!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 22%,transparent)!important}
+#batchPickerModal .batch-player:focus-within{outline:2px solid var(--blue);outline-offset:1px}
+
+/* ===== v20 · cleaner player-picker & edit-profile layout ===== */
+#batchPickerModal .team-picker-wide{width:min(1180px,calc(100vw - 36px))!important;max-height:calc(100dvh - 30px)!important}
+#batchPickerModal .picker-new-head{padding:22px 27px 15px!important}
+#batchPickerModal .picker-new-head h2{font-size:27px!important;letter-spacing:-.025em}
+#batchPickerModal .picker-toolbar{padding:15px 27px 0!important}
+#batchPickerModal .picker-primary-actions{padding:12px 27px 0!important;gap:10px}
+#batchPickerModal .picker-create-profile,#batchPickerModal .picker-create-guest{min-height:43px;font-size:13px;padding:9px 15px}
+#batchPickerModal #batchPickerSearch{height:50px!important;border-radius:12px!important}
+#batchPickerModal #batchPickerList{
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ column-gap:12px!important;row-gap:9px!important;
+ padding:12px 27px 18px!important;
+ scrollbar-gutter:stable;overscroll-behavior:contain;
+}
+#batchPickerModal .batch-player,
+#batchPickerModal .batch-player.grouped,
+#batchPickerModal .batch-player.profession-grouped{
+ display:grid!important;
+ grid-template-columns:24px minmax(0,1fr) minmax(63px,auto) 36px!important;
+ gap:11px!important;align-items:center!important;
+ min-height:72px!important;padding:12px 13px!important;
+ border-radius:14px!important;
+ box-shadow:none!important;
+ transition:background .16s,border-color .16s,box-shadow .16s;
+}
+#batchPickerModal .batch-player:hover{background:var(--surface3)!important;border-color:var(--line2)!important}
+#batchPickerModal .batch-player.selected{background:color-mix(in srgb,var(--blue) 11%,var(--surface2))!important;border-color:var(--blue)!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 25%,transparent)!important}
+#batchPickerModal .batch-player>input[type="checkbox"]{grid-column:1;grid-row:1;width:19px!important;height:19px!important;margin:0!important}
+#batchPickerModal .batch-player>div:not(.batch-player-count){min-width:0;grid-column:2;grid-row:1;align-self:center}
+#batchPickerModal .batch-player .batch-player-name-line{gap:6px!important;row-gap:5px;min-width:0;line-height:1.4}
+#batchPickerModal .batch-player .profession-badges{display:inline-flex;flex-wrap:wrap;gap:4px;flex:0 0 auto;margin-right:2px}
+#batchPickerModal .batch-player .profession-pill{font-size:11px!important;line-height:1.3;min-height:24px;padding:3px 7px!important}
+#batchPickerModal .batch-player-name{font-size:16px!important;font-weight:900!important;line-height:1.4;word-break:break-word}
+#batchPickerModal .batch-player .batch-player-note{margin-top:3px;font-size:11px!important;line-height:1.5}
+#batchPickerModal .batch-player-count{grid-column:3;grid-row:1;margin:0!important;min-width:0!important;color:var(--blue)!important;font-size:13px!important;font-weight:900;text-align:right;white-space:nowrap}
+#batchPickerModal .batch-player .picker-edit-profile{grid-column:4!important;grid-row:1!important;position:static!important;margin:0!important;width:36px!important;height:36px!important;min-width:36px;border-radius:11px!important;align-self:center;justify-self:end;display:grid!important;place-items:center;font-size:17px!important}
+#batchPickerModal .batch-player .picker-edit-profile:hover{background:color-mix(in srgb,var(--blue) 12%,var(--surface2))}
+#batchPickerModal .batch-selection-bar{padding:14px 27px 17px!important;box-shadow:0 -8px 28px rgba(0,0,0,.08);z-index:4}
+#batchPickerModal .batch-selection-bar .v20-selection-overview{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#batchPickerModal .batch-selection-bar #batchSelectedCount{font-size:17px!important}
+#batchPickerModal .v20-selected-preview{display:flex;align-items:center;gap:6px;min-width:0;overflow-x:auto;white-space:nowrap;scrollbar-width:thin;margin-top:10px;padding-bottom:2px}
+#batchPickerModal .v20-selected-preview:empty{display:none}
+#batchPickerModal .v20-selected-chip{display:inline-flex;align-items:center;flex:0 0 auto;max-width:170px;padding:6px 10px;border-radius:999px;color:var(--text);background:color-mix(in srgb,var(--blue) 13%,var(--surface2));border:1px solid color-mix(in srgb,var(--blue) 30%,var(--line));font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis}
+#batchPickerModal .batch-selection-bar .batch-actions{display:flex!important;justify-content:flex-end!important;flex-wrap:nowrap!important;gap:8px!important;margin-top:12px!important}
+#batchPickerModal .batch-selection-bar #batchApplyBtn{flex:0 1 240px!important;min-width:176px!important}
+#batchPickerModal .batch-selection-bar #batchClearBtn{margin-right:auto}
+#batchPickerModal .batch-selection-bar #batchCapacityText{font-size:12px!important}
+#batchPickerModal #batchPickerSearchStats{padding:3px 27px 0;color:var(--muted);font-size:11px;font-weight:700}
+/* Profile editor: fixed header/footer, two deliberate columns, search-and-group professions. */
+#rosterProfileModal{padding:18px!important}
+#rosterProfileModal .modal-card{width:min(1030px,calc(100vw - 36px))!important;max-height:calc(100dvh - 36px)!important;padding:0!important;overflow:hidden!important;display:flex;flex-direction:column;border-radius:24px!important}
+#rosterProfileModal .roster-modal-head{padding:22px 27px 18px;margin:0;border-bottom:1px solid var(--line);flex:0 0 auto}
+#rosterProfileModal .roster-modal-head h2{font-size:25px!important}
+#rosterProfileModal .v20-profile-layout{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:19px;padding:22px 27px;min-height:0;flex:1;overflow-y:auto;align-items:start;overscroll-behavior:contain}
+#rosterProfileModal .v20-profile-identity,#rosterProfileModal .v20-profile-professions{min-width:0;display:grid;gap:14px;align-content:start}
+#rosterProfileModal .v20-profile-professions{padding:16px;border-radius:17px;border:1px solid var(--line);background:var(--surface2)}
+#rosterProfileModal .roster-form-row{margin:0;gap:7px}
+#rosterProfileModal .roster-form-row>label{font-size:14px;font-weight:850}
+#rosterProfileModal .roster-form-row input:not([type="checkbox"]),#rosterProfileModal .roster-form-row textarea{font-size:15px;min-height:48px;border-radius:11px;background:var(--surface)!important}
+#rosterProfileModal #rosterProfileName{font-size:17px;font-weight:800}
+#rosterProfileModal #rosterProfileNote{min-height:110px;resize:vertical}
+#rosterProfileModal .v20-role-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:5px 0 10px}
+#rosterProfileModal .v20-role-search{width:min(100%,330px);min-height:41px;padding:9px 12px;border:1px solid var(--line2);border-radius:11px;background:var(--surface);color:var(--text);font-size:13px;outline:none;flex:1}
+#rosterProfileModal .v20-role-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 12%,transparent)}
+#rosterProfileModal .v20-role-count{color:var(--blue);font-size:12px;font-weight:900;white-space:nowrap}
+#rosterProfileModal .roster-role-picker{display:grid!important;gap:10px!important;max-height:min(49dvh,440px)!important;overflow-y:auto!important;padding:3px 6px 3px 2px!important;margin:0!important;align-content:start;scrollbar-width:thin}
+#rosterProfileModal .v20-role-group{padding:10px;border-radius:13px;border:1px solid var(--line);background:var(--surface)}
+#rosterProfileModal .v20-role-group[hidden]{display:none!important}
+#rosterProfileModal .v20-role-group-title{display:flex;align-items:center;gap:7px;margin-bottom:8px;color:var(--muted);font-size:11px;font-weight:900}
+#rosterProfileModal .v20-role-group-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
+#rosterProfileModal .v20-role-options{display:flex;flex-wrap:wrap;gap:7px}
+#rosterProfileModal .v20-role-options label{display:inline-flex;gap:6px;align-items:center;min-height:36px;margin:0;padding:6px 10px!important;border-radius:10px!important;background:var(--surface2)!important;border:1px solid var(--line);font-size:12px!important;font-weight:800;cursor:pointer}
+#rosterProfileModal .v20-role-options label:has(input:checked){border-color:color-mix(in srgb,var(--blue) 60%,var(--line));background:color-mix(in srgb,var(--blue) 13%,var(--surface2))!important;color:var(--blue)}
+#rosterProfileModal .v20-role-options input{margin:0;accent-color:var(--blue);width:16px;height:16px;min-width:16px}
+#rosterProfileModal .v20-role-options label[hidden]{display:none!important}
+#rosterProfileModal .v20-role-empty{font-size:12px;color:var(--muted);padding:9px 3px}
+#rosterProfileModal .roster-form-error{margin:0 27px;min-height:0}
+#rosterProfileModal .roster-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin:0;padding:14px 27px 19px;border-top:1px solid var(--line);background:var(--surface);flex:0 0 auto}
+#rosterProfileModal .roster-modal-actions button{min-height:45px!important;min-width:118px}
+#rosterProfileModal #rosterProfileSave{min-width:190px}
+@media(max-width:800px){
+ #rosterProfileModal .v20-profile-layout{grid-template-columns:1fr;gap:14px}
+ #rosterProfileModal .v20-profile-professions{order:2}
+ #rosterProfileModal .roster-role-picker{max-height:300px!important}
+}
+@media(max-width:760px){
+ #batchPickerModal{padding:5px!important}
+ #batchPickerModal .team-picker-wide{width:100%!important;max-height:calc(100dvh - 10px)!important}
+ #batchPickerModal .picker-new-head{padding:17px 14px 12px!important}
+ #batchPickerModal .picker-toolbar{padding:12px 14px 0!important}
+ #batchPickerModal .picker-primary-actions{padding:10px 14px 0!important}
+ #batchPickerModal #batchPickerList{grid-template-columns:1fr!important;gap:8px!important;padding:12px 14px 16px!important}
+ #batchPickerModal .batch-player,#batchPickerModal .batch-player.grouped,#batchPickerModal .batch-player.profession-grouped{grid-template-columns:22px minmax(0,1fr) auto 34px!important;min-height:66px!important;padding:10px!important;gap:7px!important}
+ #batchPickerModal .batch-player .profession-pill{font-size:10px!important;min-height:22px}
+ #batchPickerModal .batch-player-name{font-size:14px!important}
+ #batchPickerModal .batch-player-count{font-size:11px!important}
+ #batchPickerModal .batch-player .picker-edit-profile{width:34px!important;height:34px!important;min-width:34px}
+ #batchPickerModal .batch-selection-bar{padding:12px 14px calc(12px + env(safe-area-inset-bottom))!important}
+ #batchPickerModal .batch-selection-bar .batch-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+ #batchPickerModal .batch-selection-bar #batchClearBtn{margin:0}
+ #batchPickerModal .batch-selection-bar #batchApplyBtn{grid-column:1/-1;min-width:0!important;min-height:46px!important}
+ #batchPickerModal #batchPickerSearchStats{padding-inline:14px}
+ #rosterProfileModal{padding:6px!important}
+ #rosterProfileModal .modal-card{width:100%!important;max-height:calc(100dvh - 12px)!important;border-radius:18px!important}
+ #rosterProfileModal .roster-modal-head{padding:18px 16px 13px!important}
+ #rosterProfileModal .v20-profile-layout{padding:16px;gap:12px}
+ #rosterProfileModal .v20-profile-professions{padding:12px}
+ #rosterProfileModal .roster-role-picker{max-height:260px!important}
+ #rosterProfileModal .roster-form-error{margin:0 16px}
+ #rosterProfileModal .roster-modal-actions{padding:12px 16px calc(12px + env(safe-area-inset-bottom));gap:8px}
+ #rosterProfileModal .roster-modal-actions button{min-width:0!important;flex:1;font-size:13px!important}
 }
 
 </style>
@@ -7565,7 +7686,7 @@ initFirebase();
   }
   function updatePickerUI(){
     const t=activeTeam();if(!t||!$modal('batchPickerModal'))return;
-    const bulk=!!el('batchModeToggle')?.checked;
+    const bulk=true; // Always use multi-select; the mode checkbox is no longer needed.
     el('batchPickerList').querySelectorAll('[data-batch-player]').forEach(row=>{
       row.dataset.singleMode=String(!bulk);
       const pid=row.dataset.batchPlayer;
@@ -7600,13 +7721,13 @@ initFirebase();
       const search=card.querySelector('.picker-toolbar');search.after(actions);
       const guestDiv=document.createElement('div');guestDiv.id='pickerGuestDrafts';guestDiv.className='picker-guest-list';
       const list=el('batchPickerList');list.before(guestDiv);
-      const modeStrip=el('batchModeToggleWrap');if(modeStrip)modeStrip.querySelector('label')?.lastChild?.remove();
+      const modeStrip=el('batchModeToggleWrap');if(modeStrip){modeStrip.hidden=true;modeStrip.setAttribute('aria-hidden','true');}
       card.querySelector('#batchPickerSearch').placeholder='搜尋玩家名稱或備註';
       el('pickerNewClose').addEventListener('click',()=>closeSheet('batchPickerModal'));
       el('pickerCreateProfile').addEventListener('click',()=>openProfile(null,'batch'));
       el('pickerCreateGuest').addEventListener('click',()=>openGuest(null,'batch'));
       if(el('batchModeToggleWrap')){
-        const t=el('batchModeToggleWrap');t.title='勾選後可同時勾選或取消多位玩家';
+        const t=el('batchModeToggleWrap');t.title='';
       }
     }
     if(!el('pickerModal').querySelector('#pickerInlineNewProfile')){
@@ -7625,7 +7746,7 @@ initFirebase();
     previousOpenBatchPicker(id);
     preferSingle=true;
     preparePickerUI();
-    const toggle=el('batchModeToggle');if(toggle)toggle.checked=false;
+    const toggle=el('batchModeToggle');if(toggle)toggle.checked=true;
     updatePickerUI();
     setTimeout(()=>el('batchPickerSearch')?.focus({preventScroll:true}),20);
   };
@@ -7715,7 +7836,7 @@ initFirebase();
       e.preventDefault();e.stopImmediatePropagation();
       const t=activeTeam();if(!t)return;
       const pid=row.dataset.batchPlayer;
-      if(!el('batchModeToggle').checked){chooseOnePlayer(pid);return}
+      // All player rows toggle the draft multi-selection; confirmation happens once on save.
       if(batchSelectedIds.has(pid))batchSelectedIds.delete(pid);
       else if(batchSelectedIds.size>=capacity(t)){toast('隊伍人數已滿');return}
       else batchSelectedIds.add(pid);
@@ -7850,6 +7971,135 @@ initFirebase();
 
   // Do not close the underlying roster dialog when user confirms from a nested sheet.
   preparePickerUI();
+})();
+
+
+
+/* ===== v20 picker/profile refinement, preserve existing save logic ===== */
+(function(){
+ const $=id=>document.getElementById(id);
+ const picker=$('batchPickerModal'),profile=$('rosterProfileModal');
+ if(!picker||!profile)return;
+ const profileCard=profile.querySelector('.modal-card');
+ function makeProfileLayout(){
+   if(profileCard.querySelector('.v20-profile-layout'))return;
+   const name=$('rosterProfileName')?.closest('.roster-form-row');
+   const note=$('rosterProfileNote')?.closest('.roster-form-row');
+   const role=$('rosterProfileRoles')?.closest('.roster-form-row');
+   const custom=$('rosterProfileNewRole')?.closest('.roster-form-row');
+   if(!name||!note||!role||!custom)return;
+   const main=document.createElement('div');main.className='v20-profile-layout';
+   const identity=document.createElement('section');identity.className='v20-profile-identity';
+   const roles=document.createElement('section');roles.className='v20-profile-professions';
+   identity.append(name,note);roles.append(role,custom);main.append(identity,roles);
+   const error=$('rosterProfileError');
+   profileCard.insertBefore(main,error);
+   const toolbar=document.createElement('div');toolbar.className='v20-role-toolbar';
+   toolbar.innerHTML='<input id="v20RoleSearch" class="v20-role-search" type="search" placeholder="搜尋職業" aria-label="搜尋職業"><span id="v20RoleCount" class="v20-role-count" aria-live="polite"></span>';
+   $('rosterProfileRoles').before(toolbar);
+   $('v20RoleSearch').addEventListener('input',filterRoles);
+   $('rosterProfileRoles').addEventListener('change',updateRoleCount);
+ }
+ function roleGroup(value){
+   const cleaned=String(value||'').replace(/[【】\[\]()（）\s]/g,'').trim();
+   return Array.from(cleaned).slice(0,2).join('')||'其他';
+ }
+ function updateRoleCount(){
+   const host=$('rosterProfileRoles'),num=host?.querySelectorAll('input[type="checkbox"]:checked').length||0;
+   if($('v20RoleCount'))$('v20RoleCount').textContent=`已選 ${num} 個`;
+ }
+ function filterRoles(){
+   const keyword=$('v20RoleSearch')?.value.trim().toLowerCase()||'';
+   $('rosterProfileRoles')?.querySelectorAll('.v20-role-group').forEach(group=>{
+     let visible=0;
+     group.querySelectorAll('.v20-role-options label').forEach(label=>{
+       const match=!keyword||label.textContent.toLowerCase().includes(keyword)||group.dataset.roleCategory.toLowerCase().includes(keyword);
+       label.hidden=!match;
+       if(match)visible++;
+     });
+     group.hidden=!visible;
+   });
+   const empty=$('v20RoleEmpty');
+   if(empty)empty.hidden=!!$('rosterProfileRoles')?.querySelector('.v20-role-group:not([hidden])');
+ }
+ function organizeRoles(){
+   makeProfileLayout();
+   const host=$('rosterProfileRoles');if(!host)return;
+   const labels=[...host.children].filter(node=>node.matches?.('label'));
+   if(labels.length){
+     const groups=new Map();
+     labels.forEach(label=>{
+       const role=label.querySelector('input')?.value||label.textContent;
+       const key=roleGroup(role);
+       if(!groups.has(key))groups.set(key,[]);
+       groups.get(key).push(label);
+     });
+     host.replaceChildren();
+     $('v20RoleEmpty')?.remove();
+     for(const [groupName,items] of groups){
+       const group=document.createElement('div');group.className='v20-role-group';group.dataset.roleCategory=groupName;
+       const title=document.createElement('div');title.className='v20-role-group-title';title.textContent=groupName;
+       const options=document.createElement('div');options.className='v20-role-options';
+       items.forEach(el=>options.append(el));
+       group.append(title,options);host.append(group);
+     }
+     const empty=document.createElement('div');empty.id='v20RoleEmpty';empty.className='v20-role-empty';empty.textContent='沒有符合的職業';empty.hidden=true;host.after(empty);
+   }
+   const search=$('v20RoleSearch');if(search)search.value='';
+   updateRoleCount();filterRoles();
+ }
+ function improvePicker(){
+   const card=picker.querySelector('.team-picker-wide'),list=$('batchPickerList');if(!card||!list)return;
+   if(!$('batchPickerSearchStats')){
+     const stats=document.createElement('div');stats.id='batchPickerSearchStats';stats.setAttribute('aria-live','polite');
+     card.querySelector('.picker-primary-actions')?.after(stats);
+   }
+   const stat=$('batchPickerSearchStats');if(stat){
+     const n=list.querySelectorAll('[data-batch-player]').length;
+     const searching=$('batchPickerSearch')?.value.trim();
+     stat.textContent=searching?`符合搜尋：${n} 人`:`共 ${n} 位玩家`;
+   }
+   const selection=picker.querySelector('.batch-selection-bar');
+   if(selection&&!$('v20SelectedPlayers')){
+     const chips=document.createElement('div');chips.id='v20SelectedPlayers';chips.className='v20-selected-preview';chips.setAttribute('aria-live','polite');
+     const actions=selection.querySelector('.batch-actions');
+     if(actions)selection.insertBefore(chips,actions);
+   }
+   const chips=$('v20SelectedPlayers');
+   if(chips){
+     const ids=[...batchSelectedIds];
+     chips.replaceChildren();
+     ids.forEach(id=>{
+       const p=players.find(x=>x.id===id);if(!p)return;
+       const label=document.createElement('span');label.className='v20-selected-chip';
+       label.textContent=p.name;label.title=p.name;chips.append(label);
+     });
+   }
+   list.querySelectorAll('[data-batch-player]').forEach(row=>{
+     // Treat entire card as selectable; keep the edit button on the same line.
+     row.setAttribute('tabindex','0');
+     row.setAttribute('aria-label',`${row.querySelector('.batch-player-name')?.textContent||'玩家'}，${row.classList.contains('selected')?'已選':'未選'}`);
+     const edit=row.querySelector('.picker-edit-profile');
+     if(edit){edit.textContent='✎';edit.title='編輯玩家資料';}
+   });
+ }
+ const previousRender=renderBatchPicker;
+ renderBatchPicker=function(){const result=previousRender.apply(this,arguments);improvePicker();return result};
+ const oldModalOpen=openModal;
+ openModal=function(id){
+   const result=oldModalOpen.apply(this,arguments);
+   if(id==='rosterProfileModal')organizeRoles();
+   if(id==='batchPickerModal')improvePicker();
+   return result;
+ };
+ picker.addEventListener('keydown',e=>{
+   if(e.key!=='Enter'&&e.key!==' ')return;
+   const row=e.target.closest('.batch-player[data-batch-player]');
+   if(!row||e.target.closest('button,input'))return;
+   e.preventDefault();row.click();
+ });
+ makeProfileLayout();
+ improvePicker();
 })();
 
 </script>
