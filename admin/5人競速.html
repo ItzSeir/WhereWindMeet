@@ -3967,6 +3967,108 @@ html[data-theme="light"] body .speed-pve-submodal .speed-pve-dialog{
   #teamList .team-collapse-btn {min-height:35px!important;}
 }
 
+
+/* vNext: inline pencil edit button beside score — prevent vertical text or wasted height */
+#teamList .team-summary-bar .simple-rank{
+  display:grid!important;
+  grid-template-columns:max-content 28px;
+  grid-template-rows:auto auto auto;
+  align-content:center;
+  align-items:center!important;
+  justify-items:start!important;
+  column-gap:7px!important;
+  row-gap:3px!important;
+  min-width:0;
+}
+#teamList .team-summary-bar .simple-rank>.simple-label{grid-column:1/-1;grid-row:1}
+#teamList .team-summary-bar .simple-rank>.simple-value{grid-column:1;grid-row:2;line-height:1.15;white-space:nowrap}
+#teamList .team-summary-bar .simple-rank>.speed-team-edit{
+  grid-column:2;grid-row:2;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  flex:none!important;width:28px!important;height:28px!important;
+  min-width:28px!important;min-height:28px!important;max-width:28px!important;
+  padding:0!important;margin:0!important;
+  border-radius:8px!important;
+  font-size:18px!important;line-height:1!important;font-weight:750!important;
+  white-space:nowrap!important;word-break:keep-all!important;
+  writing-mode:horizontal-tb!important;
+  overflow:hidden;
+}
+#teamList .team-summary-bar .simple-rank>.speed-revision-note{grid-column:1/-1;grid-row:3;white-space:nowrap}
+#teamList .team-summary-bar .simple-rank>.speed-team-edit:focus-visible{outline:2px solid var(--blue)!important;outline-offset:2px!important}
+
+
+
+/* Ranking controls and best-record-only player pane */
+#limitBtn,#limitModal,.metric-tabs{display:none!important}
+#quickGrid .speed-quick-edit{display:grid!important;place-items:center!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;padding:0!important;font-size:17px!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;writing-mode:horizontal-tb!important;word-break:normal!important}
+#teamList .team-summary-bar .simple-rank>.speed-team-edit{display:grid!important;place-items:center!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;font-size:17px!important;white-space:nowrap!important;writing-mode:horizontal-tb!important;word-break:normal!important}
+#quickGrid .quick-rank{font-size:clamp(24px,2vw,32px)!important;line-height:1.2!important;font-weight:950!important}
+#teamList .simple-rank .simple-value{font-size:clamp(24px,2vw,31px)!important;font-weight:950!important;line-height:1.14!important}
+#teamList .team-summary-bar .simple-rank{grid-template-columns:max-content 30px!important;column-gap:8px!important}
+.player-metric strong.best{font-size:22px!important;font-weight:950!important}
+@media(max-width:760px){#quickGrid .quick-rank{font-size:25px!important}#teamList .simple-rank .simple-value{font-size:25px!important}.player-metric strong.best{font-size:20px!important}}
+
+</style>
+<style id="speed-safe-exit-style">
+
+/* PVE-like safe dismissal confirmation: Escape / backdrop / cancel */
+#speedExitGuard{position:fixed;inset:0;z-index:260000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(3,8,20,.79);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#speedExitGuard.show{display:flex}
+#speedExitGuard .exit-dialog{width:min(460px,100%);overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#172032,#101726);border:1px solid rgba(255,255,255,.12);box-shadow:0 28px 70px rgba(0,0,0,.40);color:#eef2ff}
+#speedExitGuard .exit-head{padding:24px 24px 13px;display:flex;gap:13px;align-items:center}
+#speedExitGuard .exit-icon{display:grid;place-items:center;width:44px;height:44px;flex:0 0 44px;border-radius:14px;background:rgba(251,191,36,.11);color:#fbbf24;font-size:22px;font-weight:900}
+#speedExitGuard .exit-head h2{margin:0;font-size:23px;line-height:1.4;font-weight:900}
+#speedExitGuard .exit-description{margin:0;padding:0 24px 23px;color:#b8c6e0;font-size:14px;line-height:1.8}
+#speedExitGuard .exit-actions{display:flex;gap:10px;justify-content:flex-end;padding:15px 24px 20px;border-top:1px solid rgba(255,255,255,.09)}
+#speedExitGuard .exit-actions button{min-height:44px;padding:10px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.065);color:#eef2ff;font-size:14px;font-weight:850;cursor:pointer;white-space:nowrap}
+#speedExitGuard .exit-actions .exit-yes{border-color:transparent;background:linear-gradient(125deg,#639bf2,#826be0);color:white}
+#speedExitGuard .exit-actions button:focus-visible{outline:2px solid #95b8ff;outline-offset:3px}
+html[data-theme="light"] #speedExitGuard .exit-dialog{background:linear-gradient(180deg,#fff,#f5f7fc);border-color:rgba(70,91,136,.16);color:#18243a;box-shadow:0 24px 64px rgba(24,40,75,.22)}
+html[data-theme="light"] #speedExitGuard .exit-description{color:#63728f}
+html[data-theme="light"] #speedExitGuard .exit-actions{border-top-color:rgba(70,91,136,.13)}
+html[data-theme="light"] #speedExitGuard .exit-actions button{background:#edf2fb;color:#18243a;border-color:#d5dfed}
+html[data-theme="light"] #speedExitGuard .exit-actions .exit-yes{background:linear-gradient(125deg,#598ef2,#7963d8);color:white;border-color:transparent}
+@media(max-width:600px){#speedExitGuard{padding:12px}#speedExitGuard .exit-head{padding:19px 18px 10px}#speedExitGuard .exit-head h2{font-size:20px}#speedExitGuard .exit-description{padding:0 18px 18px;font-size:13px}#speedExitGuard .exit-actions{padding:13px 18px 17px;gap:9px}#speedExitGuard .exit-actions button{flex:1;min-width:0;padding:10px 7px}}
+
+</style>
+<style id="sidebar-ranking-font-only">
+/* Scoped correction: enlarge the rank ONLY in the left player list.
+   Keep quick cards and team-list ranks at their original size. */
+#quickGrid .quick-rank{font-size:19px!important;line-height:1.25!important}
+#teamList .simple-rank .simple-value{font-size:19px!important;line-height:1.2!important}
+#playerList .player-metric{min-width:130px!important;max-width:48%;align-self:center}
+#playerList .player-metric strong.best{font-size:12px!important;line-height:1.2!important;font-weight:800!important;color:var(--text);text-align:right}
+#playerList .sidebar-rank-main{display:block;color:var(--purple)!important;font-size:30px!important;font-weight:950;line-height:1.12;white-space:nowrap;letter-spacing:-.035em}
+#playerList .sidebar-best-sub{display:block;font-size:11px!important;color:var(--muted);line-height:1.4;white-space:normal;margin-top:3px;font-weight:750}
+#playerList .sidebar-best-sub .record-mode-inline.challenge{color:var(--orange)}
+#playerList .sidebar-best-sub .record-mode-inline.normal{color:var(--green)}
+@media(max-width:760px){
+ #quickGrid .quick-rank{font-size:19px!important}
+ #teamList .simple-rank .simple-value{font-size:19px!important}
+ #playerList .player-metric{min-width:115px!important}
+ #playerList .sidebar-rank-main{font-size:27px!important}
+}
+
+/* 左側玩家最佳紀錄：大排名與通關時間同行，普通／挑戰另列。 */
+#playerList .player-metric{min-width:154px!important;max-width:54%}
+#playerList .sidebar-best-top{display:flex!important;justify-content:flex-end;align-items:baseline;gap:9px;white-space:nowrap;margin-top:0!important}
+#playerList .sidebar-best-top .sidebar-rank-main{display:inline-block!important;margin:0!important;font-size:30px!important;line-height:1.1!important;color:var(--purple)!important}
+#playerList .sidebar-best-top .sidebar-best-time{display:inline-block!important;margin:0!important;font-size:13px!important;font-weight:850!important;line-height:1.2!important;color:var(--text)!important;white-space:nowrap}
+#playerList .sidebar-best-sub{margin-top:4px!important}
+@media(max-width:760px){
+  #playerList .player-metric{min-width:139px!important;max-width:54%}
+  #playerList .sidebar-best-top{gap:7px}
+  #playerList .sidebar-best-top .sidebar-rank-main{font-size:27px!important}
+  #playerList .sidebar-best-top .sidebar-best-time{font-size:12px!important}
+}
+@media(max-width:385px){
+  #playerList .player-metric{min-width:126px!important;max-width:53%}
+  #playerList .sidebar-best-top{gap:5px}
+  #playerList .sidebar-best-top .sidebar-rank-main{font-size:25px!important}
+  #playerList .sidebar-best-top .sidebar-best-time{font-size:11px!important}
+}
+
 </style>
 </head>
 <body>
@@ -3982,7 +4084,7 @@ html[data-theme="light"] body .speed-pve-submodal .speed-pve-dialog{
 <main class="page">
   <header class="hero">
     <div><div class="kicker">DUNGEON SPEEDRUN · 5 PLAYERS</div><h1>5 人副本競速 <span class="version">測試版</span></h1></div>
-    <div class="hero-actions"><button class="btn" id="limitBtn">上榜限制</button><button class="btn" id="pngBtn">🖼 產生 PNG</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
+    <div class="hero-actions"><button class="btn" id="limitBtn" hidden aria-hidden="true">上榜限制</button><button class="btn" id="pngBtn">🖼 產生 PNG</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
   <div class="cross"><a href="10人競速">前往 10 人競速 →</a></div>
@@ -4023,7 +4125,7 @@ html[data-theme="light"] body .speed-pve-submodal .speed-pve-dialog{
           </select>
         </div>
         
-        <div class="metric-tabs"><button class="active" data-metric="count">上榜次數</button><button data-metric="best">最佳紀錄</button></div>
+        <div class="metric-tabs" hidden><button data-metric="count">上榜次數</button><button class="active" data-metric="best">最佳紀錄</button></div>
         <div class="filter-note" id="filterNote"><span>篩選：<strong id="filterName"></strong></span><button id="clearFilterBtn">清除</button></div>
       </div>
       <div class="player-list" id="playerList"></div>
@@ -4334,7 +4436,7 @@ const today=()=>localDateKey(new Date());
 const fmtDate=s=>{if(!s)return"—";const [y,m,d]=String(s).split("-").map(Number);return m&&d?`${m}/${d}`:s};
 
 let players=[],playerArchive={},dungeons=[],activeDungeonId="",professions=["未設定"];
-let teams=[],records=[],limit=2,selectedDungeonId="",metricMode="count";
+let teams=[],records=[],limit=0,selectedDungeonId="",metricMode="best";
 
 const PHASE_NAMES={1:"第一期",2:"第二期",3:"第三期"};
 const PHASE_VIEW_CACHE=`wwm_speed_phase_view_v1_${SIZE}`;
@@ -4689,7 +4791,7 @@ function loadLocal(){
     const pr=JSON.parse(localStorage.getItem(PROF_CACHE)||"null");
     if(Array.isArray(pr)&&pr.length)professions=[...new Set(["未設定",...pr.filter(Boolean)])];
     const lm=JSON.parse(localStorage.getItem(LIMIT_CACHE)||"{}");
-    limit=Number(lm[String(SIZE)]??2);
+    limit=0;
   }catch(e){console.warn(e)}
   normalizeAllPlayers();
   if(!selectedDungeonId)selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";
@@ -4831,6 +4933,18 @@ function recordModeLabel(record){
   const team=teams.find(t=>t.id===record.teamId);
   return team?teamModeLabel(team):"";
 }
+function sidebarBestRankingMarkup(record){
+  if(!record)return '<span class="sidebar-best-top"><span class="sidebar-rank-main">—</span></span>';
+  const rank=recordRankLabel(record)||'—';
+  const mode=recordModeLabel(record);
+  const modeClass=mode==='挑戰'?'challenge':'normal';
+  const modeHtml=mode?`<span class="record-mode-inline ${modeClass}">${esc(mode)}</span>`:'';
+  // Keep the best rank and clear time on the same baseline in the left player list.
+  return `<span class="sidebar-best-top"><span class="sidebar-rank-main">${esc(rank)}</span>`+
+    `<span class="sidebar-best-time">${esc(fmtTime(record.timeMs))}</span></span>`+
+    (modeHtml?`<span class="sidebar-best-sub">${modeHtml}</span>`:'');
+}
+
 function bestRecordDisplay(record){
   if(!record)return"—";
   const mode=recordModeLabel(record);
@@ -5018,7 +5132,7 @@ function renderPlayers(){
     const s=playerStats(p.id);
     const metric=metricMode==="count"
       ? `<div class="player-metric"><strong class="${s.hit?"warn":""}">${s.count}${limit?` / ${limit}`:""}</strong><span>當期紀錄</span></div>`
-      : `<div class="player-metric"><strong class="best">${bestRecordDisplay(s.best)}</strong><span>最佳紀錄</span></div>`;
+      : `<div class="player-metric"><strong class="best">${sidebarBestRankingMarkup(s.best)}</strong><span>最佳紀錄</span></div>`;
 
     const roleChips=normalizeRoles(p).map(r=>`<span class="role-chip">${esc(r)}</span>`).join("");
 
@@ -5247,6 +5361,7 @@ function renderTeams(){
   }).join("");
 }
 function renderAll(){
+  metricMode="best";
   renderCycle();
   renderPhaseSwitcher();
   renderPlayers();
@@ -6226,7 +6341,7 @@ function bindUI(){
     else selectedPlayerIds.add(pid);
     renderAll();
   });
-  document.querySelectorAll("[data-metric]").forEach(b=>b.addEventListener("click",()=>{metricMode=b.dataset.metric;renderAll()}));
+  document.querySelectorAll("[data-metric]").forEach(b=>b.addEventListener("click",()=>{metricMode="best";renderAll()}));
   $("expandPlayersBtn").addEventListener("click",()=>{const x=$("playerPanel").classList.toggle("expanded");$("expandPlayersBtn").textContent=x?"✕":"⛶"});
   $("quickGrid").addEventListener("click",e=>{
     const b=e.target.closest("[data-jump]");
@@ -6283,7 +6398,7 @@ function bindUI(){
   $("addProfessionBtn").addEventListener("click",()=>{$("professionEditor").insertAdjacentHTML("beforeend",profRow());bindProfDeleteButtons()});
   $("saveProfessionsBtn").addEventListener("click",saveProfessions);
   $("limitBtn").addEventListener("click",()=>{$("limitInput").value=Number(limit||0);openModal("limitModal")});
-  $("saveLimitBtn").addEventListener("click",()=>{limit=Math.max(0,Number($("limitInput").value||0));saveLocalLimits();closeModal("limitModal");renderAll();syncLimits();toast("上榜限制已更新")});
+  $("saveLimitBtn").addEventListener("click",()=>{limit=0;closeModal("limitModal");renderAll();syncLimits();toast("上榜限制已更新")});
   $("playerMenuEdit").addEventListener("click",()=>{if(playerMenuId)openSinglePlayerEdit(playerMenuId)});
   $("playerMenuDetail").addEventListener("click",()=>{
     if(!playerMenuId)return;
@@ -7080,7 +7195,7 @@ async function loadSharedRemote(){
   const limRef=doc(db,"competition","speed_limits");
   const lim=await getDoc(limRef).catch(()=>null);
   if(lim?.exists()){
-    limit=Number(lim.data()?.[`limit${SIZE}`]??limit);
+    limit=0;
   }
 
   saveLocalSharedPlayers();
@@ -7283,7 +7398,7 @@ function subscribeRemote(){
   sharedUnsubs.push(onSnapshot(doc(db,"competition","speed_players"),s=>{if(!s.exists())return;const d=s.data();players=Array.isArray(d.players)?d.players:players;playerArchive=d.archive&&typeof d.archive==="object"?d.archive:playerArchive;normalizeAllPlayers();saveLocalSharedPlayers();renderAll()}));
   sharedUnsubs.push(onSnapshot(doc(db,"competition","speed_cycles"),s=>{if(!s.exists())return;const d=s.data();dungeons=Array.isArray(d.dungeons)?d.dungeons:dungeons;activeDungeonId=d.activeDungeonId||activeDungeonId;if(!selectedDungeonId||!dungeons.some(x=>x.id===selectedDungeonId))selectedDungeonId=activeDungeonId||dungeons.at(-1)?.id||"";saveLocalCycles();renderAll()}));
   sharedUnsubs.push(onSnapshot(doc(db,"competition","shared_config"),s=>{if(s.exists()&&Array.isArray(s.data().professions)){professions=[...new Set(["未設定",...s.data().professions.filter(Boolean)])];saveLocalProf()}}));
-  sharedUnsubs.push(onSnapshot(doc(db,"competition","speed_limits"),s=>{if(s.exists()){limit=Number(s.data()?.[`limit${SIZE}`]??limit);saveLocalLimits();renderAll()}}));
+  sharedUnsubs.push(onSnapshot(doc(db,"competition","speed_limits"),s=>{if(s.exists()){limit=0;renderAll()}}));
 
   teamUnsub?.();recordUnsub?.();
   teamUnsub=onSnapshot(collection(db,"competition",`speed_${SIZE}`,"teams"),snap=>{
@@ -7657,7 +7772,7 @@ initFirebase();
       const s=playerStats(p.id);
       const metric=metricMode==='count'
         ? `<div class="player-metric"><strong>${s.count}${limit?` / ${limit}`:''}</strong><span>當期上榜次數</span></div>`
-        : `<div class="player-metric"><strong class="best">${bestRecordDisplay(s.best)}</strong><span>最佳紀錄</span></div>`;
+        : `<div class="player-metric"><strong class="best">${sidebarBestRankingMarkup(s.best)}</strong><span>最佳紀錄</span></div>`;
       return`<div class="player-row grouped ${selectedPlayerIds.has(p.id)?'selected':''}" data-player="${esc(p.id)}" ${playerGroupStyle(p)}>
         <button type="button" class="player-more" data-player-more="${esc(p.id)}" aria-label="更多選項">⋯</button>
         <div>
@@ -8791,7 +8906,7 @@ initFirebase();
       const rankCell=card.querySelector('.simple-rank');
       if(rankCell){
         if(!rankCell.querySelector('.speed-team-edit')){
-          rankCell.insertAdjacentHTML('beforeend',`<button type="button" class="speed-team-edit" data-speed-edit="${esc(team.id)}">修改排名</button>`);
+          rankCell.querySelector('.simple-value')?.insertAdjacentHTML('afterend',`<button type="button" class="speed-team-edit" data-speed-edit="${esc(team.id)}" title="修改排名及總時間" aria-label="修改${esc(team.name)}的排名及總時間"><span aria-hidden="true">✎</span></button>`);
         }
         const d=rev?.changes?.find(c=>c.key==='rank');
         if(d&&!rankCell.querySelector('.speed-revision-note'))rankCell.querySelector('.simple-value')?.insertAdjacentHTML('afterend',`<small class="speed-revision-note">原 ${esc(valueText('rank',d.old))}</small>`);
@@ -8815,7 +8930,7 @@ initFirebase();
       }
       const wrap=document.createElement('div');wrap.className='speed-quick-row';
       card.replaceWith(wrap);wrap.append(card);
-      const edit=document.createElement('button');edit.type='button';edit.className='speed-quick-edit';edit.dataset.speedEdit=id;edit.textContent='修改';edit.setAttribute('aria-label','修改 '+t.name+' 排名及通關時間');wrap.append(edit);
+      const edit=document.createElement('button');edit.type='button';edit.className='speed-quick-edit';edit.dataset.speedEdit=id;edit.textContent='✎';edit.title="修改排名與時間";edit.setAttribute('aria-label','修改 '+t.name+' 排名及通關時間');wrap.append(edit);
     });
     // Overview + detailed leaderboard (scoped to the selected dungeon and phase).
     const detail=$id('teamDetailModal');
@@ -9325,6 +9440,148 @@ initFirebase();
   const originalTeams=renderTeams;
   renderTeams=function(){const r=originalTeams.apply(this,arguments);refreshSharedUpdateLabels();return r};
   refreshSharedUpdateLabels();
+})();
+
+
+
+/* ===== Unified safe dismissal: confirmation for Esc / backdrop / X / cancellation ===== */
+(function(){
+  const guard=document.createElement('div');
+  guard.id='speedExitGuard';
+  guard.setAttribute('role','presentation');
+  guard.innerHTML=`<div class="exit-dialog" role="alertdialog" aria-modal="true" aria-labelledby="exitGuardHeading" aria-describedby="exitGuardDescription">
+    <div class="exit-head"><span class="exit-icon" aria-hidden="true">!</span><h2 id="exitGuardHeading">確定退出視窗？</h2></div>
+    <p class="exit-description" id="exitGuardDescription">退出後，尚未儲存的修改可能會遺失。</p>
+    <div class="exit-actions"><button type="button" id="exitGuardStay">繼續編輯</button><button type="button" class="exit-yes" id="exitGuardLeave">確認退出</button></div>
+  </div>`;
+  document.body.appendChild(guard);
+  const stay=guard.querySelector('#exitGuardStay');
+  const leave=guard.querySelector('#exitGuardLeave');
+  const description=guard.querySelector('#exitGuardDescription');
+  let targetModal=null;
+  let lastFocus=null;
+  let closingProgrammatically=false;
+  const signatures=new WeakMap();
+  const modalSelector='.modal.show, .speed-pve-submodal.show';
+  function topModal(){
+    return [...document.querySelectorAll(modalSelector)]
+      .filter(el=>getComputedStyle(el).display!=='none')
+      .map((el,i)=>({el,i,z:parseInt(getComputedStyle(el).zIndex,10)||0}))
+      .sort((a,b)=>a.z-b.z||a.i-b.i)
+      .at(-1)?.el||null;
+  }
+  function signature(el){
+    // Read only editable values and selection, never private user data into the dialog.
+    const fields=[...el.querySelectorAll('input,textarea,select')].map(x=>[
+      x.id||x.name||'',x.type,x.type==='checkbox'||x.type==='radio'?x.checked:x.value
+    ]);
+    const picks=[...el.querySelectorAll('[data-create-person],[data-batch-player],[aria-pressed]')]
+      .map(x=>[x.dataset.createPerson||x.dataset.batchPlayer||'',x.getAttribute('aria-pressed'),x.classList.contains('selected')]);
+    const guests=el.querySelector('#speedCreateChosen')?.textContent||'';
+    return JSON.stringify([fields,picks,guests]);
+  }
+  function trackModal(el){
+    if(el.dataset.exitGuardTrack)return;
+    el.dataset.exitGuardTrack='1';
+    const observer=new MutationObserver(()=>{
+      if(el.classList.contains('show')){
+        // Inputs may be populated as the modal opens. Take the baseline after the opener returns.
+        queueMicrotask(()=>signatures.set(el,signature(el)));
+      }else{
+        signatures.delete(el);
+      }
+    });
+    observer.observe(el,{attributes:true,attributeFilter:['class']});
+    if(el.classList.contains('show'))signatures.set(el,signature(el));
+  }
+  document.querySelectorAll('.modal,.speed-pve-submodal').forEach(trackModal);
+  const added=new MutationObserver(records=>records.forEach(rec=>rec.addedNodes.forEach(node=>{
+    if(!(node instanceof Element))return;
+    if(node.matches('.modal,.speed-pve-submodal'))trackModal(node);
+    node.querySelectorAll?.('.modal,.speed-pve-submodal').forEach(trackModal);
+  })));
+  added.observe(document.body,{childList:true,subtree:true});
+
+  function isDirty(modal){
+    const base=signatures.get(modal);
+    return base!==undefined&&base!==signature(modal);
+  }
+  function askExit(modal){
+    if(!modal||guard.classList.contains('show'))return;
+    targetModal=modal;
+    lastFocus=document.activeElement;
+    description.textContent=isDirty(modal)
+      ?'這個視窗有尚未儲存的更改。確認退出後，這些更改將不會保留。'
+      :'確定要關閉這個視窗嗎？';
+    guard.classList.add('show');
+    stay.focus({preventScroll:true});
+  }
+  function cancelExit(){
+    guard.classList.remove('show');
+    targetModal=null;
+    if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});
+    lastFocus=null;
+  }
+  function closeOriginal(modal){
+    if(!modal||!modal.classList.contains('show'))return;
+    const byId={
+      teamDetailModal:'#teamDetailDoneBtn',
+      teamCreateModal:'#speedCreateClose',
+      speedCreateExtraModal:'#speedExtraCancel',
+      speedCreateConfirmation:'#speedConfirmationCancel',
+      speedScoreModal:'#speedScoreClose',
+      rosterGuestModal:'[data-roster-close="rosterGuestModal"]',
+      rosterProfileModal:'[data-roster-close="rosterProfileModal"]',
+      rosterConfirmModal:'#rosterConfirmCancel',
+      confirmDeleteModal:'#confirmDeleteCancelBtn'
+    };
+    const selector=byId[modal.id];
+    const original=selector?document.querySelector(selector):modal.querySelector('[data-close], [data-roster-close], .roster-modal-close');
+    if(original){original.click();return;}
+    modal.classList.remove('show');
+  }
+  function acceptExit(){
+    const chosen=targetModal;
+    cancelExit();
+    if(!chosen)return;
+    closingProgrammatically=true;
+    try{closeOriginal(chosen)}finally{closingProgrammatically=false}
+  }
+  stay.addEventListener('click',cancelExit);
+  leave.addEventListener('click',acceptExit);
+  // Deliberately do not dismiss the exit confirmation when its own backdrop is clicked.
+  guard.addEventListener('click',e=>{if(e.target===guard)e.stopPropagation()});
+  const dismissSelectors=[
+    '[data-close]','[data-roster-close]','#closeTeamDetailBtn',
+    '#speedScoreClose','#speedScoreCancel','#speedCreateClose','#speedCreateCancel',
+    '#speedExtraCancel','#speedConfirmationCancel',
+    '#rosterConfirmCancel','#rosterConfirmX',
+    '#confirmDeleteCancelBtn',
+    '.roster-modal-close'
+  ].join(',');
+  // Window capture happens before legacy document/target handlers; only user-initiated exits are guarded.
+  window.addEventListener('click',e=>{
+    if(closingProgrammatically||guard.contains(e.target))return;
+    const active=topModal();
+    if(!active)return;
+    const button=e.target.closest?.(dismissSelectors);
+    if(button?.id==='speedScoreCancel'&&button.textContent.trim()!=='取消')return;
+    if(e.target===active||(button&&active.contains(button))){
+      e.preventDefault();e.stopImmediatePropagation();
+      askExit(active);
+    }
+  },true);
+  window.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    if(guard.classList.contains('show')){
+      e.preventDefault();e.stopImmediatePropagation();cancelExit();return;
+    }
+    const active=topModal();
+    if(!active)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    askExit(active);
+  },true);
+  // Direct completion or successful save actions keep their normal behavior.
 })();
 
 </script>
