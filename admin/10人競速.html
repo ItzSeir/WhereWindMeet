@@ -3309,6 +3309,664 @@ body.team-detail-open{overflow:hidden}
  #rosterProfileModal .roster-modal-actions button{min-width:0!important;flex:1;font-size:13px!important}
 }
 
+/* ===== v21 · refined dialog visual system ===== */
+:root { --dialog-focus:color-mix(in srgb,var(--blue) 35%,transparent); }
+.modal.show{background:rgba(5,9,22,.75);backdrop-filter:blur(13px) saturate(125%);-webkit-backdrop-filter:blur(13px) saturate(125%)}
+.modal.show>.modal-card{animation:dlg-appear .19s cubic-bezier(.2,.7,.2,1) both}
+@keyframes dlg-appear{from{opacity:.3;transform:translateY(10px) scale(.986)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.modal.show>.modal-card{animation:none!important}.modal button,.modal input,.modal .batch-player{transition:none!important}}
+/* Shared modal geometry: low-noise glass surface, careful separators. */
+#batchPickerModal .team-picker-wide,
+#rosterProfileModal>.modal-card,
+#rosterGuestModal>.modal-card,
+#rosterConfirmModal>.modal-card,
+#teamCreateModal>.modal-card,
+#teamEditModal>.modal-card,
+#singlePlayerEditModal>.modal-card,
+#recordEditModal>.modal-card,
+#confirmDeleteModal>.modal-card,
+#playersModal>.modal-card,
+#professionModal>.modal-card,
+#limitModal>.modal-card,
+#dungeonModal>.modal-card,
+#editDungeonModal>.modal-card,
+#teamDetailModal>.modal-card{
+  position:relative;
+  border:1px solid color-mix(in srgb,var(--line2) 86%,var(--blue) 14%)!important;
+  background:var(--surface)!important;
+  box-shadow:0 34px 95px rgba(2,7,19,.54), inset 0 1px 0 color-mix(in srgb,var(--text) 5%,transparent)!important;
+}
+/* Subtle integrated accent strip */
+#batchPickerModal .team-picker-wide::before,
+#rosterProfileModal>.modal-card::before,
+#rosterGuestModal>.modal-card::before,
+#rosterConfirmModal>.modal-card::before,
+#teamCreateModal>.modal-card::before,
+#teamDetailModal>.modal-card::before,
+#singlePlayerEditModal>.modal-card::before{
+  content:"";position:absolute;left:24px;right:24px;top:0;height:2px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--blue) 74%,white 26%),var(--purple),transparent);
+  opacity:.8;
+}
+.modal input,.modal textarea,.modal select{transition:border-color .17s,background .17s,box-shadow .17s}
+.modal input:focus-visible,.modal textarea:focus-visible,.modal select:focus-visible{
+  outline:0!important;border-color:var(--blue)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 18%,transparent)!important;
+}
+.modal button:not(:disabled){transition:background .18s,border-color .18s,color .18s,box-shadow .18s,transform .18s}
+.modal button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.modal .btn.primary,.modal .batch-action-btn.primary,.modal .roster-modal-actions .primary,
+#teamCreateModal #saveCreateTeamModalBtn{
+  background:linear-gradient(112deg,#608fe9 0%,#7777e7 55%,#9671df 100%)!important;
+  color:#fff!important;border:1px solid rgba(190,198,255,.23)!important;
+  box-shadow:0 8px 22px rgba(91,103,221,.21)!important;
+}
+.modal .btn.primary:hover:not(:disabled),.modal .batch-action-btn.primary:hover:not(:disabled),.modal .roster-modal-actions .primary:hover:not(:disabled){filter:brightness(1.07);box-shadow:0 10px 26px rgba(93,105,221,.33)!important}
+/* Team mate picker: separate title/tools/list/footer with a clear reading order */
+#batchPickerModal .team-picker-wide{width:min(1190px,calc(100vw - 42px))!important;border-radius:26px!important}
+#batchPickerModal .picker-new-head{
+  background:linear-gradient(125deg,color-mix(in srgb,var(--blue) 9%,var(--surface)),var(--surface) 58%,color-mix(in srgb,var(--purple) 7%,var(--surface)));
+  padding:26px 30px 20px!important;min-height:99px;position:relative;
+}
+#batchPickerModal .picker-new-head h2{font-size:27px!important;line-height:1.3;letter-spacing:-.03em;font-weight:950}
+#batchPickerModal .picker-new-head p{margin-top:6px!important;line-height:1.5;color:var(--muted)}
+#batchPickerModal .picker-close-new,.roster-modal-close,.team-detail-close{
+  border:1px solid var(--line2)!important;border-radius:13px!important;
+  background:color-mix(in srgb,var(--surface3) 75%,var(--surface))!important;
+  color:var(--muted)!important;box-shadow:none!important;
+}
+#batchPickerModal .picker-close-new:hover,.roster-modal-close:hover,.team-detail-close:hover{
+  background:var(--surface3)!important;color:var(--text)!important;border-color:var(--blue)!important;
+}
+#batchPickerModal .picker-toolbar{padding:20px 30px 0!important}
+#batchPickerModal #batchPickerSearch{
+  height:52px!important;border:1px solid var(--line2)!important;
+  background:var(--surface2)!important;border-radius:14px!important;
+  padding:0 17px!important;font-size:15px!important;color:var(--text);
+}
+#batchPickerModal #batchPickerSearch::placeholder{color:var(--soft)}
+#batchPickerModal .picker-primary-actions{padding:12px 30px 0!important;gap:10px!important}
+#batchPickerModal .picker-create-profile,#batchPickerModal .picker-create-guest{
+  border-radius:12px!important;min-height:45px!important;padding:10px 18px!important;font-size:13px!important;
+  letter-spacing:0;box-shadow:none!important;
+}
+#batchPickerModal .picker-create-profile{box-shadow:0 7px 15px rgba(90,104,221,.17)!important}
+#batchPickerModal .picker-create-guest{background:var(--surface2)!important;border-color:var(--line2)!important}
+#batchPickerModal #batchPickerSearchStats{padding:10px 31px 5px!important;font-size:12px!important;font-weight:800!important;color:var(--muted)!important}
+#batchPickerModal #batchPickerList{
+  background:color-mix(in srgb,var(--surface2) 53%,var(--surface));
+  border-top:1px solid color-mix(in srgb,var(--line) 72%,transparent);
+  padding:16px 30px 22px!important;gap:10px!important;
+}
+#batchPickerModal .batch-player,#batchPickerModal .batch-player.grouped,#batchPickerModal .batch-player.profession-grouped{
+  background:var(--surface)!important;border:1px solid var(--line)!important;
+  border-left:3px solid var(--job-tone,var(--group-accent,var(--line2)))!important;
+  min-height:73px!important;border-radius:14px!important;padding:12px 13px!important;
+  grid-template-columns:23px minmax(0,1fr) 72px 36px!important;
+}
+#batchPickerModal .batch-player:hover{background:color-mix(in srgb,var(--blue) 5%,var(--surface))!important;
+  border-color:color-mix(in srgb,var(--blue) 36%,var(--line))!important;
+  border-left-color:var(--job-tone,var(--group-accent,var(--blue)))!important}
+#batchPickerModal .batch-player.selected{
+  background:color-mix(in srgb,var(--blue) 11%,var(--surface))!important;
+  border:1px solid color-mix(in srgb,var(--blue) 71%,var(--line))!important;
+  border-left:3px solid var(--blue)!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--blue) 20%,transparent),0 6px 17px rgba(38,61,115,.08)!important;
+}
+#batchPickerModal .batch-player>input[type="checkbox"]{width:19px!important;height:19px!important;accent-color:var(--blue)}
+#batchPickerModal .batch-player .profession-pill{min-height:23px!important;border-radius:8px!important;font-weight:850}
+#batchPickerModal .batch-player-name{color:var(--text);font-size:16px!important;font-weight:950!important}
+#batchPickerModal .batch-player-count{font-size:12px!important;color:var(--blue)!important;font-weight:900!important}
+#batchPickerModal .batch-player .picker-edit-profile{
+  background:var(--surface2)!important;color:var(--muted);border:1px solid var(--line)!important;
+  border-radius:10px!important;width:36px!important;height:36px!important;
+}
+#batchPickerModal .batch-player .picker-edit-profile:hover{color:var(--blue);border-color:var(--blue)!important;background:color-mix(in srgb,var(--blue) 10%,var(--surface))!important}
+#batchPickerModal .batch-selection-bar{
+  padding:16px 30px 19px!important;
+  background:var(--surface)!important;
+  border-top:1px solid var(--line2)!important;
+  box-shadow:0 -13px 31px rgba(2,7,19,.12)!important;
+}
+#batchPickerModal #batchSelectedCount{font-size:17px!important;color:var(--text)}
+#batchPickerModal #batchCapacityText{color:var(--muted)!important}
+#batchPickerModal .v20-selected-preview{gap:7px!important;margin-top:12px!important}
+#batchPickerModal .v20-selected-chip{
+  padding:6px 11px!important;border-radius:9px!important;
+  background:color-mix(in srgb,var(--blue) 11%,var(--surface2))!important;
+  border-color:color-mix(in srgb,var(--blue) 29%,var(--line))!important;
+  color:var(--text)!important;font-size:12px!important;
+}
+#batchPickerModal .batch-selection-bar .batch-actions{margin-top:15px!important;gap:9px!important}
+#batchPickerModal .batch-actions .batch-action-btn{padding:9px 16px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:var(--surface2)!important}
+#batchPickerModal .batch-actions .batch-action-btn.primary{min-height:47px!important;font-size:14px!important;font-weight:950!important}
+#batchPickerModal #batchClearBtn{color:var(--muted)!important}
+/* Profile dialog: clear identity vs profession zones */
+#rosterProfileModal .modal-card{width:min(1080px,calc(100vw - 36px))!important;border-radius:26px!important}
+#rosterProfileModal .roster-modal-head{
+  min-height:96px;padding:24px 30px 21px!important;
+  background:linear-gradient(125deg,color-mix(in srgb,var(--blue) 9%,var(--surface)),var(--surface) 59%,color-mix(in srgb,var(--purple) 7%,var(--surface)));
+}
+#rosterProfileModal .roster-modal-head h2{font-size:27px!important;letter-spacing:-.035em;font-weight:950}
+#rosterProfileModal .v20-profile-layout{
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)!important;
+  gap:16px!important;padding:22px 30px!important;
+  background:color-mix(in srgb,var(--surface2) 38%,var(--surface));
+}
+#rosterProfileModal .v20-profile-identity,#rosterProfileModal .v20-profile-professions{
+  padding:21px!important;border-radius:18px!important;background:var(--surface)!important;
+  border:1px solid var(--line)!important;box-shadow:0 6px 21px rgba(4,8,19,.045);
+}
+#rosterProfileModal .v20-profile-professions{gap:12px!important}
+#rosterProfileModal .v20-profile-identity:before,
+#rosterProfileModal .v20-profile-professions:before{
+  display:block;color:var(--blue);font-size:11px;font-weight:950;letter-spacing:.09em;
+  padding-bottom:10px;margin-bottom:2px;border-bottom:1px solid var(--line);
+}
+#rosterProfileModal .v20-profile-identity:before{content:'玩家資料'}
+#rosterProfileModal .v20-profile-professions:before{content:'職業選擇'}
+#rosterProfileModal .roster-form-row{gap:8px!important}
+#rosterProfileModal .roster-form-row>label{font-size:13px!important;font-weight:900!important}
+#rosterProfileModal .roster-form-row input:not([type="checkbox"]),
+#rosterProfileModal .roster-form-row textarea{
+  background:var(--surface2)!important;border:1px solid var(--line2)!important;border-radius:12px!important;
+  min-height:50px!important;padding:11px 14px!important;color:var(--text);
+}
+#rosterProfileModal #rosterProfileName{font-size:17px!important;font-weight:900!important}
+#rosterProfileModal #rosterProfileNote{min-height:120px!important}
+#rosterProfileModal .v20-role-toolbar{margin:4px 0 0!important;gap:10px!important}
+#rosterProfileModal .v20-role-search{height:45px;border-radius:12px!important;background:var(--surface2)!important}
+#rosterProfileModal .v20-role-count{padding:5px 9px;background:color-mix(in srgb,var(--blue) 9%,var(--surface2));border-radius:99px;border:1px solid color-mix(in srgb,var(--blue) 23%,var(--line))}
+#rosterProfileModal .roster-role-picker{gap:11px!important;max-height:min(51dvh,455px)!important;padding:3px 4px 3px 0!important}
+#rosterProfileModal .v20-role-group{
+  border:1px solid var(--line)!important;background:var(--surface2)!important;
+  padding:12px!important;border-radius:14px!important;
+}
+#rosterProfileModal .v20-role-group-title{font-size:12px!important;color:var(--text);font-weight:900}
+#rosterProfileModal .v20-role-options{gap:7px!important}
+#rosterProfileModal .v20-role-options label{
+  min-height:38px!important;padding:7px 11px!important;border-radius:10px!important;
+  background:var(--surface)!important;border-color:var(--line2)!important;color:var(--muted);font-size:12px!important;
+}
+#rosterProfileModal .v20-role-options label:hover{border-color:color-mix(in srgb,var(--blue) 48%,var(--line))!important;color:var(--text)}
+#rosterProfileModal .v20-role-options label:has(input:checked){
+  color:var(--blue)!important;background:color-mix(in srgb,var(--blue) 12%,var(--surface))!important;
+  border-color:color-mix(in srgb,var(--blue) 62%,var(--line))!important;
+}
+#rosterProfileModal .roster-modal-actions{
+  padding:17px 30px 20px!important;
+  border-top:1px solid var(--line2)!important;
+  background:var(--surface)!important;
+}
+#rosterProfileModal .roster-modal-actions button{min-height:47px!important;border-radius:12px!important}
+#rosterProfileModal .roster-modal-actions #rosterProfileSave{min-width:200px}
+/* Guest + confirm: same visual language, no extra explanatory copy. */
+#rosterGuestModal>.modal-card,#rosterConfirmModal>.modal-card{
+  width:min(560px,calc(100vw - 28px))!important;border-radius:23px!important;padding:0!important;overflow:hidden!important;
+}
+#rosterGuestModal .roster-modal-head,#rosterConfirmModal .roster-modal-head{
+  margin:0!important;padding:23px 25px 20px!important;
+  border-bottom:1px solid var(--line)!important;
+  background:linear-gradient(118deg,color-mix(in srgb,var(--blue) 10%,var(--surface)),var(--surface) 70%);
+}
+#rosterGuestModal .roster-modal-head h2,#rosterConfirmModal .roster-modal-head h2{font-size:24px!important;font-weight:950}
+#rosterGuestModal .roster-form-row{padding:22px 25px 0;margin:0!important}
+#rosterGuestModal .roster-form-error{padding:0 25px;margin-top:7px}
+#rosterGuestModal .roster-modal-actions,#rosterConfirmModal .roster-modal-actions{
+  margin:12px 0 0!important;padding:18px 25px 20px!important;border-top:1px solid var(--line)!important;
+  justify-content:flex-end;background:var(--surface2)!important;
+}
+#rosterConfirmModal .roster-confirm-message{margin:0!important;padding:25px 27px!important;font-size:16px!important;line-height:1.85}
+#rosterGuestModal .roster-modal-actions button,#rosterConfirmModal .roster-modal-actions button{min-height:47px!important;min-width:115px;border-radius:12px!important}
+/* New team dialog: stronger layout and mode selector without extra words. */
+#teamCreateModal>.modal-card{width:min(1240px,calc(100vw - 36px))!important;border-radius:26px!important;padding:0!important;overflow:auto}
+#teamCreateModal .modal-title-row{
+  padding:26px 31px 21px!important;margin:0!important;border-bottom:1px solid var(--line)!important;
+  background:linear-gradient(124deg,color-mix(in srgb,var(--blue) 9%,var(--surface)),var(--surface) 55%,color-mix(in srgb,var(--purple) 8%,var(--surface)));
+}
+#teamCreateModal .modal-title{font-size:27px!important;letter-spacing:-.035em}
+#teamCreateModal .create-team-grid{gap:18px!important;padding:23px 30px!important;
+  grid-template-columns:1fr 1fr!important;
+  background:color-mix(in srgb,var(--surface2) 38%,var(--surface))}
+#teamCreateModal .create-panel{background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:18px!important;padding:22px!important;box-shadow:0 7px 24px rgba(2,6,16,.055)!important}
+#teamCreateModal .create-panel h3{font-size:19px!important;margin:0 0 17px!important}
+#teamCreateModal .create-panel .input{height:51px!important;background:var(--surface2)!important;border:1px solid var(--line2)!important;border-radius:12px!important;padding:10px 14px!important;font-size:15px!important}
+#teamCreateModal .create-panel .field label{font-size:13px!important;font-weight:900!important}
+#teamCreateModal .mode-card-grid{gap:11px!important}
+#teamCreateModal .mode-card{border-radius:13px!important;min-height:75px!important;background:var(--surface2)!important;border-color:var(--line2)!important}
+#teamCreateModal .mode-card.active{border-color:var(--blue)!important;background:color-mix(in srgb,var(--blue) 12%,var(--surface2))!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 24%,transparent)!important}
+#teamCreateModal .modal-actions{display:flex!important;justify-content:flex-end!important;gap:11px!important;
+  margin:0!important;padding:17px 30px 21px!important;border-top:1px solid var(--line)!important;background:var(--surface)!important}
+#teamCreateModal .modal-actions .btn{min-width:133px;min-height:49px!important;font-size:14px!important;border-radius:12px!important}
+/* Detail + remaining small dialogs match the same hierarchy. */
+#teamDetailModal .team-detail-heading{background:linear-gradient(122deg,color-mix(in srgb,var(--blue) 9%,var(--surface)),var(--surface) 61%,color-mix(in srgb,var(--purple) 8%,var(--surface)))!important}
+#teamDetailModal .team-detail-kpi{border-radius:14px!important}
+#teamDetailModal .team-detail-section{border-radius:17px!important}
+#singlePlayerEditModal .modal-card,#teamEditModal .modal-card,#recordEditModal .modal-card,
+#dungeonModal .modal-card,#editDungeonModal .modal-card,#limitModal .modal-card,
+#professionModal .modal-card,#confirmDeleteModal .modal-card{border-radius:22px!important;padding:25px!important}
+#singlePlayerEditModal .modal-title,#teamEditModal .modal-title,#recordEditModal .modal-title,
+#dungeonModal .modal-title,#editDungeonModal .modal-title,#limitModal .modal-title,
+#professionModal .modal-title{font-size:24px!important}
+/* Mobile: real scrollable sheets, sticky actions, sensible touch spacing */
+@media(max-width:1000px){
+ #teamCreateModal .create-team-grid{grid-template-columns:1fr!important;gap:12px!important}
+ #rosterProfileModal .v20-profile-layout{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+ #batchPickerModal{padding:5px!important}
+ #batchPickerModal .team-picker-wide{width:100%!important;max-height:calc(100dvh - 10px)!important;border-radius:19px!important}
+ #batchPickerModal .picker-new-head{min-height:0;padding:17px 15px 14px!important}
+ #batchPickerModal .picker-new-head h2{font-size:22px!important}
+ #batchPickerModal .picker-toolbar{padding:14px 15px 0!important}
+ #batchPickerModal .picker-primary-actions{padding:11px 15px 0!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+ #batchPickerModal .picker-create-profile,#batchPickerModal .picker-create-guest{padding:10px 5px!important;font-size:12px!important;min-width:0}
+ #batchPickerModal #batchPickerSearchStats{padding:8px 16px 5px!important}
+ #batchPickerModal #batchPickerList{padding:12px 15px 16px!important;grid-template-columns:1fr!important;gap:8px!important}
+ #batchPickerModal .batch-player,#batchPickerModal .batch-player.grouped,#batchPickerModal .batch-player.profession-grouped{
+   grid-template-columns:20px minmax(0,1fr) auto 35px!important;gap:7px!important;min-height:68px!important;padding:10px!important}
+ #batchPickerModal .batch-player-name{font-size:14px!important}
+ #batchPickerModal .batch-player-count{font-size:11px!important}
+ #batchPickerModal .batch-selection-bar{padding:14px 15px calc(15px + env(safe-area-inset-bottom))!important}
+ #batchPickerModal .batch-selection-bar .batch-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+ #batchPickerModal .batch-selection-bar #batchApplyBtn{grid-column:1/-1;min-width:0!important;flex:auto!important}
+ #rosterProfileModal{padding:6px!important}
+ #rosterProfileModal .modal-card{width:100%!important;max-height:calc(100dvh - 12px)!important;border-radius:19px!important}
+ #rosterProfileModal .roster-modal-head{min-height:0;padding:17px 17px 15px!important}
+ #rosterProfileModal .roster-modal-head h2{font-size:22px!important}
+ #rosterProfileModal .v20-profile-layout{padding:13px!important;gap:10px!important}
+ #rosterProfileModal .v20-profile-identity,#rosterProfileModal .v20-profile-professions{padding:15px!important;border-radius:14px!important}
+ #rosterProfileModal .roster-role-picker{max-height:270px!important}
+ #rosterProfileModal .roster-modal-actions{padding:13px 16px calc(13px + env(safe-area-inset-bottom))!important}
+ #rosterProfileModal .roster-modal-actions button{flex:1;min-width:0!important}
+ #rosterGuestModal,#rosterConfirmModal{padding:8px!important}
+ #rosterGuestModal>.modal-card,#rosterConfirmModal>.modal-card{width:100%!important;border-radius:19px!important}
+ #rosterGuestModal .roster-modal-head,#rosterConfirmModal .roster-modal-head{padding:18px 17px 14px!important}
+ #rosterGuestModal .roster-form-row{padding:18px 17px 0!important}
+ #rosterGuestModal .roster-form-error{padding:0 17px}
+ #rosterGuestModal .roster-modal-actions,#rosterConfirmModal .roster-modal-actions{padding:15px 17px calc(15px + env(safe-area-inset-bottom))!important}
+ #rosterConfirmModal .roster-confirm-message{padding:20px 18px!important;font-size:15px!important}
+ #rosterGuestModal .roster-modal-actions button,#rosterConfirmModal .roster-modal-actions button{flex:1;min-width:0!important}
+ #teamCreateModal{padding:7px!important}
+ #teamCreateModal>.modal-card{width:100%!important;max-height:calc(100dvh - 14px)!important;border-radius:19px!important}
+ #teamCreateModal .modal-title-row{padding:18px 16px 14px!important}
+ #teamCreateModal .modal-title{font-size:22px!important}
+ #teamCreateModal .create-team-grid{padding:14px!important;gap:11px!important}
+ #teamCreateModal .create-panel{padding:15px!important;border-radius:14px!important}
+ #teamCreateModal .create-panel h3{font-size:17px!important;margin-bottom:12px!important}
+ #teamCreateModal .mode-card{min-height:62px!important}
+ #teamCreateModal .modal-actions{position:sticky;bottom:0;z-index:3;padding:13px 15px calc(13px + env(safe-area-inset-bottom))!important;gap:8px!important}
+ #teamCreateModal .modal-actions .btn{flex:1;min-width:0!important}
+}
+/* Critical primary action keeps its emphasis over neutral toolbar button rules. */
+#batchPickerModal .batch-selection-bar .batch-actions #batchApplyBtn{
+  color:#fff!important;
+  border:1px solid rgba(190,198,255,.25)!important;
+  background:linear-gradient(112deg,#608fe9,#7777e7 55%,#9671df)!important;
+  box-shadow:0 8px 20px rgba(93,103,222,.22)!important;
+  font-weight:950!important;
+}
+#batchPickerModal .batch-selection-bar .batch-actions #batchApplyBtn:disabled{opacity:.45;box-shadow:none!important}
+
+
+/* ===== PVE-inspired dialogs + revision indicators ===== */
+:root{--speed-modal-glow:rgba(110,168,255,.14)}
+.modal{background:rgba(3,8,20,.76)!important;backdrop-filter:blur(9px) saturate(125%)!important;-webkit-backdrop-filter:blur(9px) saturate(125%)!important}
+.modal .modal-card{border-radius:23px!important;border:1px solid color-mix(in srgb,var(--blue) 23%,var(--line))!important;
+ background:linear-gradient(150deg,color-mix(in srgb,var(--blue) 7%,var(--surface)) 0%,var(--surface) 45%,color-mix(in srgb,var(--purple) 5%,var(--surface)) 100%)!important;
+ box-shadow:0 26px 70px rgba(0,0,0,.40),inset 0 1px rgba(255,255,255,.04)!important}
+.modal .modal-title{font-size:clamp(20px,2vw,27px)!important;letter-spacing:-.025em;line-height:1.35}
+.modal .field label,.modal .roster-form-row label{font-size:13px!important;font-weight:800!important;color:var(--muted)!important}
+.modal .input,.modal .select,.modal input:not([type=checkbox]):not([type=radio]),.modal textarea{border-radius:12px!important;outline:none;transition:border-color .18s,box-shadow .18s}
+.modal input:focus,.modal textarea:focus,.modal select:focus{border-color:color-mix(in srgb,var(--blue) 66%,var(--line))!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)!important}
+.modal .modal-actions{border-top:1px solid var(--line);padding-top:15px;gap:9px}
+.modal .modal-actions>.btn,.modal .modal-actions>button{min-height:45px;border-radius:12px!important;font-size:13px!important;font-weight:900!important}
+.modal .modal-actions .primary{color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));border:0;box-shadow:0 7px 18px rgba(106,117,235,.16)}
+#teamDetailModal .team-detail-heading{border-bottom:1px solid var(--line)}
+#rosterGuestModal .roster-form-row,#rosterProfileModal .roster-form-row{margin:10px 0}
+#rosterConfirmModal{z-index:15000!important}
+#speedScoreModal{z-index:15100!important}
+#speedScoreModal .modal-card{width:min(780px,calc(100vw - 28px))!important;max-height:min(88dvh,810px);overflow:auto;padding:0!important}
+.speed-score-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:23px 26px 19px;border-bottom:1px solid var(--line);background:linear-gradient(112deg,color-mix(in srgb,var(--blue) 13%,var(--surface)),var(--surface),color-mix(in srgb,var(--purple) 9%,var(--surface)))}
+.speed-score-head .eyebrow{font-size:11px;color:var(--blue);font-weight:900;letter-spacing:.10em}
+.speed-score-head h2{font-size:25px;margin:4px 0 0;font-weight:900;line-height:1.3;overflow-wrap:anywhere}
+.speed-score-head .sub{font-size:12px;color:var(--muted);margin-top:5px}
+.speed-score-close{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-size:23px;flex:none}
+.speed-score-body{padding:22px 26px}
+.speed-score-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.speed-score-field{display:grid;gap:7px;min-width:0}
+.speed-score-field label{font-size:13px;font-weight:900;color:var(--muted)}
+.speed-score-field input{width:100%;height:51px;padding:10px 14px;border:1px solid var(--line);background:var(--surface2);border-radius:12px;color:var(--text);font-size:17px;font-weight:850}
+.speed-score-field.important input{border-color:color-mix(in srgb,var(--blue) 40%,var(--line));background:color-mix(in srgb,var(--blue) 7%,var(--surface2))}
+.speed-score-field .previous{font-size:12px;color:var(--muted);min-height:18px}
+.speed-score-field .previous strong{color:var(--orange)}
+.speed-score-preview{border:1px solid color-mix(in srgb,var(--orange) 32%,var(--line));border-radius:15px;background:color-mix(in srgb,var(--orange) 6%,var(--surface2));padding:16px;margin-top:4px}
+.speed-score-preview>strong{display:block;margin-bottom:9px;font-size:17px}
+.speed-score-diff{display:grid;grid-template-columns:100px 1fr;gap:9px;font-size:13px;line-height:1.5;margin:6px 0}
+.speed-score-diff>span{color:var(--muted)}
+.speed-score-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:16px 26px 22px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--surface2) 58%,var(--surface))}
+.speed-score-actions button{min-height:44px;min-width:110px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);padding:9px 15px;font-size:13px;font-weight:900}
+.speed-score-actions button.primary{color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));border-color:transparent}
+.speed-update-pill{display:inline-flex;align-items:center;gap:4px;min-width:max-content;border-radius:999px;padding:3px 8px;background:color-mix(in srgb,var(--orange) 13%,var(--surface2));border:1px solid color-mix(in srgb,var(--orange) 38%,var(--line));color:var(--orange);font-size:10px;font-weight:950;line-height:1.5;vertical-align:middle}
+.speed-revision-note{display:block;margin-top:4px;color:var(--orange);font-size:11px;font-weight:800;line-height:1.3}
+.speed-quick-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:stretch}
+.speed-quick-row .quick-card{min-width:0;width:100%}
+.speed-quick-edit{width:58px;min-height:45px;align-self:stretch;border:1px solid color-mix(in srgb,var(--blue) 37%,var(--line));background:color-mix(in srgb,var(--blue) 8%,var(--surface));border-radius:12px;color:var(--blue);font-weight:900;font-size:12px;line-height:1.5;padding:7px}
+.speed-quick-edit:hover,.speed-team-edit:hover{background:color-mix(in srgb,var(--blue) 16%,var(--surface2));border-color:var(--blue)}
+.speed-team-edit{min-height:30px;padding:5px 8px;border-radius:8px;border:1px solid color-mix(in srgb,var(--blue) 32%,var(--line));background:color-mix(in srgb,var(--blue) 8%,var(--surface2));color:var(--blue);font-size:11px;font-weight:900;white-space:nowrap}
+.team-summary-bar .simple-rank,.team-summary-bar .simple-time{min-width:0}
+.team-summary-bar .simple-rank .simple-value,.team-summary-bar .simple-time .simple-value{display:inline-block}
+.team-summary-bar .simple-rank{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.standings-table td .speed-revision-note{font-size:10px;white-space:nowrap}
+#teamDetailModal .speed-update-pill{margin-left:9px}
+#teamDetailOverview .speed-revision-note{margin-top:5px}
+html[data-theme="light"] .speed-update-pill{color:#9b630e}
+html[data-theme="light"] .speed-revision-note{color:#a06b14}
+@media(max-width:760px){
+ #speedScoreModal{padding:8px!important}
+ #speedScoreModal .modal-card{width:100%!important;max-height:calc(100dvh - 16px);border-radius:19px!important}
+ .speed-score-head{padding:18px 17px 15px}.speed-score-head h2{font-size:20px}
+ .speed-score-body{padding:17px}.speed-score-grid{grid-template-columns:1fr;gap:12px}
+ .speed-score-actions{position:sticky;bottom:0;padding:13px 16px;background:var(--surface);display:grid;grid-template-columns:1fr 1fr}
+ .speed-score-actions button{min-width:0}
+ .speed-score-diff{grid-template-columns:80px 1fr;font-size:12px}
+ .speed-quick-edit{width:51px}
+ .speed-update-pill{font-size:9px}
+}
+
+/* SPEED CREATOR · PVE dialog pattern — unified content / confirmations */
+:root{--speed-pop-bg:#121c31;--speed-pop-panel:#18243e;--speed-pop-line:rgba(166,188,234,.16);--speed-pop-text:#f2f5ff;--speed-pop-muted:#aab8d3;--speed-pop-blue:#86acff}
+html[data-theme="light"]{--speed-pop-bg:#fff;--speed-pop-panel:#f4f7fc;--speed-pop-line:#dbe3f0;--speed-pop-text:#21304c;--speed-pop-muted:#60718c;--speed-pop-blue:#477de3}
+#teamCreateModal{z-index:10930!important;padding:15px!important}
+#teamCreateModal .modal-card.speed-pve-creator{display:flex;flex-direction:column;overflow:hidden!important;width:min(1480px,calc(100vw - 30px))!important;max-width:none!important;max-height:min(92dvh,1040px)!important;padding:0!important;border-radius:24px!important;background:var(--speed-pop-bg)!important;color:var(--speed-pop-text)!important;border:1px solid var(--speed-pop-line)!important;box-shadow:0 28px 80px rgba(0,0,0,.36)!important}
+.speed-pve-head{display:flex;align-items:center;gap:15px;flex:0 0 auto;min-height:95px;padding:20px 25px;border-bottom:1px solid var(--speed-pop-line);background:var(--speed-pop-bg)}
+.speed-pve-glyph{width:48px;height:48px;flex:0 0 48px;border:1px solid rgba(133,173,255,.24);border-radius:15px;display:grid;place-items:center;background:rgba(110,168,255,.13);color:var(--speed-pop-blue)}
+.speed-pve-glyph svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.speed-pve-heading{min-width:0;flex:1}.speed-pve-heading small{display:block;color:var(--speed-pop-muted);font-size:12px;font-weight:800;margin-bottom:5px}.speed-pve-heading h2{margin:0;font-size:24px!important;font-weight:900;line-height:1.25;color:var(--speed-pop-text)}
+.speed-pve-close{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--speed-pop-line);border-radius:12px;background:var(--speed-pop-panel);color:var(--speed-pop-text);font-size:23px;font-weight:500}
+.speed-create-content{overflow-y:auto;overscroll-behavior:contain;padding:22px 24px;min-height:0;flex:1 1 auto}
+.speed-create-grid{display:grid;grid-template-columns:minmax(380px,.92fr) minmax(460px,1.08fr);gap:18px;align-items:start}
+.speed-create-left{display:grid;gap:16px;align-content:start;min-width:0}
+.speed-create-panel{min-width:0;padding:20px;background:var(--speed-pop-panel);border:1px solid var(--speed-pop-line);border-radius:18px}
+.speed-create-panel h3{font-size:18px!important;margin:0 0 16px;font-weight:900;color:var(--speed-pop-text)}
+.speed-create-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.speed-create-row+.speed-create-row{margin-top:12px}
+.speed-create-field{min-width:0;display:grid;gap:6px}
+.speed-create-field label{font-size:12.5px!important;color:var(--speed-pop-muted)!important;font-weight:800}
+#teamCreateModal .speed-create-field input,#teamCreateModal .speed-roster-search{height:47px!important;width:100%;border-radius:12px!important;padding:10px 12px!important;font-size:14px!important;font-weight:700;background:var(--speed-pop-bg)!important;color:var(--speed-pop-text)!important;border:1px solid var(--speed-pop-line)!important;outline:none}
+#teamCreateModal input:focus{border-color:var(--speed-pop-blue)!important;box-shadow:0 0 0 3px rgba(110,168,255,.15)!important}
+.speed-create-mode{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.speed-create-mode label{display:flex;align-items:center;justify-content:center;gap:8px;min-height:51px;border-radius:12px;border:1px solid var(--speed-pop-line);background:var(--speed-pop-bg);color:var(--speed-pop-muted);cursor:pointer;font-size:15px;font-weight:900}
+.speed-create-mode input{width:16px;height:16px;accent-color:#718af1}
+.speed-create-mode label:has(input:checked){color:var(--speed-pop-blue);border-color:rgba(110,168,255,.55);background:rgba(110,168,255,.1)}
+.speed-create-critical input{border-color:color-mix(in srgb,var(--speed-pop-blue) 34%,var(--speed-pop-line))!important}
+.speed-roster-panel{display:flex;flex-direction:column;gap:12px;min-height:470px}
+.speed-roster-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.speed-roster-top h3{margin:0!important}.speed-roster-count{padding:5px 10px;border:1px solid var(--speed-pop-line);border-radius:999px;color:var(--speed-pop-blue);background:rgba(110,168,255,.1);font-size:13px;font-weight:900}
+.speed-create-roster-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+#teamCreateModal .speed-create-roster-actions button{min-height:42px;padding:9px 13px;border-radius:11px;border:1px solid var(--speed-pop-line);color:var(--speed-pop-text);background:var(--speed-pop-bg);font-size:12.5px;font-weight:900}
+#teamCreateModal .speed-create-roster-actions button.speed-create-add{background:rgba(110,168,255,.11);border-color:rgba(110,168,255,.31);color:var(--speed-pop-blue)}
+.speed-chosen-list{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-height:37px;padding:8px;border-radius:12px;border:1px solid var(--speed-pop-line);background:var(--speed-pop-bg)}
+.speed-chosen-list .empty{display:inline!important;border:0!important;padding:0!important;background:transparent!important;text-align:left!important;color:var(--speed-pop-muted)!important;font-size:12px!important}
+.speed-chosen-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;border:1px solid rgba(110,168,255,.29);background:rgba(110,168,255,.10);color:var(--speed-pop-text);padding:6px 8px;border-radius:9px;font-size:12px;font-weight:850;overflow-wrap:anywhere}
+.speed-chosen-chip.guest{border-color:rgba(249,181,92,.3);background:rgba(249,181,92,.10)}
+.speed-chosen-chip button{border:0;background:transparent;color:var(--speed-pop-muted);font-size:17px;padding:0 2px;line-height:1}
+.speed-roster-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:355px;min-height:180px;overflow-y:auto;align-content:start;padding:2px;overscroll-behavior:contain}
+.speed-roster-person{display:flex;align-items:center;gap:10px;min-height:51px;text-align:left;padding:9px 11px;border-radius:12px;border:1px solid var(--speed-pop-line);background:var(--speed-pop-bg);color:var(--speed-pop-text);cursor:pointer;min-width:0}
+.speed-roster-person:hover{border-color:rgba(110,168,255,.5);background:rgba(110,168,255,.055)}
+.speed-roster-person.selected{border-color:rgba(110,168,255,.65);background:rgba(110,168,255,.13)}
+.speed-roster-tick{display:grid;place-items:center;flex:0 0 19px;width:19px;height:19px;border-radius:6px;border:1px solid var(--speed-pop-line);color:transparent;font-size:13px}
+.speed-roster-person.selected .speed-roster-tick{background:#648cf0;border-color:#648cf0;color:white}
+.speed-roster-person-name{flex:1;min-width:0;font-size:13.5px;font-weight:900;overflow-wrap:anywhere}
+.speed-roster-person .phase1-listed-badge{font-size:9px!important;max-width:100%}
+.speed-roster-person-meta{color:var(--speed-pop-muted);font-size:11px;font-weight:850;white-space:nowrap}
+.speed-create-footer{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 24px;border-top:1px solid var(--speed-pop-line);background:var(--speed-pop-bg)}
+.speed-create-footer-summary{color:var(--speed-pop-muted);font-size:12.5px;font-weight:750;line-height:1.5}
+.speed-create-footer-actions{display:flex;gap:9px}
+#teamCreateModal .speed-create-footer button{min-height:46px;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:900;border:1px solid var(--speed-pop-line);background:var(--speed-pop-panel);color:var(--speed-pop-text)}
+#teamCreateModal .speed-create-footer button.primary{color:#fff;background:linear-gradient(125deg,#659bf5,#8368de);border-color:transparent;box-shadow:0 8px 20px rgba(113,117,224,.17)}
+.speed-create-error{font-size:12px;min-height:0;color:#ff8295;font-weight:800}
+.speed-pve-submodal{position:fixed;inset:0;z-index:17800;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(4,10,26,.69);backdrop-filter:blur(7px)}
+.speed-pve-submodal.show{display:flex}
+.speed-pve-submodal .speed-pve-dialog{background:var(--speed-pop-bg);border:1px solid var(--speed-pop-line);box-shadow:0 28px 75px rgba(0,0,0,.36);border-radius:23px;width:min(520px,100%);max-height:calc(100dvh - 35px);overflow:auto;color:var(--speed-pop-text)}
+.speed-pve-submodal .speed-pve-head{padding:20px 21px;min-height:78px}
+.speed-pve-submodal .speed-pve-glyph{width:43px;height:43px;flex-basis:43px;border-radius:14px}
+.speed-pve-submodal .speed-pve-heading h2{font-size:20px!important}
+.speed-pve-submodal .speed-sub-body{padding:20px 22px;display:grid;gap:13px}
+.speed-sub-label{display:grid;gap:7px;color:var(--speed-pop-muted);font-size:12.5px;font-weight:800}
+.speed-sub-label input,.speed-sub-label select,.speed-sub-label textarea{min-height:46px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--speed-pop-line);color:var(--speed-pop-text);background:var(--speed-pop-panel);font-size:14px;outline:0;font-family:inherit}
+.speed-sub-label textarea{min-height:76px;resize:vertical}
+.speed-pve-submodal .speed-sub-actions{display:flex;justify-content:flex-end;gap:9px;padding:15px 22px 20px;border-top:1px solid var(--speed-pop-line)}
+.speed-pve-submodal .speed-sub-actions button{min-height:45px;padding:10px 17px;border-radius:12px;border:1px solid var(--speed-pop-line);background:var(--speed-pop-panel);color:var(--speed-pop-text);font-size:13px;font-weight:900}
+.speed-pve-submodal .speed-sub-actions .primary{color:#fff;background:linear-gradient(125deg,#659bf5,#8368de);border-color:transparent}
+.speed-pve-submodal .speed-sub-actions .danger{color:#fff;background:linear-gradient(125deg,#f36f87,#dd455e);border-color:transparent}
+.speed-create-confirm-body{padding:21px 23px;color:var(--speed-pop-muted);font-size:14px;line-height:1.75;white-space:pre-line;overflow-wrap:anywhere}
+.speed-create-confirm-body strong{color:var(--speed-pop-text)}
+.speed-create-confirm-stats{margin:13px 0 0;padding:12px;border-radius:13px;background:var(--speed-pop-panel);border:1px solid var(--speed-pop-line);font-weight:800;color:var(--speed-pop-text)}
+#teamCreateModal .speed-create-grid :is(input,button):focus-visible,.speed-pve-submodal :is(input,button,select,textarea):focus-visible{outline:2px solid #89b0ff;outline-offset:2px}
+html[data-theme="light"] .speed-roster-person.selected,html[data-theme="light"] .speed-chosen-chip{color:#224476}
+/* Bring PVE header language to existing confirms, while preserving their handlers. */
+#rosterConfirmModal .roster-modal-head,#rosterGuestModal .roster-modal-head,#rosterProfileModal .roster-modal-head{display:flex;align-items:center;gap:11px}
+#rosterConfirmModal .roster-modal-head::before,#rosterGuestModal .roster-modal-head::before,#rosterProfileModal .roster-modal-head::before{content:'✓';display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:14px;border:1px solid rgba(110,168,255,.25);background:rgba(110,168,255,.11);color:var(--blue);font-size:21px;font-weight:900}
+#rosterGuestModal .roster-modal-head::before{content:'+'}
+#rosterProfileModal .roster-modal-head::before{content:'✎'}
+#rosterConfirmModal .modal-card,#rosterGuestModal .modal-card,#rosterProfileModal .modal-card,#confirmDeleteModal .modal-card{background:var(--speed-pop-bg)!important;border:1px solid var(--speed-pop-line)!important;box-shadow:0 28px 80px rgba(0,0,0,.34)!important}
+#rosterConfirmModal .roster-modal-actions,#rosterGuestModal .roster-modal-actions,#rosterProfileModal .roster-modal-actions{border-top:1px solid var(--speed-pop-line);padding-top:14px}
+@media(max-width:1100px){.speed-create-grid{grid-template-columns:1fr}.speed-roster-panel{min-height:400px}}
+@media(max-width:760px){#teamCreateModal{padding:7px!important}#teamCreateModal .modal-card.speed-pve-creator{width:100%!important;max-height:calc(100dvh - 14px)!important;border-radius:19px!important}
+ .speed-pve-head{min-height:70px;padding:14px 15px;gap:10px}.speed-pve-heading h2{font-size:20px!important}.speed-pve-heading small{font-size:10px}.speed-pve-glyph{width:39px;height:39px;flex-basis:39px;border-radius:12px}.speed-pve-glyph svg{width:20px;height:20px}
+ .speed-create-content{padding:12px}.speed-create-grid,.speed-create-left{gap:11px}.speed-create-panel{padding:14px;border-radius:14px}.speed-create-panel h3{font-size:16px!important;margin-bottom:12px}.speed-create-row{gap:8px}.speed-create-row.rank-time{grid-template-columns:1fr 1fr}.speed-create-field label{font-size:11px!important}.speed-create-mode label{min-height:44px;font-size:13px}
+ .speed-roster-panel{min-height:0}.speed-roster-options{grid-template-columns:1fr;max-height:310px;min-height:0}.speed-create-roster-actions{gap:7px}.speed-create-roster-actions button{flex:1}.speed-create-footer{padding:12px;gap:9px;align-items:stretch}.speed-create-footer-summary{display:none}.speed-create-footer-actions{display:grid;grid-template-columns:1fr 1.3fr;width:100%}#teamCreateModal .speed-create-footer button{padding:10px 7px;min-width:0}
+ .speed-pve-submodal{padding:8px}.speed-pve-submodal .speed-pve-dialog{max-height:calc(100dvh - 16px);border-radius:18px}.speed-pve-submodal .speed-sub-body{padding:15px}
+}
+@media(max-width:390px){.speed-create-row.rank-time{grid-template-columns:1fr}}
+
+body.speed-create-active{overflow:hidden!important}
+
+
+/* ===== vNext: accurate PVE modal surfaces, compact edit actions, update timestamps ===== */
+:root{
+  --speed-pop-line:rgba(255,255,255,.10);
+  --speed-pop-bg:#151d2c;
+  --speed-pop-panel:#20293b;
+  --speed-dialog-border:rgba(255,255,255,.11);
+  --speed-dialog-surface:linear-gradient(180deg,#171f30 0%,#101726 100%);
+  --speed-time-accent:#58d5b4;
+}
+html[data-theme="light"]{
+  --speed-pop-line:rgba(67,89,130,.15);
+  --speed-pop-bg:#fff;
+  --speed-pop-panel:#f4f7fc;
+  --speed-dialog-border:rgba(67,89,130,.16);
+  --speed-dialog-surface:linear-gradient(180deg,#fff 0%,#f7f9fd 100%);
+  --speed-time-accent:#07876c;
+}
+/* PVE registration uses a quiet neutral frame, not the previous tinted outline. */
+html body .modal .modal-card,
+html body #teamCreateModal .modal-card.speed-pve-creator,
+html body .speed-pve-submodal .speed-pve-dialog,
+html body #rosterConfirmModal>.modal-card,
+html body #rosterGuestModal>.modal-card,
+html body #rosterProfileModal>.modal-card,
+html body #confirmDeleteModal>.modal-card,
+html body #speedScoreModal>.modal-card{
+  border:1px solid var(--speed-dialog-border)!important;
+  background:var(--speed-dialog-surface)!important;
+  box-shadow:0 24px 60px rgba(0,0,0,.40)!important;
+}
+html[data-theme="light"] body .modal .modal-card,
+html[data-theme="light"] body #teamCreateModal .modal-card.speed-pve-creator,
+html[data-theme="light"] body .speed-pve-submodal .speed-pve-dialog{
+  box-shadow:0 20px 52px rgba(55,77,122,.16)!important;
+}
+.speed-pve-head,.speed-create-footer,.speed-score-head,.speed-score-actions{
+  background:transparent!important;
+  border-color:var(--speed-dialog-border)!important;
+}
+.speed-create-panel,.speed-roster-person,.speed-chosen-list,.speed-create-mode label,
+.speed-create-confirm-stats,.speed-score-preview{
+  border-color:var(--speed-dialog-border)!important;
+}
+/* Top leaderboard: edit remains handy but no longer takes an entire column. */
+#quickGrid .speed-quick-row{display:block!important;position:relative;min-width:0;}
+#quickGrid .speed-quick-row>.quick-card{display:block;width:100%;height:100%;min-width:0;padding-right:48px!important;}
+#quickGrid .speed-quick-row>.quick-card .quick-top{padding-right:0}
+#quickGrid .speed-quick-row>.quick-card .chips{padding-right:0}
+#quickGrid .speed-quick-edit{
+  position:absolute!important;top:10px!important;right:10px!important;bottom:auto!important;
+  display:grid!important;place-items:center!important;
+  width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;
+  padding:0!important;margin:0!important;align-self:auto!important;
+  border-radius:9px!important;border:1px solid var(--line)!important;
+  background:var(--surface2)!important;color:var(--muted)!important;
+  box-shadow:none!important;font-size:16px!important;font-weight:700!important;line-height:1!important;
+}
+#quickGrid .speed-quick-edit:hover,#quickGrid .speed-quick-edit:focus-visible{
+  background:var(--surface3)!important;color:var(--text)!important;
+  border-color:var(--line2)!important;
+}
+#teamList .speed-team-edit{
+  display:inline-grid!important;place-items:center!important;
+  width:28px!important;height:28px!important;min-height:28px!important;min-width:28px!important;
+  padding:0!important;font-size:15px!important;border-radius:8px!important;
+  color:var(--muted)!important;border:1px solid var(--line)!important;background:var(--surface2)!important;
+}
+#teamList .speed-team-edit:hover{color:var(--text)!important;background:var(--surface3)!important}
+/* Timestamp hierarchy: recent edits stand out, older timestamps stay readable. */
+.speed-update-time{
+  display:flex;align-items:center;flex-wrap:wrap;gap:6px;
+  margin-top:8px;min-width:0;font-size:12px;font-weight:750;
+  color:var(--muted);line-height:1.5;letter-spacing:0;
+}
+.speed-update-time .speed-time-value{font-size:12px;font-weight:850;font-variant-numeric:tabular-nums}
+.speed-update-time.is-recent{color:var(--speed-time-accent);}
+.speed-update-time.is-recent .speed-time-value{color:var(--speed-time-accent);}
+.speed-update-time.is-recent::before{
+  content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--speed-time-accent);
+}
+.speed-recent-badge{
+  display:inline-flex;align-items:center;padding:3px 8px;min-height:21px;
+  border:1px solid color-mix(in srgb,var(--speed-time-accent) 36%,var(--line));
+  background:color-mix(in srgb,var(--speed-time-accent) 10%,var(--surface2));
+  border-radius:999px;color:var(--speed-time-accent);font-size:10px;font-weight:900;
+  white-space:nowrap;
+}
+#quickGrid .speed-update-time{margin:10px 0 0;padding:8px 0 0;border-top:1px solid var(--line);font-size:11px;}
+#quickGrid .speed-update-time .speed-time-value{font-size:12px}
+#teamList .team-updated-at.speed-update-time{margin-top:6px;padding:0;background:transparent;}
+#teamList .team-card.speed-recent-team .team-summary-main{min-width:0}
+/* Keep score-change notes distinct from last-update freshness. */
+#quickGrid .speed-update-pill{vertical-align:middle}
+@media(max-width:760px){
+  #quickGrid .speed-quick-edit{top:8px!important;right:8px!important;width:29px!important;height:29px!important;min-width:29px!important;min-height:29px!important}
+  #quickGrid .speed-quick-row>.quick-card{padding-right:44px!important}
+  .speed-update-time{gap:5px;font-size:11px}
+  .speed-update-time .speed-time-value{font-size:11px}
+  #teamList .team-updated-at.speed-update-time{flex-wrap:wrap}
+}
+
+
+/* Mobile team summary: keep the update timestamp under the team name. */
+@media(max-width:760px){
+ #teamList .team-summary-bar{grid-template-columns:minmax(0,1fr) auto!important;align-items:start!important;gap:9px 12px!important}
+ #teamList .team-summary-main{grid-column:1!important;grid-row:1!important;min-width:0!important}
+ #teamList .team-summary-name{overflow-wrap:anywhere}
+ #teamList .team-collapse-btn{grid-column:2!important;grid-row:1!important;justify-self:end!important;align-self:start!important;width:auto!important;min-width:72px!important;min-height:38px!important;padding:7px 10px!important}
+ #teamList .team-summary-type{grid-column:1!important;grid-row:2!important}
+ #teamList .simple-count{grid-column:2!important;grid-row:2!important;text-align:right!important}
+ #teamList .simple-rank{grid-column:1!important;grid-row:3!important}
+ #teamList .simple-time{grid-column:2!important;grid-row:3!important;text-align:right!important}
+ #teamList .team-updated-at.speed-update-time{display:flex;gap:5px;margin-top:6px;line-height:1.5}
+}
+
+/* Edited in this browser tab: an action state, NOT a calendar-based recentness test. */
+.speed-session-label{display:inline-flex;align-items:center;gap:6px;max-width:100%;font-size:12px;font-weight:850;line-height:1.5;white-space:nowrap}
+.speed-session-label::before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:currentColor;opacity:.75}
+.speed-session-label.edited{color:var(--green);}
+.speed-session-label.pending{color:var(--muted);opacity:.75;font-weight:750}
+#quickGrid .speed-session-label{display:flex;width:max-content;margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
+#teamList .team-updated-at .speed-session-label{margin-top:4px}
+#quickGrid .speed-session-progress{font-size:12px;font-weight:850;color:var(--green);white-space:nowrap;margin-left:auto}
+@media(max-width:760px){.speed-session-label{font-size:11.5px}#quickGrid .speed-session-progress{margin-left:0}}
+
+
+/* A subtle visual outline makes processed teams easy to scan at a glance. */
+#quickGrid .speed-quick-row:has(>.quick-card>.speed-session-label.edited)>.quick-card{
+  border-color:color-mix(in srgb,var(--green) 38%,var(--line));
+  box-shadow:inset 3px 0 0 color-mix(in srgb,var(--green) 78%,transparent);
+}
+#teamList .team-card.speed-recent-team{
+  border-color:color-mix(in srgb,var(--green) 39%,var(--line));
+  box-shadow:inset 3px 0 0 color-mix(in srgb,var(--green) 73%,transparent);
+}
+
+/* Shared last-updated information: visible to everyone with Firebase access. */
+#quickGrid .speed-quick-row>.quick-card{min-width:0}
+.speed-update-time.speed-shared-time{display:flex;gap:6px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:12px;line-height:1.55;font-weight:700;min-width:0}
+.speed-update-time.speed-shared-time .speed-time-value{font-size:12px;font-weight:850;color:var(--text);font-variant-numeric:tabular-nums}
+.speed-update-time.speed-shared-time.was-updated .speed-time-value{color:var(--green)}
+.speed-update-time.speed-shared-time.is-latest .speed-time-value{color:var(--green)}
+.speed-update-time.speed-shared-time::before{display:none}
+.speed-update-time .speed-update-caption{color:var(--muted);font-weight:700}
+.speed-update-time .speed-recent-badge{padding:3px 7px;border:1px solid color-mix(in srgb,var(--green) 24%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--green) 7%,var(--surface2));color:var(--green);font-size:10px;font-weight:850}
+.speed-update-time .speed-recent-badge.latest{border-color:color-mix(in srgb,var(--green) 40%,var(--line));background:color-mix(in srgb,var(--green) 14%,var(--surface2));font-weight:950}
+.speed-update-time .speed-update-pending{font-size:10px;font-weight:900;color:var(--orange)}
+#quickGrid .quick-card.speed-shared-latest{border-color:color-mix(in srgb,var(--green) 38%,var(--line));box-shadow:inset 3px 0 0 color-mix(in srgb,var(--green) 70%,transparent)}
+#teamList .team-card.speed-shared-latest{border-color:color-mix(in srgb,var(--green) 33%,var(--line))}
+#teamList .team-updated-at>.speed-shared-time{margin-top:6px}
+#quickGrid .speed-session-progress{font-size:12px;font-weight:850;color:var(--muted);white-space:normal;margin-left:auto}
+@media(max-width:760px){
+ .speed-update-time.speed-shared-time{font-size:11px;gap:5px}
+ .speed-update-time.speed-shared-time .speed-time-value{font-size:11px}
+ #quickGrid .speed-session-progress{margin-left:0}
+}
+
+
+/* vNext: highlight only shared updates made today (Malaysia time); compact team rows */
+.speed-update-time.speed-shared-time.was-updated:not(.is-today) .speed-time-value,
+.speed-update-time.speed-shared-time:not(.is-today) .speed-time-value {
+  color:var(--muted)!important;
+}
+.speed-update-time.speed-shared-time.is-today .speed-time-value {
+  color:var(--green)!important;
+  font-weight:950!important;
+}
+.speed-update-time.speed-shared-time .speed-recent-badge.today {
+  color:var(--green)!important;
+  background:color-mix(in srgb,var(--green) 13%,var(--surface2))!important;
+  border:1px solid color-mix(in srgb,var(--green) 40%,var(--line))!important;
+  font-size:11px!important;
+  padding:3px 8px!important;
+}
+#quickGrid .quick-card.speed-shared-latest,
+#teamList .team-card.speed-shared-latest {
+  border-color:color-mix(in srgb,var(--green) 37%,var(--line))!important;
+  box-shadow:inset 3px 0 0 color-mix(in srgb,var(--green) 70%,transparent)!important;
+}
+#teamList .team-card .team-top {padding:8px 12px!important;}
+#teamList .team-summary-bar {
+  min-height:66px!important;
+  padding:4px 6px!important;
+  gap:10px!important;
+  align-items:center!important;
+}
+#teamList .team-summary-name {line-height:1.26!important;}
+#teamList .team-member-names {margin-top:2px!important;line-height:1.4!important;}
+#teamList .team-updated-at.speed-update-time,
+#teamList .team-updated-at .speed-update-time {margin-top:3px!important;line-height:1.3!important;}
+#teamList .team-collapse-btn {
+  min-height:36px!important;
+  padding:6px 12px!important;
+}
+@media (max-width:760px) {
+  #teamList .team-card .team-top {padding:8px 10px!important;}
+  #teamList .team-summary-bar {min-height:0!important;padding:3px!important;gap:7px 10px!important;}
+  #teamList .team-member-names {margin-top:2px!important;}
+  #teamList .team-updated-at.speed-update-time,
+  #teamList .team-updated-at .speed-update-time {margin-top:3px!important;}
+  #teamList .team-collapse-btn {min-height:35px!important;}
+}
+
 </style>
 </head>
 <body>
@@ -3472,7 +4130,7 @@ body.team-detail-open{overflow:hidden}
     <input class="search" id="pickerSearch" placeholder="搜尋玩家 / 職業 / 備註…">
     <select class="picker-prof-filter" id="pickerProfessionFilter"><option value="">全部職業</option></select>
   </div>
-  <button type="button" class="picker-outsider" id="pickerOutsiderBtn"><div><strong>＋ 使用外人</strong></div><span>選擇 →</span></button><div class="picker-list" id="pickerList"></div>
+  <button type="button" class="picker-outsider" id="pickerOutsiderBtn"><div><strong>＋ 使用外援</strong></div><span>選擇 →</span></button><div class="picker-list" id="pickerList"></div>
   <div class="modal-actions"><button class="btn" data-close="pickerModal">取消</button></div>
 </div></div>
 
@@ -3632,8 +4290,8 @@ body.team-detail-open{overflow:hidden}
 
 <div class="modal" id="rosterGuestModal" role="dialog" aria-modal="true" aria-labelledby="rosterGuestTitle">
  <div class="modal-card">
-  <div class="roster-modal-head"><h2 id="rosterGuestTitle">新增外人</h2><button type="button" class="roster-modal-close" data-roster-close="rosterGuestModal" aria-label="關閉">×</button></div>
-  <div class="roster-form-row"><label for="rosterGuestName">外人名稱</label><input id="rosterGuestName" maxlength="40" placeholder="輸入玩家名稱" autocomplete="off"></div>
+  <div class="roster-modal-head"><h2 id="rosterGuestTitle">新增外援</h2><button type="button" class="roster-modal-close" data-roster-close="rosterGuestModal" aria-label="關閉">×</button></div>
+  <div class="roster-form-row"><label for="rosterGuestName">外援名稱</label><input id="rosterGuestName" maxlength="40" placeholder="輸入玩家名稱" autocomplete="off"></div>
   <div class="roster-form-error" id="rosterGuestError" role="alert"></div>
   <div class="roster-modal-actions"><button type="button" data-roster-close="rosterGuestModal">取消</button><button type="button" class="primary" id="rosterGuestSave">加入選擇</button></div>
  </div>
@@ -3710,7 +4368,7 @@ function phaseOutsidersOf(team,phase=selectedPhase){
   if(custom&&typeof custom==="object")return custom;
   const fromSnapshot={};
   (phaseResult(team,phase)?.roster||[]).forEach((m,i)=>{
-    if(m?.external){const key=m.id&&isOutsiderToken(m.id)?m.id:`external:legacy_p${phase}_${i}`;fromSnapshot[key]={name:m.name||"外人"}}
+    if(m?.external){const key=m.id&&isOutsiderToken(m.id)?m.id:`external:legacy_p${phase}_${i}`;fromSnapshot[key]={name:m.name||"外援"}}
   });
   return fromSnapshot;
 }
@@ -3883,7 +4541,7 @@ function renderStandings(){
       const m=roster[i];const status=result?phaseMemberStatus(m,result,best,count):(m?.external?"external":"single");
       let flag="";
       if(status==="best")flag='<span class="drop-flag best">個人最佳</span>';
-      else if(status==="external")flag='<span class="drop-flag unranked">外人</span>';
+      else if(status==="external")flag='<span class="drop-flag unranked">外援</span>';
       return `<td class="player-cell player-${status}"><span class="player-cell-name">${esc(m?.name||"—")}</span>${firstPhaseBadge(m,listed)}${flag}</td>`;
     }).join("");
     const challenge=normalizeTeamMode(team)==="challenge";
@@ -4191,12 +4849,10 @@ function firestoreTimestampToMs(value){
   return 0;
 }
 function teamUpdatedMs(team){
-  return Math.max(
-    Number(team?.updatedAtMs||0),
-    Number(phaseResult(team)?.updatedAtMs||0),
-    firestoreTimestampToMs(team?.updatedAt),
-    Number(team?.createdAt||0)
-  );
+  // Persisted content-edit times are shared by all viewers. `updatedAt` is only a
+  // fallback for legacy Firestore documents because retries also write serverTimestamp().
+  const contentMs=Math.max(Number(team?.updatedAtMs||0),Number(phaseResult(team,teamPeriod(team))?.updatedAtMs||0));
+  return contentMs||firestoreTimestampToMs(team?.updatedAt)||Number(team?.createdAt||0);
 }
 function fmtTeamUpdated(team){
   const ms=teamUpdatedMs(team);
@@ -4216,7 +4872,7 @@ function slotPerson(team,value,phase=selectedPhase){
   if(!value)return null;
   if(isOutsiderToken(value)){
     const ext=getOutsider(team,value,phase);
-    return{id:value,name:ext?.name||"外人",role:"外人",external:true};
+    return{id:value,name:ext?.name||"外援",role:"外援",external:true};
   }
   const p=getPlayer(value);
   if(p)return {...p,external:false};
@@ -4227,17 +4883,17 @@ function slotPerson(team,value,phase=selectedPhase){
 function rosterSnapshotFromTeam(team,phase=selectedPhase){
   return phaseMembersOf(team,phase).filter(Boolean).map(v=>{
     const p=slotPerson(team,v,phase);
-    return p?{id:p.id,name:p.name||"外人",role:p.external?"外人":playerRolesText(p),roles:p.external?["外人"]:normalizeRoles(p),external:!!p.external}:null;
+    return p?{id:p.id,name:p.name||"外援",role:p.external?"外援":playerRolesText(p),roles:p.external?["外援"]:normalizeRoles(p),external:!!p.external}:null;
   }).filter(Boolean);
 }
 function memberDisplayNames(team,phase=selectedPhase){
-  return phaseMembersOf(team,phase).filter(Boolean).map(v=>slotPerson(team,v,phase)?.name||"外人");
+  return phaseMembersOf(team,phase).filter(Boolean).map(v=>slotPerson(team,v,phase)?.name||"外援");
 }
 function rosterMemberKey(team,value){
   if(!value)return"";
   if(isOutsiderToken(value)){
     const ext=getOutsider(team,value);
-    return`external:${norm(ext?.name||"外人")}`;
+    return`external:${norm(ext?.name||"外援")}`;
   }
   return`player:${value}`;
 }
@@ -4441,15 +5097,15 @@ function slotHtml(t,i){
   const p1badge=firstPhaseBadge(p);
 
   if(!p){
-    return`<div class="slot"><span class="slot-no">${i+1}</span><button class="add-slot" data-pick="${esc(t.id)}" data-index="${i}">＋ 加入玩家 / 外人</button></div>`;
+    return`<div class="slot"><span class="slot-no">${i+1}</span><button class="add-slot" data-pick="${esc(t.id)}" data-index="${i}">＋ 加入玩家 / 外援</button></div>`;
   }
 
   return`<div class="slot filled"><span class="slot-no">${i+1}</span><div>
     <strong>${esc(p.name)}</strong>
     ${p1badge}
     ${p.external
-      ? `<span class="outsider-pill">外人 · 不計次數</span>`
-      : `<span>${esc(p.external?"外人":playerRolesText(p))}</span><span class="limit ${s?.hit?"warn":""}">${SIZE}榜 ${s?.count||0}${limit?`/${limit}`:""}</span>`
+      ? `<span class="outsider-pill">外援 · 不計次數</span>`
+      : `<span>${esc(p.external?"外援":playerRolesText(p))}</span><span class="limit ${s?.hit?"warn":""}">${SIZE}榜 ${s?.count||0}${limit?`/${limit}`:""}</span>`
     }
     <div class="slot-actions"><button data-pick="${esc(t.id)}" data-index="${i}">更換</button><button data-remove="${esc(t.id)}" data-player="${esc(raw)}">移除</button></div>
   </div></div>`;
@@ -4701,7 +5357,7 @@ function renderBatchPicker(){
   $("batchSelectedCount").textContent=`已選 ${selectedCount} / ${internalCapacity}`;
   $("batchSelectedCount").classList.toggle("over",selectedCount>internalCapacity);
 
-  $("batchCapacityText").textContent=outsiderCount?`外人 ${outsiderCount} · 可選 ${internalCapacity}`:`可選 ${internalCapacity}`;
+  $("batchCapacityText").textContent=outsiderCount?`外援 ${outsiderCount} · 可選 ${internalCapacity}`:`可選 ${internalCapacity}`;
 
   $("batchApplyBtn").disabled=selectedCount>internalCapacity;
 }
@@ -4715,7 +5371,7 @@ function toggleBatchPlayer(playerId){
     batchSelectedIds.delete(playerId);
   }else{
     if(batchSelectedIds.size>=internalCapacity){
-      toast(`最多只能選 ${internalCapacity} 位幫內玩家；隊伍另有 ${outsiderCount} 個外人位置`);
+      toast(`最多只能選 ${internalCapacity} 位幫內玩家；隊伍另有 ${outsiderCount} 個外援位置`);
       return;
     }
     batchSelectedIds.add(playerId);
@@ -4739,7 +5395,7 @@ function applyBatchPlayers(){
   const selected=[...batchSelectedIds];
 
   if(selected.length>capacity){
-    alert(`目前有 ${externalSlots.length} 個外人位置，所以最多只能選 ${capacity} 位幫內玩家。`);
+    alert(`目前有 ${externalSlots.length} 個外援位置，所以最多只能選 ${capacity} 位幫內玩家。`);
     return;
   }
 
@@ -4774,11 +5430,11 @@ function applyBatchPlayers(){
 function assignOutsider(teamId,index){
   const t=teams.find(x=>x.id===teamId);
   if(!t)return;
-  const typed=prompt("外人名稱（可留空，留空就顯示「外人」）：","");
+  const typed=prompt("外援名稱（可留空，留空就顯示「外援」）：","");
   if(typed===null)return;
   const token=`external:${uid("guest")}`;
   const outsiders={...phaseOutsidersOf(t)};
-  outsiders[token]={name:typed.trim()||"外人"};
+  outsiders[token]={name:typed.trim()||"外援"};
   const members=phaseMembersOf(t);
   const old=members[index];
   if(isOutsiderToken(old))delete outsiders[old];
@@ -5814,7 +6470,7 @@ function buildPlayerRecordCountMap(exportTeams){
 }
 function exportPlayerCell(member,result,bestByPlayer,countMap){
   if(!member)return {value:"",style:"Blocked"};
-  if(member.external)return {value:member.name||"外人",style:"External"};
+  if(member.external)return {value:member.name||"外援",style:"External"};
 
   const key=member.id
     ? `id:${member.id}`
@@ -6212,7 +6868,7 @@ function exportPNG(){
         } else if(member.external){
           color="#9c5700";
           font='800 15px Arial';
-          text=member.name||"外人";
+          text=member.name||"外援";
         } else {
           const isBest=isPlayerBestRecord(member,row.result,bestByPlayer);
           const hasMulti=playerTeamCount(member)>1;
@@ -6675,7 +7331,7 @@ async function syncTeam(team){
   saveLocalPage();if(!fbOnline||!fb){team._sync="local";saveLocalPage();renderAll();return}
   team._sync="pending";saveLocalPage();renderAll();setSync("saving","同步中");
   try{
-    const clean={id:team.id,dungeonId:team.dungeonId,phase:teamPeriod(team),_phaseSplitV2:!!team._phaseSplitV2,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},phaseMembers:team.phaseMembers||{},phaseExternalMembers:team.phaseExternalMembers||{},currentResult:team.currentResult||null,phaseResults:team.phaseResults||{},createdAt:team.createdAt||Date.now(),updatedAtMs:Number(team.updatedAtMs||team.createdAt||Date.now())};
+    const clean={id:team.id,dungeonId:team.dungeonId,phase:teamPeriod(team),_phaseSplitV2:!!team._phaseSplitV2,size:SIZE,name:team.name,note:team.note||"",mode:normalizeTeamMode(team),members:Array.isArray(team.members)?team.members:[],externalMembers:team.externalMembers&&typeof team.externalMembers==="object"?team.externalMembers:{},phaseMembers:team.phaseMembers||{},phaseExternalMembers:team.phaseExternalMembers||{},currentResult:team.currentResult||null,phaseResults:team.phaseResults||{},createdAt:team.createdAt||Date.now(),resultUpdateByPhase:team.resultUpdateByPhase||{},updatedAtMs:Number(team.updatedAtMs||team.createdAt||Date.now())};
     await fb.setDoc(fb.doc(fb.db,"competition",`speed_${SIZE}`,"teams",team.id),{...clean,updatedAt:fb.serverTimestamp()});
     team._sync="synced";saveLocalPage();setSync("ok","已同步");renderAll();
   }catch(e){console.warn(e);team._sync="local";saveLocalPage();setSync("local","本機暫存");renderAll()}
@@ -6901,7 +7557,7 @@ initFirebase();
         btn.type='button';
         btn.className='batch-action-btn ghost';
         btn.id='batchOutsiderBtn';
-        btn.textContent='＋ 外人';
+        btn.textContent='＋ 外援';
         actions.insertBefore(btn,actions.firstChild);
       }
     }
@@ -7074,7 +7730,7 @@ initFirebase();
       <strong>${esc(p.name)}</strong>
       ${p1badge}
       ${p.external
-        ? `<span class="outsider-pill">外人 · 不計次數</span>`
+        ? `<span class="outsider-pill">外援 · 不計次數</span>`
         : `<span class="limit">${SIZE}榜 ${s?.count||0}${limit?`/${limit}`:''}</span>`
       }
       <div class="slot-actions"><button data-remove="${esc(t.id)}" data-player="${esc(raw)}">移除</button></div>
@@ -7219,7 +7875,7 @@ initFirebase();
     const selectedCount=batchSelectedIds.size;
     $('batchSelectedCount').textContent=`已選 ${selectedCount} / ${internalCapacity}`;
     $('batchSelectedCount').classList.toggle('over',selectedCount>internalCapacity);
-    $('batchCapacityText').textContent=outsiderCount?`外人 ${outsiderCount} · 可選 ${internalCapacity}`:`可選 ${internalCapacity}`;
+    $('batchCapacityText').textContent=outsiderCount?`外援 ${outsiderCount} · 可選 ${internalCapacity}`:`可選 ${internalCapacity}`;
     $('batchApplyBtn').disabled=selectedCount>internalCapacity;
   };
 
@@ -7228,11 +7884,11 @@ initFirebase();
     const members=phaseMembersOf(t);
     const empty=members.findIndex(v=>!v);
     if(empty<0){ toast('隊伍已滿'); return; }
-    const typed=prompt('外人名稱（可留空，留空就顯示「外人」）：','');
+    const typed=prompt('外援名稱（可留空，留空就顯示「外援」）：','');
     if(typed===null)return;
     const token=`external:${uid('guest')}`;
     const outsiders={...phaseOutsidersOf(t)};
-    outsiders[token]={name:typed.trim()||'外人'};
+    outsiders[token]={name:typed.trim()||'外援'};
     members[empty]=token;
     setPhaseRoster(t,members,outsiders);
     persistPhaseRosterChange(t);
@@ -7617,7 +8273,7 @@ initFirebase();
   let inAction=false;
   let preferSingle=true;
   const activeTeam=()=>teams.find(t=>t.id===batchTeamId&&t.dungeonId===selectedDungeonId&&teamPeriod(t)===selectedPhase);
-  const guestName=(t,tok)=>renamedGuests.get(tok)||phaseOutsidersOf(t)[tok]?.name||'外人';
+  const guestName=(t,tok)=>renamedGuests.get(tok)||phaseOutsidersOf(t)[tok]?.name||'外援';
   const $modal=id=>el(id)?.classList.contains('show');
   const openSheet=(id,focusId)=>{openModal(id);requestAnimationFrame(()=>el(focusId)?.focus({preventScroll:true}))};
   const closeSheet=id=>closeModal(id);
@@ -7679,8 +8335,8 @@ initFirebase();
     if(!t){host.replaceChildren();return}
     const items=guestsInDraft(t);
     host.innerHTML=items.map(g=>`<span class="picker-guest-chip">
-      <span>外人 · ${esc(g.name)}</span>
-      <button type="button" data-edit-guest="${esc(g.token)}" aria-label="修改外人">編輯</button>
+      <span>外援 · ${esc(g.name)}</span>
+      <button type="button" data-edit-guest="${esc(g.token)}" aria-label="修改外援">編輯</button>
       <button type="button" data-remove-guest="${esc(g.token)}" aria-label="移除此人">×</button>
     </span>`).join('');
   }
@@ -7700,7 +8356,7 @@ initFirebase();
     });
     const max=capacity(t),chosen=batchSelectedIds.size;
     el('batchSelectedCount').textContent=`已選 ${chosen} / ${max} 位玩家`;
-    el('batchCapacityText').textContent=`${guestsInDraft(t).length} 位外人 · 隊伍總額 ${SIZE} 人`;
+    el('batchCapacityText').textContent=`${guestsInDraft(t).length} 位外援 · 隊伍總額 ${SIZE} 人`;
     el('batchApplyBtn').disabled=chosen>max || chosen+guestsInDraft(t).length>SIZE;
     el('batchApplyBtn').textContent='確認隊伍名單';
     const summary=el('pickerCurrentTeamSummary');
@@ -7717,7 +8373,7 @@ initFirebase();
       card.insertBefore(header,heading);
       heading.hidden=true;
       const actions=document.createElement('div');actions.className='picker-primary-actions';
-      actions.innerHTML='<button type="button" id="pickerCreateProfile" class="picker-create-profile">＋ 新增玩家資料</button><button type="button" id="pickerCreateGuest" class="picker-create-guest">＋ 新增外人</button>';
+      actions.innerHTML='<button type="button" id="pickerCreateProfile" class="picker-create-profile">＋ 新增玩家資料</button><button type="button" id="pickerCreateGuest" class="picker-create-guest">＋ 新增外援</button>';
       const search=card.querySelector('.picker-toolbar');search.after(actions);
       const guestDiv=document.createElement('div');guestDiv.id='pickerGuestDrafts';guestDiv.className='picker-guest-list';
       const list=el('batchPickerList');list.before(guestDiv);
@@ -7807,7 +8463,7 @@ initFirebase();
     const {members}=compileDraft(t);
     const names=members.filter(Boolean).map(tok=>{
       if(isOutsiderToken(tok)){
-        return renamedGuests.get(tok)||newGuests.find(x=>x.token===tok)?.name||phaseOutsidersOf(t)[tok]?.name||'外人';
+        return renamedGuests.get(tok)||newGuests.find(x=>x.token===tok)?.name||phaseOutsidersOf(t)[tok]?.name||'外援';
       }
       return getPlayer(tok)?.name||'未知玩家';
     });
@@ -7877,7 +8533,7 @@ initFirebase();
     guestEditingToken=token;
     const saved=newGuests.find(x=>x.token===token);
     const name=token?(saved?.name||guestName(t,token)):'';
-    el('rosterGuestTitle').textContent=token?'修改外人':'新增外人';
+    el('rosterGuestTitle').textContent=token?'修改外援':'新增外援';
     el('rosterGuestName').value=name;
     el('rosterGuestSave').textContent=token?'儲存修改':'加入選擇';
     el('rosterGuestModal').dataset.origin=origin;
@@ -7885,12 +8541,12 @@ initFirebase();
     openSheet('rosterGuestModal','rosterGuestName');
   }
   el('rosterGuestSave').addEventListener('click',()=>{
-    const name=el('rosterGuestName').value.trim()||'外人';
+    const name=el('rosterGuestName').value.trim()||'外援';
     const origin=el('rosterGuestModal').dataset.origin;
     const t=origin==='single'?teams.find(x=>x.id===pickerTeamId):activeTeam();
     if(!t)return;
     const token=guestEditingToken;
-    confirmStep({title:token?'確認修改外人':'確認加入外人',message:`${name}\n${t.name}`,confirmText:'確認',doIt:()=>{
+    confirmStep({title:token?'確認修改外援':'確認加入外援',message:`${name}\n${t.name}`,confirmText:'確認',doIt:()=>{
       if(origin==='single'){
         const tok=token||`external:${uid('guest')}`;
         const members=phaseMembersOf(t),outsiders={...phaseOutsidersOf(t)};
@@ -7909,7 +8565,7 @@ initFirebase();
       }
       closeSheet('rosterGuestModal');
       guestEditingToken=null;
-      toast(origin==='single'?'外人已加入隊伍':'外人已加入待確認名單');
+      toast(origin==='single'?'外援已加入隊伍':'外援已加入待確認名單');
     }});
   });
   el('rosterGuestName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();el('rosterGuestSave').click()}});
@@ -8100,6 +8756,575 @@ initFirebase();
  });
  makeProfileLayout();
  improvePicker();
+})();
+
+
+/* ===== PVE-inspired score editing / persisted change history ===== */
+(function(){
+  const $id=id=>document.getElementById(id);
+  const scoreFields=[['rank','遊戲排名'],['timeMs','總通關時間'],['boss1Ms','BOSS 1'],['boss2Ms','BOSS 2']];
+  const comparable=(x,k)=> k==='rank'||k==='boss1Ms'||k==='boss2Ms' ? Number(x?.[k]||0) : Number(x?.[k]||0);
+  const valueText=(key,value)=>key==='rank'?(Number(value)>0?'#'+Number(value):'—'):(Number(value)>0?fmtTime(Number(value)):'—');
+  const revisionOf=t=>t?.resultUpdateByPhase?.[String(selectedPhase)]||null;
+  const diffOf=(oldVal,newVal)=>scoreFields.filter(([k])=>comparable(oldVal,k)!==comparable(newVal,k)).map(([key,label])=>({key,label,old:comparable(oldVal,key),new:comparable(newVal,key)}));
+  const originalSetResult=setPhaseResult;
+  setPhaseResult=function(team,phase,value){
+    const old=phaseResult(team,phase);
+    if(old&&value){
+      const changed=diffOf(old,value);
+      if(changed.length){
+        team.resultUpdateByPhase={...(team.resultUpdateByPhase||{}),[String(phase)]:{
+          at:Date.now(),changes:changed,previous:scoreFields.reduce((obj,[k])=>(obj[k]=comparable(old,k),obj),{})
+        }};
+      }
+    }
+    return originalSetResult(team,phase,value);
+  };
+  const updatePill=()=>'<span class="speed-update-pill">本次已修改</span>';
+  const wasChanged=(revision,key)=>Boolean(revision?.changes?.some(c=>c.key===key));
+  function decorate(){
+    // Main compact team cards: quick score editor, revised rank and revised total time.
+    document.querySelectorAll('#teamList .team-card').forEach(card=>{
+      const team=visibleTeams().find(t=>card.id==='team-'+t.id); if(!team)return;
+      const rev=revisionOf(team),top=card.querySelector('.team-summary-main');
+      if(rev && top && !top.querySelector('.speed-update-pill'))top.querySelector('.team-summary-name')?.insertAdjacentHTML('beforeend',' '+updatePill());
+      const rankCell=card.querySelector('.simple-rank');
+      if(rankCell){
+        if(!rankCell.querySelector('.speed-team-edit')){
+          rankCell.insertAdjacentHTML('beforeend',`<button type="button" class="speed-team-edit" data-speed-edit="${esc(team.id)}">修改排名</button>`);
+        }
+        const d=rev?.changes?.find(c=>c.key==='rank');
+        if(d&&!rankCell.querySelector('.speed-revision-note'))rankCell.querySelector('.simple-value')?.insertAdjacentHTML('afterend',`<small class="speed-revision-note">原 ${esc(valueText('rank',d.old))}</small>`);
+      }
+      const timeCell=card.querySelector('.simple-time');
+      const td=rev?.changes?.find(c=>c.key==='timeMs');
+      if(td&&timeCell&&!timeCell.querySelector('.speed-revision-note'))timeCell.querySelector('.simple-value')?.insertAdjacentHTML('afterend',`<small class="speed-revision-note">原 ${esc(valueText('timeMs',td.old))}</small>`);
+    });
+    // Top ranking shortcuts: each ranked team gets its own one-click edit action.
+    document.querySelectorAll('#quickGrid > .quick-card').forEach(card=>{
+      const id=card.dataset.jump;if(!id)return;
+      const t=visibleTeams().find(t=>t.id===id); if(!t)return;
+      const rev=revisionOf(t);
+      if(rev){
+        const name=card.querySelector('.quick-name');
+        if(name&&!name.querySelector('.speed-update-pill'))name.insertAdjacentHTML('beforeend',' '+updatePill());
+        rev.changes.forEach(c=>{
+          const target=c.key==='rank'?card.querySelector('.quick-rank'):c.key==='timeMs'?card.querySelector('.quick-stats .quick-stat:nth-child(2) strong'):null;
+          if(target&&!target.nextElementSibling?.classList?.contains('speed-revision-note'))target.insertAdjacentHTML('afterend',`<small class="speed-revision-note">原 ${esc(valueText(c.key,c.old))}</small>`);
+        });
+      }
+      const wrap=document.createElement('div');wrap.className='speed-quick-row';
+      card.replaceWith(wrap);wrap.append(card);
+      const edit=document.createElement('button');edit.type='button';edit.className='speed-quick-edit';edit.dataset.speedEdit=id;edit.textContent='修改';edit.setAttribute('aria-label','修改 '+t.name+' 排名及通關時間');wrap.append(edit);
+    });
+    // Overview + detailed leaderboard (scoped to the selected dungeon and phase).
+    const detail=$id('teamDetailModal');
+    const title=$id('teamDetailHeading');
+    if(detail?.classList.contains('show')&&title){
+      const name=title.textContent.trim();
+      const t=visibleTeams().find(t=>t.name===name);
+      const rev=revisionOf(t);
+      if(rev && !title.querySelector('.speed-update-pill'))title.insertAdjacentHTML('beforeend',' '+updatePill());
+      if(t){
+        detail.querySelectorAll('#teamDetailOverview .team-detail-kpi').forEach(card=>{
+          const txt=card.querySelector('span')?.textContent;
+          const key=scoreFields.find(x=>x[1]===txt)?.[0];
+          const change=rev?.changes?.find(x=>x.key===key);
+          if(change&&!card.querySelector('.speed-revision-note'))card.insertAdjacentHTML('beforeend',`<small class="speed-revision-note">原 ${esc(valueText(key,change.old))}</small>`);
+        });
+      }
+    }
+    const ordered=buildExportTeams();
+    const ids=new Set(ordered.map(x=>x.team.id));
+    const all=[...ordered.map(x=>x.team),...visibleTeams().filter(t=>!ids.has(t.id))];
+    document.querySelectorAll('#standingsScroll .standings-table tbody tr').forEach((row,i)=>{
+      const t=all[i],rev=revisionOf(t); if(!t||!rev)return;
+      const cell=row.querySelector('.name-col');
+      if(cell&&!cell.querySelector('.speed-update-pill'))cell.insertAdjacentHTML('beforeend',' '+updatePill());
+      const cellFor={rank:row.querySelector('.rank-col'),timeMs:row.querySelector('.time-col'),boss1Ms:row.children[SIZE+3],boss2Ms:row.children[SIZE+4]};
+      rev.changes.forEach(c=>{
+        const target=cellFor[c.key];
+        if(target&&!target.querySelector('.speed-revision-note'))target.insertAdjacentHTML('beforeend',`<small class="speed-revision-note">原 ${esc(valueText(c.key,c.old))}</small>`);
+      });
+    });
+  }
+  const originalRenderAll=renderAll;
+  renderAll=function(){const out=originalRenderAll.apply(this,arguments);decorate();return out;};
+  const originalRenderTeams=renderTeams;
+  renderTeams=function(){const out=originalRenderTeams.apply(this,arguments);decorate();return out;};
+  const originalRenderStandings=renderStandings;
+  renderStandings=function(){const out=originalRenderStandings.apply(this,arguments);decorate();return out;};
+
+  document.body.insertAdjacentHTML('beforeend',`
+   <div class="modal" id="speedScoreModal" role="dialog" aria-modal="true" aria-labelledby="speedScoreHeading">
+    <div class="modal-card">
+      <div class="speed-score-head">
+        <div><div class="eyebrow">競速成績 · 快速修改</div><h2 id="speedScoreHeading">修改成績</h2><div class="sub" id="speedScoreSubtitle"></div></div>
+        <button type="button" class="speed-score-close" id="speedScoreClose" aria-label="關閉">×</button>
+      </div>
+      <div class="speed-score-body" id="speedScoreForm">
+        <div class="speed-score-grid">
+          <div class="speed-score-field important"><label for="speedScoreRank">遊戲排名</label><input id="speedScoreRank" type="number" min="1" step="1" placeholder="例如 109"><div class="previous" id="speedPreviousRank"></div></div>
+          <div class="speed-score-field important"><label for="speedScoreTime">總通關時間</label><input id="speedScoreTime" placeholder="例如 12:04"><div class="previous" id="speedPreviousTime"></div></div>
+          <div class="speed-score-field"><label for="speedScoreBoss1">BOSS 1（選填）</label><input id="speedScoreBoss1" placeholder="00:00"><div class="previous" id="speedPreviousBoss1"></div></div>
+          <div class="speed-score-field"><label for="speedScoreBoss2">BOSS 2（選填）</label><input id="speedScoreBoss2" placeholder="00:00"><div class="previous" id="speedPreviousBoss2"></div></div>
+        </div>
+      </div>
+      <div class="speed-score-body" id="speedScoreConfirm" hidden><div class="speed-score-preview"><strong>確認更新成績</strong><div id="speedScoreChanges"></div></div></div>
+      <div class="speed-score-actions"><button type="button" id="speedScoreCancel">取消</button><button type="button" class="primary" id="speedScoreProceed">檢查變更</button></div>
+    </div>
+   </div>`);
+  const modal=$id('speedScoreModal');
+  let selectedId='',pending=null,lastFocus=null;
+  function activeTeam(){return visibleTeams().find(t=>t.id===selectedId);}
+  function close(){modal.classList.remove('show');selectedId='';pending=null;lastFocus?.isConnected&&lastFocus.focus({preventScroll:true});lastFocus=null;}
+  function open(id){
+    const t=visibleTeams().find(t=>t.id===id);if(!t)return;
+    selectedId=id;pending=null;lastFocus=document.activeElement;
+    const r=phaseResult(t);
+    $id('speedScoreHeading').textContent=t.name;
+    $id('speedScoreSubtitle').textContent=`${PHASE_NAMES[selectedPhase]} · ${normalizeTeamMode(t)==='challenge'?'挑戰本':'普通本'}`;
+    $id('speedScoreRank').value=Number(r?.rank)>0?r.rank:'';
+    $id('speedScoreTime').value=Number(r?.timeMs)>0?fmtTime(r.timeMs):'';
+    $id('speedScoreBoss1').value=Number(r?.boss1Ms)>0?fmtTime(r.boss1Ms):'';
+    $id('speedScoreBoss2').value=Number(r?.boss2Ms)>0?fmtTime(r.boss2Ms):'';
+    const rev=revisionOf(t);
+    [['rank','Rank'],['timeMs','Time'],['boss1Ms','Boss1'],['boss2Ms','Boss2']].forEach(([k,id])=>{
+      const old=rev?.changes?.find(c=>c.key===k);
+      $id('speedPrevious'+id).innerHTML=old?`上次修改前：<strong>${esc(valueText(k,old.old))}</strong>`:'';
+    });
+    $id('speedScoreForm').hidden=false;$id('speedScoreConfirm').hidden=true;
+    $id('speedScoreProceed').textContent='檢查變更';$id('speedScoreCancel').textContent='取消';
+    modal.classList.add('show');$id('speedScoreRank').focus({preventScroll:true});
+  }
+  function values(){
+    const rankValue=$id('speedScoreRank').value.trim();
+    const rank=rankValue?Number(rankValue):null;
+    if(rank!==null&&(!Number.isInteger(rank)||rank<1)){toast('排名必須是 1 以上的整數');$id('speedScoreRank').focus();return null}
+    const total=parseTime($id('speedScoreTime').value.trim());
+    if(!total){toast('請輸入有效的總通關時間');$id('speedScoreTime').focus();return null}
+    let bos=[];
+    for(const id of ['speedScoreBoss1','speedScoreBoss2']){
+      const raw=$id(id).value.trim(),v=raw?parseOptionalTime(raw):null;
+      if(Number.isNaN(v)){toast('BOSS 時間格式不正確');$id(id).focus();return null}bos.push(v||null);
+    }
+    return {rank,timeMs:total,boss1Ms:bos[0],boss2Ms:bos[1]};
+  }
+  function proceed(){
+    const t=activeTeam();if(!t)return;
+    const v=values();if(!v)return;
+    const existing=phaseResult(t);
+    const changed=diffOf(existing||{},v);
+    if(existing&&!changed.length){toast('沒有需要更新的成績');return;}
+    const all=changed.length?changed:scoreFields.filter(([k])=>comparable(v,k)>0).map(([key,label])=>({key,label,old:0,new:comparable(v,key)}));
+    const roster=rosterSnapshotFromTeam(t);
+    const internal=roster.filter(m=>!m.external&&players.some(p=>p.id===m.id));
+    const over=internal.filter(m=>{
+      const other=visibleTeams().filter(x=>x.id!==t.id&&phaseResult(x)?.roster?.some(r=>r.id===m.id&&!r.external)).length;
+      return limit>0&&other+1>limit;
+    }).map(m=>m.name);
+    pending={values:v,over};
+    $id('speedScoreChanges').innerHTML=all.map(c=>`<div class="speed-score-diff"><span>${esc(c.label)}</span><strong>${esc(valueText(c.key,c.old))} → ${esc(valueText(c.key,c.new))}</strong></div>`).join('')+
+      (over.length?`<div class="speed-score-diff"><span>注意</span><strong>超過上榜限制：${esc(over.join('、'))}</strong></div>`:'');
+    $id('speedScoreForm').hidden=true;$id('speedScoreConfirm').hidden=false;
+    $id('speedScoreProceed').textContent='確認更新';$id('speedScoreCancel').textContent='返回修改';
+  }
+  async function commit(){
+    const t=activeTeam();if(!t||!pending)return;
+    const old=phaseResult(t),v=pending.values,now=Date.now();
+    const rid=old?.recordId||(selectedPhase===1?`record_${t.id}`:`record_${t.id}_p${selectedPhase}`);
+    const existing=records.find(r=>r.id===rid);
+    const originalDate=existing?.date||old?.date||today();
+    const rec={id:rid,dungeonId:t.dungeonId,phase:selectedPhase,teamId:t.id,teamName:t.name,size:SIZE,
+      mode:normalizeTeamMode(t),rank:v.rank,boss1Ms:v.boss1Ms,boss2Ms:v.boss2Ms,timeMs:v.timeMs,
+      date:originalDate,note:existing?.note||old?.note||'',roster:rosterSnapshotFromTeam(t),
+      createdAtMs:existing?.createdAtMs||old?.createdAtMs||now,updatedAtMs:now,_sync:'pending'};
+    records=records.filter(r=>r.teamId!==t.id||recordPhase(r)!==selectedPhase||r.id===rid);
+    const index=records.findIndex(r=>r.id===rid);
+    if(index>=0)records[index]=rec;else records.push(rec);
+    setPhaseResult(t,selectedPhase,{recordId:rec.id,mode:rec.mode,rank:rec.rank,boss1Ms:rec.boss1Ms,boss2Ms:rec.boss2Ms,timeMs:rec.timeMs,date:rec.date,note:rec.note,roster:rec.roster,createdAtMs:rec.createdAtMs,updatedAtMs:now});
+    t.updatedAtMs=now;t._sync='pending';
+    saveLocalPage();close();renderAll();toast(old?'成績已更新':'已儲存成績');
+    await syncRecord(rec);await syncTeam(t);await cleanupExtraTeamRecordsRemote(t.id,rid,selectedPhase);
+  }
+  $id('speedScoreProceed').addEventListener('click',()=>pending?commit():proceed());
+  $id('speedScoreCancel').addEventListener('click',()=>{
+    if(pending){pending=null;$id('speedScoreForm').hidden=false;$id('speedScoreConfirm').hidden=true;$id('speedScoreProceed').textContent='檢查變更';$id('speedScoreCancel').textContent='取消'}else close();
+  });
+  $id('speedScoreClose').addEventListener('click',close);
+  modal.addEventListener('click',e=>{if(e.target===modal)close()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show')){e.stopImmediatePropagation();e.preventDefault();close()}},true);
+  // Capture before team-summary-row click handlers, which open the full detail dialog.
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-speed-edit]');if(!btn)return;
+    e.preventDefault();e.stopImmediatePropagation();open(btn.dataset.speedEdit);
+  },true);
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#phaseButtons [data-phase],#dungeonSelect,#manageTab,#rankingTab')){
+      if(modal.classList.contains('show'))close();
+    }
+  });
+  const detailContent=$id('teamDetailModal');
+  if(detailContent){
+    const observer=new MutationObserver(()=>decorate());
+    observer.observe(detailContent,{childList:true,subtree:true,attributes:false});
+  }
+  decorate();
+})();
+
+
+/* ===== Full PVE-style create flow: team + members + score in one transaction ===== */
+(function(){
+  const get=id=>document.getElementById(id);
+  const glyph=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>`;
+  const selected=new Set();
+  let stagedPlayers=[];
+  let stagedGuests=[];
+  let createContext=null;
+  let liveSearch='';
+  let busy=false;
+  const memberName=id=>stagedPlayers.find(x=>x.id===id)?.name||players.find(x=>x.id===id)?.name||'';
+  const isGuest=id=>String(id).startsWith('external:');
+  const selectedCount=()=>selected.size+stagedGuests.length;
+  const createModal=()=>get('teamCreateModal');
+  const rowRole=p=>{
+    const values=normalizeRoles(p).filter(x=>x!=='未設定');
+    return values.length?Array.from(String(values[0]).replace(/[【】\[\]（）() ]/g,'')).slice(0,2).join(''):'未設定';
+  };
+  const safe=(v)=>esc(String(v??''));
+  const info=(title,tone='info')=>`<div class="speed-pve-head"><div class="speed-pve-glyph">${glyph}</div><div class="speed-pve-heading"><small>${safe(createContext?.phaseName||PHASE_NAMES[selectedPhase])} · ${SIZE} 人競速</small><h2>${safe(title)}</h2></div></div>`;
+  function patchCreator(){
+    const modal=createModal();
+    if(!modal||modal.dataset.pveCreator==='1')return;
+    modal.dataset.pveCreator='1';
+    modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','speedCreateHeading');
+    const box=modal.querySelector('.modal-card');
+    box.className='modal-card speed-pve-creator';
+    box.innerHTML=`
+      <div class="speed-pve-head"><div class="speed-pve-glyph">${glyph}</div><div class="speed-pve-heading"><small id="speedCreateContext">${PHASE_NAMES[selectedPhase]} · ${SIZE} 人競速</small><h2 id="speedCreateHeading">建立隊伍</h2></div><button type="button" class="speed-pve-close" id="speedCreateClose" aria-label="關閉">×</button></div>
+      <div class="speed-create-content"><div class="speed-create-grid">
+        <div class="speed-create-left">
+          <section class="speed-create-panel"><h3>隊伍資料</h3>
+            <div class="speed-create-field"><label for="modalCreateTeamName">隊伍名稱</label><input id="modalCreateTeamName" placeholder="輸入隊伍名稱" autocomplete="off"></div>
+            <div class="speed-create-field" style="margin-top:12px"><label for="modalCreateTeamNote">備註（選填）</label><input id="modalCreateTeamNote" placeholder="備註" autocomplete="off"></div>
+            <div class="speed-create-mode"><label><input type="radio" name="createTeamMode" value="normal" checked>普通本</label><label><input type="radio" name="createTeamMode" value="challenge">挑戰本</label></div>
+          </section>
+          <section class="speed-create-panel"><h3>通關成績（選填）</h3>
+            <div class="speed-create-row rank-time"><div class="speed-create-field speed-create-critical"><label for="modalCreateRank">遊戲排名</label><input id="modalCreateRank" type="number" min="1" step="1" inputmode="numeric" placeholder="例如 30"></div>
+            <div class="speed-create-field speed-create-critical"><label for="modalCreateTotalTime">總通關時間</label><input id="modalCreateTotalTime" placeholder="例如 04:58" inputmode="text"></div></div>
+            <div class="speed-create-row"><div class="speed-create-field"><label for="modalCreateBoss1">BOSS 1（選填）</label><input id="modalCreateBoss1" placeholder="例如 01:30"></div>
+            <div class="speed-create-field"><label for="modalCreateBoss2">BOSS 2（選填）</label><input id="modalCreateBoss2" placeholder="例如 02:40"></div></div>
+          </section>
+        </div>
+        <section class="speed-create-panel speed-roster-panel">
+          <div class="speed-roster-top"><h3>選擇隊友</h3><span class="speed-roster-count" id="speedCreateCount">0 / ${SIZE} 人</span></div>
+          <div class="speed-chosen-list" id="speedCreateChosen" aria-live="polite"></div>
+          <input type="search" id="speedCreateSearch" class="speed-roster-search" placeholder="搜尋玩家" aria-label="搜尋玩家">
+          <div class="speed-create-roster-actions"><button type="button" class="speed-create-add" id="speedCreateNewPlayer">＋ 新增玩家資料</button><button type="button" id="speedCreateGuest">＋ 新增外援</button></div>
+          <div class="speed-roster-options" id="speedCreatePeople" aria-label="選取隊友"></div>
+        </section>
+      </div></div>
+      <div class="speed-create-footer"><div class="speed-create-footer-summary" id="speedCreateFooterNote">${PHASE_NAMES[selectedPhase]} · 0/${SIZE} 人</div><div class="speed-create-footer-actions"><button type="button" id="speedCreateCancel">取消</button><button type="button" class="primary" id="speedCreateSubmit">確認建立隊伍</button></div></div>`;
+    get('speedCreateClose').addEventListener('click',closeCreator);
+    get('speedCreateCancel').addEventListener('click',closeCreator);
+    get('speedCreateSearch').addEventListener('input',e=>{liveSearch=String(e.target.value||'').trim().toLowerCase();drawPeople()});
+    get('speedCreateNewPlayer').addEventListener('click',()=>openExtra('player'));
+    get('speedCreateGuest').addEventListener('click',()=>openExtra('guest'));
+    get('speedCreateSubmit').addEventListener('click',confirmCreate);
+    get('speedCreatePeople').addEventListener('click',e=>{
+      const button=e.target.closest('[data-create-person]');if(!button)return;
+      const id=button.dataset.createPerson;
+      if(selected.has(id))selected.delete(id);
+      else if(selectedCount()<SIZE)selected.add(id);
+      else{toast('隊伍人數已滿');return}
+      drawRoster();
+    });
+    get('speedCreateChosen').addEventListener('click',e=>{
+      const button=e.target.closest('[data-create-remove]');if(!button)return;
+      const id=button.dataset.createRemove;
+      if(isGuest(id))stagedGuests=stagedGuests.filter(g=>g.id!==id);
+      else selected.delete(id);
+      drawRoster();
+    });
+    modal.addEventListener('click',e=>{if(e.target===modal){e.stopImmediatePropagation();closeCreator()}},true);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&createModal()?.classList.contains('show')&&!get('speedCreateConfirmation')?.classList.contains('show')&&!get('speedCreateExtraModal')?.classList.contains('show')){e.preventDefault();closeCreator()}});
+  }
+  function stageOverview(){
+    get('speedCreateCount').textContent=`${selectedCount()} / ${SIZE} 人`;
+    get('speedCreateFooterNote').textContent=`${createContext?.phaseName||PHASE_NAMES[selectedPhase]} · ${selectedCount()}/${SIZE} 人`;
+  }
+  function drawRoster(){
+    const markup=[...selected].map(id=>`<span class="speed-chosen-chip">${safe(memberName(id))}<button type="button" data-create-remove="${safe(id)}" aria-label="移除 ${safe(memberName(id))}">×</button></span>`)
+      .concat(stagedGuests.map(g=>`<span class="speed-chosen-chip guest">${safe(g.name)} · 外援<button type="button" data-create-remove="${safe(g.id)}" aria-label="移除 ${safe(g.name)}">×</button></span>`));
+    get('speedCreateChosen').innerHTML=markup.length?markup.join(''):'<span class="empty">尚未選擇隊友</span>';
+    stageOverview();drawPeople();
+  }
+  function drawPeople(){
+    const box=get('speedCreatePeople');if(!box)return;
+    const list=[...players,...stagedPlayers].filter(p=>!liveSearch||norm(`${p.name} ${p.note||''} ${normalizeRoles(p).join(' ')}`).includes(norm(liveSearch)));
+    const listed=firstPhaseListedPlayers();
+    box.innerHTML=list.length?list.map(p=>{
+      const yes=selected.has(p.id);
+      return `<button type="button" class="speed-roster-person ${yes?'selected':''}" data-create-person="${safe(p.id)}" aria-pressed="${yes}">
+      <span class="speed-roster-tick">✓</span><span class="speed-roster-person-name">${safe(p.name)} ${firstPhaseBadge(p,listed)}</span>
+      <span class="speed-roster-person-meta">${safe(rowRole(p))}</span></button>`;
+    }).join(''):'<div style="padding:16px;color:var(--speed-pop-muted)">沒有符合的玩家</div>';
+  }
+  function openCreator(){
+    patchCreator();if(!currentDungeon()){toast('請先選擇副本');return}
+    createContext={dungeonId:selectedDungeonId,phase:selectedPhase,phaseName:PHASE_NAMES[selectedPhase]};
+    selected.clear();stagedPlayers=[];stagedGuests=[];liveSearch='';
+    get('speedCreateContext').textContent=`${createContext.phaseName} · ${SIZE} 人競速`;
+    get('modalCreateTeamName').value=`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
+    get('modalCreateTeamNote').value='';
+    ['modalCreateRank','modalCreateTotalTime','modalCreateBoss1','modalCreateBoss2'].forEach(id=>get(id).value='');
+    const normal=createModal().querySelector('input[name="createTeamMode"][value="normal"]');if(normal)normal.checked=true;
+    get('speedCreateSearch').value='';
+    drawRoster();openModal('teamCreateModal');document.body.classList.add('speed-create-active');
+    setTimeout(()=>get('modalCreateTeamName')?.focus({preventScroll:true}),20);
+  }
+  function closeCreator(){if(busy)return;closeModal('teamCreateModal');document.body.classList.remove('speed-create-active');createContext=null;selected.clear();stagedPlayers=[];stagedGuests=[]}
+  function addon(name){
+    const m=document.createElement('div');m.id=name;m.className='speed-pve-submodal';
+    document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)hideExtra(name)});
+    return m;
+  }
+  const extra=addon('speedCreateExtraModal'),confirmation=addon('speedCreateConfirmation');
+  let extraKind=null;
+  function hideExtra(id){get(id)?.classList.remove('show')}
+  function buildExtraHeader(title){return info(title).replace('speed-pve-head','speed-pve-head');}
+  function openExtra(kind){
+    if(selectedCount()>=SIZE){toast('隊伍人數已滿');return}
+    extraKind=kind;
+    const p=kind==='player';
+    const allRoles=[...new Set([...professions,...players.flatMap(x=>normalizeRoles(x))].filter(x=>x&&x!=='未設定'))].sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+    extra.innerHTML=`<section class="speed-pve-dialog" role="dialog" aria-modal="true" aria-labelledby="speedExtraTitle">
+      ${buildExtraHeader(p?'新增玩家資料':'新增外援')}
+      <div class="speed-sub-body"><label class="speed-sub-label">${p?'玩家名稱':'外援名稱'}<input id="speedExtraName" maxlength="70" autocomplete="off" placeholder="輸入名稱"></label>
+      ${p?`<label class="speed-sub-label">職業（選填）<select id="speedExtraRole"><option value="">未設定</option>${allRoles.map(r=>`<option value="${safe(r)}">${safe(r)}</option>`).join('')}</select></label>
+      <label class="speed-sub-label">其他職業（選填）<input id="speedExtraCustomRole" maxlength="80" placeholder="找不到職業時輸入"></label><label class="speed-sub-label">備註（選填）<textarea id="speedExtraNote" rows="2"></textarea></label>`:''}
+      <span id="speedExtraError" class="speed-create-error" aria-live="polite"></span></div>
+      <div class="speed-sub-actions"><button type="button" id="speedExtraCancel">取消</button><button type="button" class="primary" id="speedExtraSave">${p?'新增並選取':'加入隊伍'}</button></div>
+    </section>`;
+    extra.querySelector('.speed-pve-heading h2').id='speedExtraTitle';
+    get('speedExtraCancel').addEventListener('click',()=>hideExtra(extra.id));
+    get('speedExtraSave').addEventListener('click',commitExtra);
+    get('speedExtraName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commitExtra()}});
+    extra.classList.add('show');setTimeout(()=>get('speedExtraName')?.focus(),20);
+  }
+  function commitExtra(){
+    const name=get('speedExtraName')?.value.trim()||'';
+    const error=get('speedExtraError');
+    if(!name){error.textContent='請輸入名稱';get('speedExtraName').focus();return}
+    if(selectedCount()>=SIZE){error.textContent='隊伍人數已滿';return}
+    if(extraKind==='player'){
+      if([...players,...stagedPlayers].some(p=>norm(p.name)===norm(name))){error.textContent='已有相同玩家名稱，請直接搜尋並選取';return}
+      const custom=get('speedExtraCustomRole').value.trim();
+      const role=custom||get('speedExtraRole').value||'未設定';
+      const player=normalizePlayer({id:uid('player'),name,roles:[role],role,note:get('speedExtraNote').value.trim()});
+      stagedPlayers.push(player);selected.add(player.id);
+    }else{
+      stagedGuests.push({id:`external:${uid('guest')}`,name});
+    }
+    hideExtra(extra.id);drawRoster();
+  }
+  function readCreate(){
+    const dg=currentDungeon();if(!dg||dg.id!==createContext?.dungeonId||selectedPhase!==createContext.phase)return {error:'目前副本或期數已改變，請重新建立隊伍'};
+    const name=get('modalCreateTeamName').value.trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
+    const note=get('modalCreateTeamNote').value.trim();
+    const mode=createModal().querySelector('input[name="createTeamMode"]:checked')?.value==='challenge'?'challenge':'normal';
+    const rankRaw=get('modalCreateRank').value.trim();
+    const rawTotal=get('modalCreateTotalTime').value.trim();
+    const b1=get('modalCreateBoss1').value.trim(),b2=get('modalCreateBoss2').value.trim();
+    const rank=rankRaw?Number(rankRaw):null;
+    if(rank!==null&&(!Number.isInteger(rank)||rank<1))return {error:'排名請輸入 1 以上的整數',field:'modalCreateRank'};
+    const boss1=b1?parseOptionalTime(b1):null,boss2=b2?parseOptionalTime(b2):null;
+    if(Number.isNaN(boss1))return {error:'BOSS 1 時間格式不正確',field:'modalCreateBoss1'};
+    if(Number.isNaN(boss2))return {error:'BOSS 2 時間格式不正確',field:'modalCreateBoss2'};
+    let result=null;
+    if(rankRaw||rawTotal||b1||b2){
+      const ms=parseTime(rawTotal);
+      if(!ms)return {error:'填寫成績時，需要有效的總通關時間',field:'modalCreateTotalTime'};
+      result={rank,timeMs:ms,boss1Ms:boss1||null,boss2Ms:boss2||null,date:today(),note:''};
+    }
+    return {name,note,mode,result};
+  }
+  function confirmCreate(){
+    if(busy)return;
+    const draft=readCreate();if(draft.error){toast(draft.error);get(draft.field)?.focus();return}
+    const names=[...selected].map(id=>memberName(id)).concat(stagedGuests.map(g=>`${g.name}（外援）`));
+    confirmation.innerHTML=`<section class="speed-pve-dialog" role="alertdialog" aria-modal="true" aria-labelledby="speedConfirmationTitle">
+      ${info('確認建立隊伍')}
+      <div class="speed-create-confirm-body"><strong>${safe(draft.name)}</strong> · ${safe(createContext.phaseName)}
+        <div class="speed-create-confirm-stats">${draft.mode==='challenge'?'挑戰本':'普通本'} · ${selectedCount()}/${SIZE} 人<br>排名：${draft.result?.rank?'#'+draft.result.rank:'—'}　總時間：${draft.result?fmtTime(draft.result.timeMs):'—'}</div>
+        <div style="margin-top:11px">${safe(names.join('、')||'尚未加入隊友')}</div>
+      </div><div class="speed-sub-actions"><button type="button" id="speedConfirmationCancel">返回修改</button><button type="button" class="primary" id="speedConfirmationOK">確認建立</button></div>
+    </section>`;
+    confirmation.querySelector('h2').id='speedConfirmationTitle';
+    get('speedConfirmationCancel').onclick=()=>hideExtra(confirmation.id);
+    get('speedConfirmationOK').onclick=()=>commitCreate(draft);
+    confirmation.classList.add('show');
+  }
+  async function commitCreate(draft){
+    if(busy)return;const check=readCreate();if(check.error){toast(check.error);hideExtra(confirmation.id);return}
+    busy=true;get('speedConfirmationOK').disabled=true;
+    try{
+      const createdSharedPlayers=stagedPlayers.length>0;
+      const timestamp=Date.now();
+      for(const p of stagedPlayers){players.push(p);playerArchive[p.id]={...p}}
+      const members=[...selected,...stagedGuests.map(g=>g.id)].slice(0,SIZE);
+      const allMembers=Array.from({length:SIZE},(_,i)=>members[i]||null);
+      const outsiderData=Object.fromEntries(stagedGuests.map(g=>[g.id,{name:g.name}]));
+      const team={id:uid('team'),dungeonId:createContext.dungeonId,phase:createContext.phase,size:SIZE,name:draft.name,note:draft.note,mode:draft.mode,members:Array(SIZE).fill(null),externalMembers:{},phaseMembers:{'2':[],'3':[]},phaseExternalMembers:{'2':{},'3':{}},currentResult:null,phaseResults:{},createdAt:timestamp,updatedAtMs:timestamp,_sync:'pending'};
+      setPhaseRoster(team,allMembers,outsiderData);
+      let record=null;
+      if(draft.result){
+        const id=createContext.phase===1?`record_${team.id}`:`record_${team.id}_p${createContext.phase}`;
+        const roster=rosterSnapshotFromTeam(team);
+        record={id,dungeonId:team.dungeonId,phase:createContext.phase,teamId:team.id,teamName:team.name,size:SIZE,mode:draft.mode,rank:draft.result.rank,boss1Ms:draft.result.boss1Ms,boss2Ms:draft.result.boss2Ms,timeMs:draft.result.timeMs,date:draft.result.date,note:'',roster,createdAtMs:timestamp,updatedAtMs:timestamp,_sync:'pending'};
+        setPhaseResult(team,createContext.phase,{recordId:id,...draft.result,mode:draft.mode,roster,createdAtMs:timestamp,updatedAtMs:timestamp});
+        records.push(record);
+      }
+      teams.push(team);expandedTeamIds.clear();selectedPlayerIds.clear();
+      saveLocalSharedPlayers();saveLocalPage();
+      hideExtra(confirmation.id);closeModal('teamCreateModal');document.body.classList.remove('speed-create-active');
+      createContext=null;selected.clear();stagedPlayers=[];stagedGuests=[];
+      renderAll();
+      if(busy){
+        if(createdSharedPlayers)syncSharedPlayers();
+        if(record)syncRecord(record);
+        syncTeam(team);
+      }
+      toast('隊伍已建立');
+    }catch(error){console.error('Create team failed',error);toast('建立隊伍失敗，請檢查資料');}
+    finally{busy=false}
+  }
+  document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(confirmation.classList.contains('show')){e.preventDefault();hideExtra(confirmation.id)}else if(extra.classList.contains('show')){e.preventDefault();hideExtra(extra.id)}},true);
+  function setup(){
+    patchCreator();
+    const open=get('openTeamCreateModalBtn');
+    if(open&&!open.dataset.pveOpen){
+      open.dataset.pveOpen='1';
+      // Capture before the old quick-create listener: use the integrated creator only.
+      open.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();openCreator()},true);
+    }
+    // Original creation callback would double-save; prevent it even if other code clicks the old ID.
+    const oldSave=get('saveCreateTeamModalBtn');
+    if(oldSave&&!oldSave.dataset.pveDisabled){oldSave.dataset.pveDisabled='1';oldSave.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();confirmCreate()},true)}
+  }
+  setTimeout(setup,0);
+})();
+
+
+
+/* ===== Collaboration-aware team update status =====
+   Source of truth: team timestamps persisted in Firestore and received via onSnapshot.
+   Never use sessionStorage or an arbitrary 'recent N days' window.
+*/
+(function(){
+  function syncedUpdateMs(t){
+    if(!t)return 0;
+    const phase=teamPeriod(t);
+    const stored=Number(t.updatedAtMs||0);
+    const result=Number(phaseResult(t,phase)?.updatedAtMs||0);
+    // For old records without the client-side edit timestamp, use Firestore's timestamp.
+    const firestore=firestoreTimestampToMs(t.updatedAt);
+    return Math.max(stored,result) || firestore || Number(t.createdAt||0);
+  }
+  function hasSharedUpdate(t){
+    if(!t)return false;
+    const phase=teamPeriod(t);
+    const created=Number(t.createdAt||0);
+    const stored=Number(t.updatedAtMs||0);
+    const record=Number(phaseResult(t,phase)?.updatedAtMs||0);
+    const rev=Number(t.resultUpdateByPhase?.[String(phase)]?.at||0);
+    // Never infer editing from a time-window or one viewer's browser session.
+    // Old data without a creation time can only be identified when it has a score revision.
+    return rev>0 || (created>0 && Math.max(stored,record)>created+1000);
+  }
+  // Shared daily status is based on MYT (UTC+8), not a viewer's own device timezone.
+  const malaysiaDayFormat=new Intl.DateTimeFormat('sv-SE',{
+    timeZone:'Asia/Kuala_Lumpur',year:'numeric',month:'2-digit',day:'2-digit'
+  });
+  const malaysiaStampFormat=new Intl.DateTimeFormat('en-GB',{
+    timeZone:'Asia/Kuala_Lumpur',year:'numeric',month:'2-digit',day:'2-digit',
+    hour:'2-digit',minute:'2-digit',hourCycle:'h23'
+  });
+  function isTodayUpdate(ms){
+    return ms>0 && malaysiaDayFormat.format(new Date(ms))===malaysiaDayFormat.format(new Date());
+  }
+  function lastUpdatedText(ms){
+    if(!(ms>0))return '—';
+    const pieces=Object.fromEntries(malaysiaStampFormat.formatToParts(new Date(ms))
+      .filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+    return `${pieces.year}/${pieces.month}/${pieces.day} ${pieces.hour}:${pieces.minute}`;
+  }
+  function buildLastUpdate(t,today){
+    const holder=document.createElement('div');
+    const modified=hasSharedUpdate(t);
+    const ms=syncedUpdateMs(t);
+    const pending=t._sync==='pending'||t._sync==='local';
+    holder.className='speed-update-time speed-shared-time'+(modified?' was-updated':'')+(today?' is-today':'');
+    if(ms){
+      const caption=document.createElement('span');caption.className='speed-update-caption';
+      caption.textContent=modified?'最後更新':'建立時間';
+      const value=document.createElement('time');value.className='speed-time-value';
+      value.textContent=lastUpdatedText(ms);value.dateTime=new Date(ms).toISOString();
+      holder.append(caption,value);
+      holder.title=`${modified?'最後更新':'建立於'}：${lastUpdatedText(ms)}（馬來西亞時間）${pending?'（尚未同步其他人）':''}`;
+    }else{
+      holder.textContent='更新時間未記錄';
+    }
+    if(today){
+      const badge=document.createElement('span');
+      badge.className='speed-recent-badge today';
+      badge.textContent='今日更新';
+      holder.append(badge);
+    }
+    if(pending){
+      const wait=document.createElement('span');wait.className='speed-update-pending';
+      wait.textContent='待同步';holder.append(wait);
+    }
+    return holder;
+  }
+  function refreshSharedUpdateLabels(){
+    const current=visibleTeams();
+    const lookup=new Map(current.map(t=>[String(t.id),t]));
+    const todayTeams=current.filter(t=>hasSharedUpdate(t)&&isTodayUpdate(syncedUpdateMs(t)));
+    const todayIds=new Set(todayTeams.map(t=>String(t.id)));
+    document.querySelectorAll('#quickGrid .quick-card[data-jump]').forEach(card=>{
+      const t=lookup.get(String(card.dataset.jump));if(!t)return;
+      // Always use the same shared timestamp for both leaderboard and team list.
+      card.querySelectorAll('.speed-update-time,.speed-session-label').forEach(el=>el.remove());
+      const today=todayIds.has(String(t.id));
+      card.append(buildLastUpdate(t,today));
+      card.classList.toggle('speed-shared-latest',today);
+    });
+    document.querySelectorAll('#teamList .team-card[id]').forEach(card=>{
+      const t=lookup.get(String(card.id).replace(/^team-/,''));if(!t)return;
+      const today=todayIds.has(String(t.id));
+      const target=card.querySelector('.team-updated-at');
+      if(target)target.replaceChildren(buildLastUpdate(t,today));
+      card.classList.toggle('speed-shared-latest',today);
+      card.classList.remove('speed-recent-team');
+    });
+    const header=document.querySelector('.quick-head');
+    if(header){
+      let el=document.getElementById('speedSessionProgress');
+      if(!el){el=document.createElement('span');el.id='speedSessionProgress';el.className='speed-session-progress';header.append(el);}
+      el.textContent=`今日更新 ${todayTeams.length} / ${current.length} 隊`;
+      el.title='按馬來西亞當天日期計算，依共用的隊伍最後更新時間顯示';
+    }
+  }
+  // Reuse existing Firebase onSnapshot -> renderAll / renderQuick / renderTeams flow.
+  // Those calls are also made by local edits, so every screen refresh stays consistent.
+  const originalAll=renderAll;
+  renderAll=function(){const r=originalAll.apply(this,arguments);refreshSharedUpdateLabels();return r};
+  const originalQuick=renderQuick;
+  renderQuick=function(){const r=originalQuick.apply(this,arguments);refreshSharedUpdateLabels();return r};
+  const originalTeams=renderTeams;
+  renderTeams=function(){const r=originalTeams.apply(this,arguments);refreshSharedUpdateLabels();return r};
+  refreshSharedUpdateLabels();
 })();
 
 </script>
