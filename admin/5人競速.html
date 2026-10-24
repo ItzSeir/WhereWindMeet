@@ -8895,14 +8895,14 @@ initFirebase();
     }
     return originalSetResult(team,phase,value);
   };
-  const updatePill=()=>'<span class="speed-update-pill">本次已修改</span>';
+  // Saved score revisions remain available for old/new comparisons; no misleading permanent "session edit" badge.
   const wasChanged=(revision,key)=>Boolean(revision?.changes?.some(c=>c.key===key));
   function decorate(){
     // Main compact team cards: quick score editor, revised rank and revised total time.
     document.querySelectorAll('#teamList .team-card').forEach(card=>{
       const team=visibleTeams().find(t=>card.id==='team-'+t.id); if(!team)return;
       const rev=revisionOf(team),top=card.querySelector('.team-summary-main');
-      if(rev && top && !top.querySelector('.speed-update-pill'))top.querySelector('.team-summary-name')?.insertAdjacentHTML('beforeend',' '+updatePill());
+      // No permanent edit badge on compact team cards.
       const rankCell=card.querySelector('.simple-rank');
       if(rankCell){
         if(!rankCell.querySelector('.speed-team-edit')){
@@ -8922,7 +8922,7 @@ initFirebase();
       const rev=revisionOf(t);
       if(rev){
         const name=card.querySelector('.quick-name');
-        if(name&&!name.querySelector('.speed-update-pill'))name.insertAdjacentHTML('beforeend',' '+updatePill());
+        // Today's update status is added separately from the shared team timestamp.
         rev.changes.forEach(c=>{
           const target=c.key==='rank'?card.querySelector('.quick-rank'):c.key==='timeMs'?card.querySelector('.quick-stats .quick-stat:nth-child(2) strong'):null;
           if(target&&!target.nextElementSibling?.classList?.contains('speed-revision-note'))target.insertAdjacentHTML('afterend',`<small class="speed-revision-note">原 ${esc(valueText(c.key,c.old))}</small>`);
@@ -8939,7 +8939,7 @@ initFirebase();
       const name=title.textContent.trim();
       const t=visibleTeams().find(t=>t.name===name);
       const rev=revisionOf(t);
-      if(rev && !title.querySelector('.speed-update-pill'))title.insertAdjacentHTML('beforeend',' '+updatePill());
+      // Keep the detail heading free of a permanent edit badge.
       if(t){
         detail.querySelectorAll('#teamDetailOverview .team-detail-kpi').forEach(card=>{
           const txt=card.querySelector('span')?.textContent;
@@ -8955,7 +8955,7 @@ initFirebase();
     document.querySelectorAll('#standingsScroll .standings-table tbody tr').forEach((row,i)=>{
       const t=all[i],rev=revisionOf(t); if(!t||!rev)return;
       const cell=row.querySelector('.name-col');
-      if(cell&&!cell.querySelector('.speed-update-pill'))cell.insertAdjacentHTML('beforeend',' '+updatePill());
+      // Do not add historical revision markers to every old leaderboard row.
       const cellFor={rank:row.querySelector('.rank-col'),timeMs:row.querySelector('.time-col'),boss1Ms:row.children[SIZE+3],boss2Ms:row.children[SIZE+4]};
       rev.changes.forEach(c=>{
         const target=cellFor[c.key];
