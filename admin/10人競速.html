@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>夢回花深處｜10 人副本競速</title>
+<title>夢回花深處｜5 人副本競速</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
 try{
@@ -4239,21 +4239,21 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 </head>
 <body>
 <nav class="topbar"><div class="topbar-inner">
-  <div class="brand"><span class="badge">夢回花深處</span><span class="badge sub">10 人競速</span></div>
+  <div class="brand"><span class="badge">夢回花深處</span><span class="badge sub">5 人競速</span></div>
   <div class="nav-wrap"><div class="nav">
-    <a href="5人競速" class="">5 人競速</a>
-    <a href="10人競速" class="active">10 人競速</a>
+    <a href="5人競速" class="active">5 人競速</a>
+    <a href="10人競速" class="">10 人競速</a>
     <a href="百業戰">百業戰</a>
   </div><button class="theme-btn" id="themeBtn">☀ 白天</button></div>
 </div></nav>
 
 <main class="page">
   <header class="hero">
-    <div><div class="kicker">DUNGEON SPEEDRUN · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">測試版</span></h1></div>
+    <div><div class="kicker">DUNGEON SPEEDRUN · 5 PLAYERS</div><h1>5 人副本競速 <span class="version">測試版</span></h1></div>
     <div class="hero-actions"><button class="btn" id="limitBtn" hidden aria-hidden="true">上榜限制</button><button class="btn" id="pngBtn">🖼 產生 PNG</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
-  <div class="cross"><a href="5人競速">前往 5 人競速 →</a></div>
+  <div class="cross"><a href="10人競速">前往 10 人競速 →</a></div>
 
   <section class="cycle">
     <div class="cycle-main">
@@ -4271,7 +4271,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 
 
   <section class="phase-switcher" aria-label="副本期數切換">
-    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div><div class="phase-description">各期隊伍與成績獨立</div></div>
+    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div></div>
     <div class="phase-buttons" id="phaseButtons" role="group" aria-label="選擇期數">
       <button type="button" class="phase-btn active" data-phase="1">第一期<span>查看成績</span></button>
       <button type="button" class="phase-btn" data-phase="2">第二期<span>查看成績</span></button>
@@ -4299,7 +4299,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 
     <section class="board">
       <div class="board-head">
-        <div><h2>10 人固定隊伍</h2><p id="boardSub"></p></div>
+        <div><h2>5 人固定隊伍</h2><p id="boardSub"></p></div>
         <div class="board-head-actions">
           <button type="button" class="btn collapse-all-btn" id="collapseAllTeamsBtn">全部收合</button>
         </div>
@@ -4310,9 +4310,9 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
       <form class="create-box" id="teamCreateForm">
         <div class="create-head"><div><strong>＋ 建立新隊伍</strong></div></div>
         <div class="create-grid">
-          <div class="field"><label>隊伍名稱</label><input class="input" id="createTeamName" placeholder="10人 · 第 1 隊"></div>
+          <div class="field"><label>隊伍名稱</label><input class="input" id="createTeamName" placeholder="5人 · 第 1 隊"></div>
           <div class="field"><label>備註</label><input class="input" id="createTeamNote" placeholder="例如：固定一隊 / 晚班隊"></div>
-          <button type="submit" class="quick-create" id="createTeamBtn">建立 10 人隊伍</button>
+          <button type="submit" class="quick-create" id="createTeamBtn">建立 5 人隊伍</button>
         </div>
       </form>
 
@@ -4474,7 +4474,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 </div></div>
 
 <div class="modal" id="limitModal"><div class="modal-card">
-  <h2 class="modal-title">10 人上榜限制</h2>
+  <h2 class="modal-title">5 人上榜限制</h2>
   <div class="field"><label>每位玩家最多上榜次數</label><input class="input" id="limitInput" type="number" min="0" max="99"></div>
   <div class="modal-actions"><button class="btn" data-close="limitModal">取消</button><button class="btn primary" id="saveLimitBtn">儲存</button></div>
 </div></div>
@@ -4586,7 +4586,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 <div class="toast" id="toast"></div>
 
 <script type="module">
-const SIZE=10;
+const SIZE=5;
 const CACHE_PREFIX=`wwm_speed_v7_${SIZE}`;
 const SHARED_PLAYER_CACHE="wwm_speed_v7_shared_players";
 const SHARED_CYCLE_CACHE="wwm_speed_v7_shared_cycles";
@@ -4798,7 +4798,7 @@ function renderStandings(){
   $("standingsSubtitle").textContent=`${SIZE} 人競速 · ${exportTeams.length} 隊已記錄 / ${visibleTeams().length} 隊 · 依排名排列`;
   const wrap=$("standingsScroll");
   if(!dg){wrap.innerHTML='<div class="standings-empty">請先選擇副本。</div>';return}
-  if(!visibleTeams().length){wrap.innerHTML='<div class="standings-empty">本期尚未建立隊伍，請先建立本期專屬隊伍。</div>';return}
+  if(!visibleTeams().length){wrap.innerHTML='<div class="standings-empty">本期尚未建立隊伍。</div>';return}
   const best=buildBestRecordByPlayer(exportTeams),count=buildPlayerRecordCountMap(exportTeams),listed=firstPhaseListedPlayers();
   const headers=["遊戲排名","隊伍名字","類型",...Array.from({length:SIZE},(_,i)=>`玩家 ${i+1}`),"BOSS 1","BOSS 2","總通關時間"];
   const scoredIds=new Set(exportTeams.map(x=>x.team.id));
@@ -5516,7 +5516,7 @@ function renderTeams(){
         ${resultHtml(t)}
 
         <div class="roster-title">
-          <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
+          <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員</strong>
           <div class="roster-title-actions">
             <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 批量選擇隊友</button>
           </div>
@@ -7009,7 +7009,7 @@ function exportPNG(){
   const titleH=82;
   const headerH=46;
   const rowH=selectedPhase===1?64:82;
-  const footerH=38;
+  const footerH=8;
   const tableW=cols.reduce((sum,col)=>sum+col.width,0);
   const width=tableW+side*2;
   const height=side*2+titleH+headerH+rowH*rows.length+footerH;
@@ -7026,7 +7026,7 @@ function exportPNG(){
   ctx.font='900 28px Arial';
   ctx.textAlign="left";
   ctx.textBaseline="alphabetic";
-  ctx.fillText("10人副本競速",side,side+26);
+  ctx.fillText("5人副本競速",side,side+26);
 
   ctx.fillStyle="#5d6c86";
   ctx.font='600 16px Arial';
@@ -7196,7 +7196,7 @@ function exportPNG(){
     });
   });
 
-  ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle="#64748b";ctx.font='600 13px "Noto Sans TC",Arial';ctx.fillText("各期隊伍及成績獨立；第二、三期會提醒第一期已上榜的玩家",side,tableY+headerH+rows.length*rowH+22);
+
   try{
     canvas.toBlob(blob=>{
       if(!blob){
@@ -7206,7 +7206,7 @@ function exportPNG(){
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a");
       a.href=url;
-      a.download=`10人競速_${dg.name||"副本"}_${PHASE_NAMES[selectedPhase]}_表格戰績.png`;
+      a.download=`5人競速_${dg.name||"副本"}_${PHASE_NAMES[selectedPhase]}_表格戰績.png`;
       a.style.display="none";
       document.body.appendChild(a);
       a.click();
@@ -8056,7 +8056,7 @@ initFirebase();
           </div>
           ${resultHtml(t)}
           <div class="roster-title">
-            <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
+            <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員</strong>
             <div class="roster-title-actions">
               <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 新增隊友</button>
             </div>
