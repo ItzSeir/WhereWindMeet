@@ -13783,6 +13783,30 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     }
   </style>
 
+
+  <style id="pve-team-pin-edit-collapsed">
+    /* 編輯隊伍時只保留精簡 PIN 狀態列，需要時再手動展開。 */
+    #teamTypeModal #teamLeaderSecurity{padding:11px 13px !important;}
+    #teamTypeModal .team-pin-summary{margin:0 !important;gap:12px;align-items:center;flex-wrap:wrap;}
+    #teamTypeModal .team-pin-summary > span{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;}
+    #teamTypeModal .team-pin-status{font-size:11px;font-weight:700;color:var(--ui-muted,#96a6bf);word-break:break-all;}
+    #teamTypeModal .team-pin-manage-btn{min-height:34px;margin-left:auto;padding:6px 11px;
+      border:1px solid var(--ui-line,rgba(174,194,231,.22));border-radius:10px;
+      background:var(--ui-panel-2,rgba(255,255,255,.06));color:var(--ui-text,#f1f5ff);
+      font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;}
+    #teamTypeModal .team-pin-manage-btn:hover{border-color:var(--ui-accent,#72a8fd);}
+    #teamTypeModal .team-pin-manage-btn[aria-expanded="true"] span{display:inline-block;transform:rotate(180deg);}
+    #teamTypeModal .team-pin-controls[hidden]{display:none !important;}
+    #teamTypeModal .team-pin-controls{padding-top:12px;}
+    #teamTypeModal .team-pin-controls .leader-security-sub{margin-bottom:9px;}
+    html[data-theme="light"] #teamTypeModal .team-pin-manage-btn{
+      background:#f5f7fc;color:#344460;border-color:#d5deee;}
+    @media(max-width:480px){
+      #teamTypeModal .team-pin-status{font-size:10px;}
+      #teamTypeModal .team-pin-manage-btn{font-size:11px;padding:6px 9px;min-height:32px;}
+    }
+  </style>
+
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -14317,21 +14341,26 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       </div>
 
       <div id="teamLeaderSecurity" class="leader-security-panel">
-        <div class="leader-security-title"><span>🔐 團長 PIN</span><span id="teamPinStatusText">尚未設定</span></div>
-        <div class="leader-security-sub">PIN 只是簡單的團長操作碼。可保留目前 PIN、重新產生，或自行更換。</div>
-        <div class="leader-pin-row">
-          <div>
-            <label class="signup-label" for="teamPinModeSelect" style="margin-top:0;">PIN 設定</label>
-            <select id="teamPinModeSelect" class="signup-select">
-              <option value="none">不使用 PIN（直接報名）</option>
-              <option value="keep">保留目前 PIN</option>
-              <option value="auto">重新自動生成</option>
-              <option value="custom">自行設定新 PIN</option>
-            </select>
-          </div>
-          <div id="teamCustomPinWrap" style="display:none;">
-            <label class="signup-label" for="teamCustomPinInput" style="margin-top:0;">自訂新 PIN</label>
-            <input id="teamCustomPinInput" class="signup-input" type="password" inputmode="numeric" maxlength="12" placeholder="4–12 位數字" />
+        <div class="leader-security-title team-pin-summary">
+          <span>🔐 團長 PIN <small id="teamPinStatusText" class="team-pin-status">尚未啟用</small></span>
+          <button type="button" id="teamPinManageBtn" class="team-pin-manage-btn" aria-expanded="false" aria-controls="teamPinControls">管理 PIN <span aria-hidden="true">⌄</span></button>
+        </div>
+        <div id="teamPinControls" class="team-pin-controls" hidden>
+          <div class="leader-security-sub">僅在需要更改時操作。一般編輯隊伍不會重新生成或修改 PIN。</div>
+          <div class="leader-pin-row">
+            <div>
+              <label class="signup-label" for="teamPinModeSelect" style="margin-top:0;">PIN 設定</label>
+              <select id="teamPinModeSelect" class="signup-select">
+                <option value="none">不使用 PIN（直接報名）</option>
+                <option value="keep">保留目前 PIN</option>
+                <option value="auto">重新自動生成</option>
+                <option value="custom">自行設定新 PIN</option>
+              </select>
+            </div>
+            <div id="teamCustomPinWrap" style="display:none;">
+              <label class="signup-label" for="teamCustomPinInput" style="margin-top:0;">自訂新 PIN</label>
+              <input id="teamCustomPinInput" class="signup-input" type="password" inputmode="numeric" maxlength="12" placeholder="4–12 位數字" />
+            </div>
           </div>
         </div>
       </div>
@@ -16392,7 +16421,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(prefix === "team"){
         const hasPin = !!slot?.leaderPin || (!!slot?.leaderPinHash && !!slot?.leaderPinSalt);
         const statusText = document.getElementById("teamPinStatusText");
-        if(statusText) statusText.textContent = slot?.leaderPin ? `目前 PIN：${slot.leaderPin}` : (hasPin ? "已設定（舊版）" : "尚未設定");
+        if(statusText) statusText.textContent = slot?.leaderPin ? `已啟用 · PIN：${slot.leaderPin}` : (hasPin ? "已啟用（舊版）" : "未啟用");
         const keepOption = Array.from(modeSelect.options).find(opt => opt.value === "keep");
         if(keepOption) keepOption.disabled = !hasPin;
         if(protectedType && modeSelect.value === "keep" && !hasPin){
@@ -16401,6 +16430,18 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       }
 
       customWrap.style.display = protectedType && modeSelect.value === "custom" ? "block" : "none";
+    }
+
+    function setTeamPinControlsExpanded(expanded){
+      const panel=document.getElementById("teamLeaderSecurity");
+      const controls=document.getElementById("teamPinControls");
+      const button=document.getElementById("teamPinManageBtn");
+      if(!panel || !controls || !button) return;
+      const visible=Boolean(expanded) && panel.classList.contains("show");
+      controls.hidden=!visible;
+      panel.classList.toggle("pin-expanded",visible);
+      button.setAttribute("aria-expanded",String(visible));
+      button.innerHTML=visible ? '收起設定 <span aria-hidden="true">⌄</span>' : '管理 PIN <span aria-hidden="true">⌄</span>';
     }
 
     function readPinSetup(prefix, existingSlot = null){
@@ -16738,12 +16779,13 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       teamTypeSelect.value = normalized.teamType;
       minHealerSelect.value = String(getSlotMinHealer(slot));
       if(customPinInput) customPinInput.value = "";
-      if(pinModeSelect) pinModeSelect.value = (slot.leaderPin || (slot.leaderPinHash && slot.leaderPinSalt)) ? "keep" : "auto";
+      if(pinModeSelect) pinModeSelect.value = (slot.leaderPin || (slot.leaderPinHash && slot.leaderPinSalt)) ? "keep" : "none";
 
       const towerData = normalizeTowerSlot(slot);
       document.getElementById("teamTowerDifficultySelect").value = towerData.towerDifficulty;
       syncTowerOptions("team", towerData);
       syncLeaderPinPanel("team", slot);
+      setTeamPinControlsExpanded(false);
 
       descriptionInput.value = slot.description || "";
       if(teamTypeSelect.value === "天賦團" && !descriptionInput.value.trim()){
@@ -16755,6 +16797,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const handleTeamTypeChange = () => {
         syncTowerOptions("team", normalizeTowerSlot(slot));
         syncLeaderPinPanel("team", slot);
+        if(!isProtectedTeam(teamTypeSelect.value)) setTeamPinControlsExpanded(false);
         if(teamTypeSelect.value === "天賦團" && !descriptionInput.value.trim()){
           descriptionInput.value = getDefaultTalentDescription();
         }else if(teamTypeSelect.value === "競速團" && !descriptionInput.value.trim()){
@@ -16765,6 +16808,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       teamTypeSelect.onchange = handleTeamTypeChange;
       teamSizeSelect.onchange = () => syncTowerOptions("team", normalizeTowerSlot(slot));
       pinModeSelect.onchange = () => syncLeaderPinPanel("team", slot);
+      document.getElementById("teamPinManageBtn").onclick=() => {
+        const controls=document.getElementById("teamPinControls");
+        setTeamPinControlsExpanded(controls?.hidden);
+      };
       document.getElementById("teamTypeModal").classList.add("show");
     }
 
@@ -16810,7 +16857,13 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
       let revealPin = "";
       if(value === "天賦團" || value === "競速團"){
-        const setup = readPinSetup("team", slot);
+        // 隱藏的 PIN 設定不會動到原 PIN，也不會產生任何新 PIN。
+        // 只有使用者主動展開並更改選項，才套用 PIN 管理操作。
+        const controls=document.getElementById("teamPinControls");
+        const hasExistingPin=!!slot.leaderPin || (!!slot.leaderPinHash && !!slot.leaderPinSalt);
+        const setup = controls?.hidden
+          ? {mode:hasExistingPin ? "keep" : "none",pin:""}
+          : readPinSetup("team", slot);
         if(!setup) return;
         if(setup.mode === "none"){
           slot.leaderPin = ""; slot.leaderPinHash = ""; slot.leaderPinSalt = "";
