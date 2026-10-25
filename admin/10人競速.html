@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>夢回花深處｜5 人副本競速</title>
+<title>夢回花深處｜10 人副本競速</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
 try{
@@ -4239,21 +4239,21 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 </head>
 <body>
 <nav class="topbar"><div class="topbar-inner">
-  <div class="brand"><span class="badge">夢回花深處</span><span class="badge sub">5 人競速</span></div>
+  <div class="brand"><span class="badge">夢回花深處</span><span class="badge sub">10 人競速</span></div>
   <div class="nav-wrap"><div class="nav">
-    <a href="5人競速" class="active">5 人競速</a>
-    <a href="10人競速" class="">10 人競速</a>
+    <a href="5人競速" class="">5 人競速</a>
+    <a href="10人競速" class="active">10 人競速</a>
     <a href="百業戰">百業戰</a>
   </div><button class="theme-btn" id="themeBtn">☀ 白天</button></div>
 </div></nav>
 
 <main class="page">
   <header class="hero">
-    <div><div class="kicker">DUNGEON SPEEDRUN · 5 PLAYERS</div><h1>5 人副本競速 <span class="version">測試版</span></h1></div>
+    <div><div class="kicker">DUNGEON SPEEDRUN · 10 PLAYERS</div><h1>10 人副本競速 <span class="version">測試版</span></h1></div>
     <div class="hero-actions"><button class="btn" id="limitBtn" hidden aria-hidden="true">上榜限制</button><button class="btn" id="pngBtn">🖼 產生 PNG</button><button class="btn" id="exportBtn">⇩ 匯出 Excel</button><button class="btn" id="playersBtn">玩家資料</button><button class="btn primary" id="newDungeonBtn">＋ 新副本</button></div>
   </header>
 
-  <div class="cross"><a href="10人競速">前往 10 人競速 →</a></div>
+  <div class="cross"><a href="5人競速">前往 5 人競速 →</a></div>
 
   <section class="cycle">
     <div class="cycle-main">
@@ -4299,7 +4299,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 
     <section class="board">
       <div class="board-head">
-        <div><h2>5 人固定隊伍</h2><p id="boardSub"></p></div>
+        <div><h2>10 人固定隊伍</h2><p id="boardSub"></p></div>
         <div class="board-head-actions">
           <button type="button" class="btn collapse-all-btn" id="collapseAllTeamsBtn">全部收合</button>
         </div>
@@ -4310,9 +4310,9 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
       <form class="create-box" id="teamCreateForm">
         <div class="create-head"><div><strong>＋ 建立新隊伍</strong></div></div>
         <div class="create-grid">
-          <div class="field"><label>隊伍名稱</label><input class="input" id="createTeamName" placeholder="5人 · 第 1 隊"></div>
+          <div class="field"><label>隊伍名稱</label><input class="input" id="createTeamName" placeholder="10人 · 第 1 隊"></div>
           <div class="field"><label>備註</label><input class="input" id="createTeamNote" placeholder="例如：固定一隊 / 晚班隊"></div>
-          <button type="submit" class="quick-create" id="createTeamBtn">建立 5 人隊伍</button>
+          <button type="submit" class="quick-create" id="createTeamBtn">建立 10 人隊伍</button>
         </div>
       </form>
 
@@ -4474,7 +4474,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 </div></div>
 
 <div class="modal" id="limitModal"><div class="modal-card">
-  <h2 class="modal-title">5 人上榜限制</h2>
+  <h2 class="modal-title">10 人上榜限制</h2>
   <div class="field"><label>每位玩家最多上榜次數</label><input class="input" id="limitInput" type="number" min="0" max="99"></div>
   <div class="modal-actions"><button class="btn" data-close="limitModal">取消</button><button class="btn primary" id="saveLimitBtn">儲存</button></div>
 </div></div>
@@ -4586,7 +4586,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 <div class="toast" id="toast"></div>
 
 <script type="module">
-const SIZE=5;
+const SIZE=10;
 const CACHE_PREFIX=`wwm_speed_v7_${SIZE}`;
 const SHARED_PLAYER_CACHE="wwm_speed_v7_shared_players";
 const SHARED_CYCLE_CACHE="wwm_speed_v7_shared_cycles";
@@ -7026,7 +7026,7 @@ function exportPNG(){
   ctx.font='900 28px Arial';
   ctx.textAlign="left";
   ctx.textBaseline="alphabetic";
-  ctx.fillText("5人副本競速",side,side+26);
+  ctx.fillText("10人副本競速",side,side+26);
 
   ctx.fillStyle="#5d6c86";
   ctx.font='600 16px Arial';
@@ -7206,7 +7206,7 @@ function exportPNG(){
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a");
       a.href=url;
-      a.download=`5人競速_${dg.name||"副本"}_${PHASE_NAMES[selectedPhase]}_表格戰績.png`;
+      a.download=`10人競速_${dg.name||"副本"}_${PHASE_NAMES[selectedPhase]}_表格戰績.png`;
       a.style.display="none";
       document.body.appendChild(a);
       a.click();
