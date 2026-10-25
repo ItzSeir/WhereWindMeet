@@ -4069,6 +4069,12 @@ html[data-theme="light"] #speedExitGuard .exit-actions .exit-yes{background:line
   #playerList .sidebar-best-top .sidebar-best-time{font-size:11px!important}
 }
 
+
+/* Team name composer: player name + generated suffix, no manual numbering */
+#teamCreateModal .speed-team-name-composer{display:flex;align-items:stretch;gap:9px;min-width:0}
+#teamCreateModal .speed-team-name-composer #modalCreateTeamName{flex:1 1 0;min-width:0}
+#teamCreateModal .speed-team-auto-suffix{display:flex;align-items:center;justify-content:center;flex:0 0 auto;white-space:nowrap;min-height:47px;padding:9px 13px;border-radius:12px;background:var(--speed-pop-panel);border:1px solid var(--speed-pop-line);font-size:13px;font-weight:900;color:var(--speed-pop-blue)}
+@media(max-width:420px){#teamCreateModal .speed-team-name-composer{gap:6px}#teamCreateModal .speed-team-auto-suffix{padding:8px 9px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -7030,7 +7036,7 @@ function exportPNG(){
     });
   });
 
-  ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle="#64748b";ctx.font='600 13px "Noto Sans TC",Arial';ctx.fillText("各期隊伍及成績獨立；第二、三期會提醒第一期已上榜的玩家",side,tableY+headerH+rows.length*rowH+22);
+  ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle="#64748b";ctx.font='600 13px "Noto Sans TC",Arial';ctx.fillText("",side,tableY+headerH+rows.length*rowH+22);
   try{
     canvas.toBlob(blob=>{
       if(!blob){
@@ -9102,6 +9108,34 @@ initFirebase();
   const isGuest=id=>String(id).startsWith('external:');
   const selectedCount=()=>selected.size+stagedGuests.length;
   const createModal=()=>get('teamCreateModal');
+
+  // The name belongs to this dungeon + phase. Only teams with the SAME prefix
+  // contribute to the next number. Never rename existing teams or reuse holes.
+  const cleanTeamPrefix=text=>String(text||'').trim().replace(/\s*的隊伍(?:\s*[#＃]\s*\d+)?\s*$/u,'').trim();
+  const comparableTeamPrefix=text=>cleanTeamPrefix(text).replace(/\s+/g,'').toLocaleLowerCase('zh-Hant');
+  function nextTeamIndex(prefix){
+    const target=comparableTeamPrefix(prefix);
+    if(!target)return 1;
+    let maximum=0;
+    for(const t of teams){
+      if(t.dungeonId!==createContext?.dungeonId || teamPeriod(t)!==createContext?.phase || Number(t.size||SIZE)!==SIZE)continue;
+      const saved=String(t.name||'').trim();
+      const found=saved.match(/^(.*?)\s*的隊伍\s*[#＃]\s*(\d+)\s*$/u);
+      if(found&&comparableTeamPrefix(found[1])===target){maximum=Math.max(maximum,Number(found[2])||0);continue}
+      if(comparableTeamPrefix(saved)===target && /的隊伍\s*$/u.test(saved))maximum=Math.max(maximum,1);
+    }
+    return maximum+1;
+  }
+  function fullGeneratedTeamName(prefix){
+    const owner=cleanTeamPrefix(prefix);
+    return owner?`${owner}的隊伍 #${nextTeamIndex(owner)}`:'';
+  }
+  function updateTeamNameSuffix(){
+    const el=get('modalCreateTeamName');const suffix=get('speedTeamAutoSuffix');
+    if(!el||!suffix)return;
+    suffix.textContent=`的隊伍 #${nextTeamIndex(el.value)}`;
+  }
+
   const rowRole=p=>{
     const values=normalizeRoles(p).filter(x=>x!=='未設定');
     return values.length?Array.from(String(values[0]).replace(/[【】\[\]（）() ]/g,'')).slice(0,2).join(''):'未設定';
@@ -9120,7 +9154,7 @@ initFirebase();
       <div class="speed-create-content"><div class="speed-create-grid">
         <div class="speed-create-left">
           <section class="speed-create-panel"><h3>隊伍資料</h3>
-            <div class="speed-create-field"><label for="modalCreateTeamName">隊伍名稱</label><input id="modalCreateTeamName" placeholder="輸入隊伍名稱" autocomplete="off"></div>
+            <div class="speed-create-field"><label for="modalCreateTeamName">隊伍名稱（輸入玩家名字）</label><div class="speed-team-name-composer"><input id="modalCreateTeamName" placeholder="例如：似水" autocomplete="off" maxlength="70"><span id="speedTeamAutoSuffix" class="speed-team-auto-suffix" aria-live="polite">的隊伍 #1</span></div></div>
             <div class="speed-create-field" style="margin-top:12px"><label for="modalCreateTeamNote">備註（選填）</label><input id="modalCreateTeamNote" placeholder="備註" autocomplete="off"></div>
             <div class="speed-create-mode"><label><input type="radio" name="createTeamMode" value="normal" checked>普通本</label><label><input type="radio" name="createTeamMode" value="challenge">挑戰本</label></div>
           </section>
@@ -9142,6 +9176,12 @@ initFirebase();
       <div class="speed-create-footer"><div class="speed-create-footer-summary" id="speedCreateFooterNote">${PHASE_NAMES[selectedPhase]} · 0/${SIZE} 人</div><div class="speed-create-footer-actions"><button type="button" id="speedCreateCancel">取消</button><button type="button" class="primary" id="speedCreateSubmit">確認建立隊伍</button></div></div>`;
     get('speedCreateClose').addEventListener('click',closeCreator);
     get('speedCreateCancel').addEventListener('click',closeCreator);
+    get('modalCreateTeamName').addEventListener('input',updateTeamNameSuffix);
+    get('modalCreateTeamName').addEventListener('blur',()=>{
+      const input=get('modalCreateTeamName');
+      input.value=cleanTeamPrefix(input.value);
+      updateTeamNameSuffix();
+    });
     get('speedCreateSearch').addEventListener('input',e=>{liveSearch=String(e.target.value||'').trim().toLowerCase();drawPeople()});
     get('speedCreateNewPlayer').addEventListener('click',()=>openExtra('player'));
     get('speedCreateGuest').addEventListener('click',()=>openExtra('guest'));
@@ -9190,7 +9230,8 @@ initFirebase();
     createContext={dungeonId:selectedDungeonId,phase:selectedPhase,phaseName:PHASE_NAMES[selectedPhase]};
     selected.clear();stagedPlayers=[];stagedGuests=[];liveSearch='';
     get('speedCreateContext').textContent=`${createContext.phaseName} · ${SIZE} 人競速`;
-    get('modalCreateTeamName').value=`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
+    get('modalCreateTeamName').value='';
+    updateTeamNameSuffix();
     get('modalCreateTeamNote').value='';
     ['modalCreateRank','modalCreateTotalTime','modalCreateBoss1','modalCreateBoss2'].forEach(id=>get(id).value='');
     const normal=createModal().querySelector('input[name="createTeamMode"][value="normal"]');if(normal)normal.checked=true;
@@ -9245,7 +9286,9 @@ initFirebase();
   }
   function readCreate(){
     const dg=currentDungeon();if(!dg||dg.id!==createContext?.dungeonId||selectedPhase!==createContext.phase)return {error:'目前副本或期數已改變，請重新建立隊伍'};
-    const name=get('modalCreateTeamName').value.trim()||`${SIZE}人 · 第 ${visibleTeams().length+1} 隊`;
+    const owner=cleanTeamPrefix(get('modalCreateTeamName').value);
+    if(!owner)return {error:'請輸入隊伍名稱（玩家名字）',field:'modalCreateTeamName'};
+    const name=fullGeneratedTeamName(owner);
     const note=get('modalCreateTeamNote').value.trim();
     const mode=createModal().querySelector('input[name="createTeamMode"]:checked')?.value==='challenge'?'challenge':'normal';
     const rankRaw=get('modalCreateRank').value.trim();
@@ -9281,7 +9324,11 @@ initFirebase();
     confirmation.classList.add('show');
   }
   async function commitCreate(draft){
-    if(busy)return;const check=readCreate();if(check.error){toast(check.error);hideExtra(confirmation.id);return}
+    if(busy)return;
+    const check=readCreate();
+    if(check.error){toast(check.error);hideExtra(confirmation.id);return}
+    // Another editor might have added a numbered team while confirmation was open.
+    if(check.name!==draft.name){toast('隊伍編號已更新，請重新確認');hideExtra(confirmation.id);updateTeamNameSuffix();return}
     busy=true;get('speedConfirmationOK').disabled=true;
     try{
       const createdSharedPlayers=stagedPlayers.length>0;
