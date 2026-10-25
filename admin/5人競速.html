@@ -4271,7 +4271,7 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
 
 
   <section class="phase-switcher" aria-label="副本期數切換">
-    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div><div class="phase-description">各期隊伍與成績獨立</div></div>
+    <div><div class="phase-caption">RANKING PHASE</div><div class="phase-heading">副本三期排行榜</div></div>
     <div class="phase-buttons" id="phaseButtons" role="group" aria-label="選擇期數">
       <button type="button" class="phase-btn active" data-phase="1">第一期<span>查看成績</span></button>
       <button type="button" class="phase-btn" data-phase="2">第二期<span>查看成績</span></button>
@@ -4798,7 +4798,7 @@ function renderStandings(){
   $("standingsSubtitle").textContent=`${SIZE} 人競速 · ${exportTeams.length} 隊已記錄 / ${visibleTeams().length} 隊 · 依排名排列`;
   const wrap=$("standingsScroll");
   if(!dg){wrap.innerHTML='<div class="standings-empty">請先選擇副本。</div>';return}
-  if(!visibleTeams().length){wrap.innerHTML='<div class="standings-empty">本期尚未建立隊伍，請先建立本期專屬隊伍。</div>';return}
+  if(!visibleTeams().length){wrap.innerHTML='<div class="standings-empty">本期尚未建立隊伍。</div>';return}
   const best=buildBestRecordByPlayer(exportTeams),count=buildPlayerRecordCountMap(exportTeams),listed=firstPhaseListedPlayers();
   const headers=["遊戲排名","隊伍名字","類型",...Array.from({length:SIZE},(_,i)=>`玩家 ${i+1}`),"BOSS 1","BOSS 2","總通關時間"];
   const scoredIds=new Set(exportTeams.map(x=>x.team.id));
@@ -5516,7 +5516,7 @@ function renderTeams(){
         ${resultHtml(t)}
 
         <div class="roster-title">
-          <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
+          <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員</strong>
           <div class="roster-title-actions">
             <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 批量選擇隊友</button>
           </div>
@@ -7009,7 +7009,7 @@ function exportPNG(){
   const titleH=82;
   const headerH=46;
   const rowH=selectedPhase===1?64:82;
-  const footerH=38;
+  const footerH=8;
   const tableW=cols.reduce((sum,col)=>sum+col.width,0);
   const width=tableW+side*2;
   const height=side*2+titleH+headerH+rowH*rows.length+footerH;
@@ -7196,7 +7196,7 @@ function exportPNG(){
     });
   });
 
-  ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillStyle="#64748b";ctx.font='600 13px "Noto Sans TC",Arial';ctx.fillText("各期隊伍及成績獨立；第二、三期會提醒第一期已上榜的玩家",side,tableY+headerH+rows.length*rowH+22);
+
   try{
     canvas.toBlob(blob=>{
       if(!blob){
@@ -8056,7 +8056,7 @@ initFirebase();
           </div>
           ${resultHtml(t)}
           <div class="roster-title">
-            <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員（本期獨立）</strong>
+            <strong>${PHASE_NAMES[selectedPhase]} · 隊伍成員</strong>
             <div class="roster-title-actions">
               <button type="button" class="roster-batch-btn" data-batch-team="${esc(t.id)}">＋ 新增隊友</button>
             </div>
