@@ -13793,9 +13793,11 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     #teamTypeModal .team-pin-manage-btn{min-height:34px;margin-left:auto;padding:6px 11px;
       border:1px solid var(--ui-line,rgba(174,194,231,.22));border-radius:10px;
       background:var(--ui-panel-2,rgba(255,255,255,.06));color:var(--ui-text,#f1f5ff);
-      font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;}
+      font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:1;}
     #teamTypeModal .team-pin-manage-btn:hover{border-color:var(--ui-accent,#72a8fd);}
-    #teamTypeModal .team-pin-manage-btn[aria-expanded="true"] span{display:inline-block;transform:rotate(180deg);}
+    #teamTypeModal .team-pin-manage-btn > span{display:inline-flex;align-items:center;justify-content:center;line-height:1;transform:translateY(1px);transition:transform .18s ease;}
+    #teamTypeModal .team-pin-manage-btn[aria-expanded="true"] span{transform:translateY(1px) rotate(180deg);}
     #teamTypeModal .team-pin-controls[hidden]{display:none !important;}
     #teamTypeModal .team-pin-controls{padding-top:12px;}
     #teamTypeModal .team-pin-controls .leader-security-sub{margin-bottom:9px;}
@@ -13807,6 +13809,67 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     }
   </style>
 
+
+  <style id="pve-move-member-custom-picker">
+    #moveModal .move-modal-box{width:min(100%,530px) !important;max-height:min(88dvh,760px) !important;overflow-y:auto;overflow-x:hidden;padding:22px !important;}
+    #moveModal .confirm-modal-title{margin-bottom:13px !important;}
+    #moveModal .move-source-summary{border:1px solid var(--ui-line,rgba(176,197,238,.17));border-radius:13px;background:var(--ui-panel-2,rgba(255,255,255,.04));padding:12px 14px;color:var(--ui-text,#f0f3fc);font-size:13px;line-height:1.6;margin-bottom:18px;}
+    #moveModal .move-source-summary strong{font-size:15px;color:var(--ui-text,#f0f3fc);}
+    #moveModal .move-source-sub{display:block;color:var(--ui-muted,#9aa8c2);font-size:11px;margin-top:3px;}
+    #moveModal .move-field-label{color:var(--ui-muted,#a3afc6);font-size:12px;font-weight:800;margin:14px 1px 8px;}
+    #moveModal .move-mode-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    #moveModal .move-mode-btn{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px;min-height:68px;padding:11px 13px;background:var(--ui-panel-2,rgba(255,255,255,.04));border:1px solid var(--ui-line,rgba(175,196,235,.2));border-radius:12px;color:var(--ui-text,#f3f6ff);font-size:13px;font-weight:850;cursor:pointer;transition:border-color .15s ease,background .15s ease;}
+    #moveModal .move-mode-btn span{font-size:10.5px;font-weight:600;color:var(--ui-muted,#9aa8c2);line-height:1.4;}
+    #moveModal .move-mode-btn.active{border-color:rgba(110,161,250,.68);background:rgba(100,138,237,.16);box-shadow:inset 0 0 0 1px rgba(110,161,250,.16);}
+    #moveModal .move-mode-btn#moveAsBlackwork.active{border-color:rgba(71,201,190,.65);background:rgba(59,177,167,.15);box-shadow:inset 0 0 0 1px rgba(71,201,190,.14);}
+    #moveModal .move-picker{position:relative;min-width:0;}
+    #moveModal .move-picker-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:47px;width:100%;padding:11px 13px;border:1px solid var(--ui-line,rgba(175,196,235,.24));border-radius:11px;color:var(--ui-text,#f3f6ff);background:var(--ui-panel-2,rgba(255,255,255,.04));font:inherit;font-size:13px;font-weight:700;text-align:left;cursor:pointer;}
+    #moveModal .move-picker-trigger[aria-expanded="true"],#moveModal .move-picker-trigger:focus-visible{outline:none;border-color:var(--ui-accent,#79b1fd);box-shadow:0 0 0 3px rgba(114,161,244,.12);}
+    #moveModal .move-picker-chevron{display:block;flex:0 0 8px;width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);opacity:.8;transition:transform .18s;}
+    #moveModal .move-picker-trigger[aria-expanded="true"] .move-picker-chevron{transform:translateY(2px) rotate(225deg);}
+    #moveModal .move-picker-menu{display:flex;flex-direction:column;gap:5px;margin-top:6px;padding:7px;max-height:205px;overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--ui-line,rgba(175,196,235,.22));border-radius:12px;background:var(--ui-panel,#121d30);box-shadow:0 12px 26px rgba(0,0,0,.14);}
+    #moveModal .move-picker-menu[hidden]{display:none !important;}
+    #moveModal .move-picker-option{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:48px;border:1px solid transparent;border-radius:9px;padding:9px 11px;background:transparent;color:var(--ui-text,#f3f6ff);font:inherit;text-align:left;cursor:pointer;}
+    #moveModal .move-picker-option:hover,#moveModal .move-picker-option[aria-selected="true"]{background:var(--ui-accent-soft,rgba(112,161,255,.12));border-color:rgba(127,166,246,.24);}
+    #moveModal .move-picker-option:disabled{opacity:.43;cursor:not-allowed;}
+    #moveModal .move-picker-option-main{min-width:0;display:flex;flex-direction:column;gap:3px;}
+    #moveModal .move-picker-option-name{font-size:12px;font-weight:800;line-height:1.5;}
+    #moveModal .move-picker-option-desc{font-size:10.5px;color:var(--ui-muted,#9aa8c2);font-weight:600;line-height:1.4;}
+    #moveModal .move-picker-option-check{color:var(--ui-accent,#83b5fe);font-size:16px;font-weight:900;flex-shrink:0;}
+    #moveModal .move-destination-hint{font-size:11px;line-height:1.7;color:var(--ui-muted,#a5b3ca);margin:10px 2px 0;min-height:19px;}
+    #moveModal .move-modal-actions{margin-top:17px;}
+    #moveModal .move-modal-actions button:disabled{opacity:.45;cursor:not-allowed;}
+    html[data-theme="light"] #moveModal .move-picker-menu{background:#fff;box-shadow:0 10px 25px rgba(42,65,112,.11);}
+    html[data-theme="light"] #moveModal .move-mode-btn.active{background:#eaf1ff;border-color:#7299df;}
+    html[data-theme="light"] #moveModal #moveAsBlackwork.active{background:#e6f6f3;border-color:#57afa7;}
+    @media(max-width:600px){
+      #moveModal{padding:12px !important;align-items:flex-end !important;}
+      #moveModal .move-modal-box{width:100% !important;max-height:min(86dvh,760px) !important;padding:17px !important;border-radius:20px 20px 14px 14px !important;}
+      #moveModal .move-mode-btn{min-height:62px;padding:10px;font-size:12px;}
+      #moveModal .move-picker-menu{max-height:185px;}
+      #moveModal .move-modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+      #moveModal .move-modal-actions button{min-width:0;}
+    }
+  </style>
+  <style id="pve-blackworker-reverse-transfer-style">
+    .blackwork-person .blackwork-transfer{
+      flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+      min-height:29px;padding:4px 9px;border:1px solid rgba(91,206,191,.28);
+      border-radius:8px;background:rgba(73,193,175,.10);color:#8ae8d4;
+      font-size:11px;font-weight:800;line-height:1.1;white-space:nowrap;cursor:pointer;
+    }
+    .blackwork-person .blackwork-transfer:hover,
+    .blackwork-person .blackwork-transfer:focus-visible{
+      background:rgba(73,193,175,.19);border-color:rgba(91,206,191,.58);
+      outline-offset:2px;
+    }
+    html[data-theme="light"] .blackwork-person .blackwork-transfer{
+      background:#e2f6f0;color:#197f6e;border-color:#a6d6c9;
+    }
+    @media(max-width:600px){
+      .blackwork-person .blackwork-transfer{min-height:30px;padding:4px 8px;font-size:11px;}
+    }
+  </style>
 </head>
 <body data-site-page="PVERegistration">
 <nav class="topbar" id="floatingNav" aria-label="主要導覽">
@@ -14268,19 +14331,32 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
   </div>
 
   <div id="moveModal" class="confirm-modal">
-    <div class="confirm-modal-box">
+    <div class="confirm-modal-box move-modal-box">
       <div class="confirm-modal-title">移動隊友</div>
-
-      <div id="moveMemberInfo" class="confirm-modal-text" style="margin-bottom:10px;">
-        請選擇要移動到哪個隊伍。
+      <div id="moveMemberInfo" class="move-source-summary"></div>
+      <div class="move-field-label">轉移身分</div>
+      <div class="move-mode-picker" role="group" aria-label="轉移身分">
+        <button type="button" id="moveAsMember" class="move-mode-btn active" aria-pressed="true">正式隊員<span>計入隊伍名額</span></button>
+        <button type="button" id="moveAsBlackwork" class="move-mode-btn" aria-pressed="false">黑工／補位<span>不限人數・不佔名額</span></button>
       </div>
-
-      <label class="signup-label" for="moveTargetSelect">目標隊伍</label>
-      <select id="moveTargetSelect" class="signup-select"></select>
-
-      <div class="confirm-modal-actions">
+      <div class="move-field-label" id="moveDateLabel">目標日期</div>
+      <div class="move-picker" id="moveDatePicker">
+        <button type="button" class="move-picker-trigger" id="moveDateTrigger" aria-expanded="false" aria-controls="moveDateMenu" aria-labelledby="moveDateLabel moveDateValue">
+          <span id="moveDateValue">選擇日期</span><span class="move-picker-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="move-picker-menu" id="moveDateMenu" role="listbox" aria-label="目標日期" hidden></div>
+      </div>
+      <div class="move-field-label" id="moveTeamLabel">目標隊伍</div>
+      <div class="move-picker" id="moveTeamPicker">
+        <button type="button" class="move-picker-trigger" id="moveTeamTrigger" aria-expanded="false" aria-controls="moveTeamMenu" aria-labelledby="moveTeamLabel moveTeamValue">
+          <span id="moveTeamValue">選擇目標隊伍</span><span class="move-picker-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="move-picker-menu" id="moveTeamMenu" role="listbox" aria-label="目標隊伍" hidden></div>
+      </div>
+      <p id="moveDestinationHint" class="move-destination-hint" aria-live="polite"></p>
+      <div class="confirm-modal-actions move-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeMoveModal()">取消</button>
-        <button type="button" class="signup-confirm-btn" onclick="confirmMoveMember()">確認移動</button>
+        <button type="button" id="moveConfirmBtn" class="signup-confirm-btn" onclick="confirmMoveMember()">確認移動</button>
       </div>
     </div>
   </div>
@@ -16262,106 +16338,260 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       closeTagModal();
     };
 
-    function openMoveModal(dateKey, slotIndex, memberIndex){
-      const dayData = globalData?.[dateKey];
-      const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
-      if(!dayData || !member) return;
-
-      currentMoveEdit = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
-
-      const select = document.getElementById("moveTargetSelect");
-      const info = document.getElementById("moveMemberInfo");
-
-      info.innerHTML = `要移動的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
-      select.innerHTML = "";
-
-      const newTeamOption = document.createElement("option");
-      newTeamOption.value = "__new__";
-      newTeamOption.textContent = "建立新隊伍並移入";
-      select.appendChild(newTeamOption);
-
-      dayData.slots.forEach((slot, index) => {
-        if(index === slotIndex) return;
-        const option = document.createElement("option");
-        option.value = String(index);
-        option.textContent = `${formatDisplayTime(slot.time)}｜第 ${slot.instance || 1} 隊｜${teamTypeLabel(slot)}｜${(slot.members || []).length}/${getSlotMaxPeople(slot)}`;
-        select.appendChild(option);
+    // 移動隊友：同日／跨日、正式隊員／黑工都使用自訂選擇器。
+    let movePickerState = null;
+    function closeMovePickerMenus(){
+      ['Date','Team'].forEach(type=>{
+        const menu=document.getElementById(`move${type}Menu`);
+        const trigger=document.getElementById(`move${type}Trigger`);
+        if(menu)menu.hidden=true;
+        if(trigger)trigger.setAttribute('aria-expanded','false');
       });
-
-      document.getElementById("moveModal").classList.add("show");
     }
-
-    window.closeMoveModal = () => {
-      currentMoveEdit = null;
-      document.getElementById("moveModal").classList.remove("show");
+    function toggleMovePickerMenu(type){
+      const menu=document.getElementById(`move${type}Menu`);
+      const trigger=document.getElementById(`move${type}Trigger`);
+      if(!menu||!trigger)return;
+      const open=menu.hidden;
+      closeMovePickerMenus();
+      menu.hidden=!open;
+      trigger.setAttribute('aria-expanded',String(open));
+    }
+    ['Date','Team'].forEach(type=>{
+      document.getElementById(`move${type}Trigger`)?.addEventListener('click',()=>toggleMovePickerMenu(type));
+    });
+    document.getElementById('moveAsMember')?.addEventListener('click',()=>{
+      if(!movePickerState)return;
+      movePickerState.mode='member';movePickerState.target='';closeMovePickerMenus();renderMovePickers();
+    });
+    document.getElementById('moveAsBlackwork')?.addEventListener('click',()=>{
+      if(!movePickerState)return;
+      movePickerState.mode='blackwork';movePickerState.target='';closeMovePickerMenus();renderMovePickers();
+    });
+    document.getElementById('moveModal')?.addEventListener('click',event=>{
+      if(!event.target.closest('.move-picker'))closeMovePickerMenus();
+    });
+    function moveDateReadable(dateKey){
+      const date=parseDateKey(dateKey);
+      return date?`${date.getMonth()+1}/${date.getDate()} ${weekdayText(date)}`:dateKey;
+    }
+    function moveTargetOptions(){
+      if(!movePickerState||!currentMoveEdit)return [];
+      const {dateKey,slotIndex}=currentMoveEdit;
+      const targetDate=movePickerState.dateKey;
+      const day=globalData[targetDate];
+      const source=globalData[dateKey]?.slots?.[slotIndex];
+      const sourceKind=currentMoveEdit.sourceKind||'member';
+      const member=sourceKind==='blackwork'
+        ?getBlackWorkers(source)[currentMoveEdit.memberIndex]
+        :source?.members?.[currentMoveEdit.memberIndex];
+      if(!source||!member)return [];
+      const options=[];
+      (Array.isArray(day?.slots)?day.slots:[]).forEach((slot,index)=>{
+        const isSelf=dateKey===targetDate&&index===slotIndex;
+        // 相同隊伍、相同身分沒有轉移意義；反向轉換則允許原隊伍。
+        if(isSelf&&movePickerState.mode===sourceKind)return;
+        if(getSlotStatus(slot)==='取消')return;
+        // 黑工轉正式相當於取得正式名額，仍須遵守報名截止；
+        // 原正式隊員轉黑工不佔名額，保留既有規則。
+        const isConvertingBlackToMember=isSelf&&sourceKind==='blackwork'&&movePickerState.mode==='member';
+        if((!isSelf||isConvertingBlackToMember)&&getSignupTimingState(targetDate,slot).state==='closed')return;
+        const size=getSlotMaxPeople(slot),taken=Array.isArray(slot.members)?slot.members.length:0;
+        const existingName=!isSelf&&slotHasName(slot,member.name);
+        const full=movePickerState.mode==='member'&&taken>=size;
+        const invalidRole=movePickerState.mode==='member'&&!getAllowedRoles(slot.members||[],slot).includes(member.role);
+        const disabled=existingName||full||invalidRole;
+        const reason=existingName?'已有同名玩家':full?'名額已滿':invalidRole?'職業限制':'可選擇';
+        options.push({value:`slot:${index}`,name:`${formatDisplayTime(getSlotDisplayTime(slot))} · 第 ${slot.instance||1} 隊 · ${teamTypeLabel(slot)}`,detail:`${taken}/${size} 人${getBlackWorkers(slot).length?` · ${getBlackWorkers(slot).length} 黑工`:''}${isSelf?' · 原隊伍':disabled?` · ${reason}`:''}`,disabled});
+      });
+      if(movePickerState.mode==='member'){
+        // 新隊伍承襲開團時段與團類型，但不會複製團長 PIN。
+        const canCreate=getSignupTimingState(targetDate,source).state!=='closed';
+        options.push({value:'__new__',name:'＋ 建立新隊伍並移入',detail:canCreate?'使用原隊伍的開團時間、類型及人數設定':'原開團時間已過報名截止',disabled:!canCreate});
+      }
+      return options;
+    }
+    function drawMovePickerMenu(type,options,selected,change){
+      const menu=document.getElementById(`move${type}Menu`);
+      if(!menu)return;
+      menu.innerHTML=options.map(opt=>`<button type="button" role="option" class="move-picker-option" data-move-option="${escapeHtml(opt.value)}" aria-selected="${opt.value===selected}" ${opt.disabled?'disabled':''}>
+        <span class="move-picker-option-main"><span class="move-picker-option-name">${escapeHtml(opt.name)}</span>${opt.detail?`<span class="move-picker-option-desc">${escapeHtml(opt.detail)}</span>`:''}</span>
+        ${opt.value===selected?'<span class="move-picker-option-check" aria-hidden="true">✓</span>':''}
+      </button>`).join('');
+      menu.querySelectorAll('[data-move-option]').forEach(button=>{
+        button.addEventListener('click',()=>{change(button.dataset.moveOption);closeMovePickerMenus();});
+      });
+    }
+    function renderMovePickers(){
+      if(!movePickerState||!currentMoveEdit)return;
+      const {dateKey:sourceDate}=currentMoveEdit;
+      ['member','blackwork'].forEach(mode=>{
+        const btn=document.getElementById(mode==='member'?'moveAsMember':'moveAsBlackwork');
+        btn?.classList.toggle('active',movePickerState.mode===mode);
+        btn?.setAttribute('aria-pressed',String(movePickerState.mode===mode));
+      });
+      const dates=getDatesToShow().map(date=>{
+        const key=formatDate(date),slots=globalData[key]?.slots||[];
+        return {value:key,name:moveDateReadable(key),detail:`${slots.filter(s=>getSlotStatus(s)!=='取消').length} 支隊伍${key===sourceDate?' · 原日期':''}`};
+      });
+      const selectedDate=dates.find(d=>d.value===movePickerState.dateKey)||dates[0];
+      if(selectedDate){
+        movePickerState.dateKey=selectedDate.value;
+        document.getElementById('moveDateValue').textContent=selectedDate.name+(selectedDate.value===sourceDate?' · 原日期':'');
+      }
+      drawMovePickerMenu('Date',dates,movePickerState.dateKey,value=>{
+        movePickerState.dateKey=value;
+        movePickerState.targetRevision=scheduleRevision(globalData[value]);
+        movePickerState.target='';
+        renderMovePickers();
+      });
+      const options=moveTargetOptions();
+      if(!options.some(opt=>opt.value===movePickerState.target&&!opt.disabled)){
+        // 移到黑工時，優先顯示原隊伍；移到正式隊員時，優先選可用目標。
+        const preferred=movePickerState.mode==='blackwork'&&movePickerState.dateKey===sourceDate
+          ?options.find(opt=>opt.value===`slot:${currentMoveEdit.slotIndex}`&&!opt.disabled):null;
+        movePickerState.target=(preferred||options.find(opt=>!opt.disabled))?.value||'';
+      }
+      const target=options.find(o=>o.value===movePickerState.target);
+      document.getElementById('moveTeamValue').textContent=target?target.name:'此日期沒有可轉移的隊伍';
+      drawMovePickerMenu('Team',options,movePickerState.target,value=>{
+        movePickerState.target=value;
+        renderMovePickers();
+      });
+      const black=movePickerState.mode==='blackwork';
+      const fromBlack=currentMoveEdit.sourceKind==='blackwork';
+      document.getElementById('moveConfirmBtn').textContent=black
+        ?(fromBlack?'確認移動黑工':'確認轉為黑工')
+        :(fromBlack?'確認轉為正式':'確認移動');
+      document.getElementById('moveConfirmBtn').disabled=!target||target.disabled;
+      document.getElementById('moveDestinationHint').textContent=!target
+        ?(black?'此日期沒有可加入的其他隊伍，請改選日期。':'此日期沒有可用的正式名額，或開團時間已截止。')
+        :black?(fromBlack?'黑工可移到其他日期／隊伍，不佔正式名額。':'黑工／補位不佔正式名額，不受隊伍滿員限制；原正式報名將移除。')
+          :target.value==='__new__'?'將建立另一支隊伍並移入；新隊伍不會複製原團長 PIN。'
+            :(fromBlack?'黑工轉正式需有空位、符合職業限制，原黑工紀錄會移除。':'正式轉移仍會檢查名額、職業限制及重複姓名。');
+    }
+    function openMoveModal(dateKey,slotIndex,memberIndex,sourceKind='member'){
+      const day=globalData?.[dateKey],source=day?.slots?.[slotIndex];
+      if(!['member','blackwork'].includes(sourceKind))return;
+      const member=sourceKind==='blackwork'
+        ?getBlackWorkers(source)[memberIndex]
+        :source?.members?.[memberIndex];
+      if(!source||!member)return;
+      currentMoveEdit={dateKey,slotIndex,memberIndex,sourceKind,memberName:normalizeName(member.name),slotId:source.id||'',syncRevision:scheduleRevision(day)};
+      document.querySelector('#moveModal .confirm-modal-title').textContent=sourceKind==='blackwork'?'黑工轉移／轉為正式':'移動隊友';
+      // 黑工預設選正式隊員（反向轉換），也可以自行選黑工移到其他隊伍。
+      movePickerState={mode:'member',dateKey,target:'',targetRevision:scheduleRevision(globalData[dateKey])};
+      document.getElementById('moveMemberInfo').innerHTML=`<strong>${escapeHtml(member.name)}</strong><span class="move-source-sub">原隊伍：${escapeHtml(moveDateReadable(dateKey))} · ${escapeHtml(formatDisplayTime(getSlotDisplayTime(source)))} · 第 ${source.instance||1} 隊 · ${escapeHtml(member.role||'未指定')} · ${sourceKind==='blackwork'?'黑工／補位':'正式隊員'}</span>`;
+      closeMovePickerMenus();
+      renderMovePickers();
+      document.getElementById('moveModal').classList.add('show');
+    }
+    window.closeMoveModal=()=>{
+      currentMoveEdit=null;
+      movePickerState=null;
+      closeMovePickerMenus();
+      document.getElementById('moveModal').classList.remove('show');
     };
 
-    window.confirmMoveMember = async () => {
-      if(!currentMoveEdit) return;
-      if(!guardDialogRevision(currentMoveEdit)) return;
-
-      const { dateKey, slotIndex, memberIndex } = currentMoveEdit;
-      const targetValue = document.getElementById("moveTargetSelect").value;
-
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-
-      const sourceSlot = dayData.slots[slotIndex];
-      if(!sourceSlot) return;
-
-      sourceSlot.members = Array.isArray(sourceSlot.members) ? sourceSlot.members : [];
-      const member = sourceSlot.members[memberIndex];
-      if(!member) return;
-
-      if(targetValue === "__new__"){
-        const sameTimeSlots = dayData.slots.filter(s => s.time === sourceSlot.time);
-        const maxInstance = sameTimeSlots.reduce((max, s) => Math.max(max, s.instance || 1), 1);
-
-        const newSlot = {
-          time: sourceSlot.time,
-          instance: maxInstance + 1,
-          members: [member],
-          isCustom: true,
-          teamType: sourceSlot.teamType || "普通團",
-          teamSize: normalizeSlot(sourceSlot).teamSize,
-          description: sourceSlot.description || ""
-        };
-
-        sourceSlot.members.splice(memberIndex, 1);
-        dayData.slots.push(newSlot);
-        sortSlots(dayData.slots);
-
-        await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
+    window.confirmMoveMember=async()=>{
+      if(!currentMoveEdit||!movePickerState)return;
+      if(!guardDialogRevision(currentMoveEdit))return;
+      const {dateKey,slotIndex,memberIndex,sourceKind='member',slotId,memberName,syncRevision}=currentMoveEdit;
+      const {dateKey:targetDate,mode,target}=movePickerState;
+      const selectedOption=moveTargetOptions().find(o=>o.value===target&&!o.disabled);
+      if(!selectedOption){alert('目標隊伍已無法使用，請重新選擇。');renderMovePickers();return;}
+      const sourceData=globalData[dateKey],targetData=targetDate===dateKey?sourceData:globalData[targetDate];
+      const sourceVersion=scheduleRevision(sourceData);
+      const targetVersion=scheduleRevision(targetData);
+      if(targetVersion!==movePickerState.targetRevision){alert('目標日期的隊伍已更新，請重新開啟移動視窗。');return;}
+      if(sourceVersion!==syncRevision){alert('來源隊伍名單已變更，請重新開啟移動視窗。');return;}
+      const sourceRef=doc(db,CONFIG.collectionName,dateKey),targetRef=doc(db,CONFIG.collectionName,targetDate);
+      const button=document.getElementById('moveConfirmBtn');
+      if(button?.disabled)return;
+      button.disabled=true;
+      try{
+        // 單一 Firestore transaction：跨日期時兩個文件同時成功或同時失敗。
+        const saved=await runTransaction(db,async transaction=>{
+          const sourceSnapshot=await transaction.get(sourceRef);
+          const targetSnapshot=targetDate===dateKey?sourceSnapshot:await transaction.get(targetRef);
+          const currentSource=sourceSnapshot.exists()?sourceSnapshot.data():null;
+          const currentTarget=targetSnapshot.exists()?targetSnapshot.data():null;
+          if(!currentSource||scheduleRevision(currentSource)!==sourceVersion||scheduleRevision(currentTarget)!==targetVersion){
+            throw new ScheduleSyncConflict('來源或目標日期的隊伍已更新，請重新開啟移動視窗再試。');
+          }
+          const sourceDay=structuredClone(currentSource);
+          const destinationDay=targetDate===dateKey?sourceDay:structuredClone(currentTarget||{slots:[]});
+          if(!Array.isArray(sourceDay.slots)||!Array.isArray(destinationDay.slots))throw new Error('隊伍資料格式有誤。');
+          const source=sourceDay.slots[slotIndex],member=sourceKind==='blackwork'
+            ?getBlackWorkers(source)[memberIndex]
+            :source?.members?.[memberIndex];
+          if(!member||(slotId&&source.id!==slotId)||normalizeName(member.name)!==memberName){
+            throw new ScheduleSyncConflict('玩家名單已更動，請重新選擇隊員。');
+          }
+          let destination;
+          if(target==='__new__'){
+            if(mode!=='member')throw new Error('黑工須選擇已存在的隊伍。');
+            const srcType=normalizeSlot(source),tower=srcType.teamType==='爬塔'?normalizeTowerSlot(source):null;
+            const newTime=toFirestore24Hour(getSlotDisplayTime(source)||source.time);
+            const maxInstance=destinationDay.slots.filter(s=>s.time===newTime).reduce((max,s)=>Math.max(max,s.instance||1),0);
+            destination={id:crypto.randomUUID(),time:newTime,instance:maxInstance+1,members:[],pendingMembers:[],blackWorkers:[],isCustom:true,
+              teamType:srcType.teamType,teamSize:srcType.teamSize,minHealer:getSlotMinHealer(source),description:source.description||'',
+              leaderPin:'',leaderPinHash:'',leaderPinSalt:'',
+              ...(tower?{towerFloor:tower.towerFloor,towerFloorStart:tower.towerFloorStart,towerFloorEnd:tower.towerFloorEnd,towerDifficulty:tower.towerDifficulty}:{})};
+            if(getSignupTimingState(targetDate,destination).state==='closed')throw new Error('這個新隊伍的開團時間已截止。');
+            destinationDay.slots.push(destination);
+          }else{
+            const targetIndex=Number(target.slice(5));
+            if(!/^slot:\d+$/.test(target))throw new Error('目標隊伍格式錯誤。');
+            destination=destinationDay.slots[targetIndex];
+            if(!destination)throw new Error('目標隊伍不存在。');
+            const sameTeam=dateKey===targetDate&&targetIndex===slotIndex;
+            if((sameTeam&&mode===sourceKind)||getSlotStatus(destination)==='取消')throw new Error('不能移到這個隊伍。');
+            if((!sameTeam||(sourceKind==='blackwork'&&mode==='member'))&&getSignupTimingState(targetDate,destination).state==='closed')throw new Error('目標隊伍已截止報名。');
+          }
+          // 在加入目標之前先移除來源。原隊伍反向轉換時可正確避免同名衝突，
+          // 而同一筆交易內任一驗證失敗均不會寫入 Firestore。
+          if(sourceKind==='blackwork'){
+            source.blackWorkers=getBlackWorkers(source).filter((_,i)=>i!==memberIndex);
+          }else{
+            source.members.splice(memberIndex,1);
+          }
+          if(slotHasName(destination,member.name))throw new Error('目標隊伍已有同名的正式、待確認或黑工玩家。');
+          if(mode==='blackwork'){
+            destination.blackWorkers=[...getBlackWorkers(destination),{
+              name:member.name,role:member.role,tag:member.tag||'',note:member.note||'',
+              joinedAt:member.joinedAt||Date.now()
+            }];
+          }else{
+            destination.members=Array.isArray(destination.members)?destination.members:[];
+            if(destination.members.length>=getSlotMaxPeople(destination))throw new Error('目標隊伍已滿。');
+            if(!getAllowedRoles(destination.members,destination).includes(member.role))throw new Error('目標隊伍目前不可加入此職業。');
+            destination.members.push(sourceKind==='blackwork'
+              ?{name:member.name,role:member.role,tag:member.tag||'',note:member.note||''}
+              :member);
+          }
+          sortSlots(sourceDay.slots);
+          if(targetDate!==dateKey)sortSlots(destinationDay.slots);
+          const nextSource={...ensureFirestore24HourSlots(sourceDay),_syncProtocol:3,_syncVersion:sourceVersion+1};
+          transaction.set(sourceRef,nextSource);
+          if(targetDate===dateKey)return {source:nextSource,target:null};
+          const nextTarget={...ensureFirestore24HourSlots(destinationDay),_syncProtocol:3,_syncVersion:targetVersion+1};
+          transaction.set(targetRef,nextTarget);
+          return {source:nextSource,target:nextTarget};
+        });
+        globalData[dateKey]=saved.source;
+        if(saved.target)globalData[targetDate]=saved.target;
         closeMoveModal();
-        return;
-      }
-
-      const targetSlotIndex = Number(targetValue);
-      const targetSlot = dayData.slots[targetSlotIndex];
-      if(!targetSlot) return;
-
-      targetSlot.members = Array.isArray(targetSlot.members) ? targetSlot.members : [];
-
-      if(targetSlot.members.length >= getSlotMaxPeople(targetSlot)){
-        alert("目標隊伍已滿。");
-        return;
-      }
-
-      if(targetSlot.members.some(m => String(m.name).trim() === String(member.name).trim())){
-        alert("目標隊伍已有相同名字。");
-        return;
-      }
-
-      if(!getAllowedRoles(targetSlot.members, targetSlot).includes(member.role)){
-        alert("目標隊伍目前不可加入此職業。");
-        return;
-      }
-
-      sourceSlot.members.splice(memberIndex, 1);
-      targetSlot.members.push(member);
-
-      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
-      closeMoveModal();
+        render();
+        if(typeof window.showAppAlert==='function'){
+          const title=mode==='blackwork'?'黑工轉移完成':sourceKind==='blackwork'?'黑工轉正式完成':'隊員移動完成';
+          const action=mode==='blackwork'?'已移至黑工／補位':sourceKind==='blackwork'?'已轉為正式隊員':'已成功移動';
+          void window.showAppAlert(`${memberName} ${action}：${moveDateReadable(targetDate)} 的隊伍。`,{title});
+        }
+      }catch(error){
+        console.error('移動隊友失敗',error);
+        alert(error?.message||'移動失敗，請重新操作。');
+      }finally{if(button)button.disabled=false;}
     };
 
     function openEditRoleModal(dateKey, slotIndex, memberIndex){
@@ -19340,6 +19570,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                     <div class="blackwork-person${savedName && normalizeName(worker.name)===normalizeName(savedName) ? ' blackwork-person-self' : ''}">
                       <span class="role-badge ${roleClass(worker.role)}">${escapeHtml(worker.role || '未指定')}</span>
                       <span class="blackwork-person-name" title="${escapeHtml(worker.name || '')}">${escapeHtml(worker.name || '未命名')}</span>
+                      <button type="button" class="blackwork-transfer" data-action="move-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="轉移黑工 ${escapeHtml(worker.name || '')}，或轉為正式隊員" title="移動／轉為正式隊員">轉移</button>
                       <button type="button" class="blackwork-remove" data-action="remove-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="移除黑工 ${escapeHtml(worker.name || '')}" title="取消黑工報名">×</button>
                     </div>`).join('')}</div>` : ''}
                   <div class="blackwork-cta">
@@ -19517,6 +19748,9 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       });
       document.querySelectorAll('[data-action="remove-blackworker"]').forEach(btn=>{
         btn.onclick=()=>void removeBlackworker(btn.dataset.date,Number(btn.dataset.slot),Number(btn.dataset.worker));
+      });
+      document.querySelectorAll('[data-action="move-blackworker"]').forEach(btn=>{
+        btn.onclick=()=>openMoveModal(btn.dataset.date,Number(btn.dataset.slot),Number(btn.dataset.worker),'blackwork');
       });
 
       document.querySelectorAll('[data-action="batch-signup"]').forEach(btn => {
