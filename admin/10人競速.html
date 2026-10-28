@@ -4454,6 +4454,507 @@ html[data-theme="light"] .speed-update-time.speed-shared-time .speed-recent-badg
 #rankPlayerTable tr.speed-my-player td:first-child{box-shadow:inset 4px 0 0 var(--purple)}
 #rankPlayerMobile .rank-mobile-item.speed-my-player{outline:2px solid color-mix(in srgb,var(--purple) 65%,var(--blue));outline-offset:-2px;background:color-mix(in srgb,var(--purple) 12%,var(--surface))}
 </style>
+
+<style id="speed-organized-toolbar-styles">
+/* Clear, task-oriented toolbar. Neutral dropdown panels inspired by PVE registration. */
+.hero .hero-actions.speed-actions-organized{
+  display:flex!important;align-items:center;justify-content:flex-end;flex-wrap:wrap;
+  gap:12px!important;max-width:100%;min-width:0;
+}
+.speed-toolbar-left,.speed-toolbar-right{display:flex;align-items:center;gap:8px;min-width:0}
+.speed-toolbar-left{padding-right:12px;border-right:1px solid var(--line)}
+.hero .hero-actions.speed-actions-organized .btn{
+  flex:0 0 auto!important;min-height:43px;padding:10px 14px;
+  border-radius:12px;font-size:13px!important;line-height:1.25;
+  font-weight:850;white-space:nowrap;transition:background .18s,border-color .18s,box-shadow .18s;
+}
+.hero .hero-actions.speed-actions-organized #speedMyProfileBtn{
+  display:inline-flex;align-items:center;gap:8px;max-width:210px;
+  background:color-mix(in srgb,var(--purple) 9%,var(--surface));
+  border-color:color-mix(in srgb,var(--purple) 32%,var(--line));
+}
+.hero .hero-actions.speed-actions-organized #speedMyProfileBtn #speedMyProfileLabel{
+  display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+.hero .hero-actions.speed-actions-organized #statsFocusBtn{
+  background:var(--surface2);color:var(--text);
+  border:1px solid var(--line);box-shadow:none;
+}
+.hero .hero-actions.speed-actions-organized #statsFocusBtn:hover{
+  border-color:color-mix(in srgb,var(--blue) 55%,var(--line));
+  background:color-mix(in srgb,var(--blue) 10%,var(--surface2));
+}
+.hero .hero-actions.speed-actions-organized #newDungeonBtn{
+  padding-inline:17px;box-shadow:0 7px 18px color-mix(in srgb,var(--blue) 17%,transparent);
+}
+.speed-toolbar-menu{position:relative;min-width:0}
+.hero .hero-actions.speed-actions-organized .speed-toolbar-trigger{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  border:1px solid var(--line);color:var(--text);background:var(--surface2);
+}
+.speed-toolbar-trigger .speed-chevron{font-size:11px;color:var(--muted);transition:transform .2s}
+.speed-toolbar-menu.is-open .speed-chevron{transform:rotate(180deg)}
+.speed-toolbar-menu.is-open .speed-toolbar-trigger{
+  border-color:color-mix(in srgb,var(--blue) 48%,var(--line));
+  background:color-mix(in srgb,var(--blue) 10%,var(--surface2));
+}
+.speed-toolbar-popover{
+  position:absolute;top:calc(100% + 10px);right:0;z-index:8200;
+  width:260px;max-width:calc(100vw - 28px);padding:8px;
+  border-radius:16px;border:1px solid color-mix(in srgb,var(--line) 88%,var(--muted) 12%);
+  background:var(--surface);box-shadow:0 18px 46px rgba(0,0,0,.30);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.speed-toolbar-popover[hidden]{display:none!important}
+.speed-toolbar-heading{
+  display:block;padding:9px 10px 7px;font-size:11px;font-weight:800;
+  color:var(--muted);letter-spacing:.03em;
+}
+.speed-toolbar-separator{height:1px;margin:6px 6px;background:var(--line)}
+.hero .hero-actions.speed-actions-organized .speed-toolbar-popover .btn{
+  display:flex!important;align-items:center;justify-content:flex-start;
+  width:100%;min-height:44px;padding:11px 12px;border:0!important;border-radius:10px;
+  background:transparent!important;color:var(--text);font-size:13px!important;
+  text-align:left;font-weight:780;box-shadow:none!important;
+}
+.hero .hero-actions.speed-actions-organized .speed-toolbar-popover .btn:hover,
+.hero .hero-actions.speed-actions-organized .speed-toolbar-popover .btn:focus-visible{
+  background:var(--surface2)!important;outline:none;
+}
+.speed-toolbar-icon{
+  display:inline-grid;place-items:center;flex:0 0 28px;width:28px;height:28px;
+  margin-right:10px;border-radius:9px;background:color-mix(in srgb,var(--blue) 11%,var(--surface2));
+  color:var(--blue);font-size:16px;line-height:1;
+}
+.speed-toolbar-popover .speed-toolbar-item-text{flex:1;min-width:0}
+.speed-toolbar-popover .speed-toolbar-item-hint{
+  font-size:11px;font-weight:650;color:var(--muted)
+}
+.hero .hero-actions.speed-actions-organized .btn:focus-visible,
+.speed-toolbar-trigger:focus-visible{
+  outline:2px solid var(--blue);outline-offset:3px;
+}
+@media(max-width:960px){
+  .hero .hero-actions.speed-actions-organized{gap:8px!important}
+  .speed-toolbar-left{padding-right:9px}
+  .hero .hero-actions.speed-actions-organized .btn{padding-inline:11px;font-size:12.5px!important}
+}
+@media(max-width:760px){
+  .hero .hero-actions.speed-actions-organized{
+    width:100%;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:9px!important;align-items:stretch;
+  }
+  .speed-toolbar-left,.speed-toolbar-right{display:contents}
+  .hero .hero-actions.speed-actions-organized .btn,
+  .hero .hero-actions.speed-actions-organized .speed-toolbar-trigger{
+    width:100%;min-width:0;min-height:44px;padding:9px 11px;
+    font-size:12.5px!important;justify-content:center;
+  }
+  .hero .hero-actions.speed-actions-organized #speedMyProfileBtn{max-width:none;justify-content:center}
+  .hero .hero-actions.speed-actions-organized #newDungeonBtn{padding-inline:11px}
+  .speed-toolbar-menu{width:100%}
+  .speed-toolbar-popover{right:auto;left:0;width:min(300px,calc(100vw - 28px))}
+  .hero .hero-actions.speed-actions-organized .speed-toolbar-popover .btn{justify-content:flex-start}
+}
+@media(max-width:380px){
+  .hero .hero-actions.speed-actions-organized .btn{font-size:11.5px!important;padding:8px}
+  .hero .hero-actions.speed-actions-organized #speedMyProfileBtn{gap:5px}
+  .hero .hero-actions.speed-actions-organized #speedMyProfileBtn .speed-my-avatar{width:22px;height:22px;flex-basis:22px}
+}
+</style>
+
+<style id="speed-rankux-styles">
+
+/* ===== Ranking-card usability refresh / 2026-10-29 ===== */
+#quickGrid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))!important;
+  align-items:start!important;
+  gap:12px!important;
+}
+#quickGrid .speed-quick-row{min-width:0!important;width:100%;height:auto!important;align-self:start!important}
+#quickGrid .speed-quick-row>.quick-card{
+  box-sizing:border-box!important;width:100%!important;height:auto!important;
+  min-height:216px!important;display:flex!important;flex-direction:column!important;
+  gap:10px!important;padding:16px 14px 12px!important;
+  border-radius:16px!important;min-width:0!important;
+  padding-right:46px!important;position:relative;
+  transition:border-color .18s,background .18s,box-shadow .18s,transform .18s;
+}
+#quickGrid .speed-quick-row>.quick-card:hover{transform:translateY(-2px)}
+#quickGrid .speed-quick-row>.quick-card:focus-visible{outline:2px solid var(--blue)!important;outline-offset:3px!important}
+#quickGrid .quick-top{
+  width:100%;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+  gap:8px!important;align-items:start!important;min-width:0!important;
+}
+#quickGrid .quick-name-wrap{
+  min-width:0!important;max-width:100%!important;
+  display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;
+  align-items:center!important;gap:6px 7px!important;
+}
+#quickGrid .quick-name{
+  flex:0 0 100%!important;width:100%!important;max-width:100%!important;min-width:0!important;
+  font-size:16px!important;font-weight:900!important;line-height:1.45!important;
+  white-space:normal!important;word-break:normal!important;overflow-wrap:anywhere!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;line-clamp:2!important;overflow:hidden!important;
+  text-align:left!important;
+}
+#quickGrid .quick-count{
+  display:inline-block!important;flex-shrink:0!important;white-space:nowrap!important;
+  color:var(--muted)!important;font-size:12px!important;line-height:1.5!important;
+  font-weight:800!important;padding-top:2px!important;text-align:right!important;
+}
+#quickGrid .team-type-tag{font-size:11px!important;line-height:1.25!important;padding:4px 8px!important;min-height:0!important}
+#quickGrid .quick-name-wrap>.speed-my-badge{
+  font-size:10px!important;padding:4px 7px!important;max-width:100%;white-space:nowrap!important;
+}
+#quickGrid .quick-stats{
+  margin:0!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;
+}
+#quickGrid .quick-stat{
+  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+  min-width:0!important;min-height:72px!important;padding:10px 11px!important;
+  border-radius:11px!important;
+}
+#quickGrid .quick-stat span{color:var(--muted)!important;font-size:11px!important;line-height:1.25!important;font-weight:750!important}
+#quickGrid .quick-stat strong{margin-top:6px!important;font-size:23px!important;line-height:1.05!important;letter-spacing:-.03em!important;font-weight:950!important;font-variant-numeric:tabular-nums!important;white-space:nowrap!important}
+#quickGrid .quick-stat .quick-rank{font-size:27px!important;color:var(--purple)!important}
+#quickGrid .chips{
+  display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;
+  min-height:25px!important;margin:0!important;padding:0!important;gap:5px!important;
+}
+#quickGrid .chips .chip{
+  padding:4px 7px!important;font-size:10.5px!important;line-height:1.25!important;
+  border-radius:8px!important;white-space:nowrap!important;
+  max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+#quickGrid .chips .chip[hidden]{display:none!important}
+#quickGrid .chips .speed-extra-chip{color:var(--blue)!important;border-color:color-mix(in srgb,var(--blue) 30%,var(--line))!important;background:color-mix(in srgb,var(--blue) 9%,var(--surface2))!important}
+#quickGrid .speed-update-time.speed-shared-time{
+  margin:auto 0 0!important;padding:9px 0 0!important;min-height:0!important;
+  border-top:1px solid var(--line)!important;
+  font-size:10.5px!important;line-height:1.4!important;gap:4px 6px!important;
+}
+#quickGrid .speed-update-time.speed-shared-time .speed-time-value{font-size:11px!important}
+#quickGrid .speed-recent-badge{font-size:10px!important;padding:2px 7px!important}
+#quickGrid .speed-quick-edit{top:11px!important;right:11px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;border-radius:10px!important}
+#quickGrid .quick-card.speed-my-team{outline:1.5px solid color-mix(in srgb,var(--purple) 65%,var(--blue))!important;outline-offset:-1.5px!important}
+#quickGrid .quick-card.speed-my-team .quick-name{color:var(--text)!important}
+#quickGrid .speed-quick-row[hidden]{display:none!important}
+#quickGrid .speed-quick-row:has(.quick-card.speed-shared-latest) .quick-card{border-color:color-mix(in srgb,var(--green) 35%,var(--line))!important}
+/* compact search / filter row */
+.speed-quick-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:10px 0 14px;min-width:0}
+.speed-quick-search{
+  flex:1 1 220px;max-width:410px;display:flex;align-items:center;gap:8px;
+  padding:0 12px;height:43px;background:var(--surface2);border:1px solid var(--line);
+  border-radius:12px;min-width:0;color:var(--muted);
+}
+.speed-quick-search:focus-within{border-color:color-mix(in srgb,var(--blue) 65%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 12%,transparent)}
+.speed-quick-search svg{width:17px;height:17px;flex:none}
+.speed-quick-search input{width:100%;min-width:0;outline:0!important;box-shadow:none!important;border:0!important;background:transparent!important;padding:0!important;font-size:13px!important;color:var(--text)!important;height:100%}
+.speed-quick-search input::placeholder{color:var(--muted);opacity:.9}
+.speed-only-mine{height:42px;min-width:98px;padding:0 12px;border-radius:11px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:850;white-space:nowrap}
+.speed-only-mine.is-active{background:color-mix(in srgb,var(--purple) 15%,var(--surface2));border-color:color-mix(in srgb,var(--purple) 48%,var(--line));color:var(--text)}
+.speed-quick-sort{height:42px;min-width:128px;max-width:190px;padding:0 11px;border-radius:11px;background:var(--surface2);border:1px solid var(--line);color:var(--text);font-size:12px;font-weight:800;cursor:pointer}
+.speed-quick-filter-count{color:var(--muted);font-size:11px;font-weight:750;white-space:nowrap;margin-left:auto}
+#speedQuickNothing{grid-column:1/-1;padding:26px 14px;text-align:center;color:var(--muted);font-size:13px;border:1px dashed var(--line);border-radius:14px;background:var(--surface2)}
+@media(max-width:760px){
+ #quickGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ #quickGrid .speed-quick-row>.quick-card{padding:12px 10px 10px!important;padding-right:38px!important;min-height:199px!important;border-radius:13px!important;gap:9px!important}
+ #quickGrid .quick-name{font-size:13px!important;line-height:1.45!important}
+ #quickGrid .quick-count{font-size:10px!important}
+ #quickGrid .quick-name-wrap>.speed-my-badge{font-size:9px!important}
+ #quickGrid .team-type-tag{font-size:9px!important;padding:3px 6px!important}
+ #quickGrid .quick-stats{gap:5px!important}
+ #quickGrid .quick-stat{padding:7px!important;min-height:61px!important}
+ #quickGrid .quick-stat span{font-size:9px!important}
+ #quickGrid .quick-stat strong{font-size:17px!important}
+ #quickGrid .quick-stat .quick-rank{font-size:21px!important}
+ #quickGrid .chips .chip{font-size:9px!important;padding:3px 5px!important}
+ #quickGrid .speed-quick-edit{top:7px!important;right:7px!important;width:26px!important;height:26px!important;min-height:26px!important;min-width:26px!important}
+ #quickGrid .speed-update-time.speed-shared-time{font-size:9px!important}
+ #quickGrid .speed-update-time.speed-shared-time .speed-time-value{font-size:9px!important}
+ .speed-quick-tools{gap:8px;margin-bottom:11px}
+ .speed-quick-search{max-width:none;flex:1 1 100%;height:41px}
+ .speed-only-mine,.speed-quick-sort{flex:1 1 0;min-width:0;height:39px}
+ .speed-quick-filter-count{flex:0 0 auto}
+}
+@media(max-width:400px){
+ #quickGrid{grid-template-columns:1fr!important}
+ #quickGrid .speed-quick-row>.quick-card{min-height:0!important;padding:13px 44px 12px 13px!important}
+ #quickGrid .quick-name{font-size:15px!important}
+ #quickGrid .quick-stat strong{font-size:21px!important}
+ #quickGrid .quick-stat .quick-rank{font-size:25px!important}
+}
+
+</style>
+<style id="players-manager-redesign-v1">
+
+/* === Players Manager: wider, clearer and faster to use === */
+#playersModal{padding:16px!important;align-items:center!important}
+#playersModal>.modal-card.players-manager-dialog{
+  width:min(1480px,calc(100vw - 32px))!important;
+  max-width:1480px!important;
+  max-height:calc(100dvh - 32px)!important;
+  min-height:min(735px,calc(100dvh - 32px));
+  padding:0!important;
+  display:flex!important;flex-direction:column;overflow:hidden!important;
+  border:1px solid var(--speed-pop-line,rgba(255,255,255,.11))!important;
+  border-radius:24px!important;
+  background:linear-gradient(180deg,var(--surface2),var(--surface))!important;
+  box-shadow:0 30px 80px rgba(0,0,0,.35)!important;
+}
+#playersModal .players-manager-head{
+  flex:0 0 auto;margin:0;padding:22px 27px 19px;
+  align-items:center;gap:16px;
+  background:color-mix(in srgb,var(--surface2) 65%,var(--surface));
+  border-bottom:1px solid var(--line);
+}
+#playersModal .players-manager-title-wrap{gap:5px;min-width:0}
+#playersModal .players-manager-title-wrap .modal-title{font-size:25px!important;letter-spacing:-.03em;margin:0!important;line-height:1.35}
+#playersModal .players-manager-title-wrap .manager-meta{font-size:12px!important;color:var(--muted);font-weight:600}
+#playersModal #professionBtn{min-height:40px;white-space:nowrap;padding:9px 15px;border-radius:12px;font-size:13px!important}
+#playersModal .players-manager-main{
+  flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 365px;
+  gap:0;overflow:hidden;min-width:0;
+}
+#playersModal .existing-player-section{
+  min-width:0;min-height:0;display:flex;flex-direction:column;gap:0;
+  padding:22px 23px 16px;margin:0;background:transparent;border:0;
+}
+#playersModal .existing-player-title{margin:0 0 13px!important}
+#playersModal .existing-player-title strong{font-size:19px!important;font-weight:900;letter-spacing:-.02em}
+#playersModal .existing-player-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+#playersModal #existingPlayerSearch{
+  flex:1;min-width:0;width:auto;height:47px;padding:0 15px;
+  border-radius:13px;background:var(--surface2);border:1px solid var(--line);
+  color:var(--text);font-size:14px!important;
+}
+#playersModal #existingPlayerSearch::placeholder{color:var(--muted);opacity:.78}
+#playersModal .existing-player-count-pill{height:40px;min-width:75px;font-size:12px!important;padding:0 12px;flex:0 0 auto}
+#playersModal #playerEditor{
+  min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;
+  padding:1px 7px 13px 1px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  align-content:start;align-items:start;gap:10px;
+}
+#playersModal #playerEditor .existing-player-card{min-width:0;margin:0;overflow:visible;border:1px solid var(--line);border-radius:15px;background:var(--surface2);box-shadow:none;transition:background .15s,border-color .15s}
+#playersModal #playerEditor .existing-player-card[hidden]{display:none!important}
+#playersModal #playerEditor .existing-player-card:hover{border-color:color-mix(in srgb,var(--blue) 35%,var(--line));background:color-mix(in srgb,var(--blue) 3%,var(--surface2))}
+#playersModal #playerEditor .existing-player-card.open{border-color:color-mix(in srgb,var(--blue) 47%,var(--line));background:var(--surface2)}
+#playersModal .existing-player-summary{
+  display:grid!important;grid-template-columns:42px minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto;column-gap:11px;row-gap:5px;
+  min-height:87px;align-items:center;padding:13px 13px!important;
+  overflow:hidden;border-radius:15px;
+}
+#playersModal .existing-player-summary .player-avatar{
+  grid-column:1;grid-row:1 / 3;
+  width:40px;height:40px;font-size:16px!important;font-weight:900;
+  border-radius:12px;background:color-mix(in srgb,var(--blue) 10%,var(--surface));
+}
+#playersModal .existing-player-summary .name{
+  grid-column:2;grid-row:1;min-width:0;
+  font-size:16px!important;font-weight:900!important;color:var(--text);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+#playersModal .existing-player-summary .roles{
+  grid-column:2;grid-row:2;min-width:0;
+  display:flex;flex-wrap:wrap;gap:5px;white-space:normal!important;
+  overflow:visible!important;max-height:51px;
+}
+#playersModal .existing-role-chip{
+  font-size:10.5px!important;font-weight:750!important;
+  border-radius:8px;padding:4px 7px;
+  color:var(--muted);line-height:1.35;
+}
+#playersModal .existing-player-summary .note{display:none!important}
+#playersModal .existing-player-summary .toggle{
+  grid-column:3;grid-row:1 / 3;min-width:67px!important;
+  min-height:36px;font-size:12px!important;font-weight:850;padding:7px 12px;
+  border-radius:11px;border:1px solid var(--line);background:var(--surface);
+  color:var(--text);white-space:nowrap;
+}
+#playersModal .existing-player-card.open .existing-player-summary .toggle{
+  background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue);
+  border-color:color-mix(in srgb,var(--blue) 38%,var(--line));
+}
+#playersModal .existing-player-card .existing-player-edit{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:12px!important;padding:15px!important;
+  border-top:1px solid var(--line);border-radius:0 0 15px 15px;
+}
+#playersModal .existing-player-edit .pm-field{display:grid;min-width:0;gap:6px}
+#playersModal .existing-player-edit .pm-field span{font-size:11px;font-weight:850;color:var(--muted)}
+#playersModal .existing-player-edit .pm-roles{grid-column:1/-1}
+#playersModal .existing-player-edit .pname,#playersModal .existing-player-edit .pnote{width:100%;min-width:0;height:42px;font-size:13px!important;padding:8px 11px;border-radius:10px}
+#playersModal .existing-player-edit .delete-old{grid-column:1/-1;justify-self:end;width:auto!important;min-width:92px;height:37px!important;padding:6px 12px;font-size:12px!important;border-radius:10px;background:color-mix(in srgb,var(--red) 10%,var(--surface))!important;color:var(--red)!important}
+#playersModal .player-add-zone{
+  min-height:0;min-width:0;display:flex;flex-direction:column;gap:0;
+  padding:22px 18px 18px;margin:0!important;
+  border:0!important;border-left:1px solid var(--line)!important;border-radius:0!important;
+  background:color-mix(in srgb,var(--surface2) 63%,var(--surface))!important;
+}
+#playersModal .player-add-zone-head{margin:0 0 14px;gap:10px;align-items:center}
+#playersModal .player-add-zone-head strong{font-size:19px!important;font-weight:900}
+#playersModal #addPlayerBtn{
+  padding:9px 12px;min-height:39px;border-radius:11px;
+  color:var(--blue);border:1px solid color-mix(in srgb,var(--blue) 40%,var(--line));
+  font-size:12px!important;background:color-mix(in srgb,var(--blue) 9%,var(--surface));
+}
+#playersModal #newPlayerEditor{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:1px 5px 12px 1px;gap:11px}
+#playersModal .new-player-row{
+  display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:11px!important;padding:15px;border-radius:15px;
+  border:1px solid var(--line);background:var(--surface);
+}
+#playersModal .new-player-row .pm-field{min-width:0;display:grid;gap:7px}
+#playersModal .new-player-row .pm-field span{font-size:11px;font-weight:850;color:var(--muted)}
+#playersModal .new-player-row .pm-field:first-child,#playersModal .new-player-row .pm-roles{grid-column:1/-1}
+#playersModal .new-player-row .pname,#playersModal .new-player-row .pnote{height:44px;width:100%;min-width:0;border:1px solid var(--line);padding:9px 12px;border-radius:10px;background:var(--surface2);color:var(--text);font-size:13px!important}
+#playersModal .new-player-row .pm-note{grid-column:1/-1}
+#playersModal .new-player-row .remove-new{
+  grid-column:1/-1;justify-self:end;min-width:96px;width:auto!important;height:36px!important;
+  padding:6px 12px!important;font-size:12px!important;font-weight:850!important;
+  border-radius:10px;background:color-mix(in srgb,var(--red) 8%,var(--surface))!important;
+}
+#playersModal .new-player-row .role-dropdown,#playersModal .existing-player-edit .role-dropdown{width:100%;min-width:0}
+#playersModal .new-player-row .role-dropdown-summary,#playersModal .existing-player-edit .role-dropdown-summary{height:auto;min-height:42px;font-size:12px!important;padding:8px 11px;border-radius:10px}
+#playersModal .players-modal-footer{
+  flex:0 0 auto;position:relative!important;bottom:auto!important;z-index:2;
+  margin:0!important;padding:15px 24px calc(16px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);background:var(--surface)!important;
+  gap:10px;box-shadow:none;
+}
+#playersModal .players-modal-footer .btn{min-height:44px;padding:10px 23px;border-radius:12px;font-size:14px!important;font-weight:850}
+#playersModal .players-modal-footer .primary{background:linear-gradient(125deg,#669af4,#8668dd);border:0;color:#fff}
+#playersModal :is(input,button,summary):focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#playersModal #playerEditor::-webkit-scrollbar,#playersModal #newPlayerEditor::-webkit-scrollbar{width:8px}
+#playersModal #playerEditor::-webkit-scrollbar-thumb,#playersModal #newPlayerEditor::-webkit-scrollbar-thumb{border-radius:8px;background:color-mix(in srgb,var(--muted) 40%,transparent)}
+@media(max-width:1200px){
+  #playersModal .players-manager-main{grid-template-columns:minmax(0,1fr) 325px}
+  #playersModal #playerEditor{grid-template-columns:1fr}
+}
+@media(max-width:820px){
+  #playersModal{padding:8px!important}
+  #playersModal>.modal-card.players-manager-dialog{width:100%!important;max-height:calc(100dvh - 16px)!important;min-height:0;border-radius:19px!important}
+  #playersModal .players-manager-head{padding:17px 17px 14px}
+  #playersModal .players-manager-title-wrap .modal-title{font-size:20px!important}
+  #playersModal #professionBtn{min-height:36px;padding:7px 10px;font-size:11px!important}
+  #playersModal .players-manager-main{display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;gap:0}
+  #playersModal .player-add-zone{order:-1;flex:0 0 auto!important;min-height:max-content!important;padding:17px!important;overflow:visible;border:0!important;border-bottom:1px solid var(--line)!important}
+  #playersModal .existing-player-section{flex:0 0 auto!important;min-height:max-content!important}
+  #playersModal .player-add-zone-head strong,#playersModal .existing-player-title strong{font-size:17px!important}
+  #playersModal .existing-player-section{padding:17px 15px 20px;overflow:visible}
+  #playersModal #newPlayerEditor,#playersModal #playerEditor{overflow:visible;max-height:none;display:grid;grid-template-columns:1fr;padding-right:0}
+  #playersModal .new-player-row{padding:12px;gap:10px!important}
+  #playersModal .players-modal-footer{padding:11px 14px calc(12px + env(safe-area-inset-bottom));gap:9px}
+  #playersModal .players-modal-footer .btn{flex:1;min-width:0;padding:10px 6px;font-size:13px!important}
+  #playersModal .existing-player-summary .name{font-size:15px!important}
+  #playersModal .existing-player-summary .roles{grid-column:2;grid-row:2}
+}
+@media(max-width:420px){
+  #playersModal .players-manager-head{padding:15px 12px}
+  #playersModal .players-manager-title-wrap .modal-title{font-size:18px!important}
+  #playersModal #professionBtn{font-size:10px!important;padding:7px 8px}
+  #playersModal .existing-player-toolbar{gap:7px}
+  #playersModal .existing-player-count-pill{min-width:60px;padding:0 8px}
+  #playersModal .existing-player-summary{column-gap:8px;grid-template-columns:38px minmax(0,1fr) auto!important;padding:10px!important}
+  #playersModal .existing-player-summary .player-avatar{width:36px;height:36px}
+  #playersModal .existing-player-summary .toggle{min-width:54px!important;padding:7px 8px}
+  #playersModal .existing-player-card .existing-player-edit{grid-template-columns:1fr!important}
+  #playersModal .existing-player-edit .pm-roles{grid-column:1}
+}
+
+</style>
+<style id="speed-comprehensive-ux-v1">
+/* ================== Comprehensive usability refinement (Oct 2026) ================== */
+:root{--ux-focus:var(--blue,#6ea8ff)}
+html{scroll-padding-top:108px}
+button,select,input,textarea{font-family:inherit}
+:where(button,a,input,select,textarea,[role="button"]):focus-visible{outline:2px solid var(--ux-focus)!important;outline-offset:3px}
+:where(button,[role="button"]):disabled{opacity:.52;cursor:not-allowed!important;filter:saturate(.68)}
+/* The teams are opened in a large detail dialog: collapsing legacy inline panels is obsolete. */
+#collapseAllTeamsBtn,#focusStandingsToggleBtn{display:none!important}
+.board-head{align-items:center!important;gap:12px!important}
+.board-head h2{font-size:clamp(20px,2.1vw,26px)!important;line-height:1.3!important;overflow-wrap:normal!important;word-break:keep-all!important}
+.board-head-actions{gap:9px!important}
+.quick-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.quick-head strong{font-size:17px!important}
+/* Better scanning of many ranked teams without making cards too tall. */
+#quickGrid{gap:12px!important;align-items:stretch!important}
+#quickGrid .speed-quick-row{min-width:0}
+#quickGrid .quick-card{min-height:100%;border-radius:16px!important;padding:16px!important;transition:border-color .16s ease,background .16s ease,box-shadow .16s ease}
+#quickGrid .quick-card:hover{border-color:color-mix(in srgb,var(--blue) 52%,var(--line))!important}
+#quickGrid .quick-name{font-size:16px!important;line-height:1.48!important;word-break:normal!important;overflow-wrap:anywhere!important}
+#quickGrid .quick-stat{min-width:0}
+#quickGrid .quick-stat strong{font-variant-numeric:tabular-nums}
+#quickGrid .speed-update-time{line-height:1.55;min-width:0}
+#quickGrid .speed-recent-badge{max-width:100%;white-space:normal}
+#quickGrid .chips{row-gap:6px!important;max-width:100%}
+#quickGrid .chip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#speedQuickTools{gap:10px!important}
+#speedQuickSearch,#speedQuickSort{font-size:14px!important}
+#speedQuickSearch::placeholder{opacity:.86}
+/* Cards and input fields share a neutral, PVE-compatible outline. */
+:is(.modal,.speed-pve-submodal) :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){font-size:14px;max-width:100%;min-width:0}
+:is(.modal,.speed-pve-submodal) .modal-card{border-color:var(--line)!important}
+:is(.modal,.speed-pve-submodal) button{transition:background .16s ease,border-color .16s ease,box-shadow .16s ease}
+#playersModal .existing-player-card,.speed-create-panel{min-width:0}
+#playersModal .existing-player-summary .name{font-size:15px!important;line-height:1.5}
+#playersModal .existing-player-summary .roles{line-height:1.6}
+#playersModal .players-modal-footer{z-index:5}
+#playersModal .existing-player-section,#playersModal .player-add-zone{min-width:0}
+#playersModal .existing-player-toolbar input{min-width:0}
+/* Visual hierarchy for ranks, dates, warnings and saving without added instructions. */
+.phase-summary-card strong{font-variant-numeric:tabular-nums}
+#phaseButtons .phase-btn{min-width:0}
+.team-summary-main,.team-member-names,.team-summary-name{min-width:0;overflow-wrap:anywhere}
+#teamList .team-summary-bar{gap:12px!important}
+#teamList .team-updated-at{min-width:0}
+#teamList .team-collapse-btn{white-space:nowrap!important}
+#standingsScroll{overscroll-behavior-inline:contain}
+.standings-table td,.standings-table th{font-variant-numeric:tabular-nums}
+/* Prevent underlying page scroll while any editor or confirmation is open. */
+body:has(.modal.show),body:has(.speed-pve-submodal.show),body:has(#speedExitGuard.show){overflow:hidden}
+@media(max-width:1100px){
+  .board-head{flex-wrap:wrap!important}
+  .board-head-actions{width:100%!important;justify-content:flex-start}
+  #quickGrid{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))!important}
+}
+@media(max-width:760px){
+  .cycle-main,.cycle-main>div:first-child{width:100%;max-width:100%;min-width:0!important}
+  .cycle #dungeonSelect{min-width:0!important;max-width:100%;width:100%!important}
+  html{scroll-padding-top:90px}
+  .page{width:calc(100% - 18px)!important}
+  .board-head{display:flex!important;align-items:flex-start!important;flex-direction:column!important;gap:8px!important}
+  .board-head h2{font-size:22px!important;white-space:normal!important}
+  .board-head-actions{gap:8px!important}
+  #quickGrid{grid-template-columns:1fr!important;gap:9px!important}
+  #quickGrid .quick-card{padding:14px!important}
+  #quickGrid .quick-name{font-size:15px!important}
+  #quickGrid .speed-update-time{font-size:11px!important}
+  #speedQuickTools{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+  #speedQuickTools .speed-quick-search{grid-column:1/-1;min-width:0}
+  #speedQuickTools #speedQuickMine,#speedQuickTools #speedQuickSort{min-width:0;width:100%;min-height:42px}
+  #speedQuickTools .speed-quick-filter-count{grid-column:1/-1}
+  .phase-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .phase-summary>:last-child{grid-column:1/-1;min-height:0!important}
+  .phase-summary-card{min-height:0!important;padding:12px!important}
+  .phase-summary-card strong{font-size:23px!important}
+  .phase-switcher{gap:10px!important;padding:14px!important}
+  .phase-switcher h2{font-size:17px!important}
+  .team-detail-modal .modal-card{max-height:calc(100dvh - 10px)!important}
+  #playersModal .players-manager-main{scrollbar-gutter:stable}
+  #playersModal .existing-player-card .toggle{min-height:40px}
+  .standings-table{font-size:12px!important}
+  #teamList .team-summary-bar{gap:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #quickGrid .quick-card,:is(.modal,.speed-pve-submodal) button{transition:none!important}
+}
+</style>
 </head>
 <body>
 <nav class="topbar"><div class="topbar-inner">
@@ -4517,7 +5018,7 @@ html[data-theme="light"] .speed-update-time.speed-shared-time .speed-recent-badg
 
     <section class="board">
       <div class="board-head">
-        <div><h2>10 人固定隊伍</h2><p id="boardSub"></p></div>
+        <div><h2>隊伍管理</h2><p id="boardSub"></p></div>
         <div class="board-head-actions">
           <button type="button" class="btn collapse-all-btn" id="collapseAllTeamsBtn">全部收合</button>
         </div>
@@ -4651,38 +5152,35 @@ html[data-theme="light"] .speed-update-time.speed-shared-time .speed-recent-badg
   <div class="modal-actions"><button class="btn" data-close="teamEditModal">取消</button><button class="btn primary" id="saveTeamEditBtn">儲存</button></div>
 </div></div>
 
-<div class="modal" id="playersModal"><div class="modal-card wide">
-  <div class="players-manager-head">
+<div class="modal" id="playersModal"><div class="modal-card wide players-manager-dialog">
+  <header class="players-manager-head">
     <div class="players-manager-title-wrap">
-      <h2 class="modal-title">競速共用玩家資料</h2>
-      <div class="manager-meta">新增玩家優先</div>
+      <h2 class="modal-title">玩家資料</h2>
+      <div class="manager-meta">5 人與 10 人競速共用名單</div>
     </div>
-    <button class="btn" id="professionBtn">⚙ 職業設定</button>
+    <button class="btn" id="professionBtn">職業設定</button>
+  </header>
+  <div class="players-manager-main">
+    <section class="existing-player-section">
+      <div class="existing-player-title"><strong>現有玩家</strong></div>
+      <div class="existing-player-toolbar">
+        <input class="existing-player-search" id="existingPlayerSearch" placeholder="搜尋玩家、職業或備註" aria-label="搜尋玩家">
+        <span class="existing-player-count-pill" id="existingPlayerCount"></span>
+      </div>
+      <div id="playerEditor"></div>
+    </section>
+    <section class="player-add-zone">
+      <div class="player-add-zone-head">
+        <strong>新增玩家</strong>
+        <button class="btn" id="addPlayerBtn">＋ 新增一位</button>
+      </div>
+      <div class="new-player-editor" id="newPlayerEditor"></div>
+    </section>
   </div>
-
-  <section class="player-add-zone">
-    <div class="player-add-zone-head">
-      <strong>新增玩家</strong>
-      <button class="btn" id="addPlayerBtn">＋ 再新增一位</button>
-    </div>
-    <div class="new-player-editor" id="newPlayerEditor"></div>
-  </section>
-
-  <section class="existing-player-section">
-    <div class="existing-player-title">
-      <strong>現有玩家</strong>
-    </div>
-    <div class="existing-player-toolbar">
-      <input class="existing-player-search" id="existingPlayerSearch" placeholder="搜尋現有玩家 / 職業 / 備註">
-      <span class="existing-player-count-pill" id="existingPlayerCount"></span>
-    </div>
-    <div id="playerEditor"></div>
-  </section>
-
-  <div class="players-modal-footer">
+  <footer class="players-modal-footer">
     <button class="btn" data-close="playersModal">取消</button>
-    <button class="btn primary" id="savePlayersBtn">儲存玩家</button>
-  </div>
+    <button class="btn primary" id="savePlayersBtn">儲存玩家資料</button>
+  </footer>
 </div></div>
 
 <div class="modal" id="professionModal"><div class="modal-card">
@@ -5446,15 +5944,24 @@ function toggleTeam(teamId){
   renderTeams();
 }
 function playerStats(pid){
-  const current=visibleTeams().filter(t=>phaseResult(t)?.roster?.some(m=>m.id===pid));
+  // Some older entries recorded a score before the roster snapshot was saved.
+  // Fall back to the team members ONLY for those legacy entries; never override a
+  // real stored snapshot, which represents the roster at the time of the run.
+  const current=visibleTeams().filter(t=>{
+    const result=phaseResult(t);
+    if(!result)return false;
+    const stored=visibleRecords().find(r=>r.id===result.recordId);
+    const roster=Array.isArray(stored?.roster)&&stored.roster.length
+      ?stored.roster:(Array.isArray(result.roster)&&result.roster.length
+        ?result.roster:rosterSnapshotFromTeam(t));
+    return roster.some(m=>m?.id===pid&&!m.external);
+  });
   const currentRecords=current.map(t=>{
     const active=phaseResult(t);
     const id=active?.recordId;
-    return visibleRecords().find(r=>r.id===id) || (active?{
-      ...active,
-      id:id||"",
-      teamId:t.id,
-      teamName:t.name,
+    const stored=visibleRecords().find(r=>r.id===id);
+    return stored || (active?{
+      ...active,id:id||"",teamId:t.id,teamName:t.name,
       mode:active.mode||normalizeTeamMode(t)
     }:null);
   }).filter(Boolean);
@@ -6381,10 +6888,10 @@ function closeOtherRoleDropdowns(except=null){
 function newPlayerRow(p={}){
   const roles=normalizeRoles(p);
   return`<div class="new-player-row">
-    <input class="pname" value="${esc(p.name||"")}" placeholder="玩家名稱">
-    ${roleDropdown(roles,"proles")}
-    <input class="pnote" value="${esc(p.note||"")}" placeholder="備註">
-    <button type="button" class="remove-new">🗑 移除</button>
+    <label class="pm-field"><span>玩家名稱</span><input class="pname" value="${esc(p.name||"")}" placeholder="輸入玩家名稱"></label>
+    <div class="pm-field pm-roles"><span>職業（可多選）</span>${roleDropdown(roles,"proles")}</div>
+    <label class="pm-field pm-note"><span>備註（選填）</span><input class="pnote" value="${esc(p.note||"")}" placeholder="備註"></label>
+    <button type="button" class="remove-new">移除欄位</button>
   </div>`;
 }
 function existingPlayerCard(p){
@@ -6402,10 +6909,10 @@ function existingPlayerCard(p){
       <button type="button" class="toggle">編輯</button>
     </div>
     <div class="existing-player-edit">
-      <input class="pname" value="${esc(p.name||"")}" placeholder="玩家名稱">
-      ${roleDropdown(roles,"proles")}
-      <input class="pnote" value="${esc(p.note||"")}" placeholder="備註">
-      <button type="button" class="delete-old">🗑 刪除</button>
+      <label class="pm-field"><span>玩家名稱</span><input class="pname" value="${esc(p.name||"")}" placeholder="玩家名稱"></label>
+      <label class="pm-field"><span>備註</span><input class="pnote" value="${esc(p.note||"")}" placeholder="備註（選填）"></label>
+      <div class="pm-field pm-roles"><span>職業（可多選）</span>${roleDropdown(roles,"proles")}</div>
+      <button type="button" class="delete-old">刪除玩家</button>
     </div>
   </div>`;
 }
@@ -6466,7 +6973,12 @@ function bindExistingPlayerCards(){
     };
   });
 }
+let playerEditorSnapshot="";
+function playerListSignature(){
+  return JSON.stringify(players.map(p=>[p.id,p.name,normalizeRoles(p),p.note||""]));
+}
 function renderPlayerEditor(){
+  playerEditorSnapshot=playerListSignature();
   $("newPlayerEditor").innerHTML=newPlayerRow();
   $("playerEditor").innerHTML=players.map(existingPlayerCard).join("")||`<div class="empty">尚無現有玩家</div>`;
   $("existingPlayerCount").textContent=`${players.length} 人`;
@@ -6491,12 +7003,19 @@ function collectRoles(container){
   );
 }
 function savePlayersFromEditor(){
-  const next=[],seen=new Set();let dup="";
+  // Never silently overwrite changes delivered by another viewer while this
+  // editor was left open. Keep the form open so the user can review it.
+  if(playerEditorSnapshot!==playerListSignature()){
+    toast("玩家資料已被其他使用者更新，請重新開啟玩家資料確認後再儲存");
+    return;
+  }
+  const next=[],seen=new Set();let dup="",invalidNameInput=null;
 
   // Existing players: only cards still present are retained.
   document.querySelectorAll("#playerEditor .existing-player-card").forEach(card=>{
-    const name=card.querySelector(".pname").value.trim();
-    if(!name)return;
+    const input=card.querySelector(".pname");
+    const name=input.value.trim();
+    if(!name){invalidNameInput ||= input;return;}
     const k=norm(name);
     if(seen.has(k)){dup=name;return}
     seen.add(k);
@@ -6529,6 +7048,13 @@ function savePlayersFromEditor(){
     });
   });
 
+  if(invalidNameInput){
+    toast("現有玩家名稱不能留空；如需刪除請使用刪除操作");
+    const card=invalidNameInput.closest(".existing-player-card");
+    if(card&&!card.classList.contains("open"))card.querySelector(".toggle")?.click();
+    invalidNameInput.focus();
+    return;
+  }
   if(dup){alert(`玩家名稱重複：${dup}`);return}
 
   players.forEach(p=>playerArchive[p.id]=normalizePlayer(p));
@@ -9388,12 +9914,16 @@ initFirebase();
     </div>
    </div>`);
   const modal=$id('speedScoreModal');
-  let selectedId='',pending=null,lastFocus=null;
+  let selectedId='',pending=null,lastFocus=null,openedTeamStamp=0;
   function activeTeam(){return visibleTeams().find(t=>t.id===selectedId);}
+  function changedSinceOpen(team){
+    return !!team&&openedTeamStamp!==teamUpdatedMs(team);
+  }
   function close(){modal.classList.remove('show');selectedId='';pending=null;lastFocus?.isConnected&&lastFocus.focus({preventScroll:true});lastFocus=null;}
   function open(id){
     const t=visibleTeams().find(t=>t.id===id);if(!t)return;
     selectedId=id;pending=null;lastFocus=document.activeElement;
+    openedTeamStamp=teamUpdatedMs(t);
     const r=phaseResult(t);
     $id('speedScoreHeading').textContent=t.name;
     $id('speedScoreSubtitle').textContent=`${PHASE_NAMES[selectedPhase]} · ${normalizeTeamMode(t)==='challenge'?'挑戰本':'普通本'}`;
@@ -9425,6 +9955,10 @@ initFirebase();
   }
   function proceed(){
     const t=activeTeam();if(!t)return;
+    if(changedSinceOpen(t)){
+      toast('隊伍資料已在其他地方更新，請關閉後重新開啟，避免覆蓋新成績');
+      return;
+    }
     const v=values();if(!v)return;
     const existing=phaseResult(t);
     const changed=diffOf(existing||{},v);
@@ -9444,6 +9978,10 @@ initFirebase();
   }
   async function commit(){
     const t=activeTeam();if(!t||!pending)return;
+    if(changedSinceOpen(t)){
+      toast('隊伍資料剛被更新，請重新開啟確認後再儲存');
+      return;
+    }
     const old=phaseResult(t),v=pending.values,now=Date.now();
     const rid=old?.recordId||(selectedPhase===1?`record_${t.id}`:`record_${t.id}_p${selectedPhase}`);
     const existing=records.find(r=>r.id===rid);
@@ -10230,6 +10768,175 @@ initFirebase();
   decorate();
 })();
 
+
+
+/* ===== Ranking grid: useful search / my-teams filter / readable card layout ===== */
+(function(){
+  let query='',onlyMine=false,order='rank';
+  const myKey='wwm_speed_my_player_v1';
+  const byId=id=>document.getElementById(id);
+  const findTeam=id=>visibleTeams().find(t=>String(t.id)===String(id));
+  const normal=s=>String(s||'').toLocaleLowerCase().trim();
+  const currentMine=()=>{try{return localStorage.getItem(myKey)||''}catch(e){return ''}};
+  const isMyTeam=t=>{const who=currentMine();return !!(who&&t&&phaseMembersOf(t).some(pid=>pid===who))};
+
+  function addTools(){
+    const grid=byId('quickGrid');
+    if(!grid||byId('speedQuickTools'))return;
+    const box=document.createElement('div');box.id='speedQuickTools';box.className='speed-quick-tools';
+    box.innerHTML=`
+      <label class="speed-quick-search" aria-label="搜尋隊名或隊員">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+        <input type="search" id="speedQuickSearch" placeholder="搜尋隊伍或隊員" autocomplete="off" aria-label="搜尋隊伍或隊員">
+      </label>
+      <button type="button" id="speedQuickMine" class="speed-only-mine" aria-pressed="false">只看我的隊伍</button>
+      <select class="speed-quick-sort" id="speedQuickSort" aria-label="隊伍排序方式"><option value="rank">遊戲排名優先</option><option value="recent">最近更新優先</option></select>
+      <span class="speed-quick-filter-count" id="speedQuickCount" aria-live="polite"></span>`;
+    grid.before(box);
+    byId('speedQuickSearch').addEventListener('input',e=>{query=normal(e.target.value);apply();});
+    byId('speedQuickMine').addEventListener('click',()=>{
+      if(!onlyMine&&!currentMine()){
+        toast('請先在「我的資料」選擇角色');
+        return;
+      }
+      onlyMine=!onlyMine;
+      const btn=byId('speedQuickMine');btn.classList.toggle('is-active',onlyMine);btn.setAttribute('aria-pressed',String(onlyMine));
+      apply();
+    });
+    byId('speedQuickSort').addEventListener('change',e=>{order=e.target.value;apply();});
+  }
+  function condenseRoster(card){
+    const box=card.querySelector('.chips');if(!box)return;
+    box.querySelectorAll('.speed-extra-chip').forEach(n=>n.remove());
+    const chips=[...box.querySelectorAll('.chip')];
+    chips.forEach((chip,i)=>chip.hidden=i>=4);
+    if(chips.length>4){
+      const span=document.createElement('span');
+      span.className='chip speed-extra-chip';
+      span.textContent=`＋${chips.length-4} 位`;
+      span.title=`另外 ${chips.length-4} 位隊員，可點卡片查看`;
+      box.append(span);
+    }
+  }
+  function apply(){
+    const grid=byId('quickGrid');if(!grid)return;
+    addTools();
+    const rowCards=[...grid.querySelectorAll('.speed-quick-row')].map(row=>({row,card:row.querySelector('.quick-card[data-jump]')})).filter(x=>x.card);
+    const total=rowCards.length;
+    if(!total){byId('speedQuickCount').textContent='';byId('speedQuickNothing')?.remove();return;}
+    const arr=rowCards.map(x=>({...x,team:findTeam(x.card.dataset.jump)}));
+    arr.forEach(({card})=>condenseRoster(card));
+    arr.sort((a,b)=>{
+      if(order==='recent')return Number(teamUpdatedMs(b.team)||0)-Number(teamUpdatedMs(a.team)||0);
+      const ra=manualRankOf(a.team)??Infinity,rb=manualRankOf(b.team)??Infinity;
+      if(ra!==rb)return ra-rb;
+      return Number(phaseResult(a.team)?.timeMs||Infinity)-Number(phaseResult(b.team)?.timeMs||Infinity);
+    });
+    let visible=0;
+    arr.forEach(({row,card,team})=>{
+      const info=normal(`${team?.name||''} ${memberDisplayNames(team||{}).join(' ')} ${manualRankOf(team)||''}`);
+      const matches=(!query||info.includes(query))&&(!onlyMine||isMyTeam(team));
+      row.hidden=!matches;
+      if(matches)visible++;
+      grid.append(row);
+    });
+    let empty=byId('speedQuickNothing');
+    if(!visible){
+      if(!empty){empty=document.createElement('div');empty.id='speedQuickNothing';grid.append(empty)}
+      empty.textContent=onlyMine?'目前沒有符合條件的我的隊伍':'沒有符合條件的隊伍';
+    }else empty?.remove();
+    byId('speedQuickCount').textContent=(query||onlyMine)?`${visible} / ${total} 隊`:'';
+  }
+  // Decorator wrappers have already been installed. Work after them to keep the profile and update badges intact.
+  const baseQuick=renderQuick;
+  renderQuick=function(){const result=baseQuick.apply(this,arguments);apply();return result};
+  const baseAll=renderAll;
+  renderAll=function(){const result=baseAll.apply(this,arguments);apply();return result};
+  // A profile binding can change without a full render.
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#speedMyConfirm,#speedMyUnbind'))queueMicrotask(apply);
+  });
+  addTools();apply();
+})();
+
 </script>
+
+<script id="speed-organized-toolbar-script">
+(function(){
+  function init(){
+    const actions=document.querySelector('.hero .hero-actions');
+    if(!actions||actions.dataset.organized==='1')return;
+    const get=id=>document.getElementById(id);
+    const profile=get('speedMyProfileBtn'),ranking=get('statsFocusBtn');
+    const png=get('pngBtn'),excel=get('exportBtn'),players=get('playersBtn'),newDungeon=get('newDungeonBtn');
+    if(!profile||!ranking||!png||!excel||!players||!newDungeon)return;
+    actions.dataset.organized='1';
+    actions.classList.add('speed-actions-organized');
+
+    const left=document.createElement('div');left.className='speed-toolbar-left';
+    const right=document.createElement('div');right.className='speed-toolbar-right';
+    const menu=document.createElement('div');menu.className='speed-toolbar-menu';
+    const trigger=document.createElement('button');
+    trigger.type='button';trigger.className='btn speed-toolbar-trigger';
+    trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-haspopup','true');
+    trigger.setAttribute('aria-controls','speedToolbarPopover');
+    trigger.innerHTML='<span>更多功能</span><span class="speed-chevron" aria-hidden="true">⌄</span>';
+    const popup=document.createElement('div');
+    popup.className='speed-toolbar-popover';popup.id='speedToolbarPopover';popup.hidden=true;
+
+    function groupLabel(text){
+      const label=document.createElement('div');label.className='speed-toolbar-heading';label.textContent=text;
+      return label;
+    }
+    function item(button,icon,text){
+      // Move the real button, retaining its original ID and event handlers.
+      button.classList.add('speed-toolbar-option');
+      button.setAttribute('role','menuitem');button.type='button';
+      button.textContent='';
+      const symbol=document.createElement('span');symbol.className='speed-toolbar-icon';symbol.setAttribute('aria-hidden','true');symbol.textContent=icon;
+      const label=document.createElement('span');label.className='speed-toolbar-item-text';label.textContent=text;
+      button.append(symbol,label);
+      return button;
+    }
+    popup.append(groupLabel('匯出排行榜'));
+    popup.append(item(png,'↓','產生 PNG'));
+    popup.append(item(excel,'▤','匯出 Excel'));
+    const divider=document.createElement('div');divider.className='speed-toolbar-separator';popup.append(divider);
+    popup.append(groupLabel('管理'));
+    popup.append(item(players,'♙','玩家資料'));
+    menu.append(trigger,popup);
+
+    left.append(profile,ranking);
+    right.append(menu,newDungeon);
+    actions.replaceChildren(left,right);
+    // Preserve the hidden legacy element, since older page logic may reference its ID.
+    const legacyLimit=get('limitBtn');
+    if(legacyLimit){legacyLimit.hidden=true;actions.append(legacyLimit);}
+
+    function setOpen(value){
+      popup.hidden=!value;menu.classList.toggle('is-open',value);
+      trigger.setAttribute('aria-expanded',String(value));
+    }
+    trigger.addEventListener('click',event=>{
+      event.stopPropagation();setOpen(popup.hidden);
+    });
+    popup.addEventListener('click',event=>{
+      if(event.target.closest('button'))setOpen(false);
+    });
+    document.addEventListener('click',event=>{
+      if(!menu.contains(event.target))setOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'&&!popup.hidden){
+        event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+        setOpen(false);trigger.focus();
+      }
+    },true);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+})();
+</script>
+
 </body>
 </html>
