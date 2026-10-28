@@ -4235,6 +4235,224 @@ html[data-theme="light"] #teamCreateModal .speed-roster-person[data-role-family=
   #teamCreateModal .speed-roster-person-meta{max-width:35%;padding:4px 6px}
 }
 
+
+
+/* Clear action feedback: PVE-style notification card */
+#toast.toast{
+  box-sizing:border-box;
+  position:fixed;
+  z-index:25000;
+  left:50%; bottom:24px;
+  width:max-content;
+  min-width:min(330px,calc(100vw - 28px));
+  max-width:min(560px,calc(100vw - 28px));
+  min-height:60px;
+  padding:15px 19px;
+  display:flex; align-items:center; gap:12px;
+  border-radius:17px;
+  border:1px solid rgba(255,255,255,.17);
+  background:linear-gradient(155deg,rgba(32,43,65,.98),rgba(17,25,43,.99));
+  color:#f4f7ff;
+  box-shadow:0 16px 42px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.055);
+  font-family:"Noto Sans TC",system-ui,sans-serif;
+  font-size:16px;
+  font-weight:800;
+  line-height:1.6;
+  text-align:left;
+  letter-spacing:.005em;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  pointer-events:none;
+  opacity:0;
+  visibility:hidden;
+  transform:translate(-50%,16px) scale(.985);
+  transition:opacity .21s ease,transform .21s ease,visibility .21s ease;
+}
+#toast.toast::before{
+  content:"✓";
+  box-sizing:border-box;
+  display:grid;place-items:center;
+  flex:0 0 34px;width:34px;height:34px;
+  border:1px solid rgba(52,211,153,.37);
+  border-radius:12px;
+  background:rgba(52,211,153,.14);
+  color:#6ee7b7;
+  font-size:21px;font-weight:900;line-height:1;
+}
+#toast.toast[data-kind="info"]::before{
+  content:"i";
+  color:#93c5fd;
+  border-color:rgba(110,168,255,.35);
+  background:rgba(110,168,255,.14);
+  font-size:20px;
+}
+#toast.toast[data-kind="warning"]::before{
+  content:"!";
+  color:#fcd34d;
+  border-color:rgba(251,191,36,.34);
+  background:rgba(251,191,36,.13);
+  font-size:21px;
+}
+#toast.toast.show{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,0) scale(1);
+}
+html[data-theme="light"] #toast.toast{
+  background:linear-gradient(155deg,#fff,#f7f9fe);
+  color:#1f2b45;
+  border-color:rgba(71,91,132,.20);
+  box-shadow:0 16px 38px rgba(36,54,90,.22);
+}
+html[data-theme="light"] #toast.toast::before{color:#0c866a;background:#e8faf3;border-color:#a3dfcc}
+html[data-theme="light"] #toast.toast[data-kind="info"]::before{color:#2563b1;background:#eaf3ff;border-color:#b5d1fa}
+html[data-theme="light"] #toast.toast[data-kind="warning"]::before{color:#ac7410;background:#fff6de;border-color:#ecd19a}
+@media(max-width:760px){
+  #toast.toast{
+    bottom:calc(16px + env(safe-area-inset-bottom,0px));
+    min-width:0;
+    width:calc(100vw - 28px);
+    max-width:calc(100vw - 28px);
+    min-height:60px;
+    border-radius:16px;
+    padding:13px 15px;
+    gap:11px;
+    font-size:15px;
+    line-height:1.5;
+  }
+  #toast.toast::before{width:32px;height:32px;flex-basis:32px;font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){#toast.toast{transition:none}}
+
+
+/* ===== Recent 3-hour shared updates + green MYT today timestamps ===== */
+/* Today's date is green; the 3-hour badge is a separate, stronger cue. */
+.speed-update-time.speed-shared-time.is-today .speed-time-value {
+  color:var(--green)!important;
+  font-weight:950!important;
+}
+.speed-update-time.speed-shared-time:not(.is-today) .speed-time-value {
+  color:var(--muted)!important;
+  font-weight:800!important;
+}
+.speed-update-time.speed-shared-time .speed-recent-badge.recent-3h {
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  padding:5px 10px!important;
+  min-height:26px;
+  border:1px solid rgba(84,236,196,.57)!important;
+  border-radius:999px!important;
+  background:linear-gradient(135deg,rgba(38,196,151,.27),rgba(15,160,139,.16))!important;
+  color:#91fbe1!important;
+  font-size:12px!important;
+  font-weight:950!important;
+  letter-spacing:.02em;
+  white-space:nowrap!important;
+  box-shadow:0 2px 13px rgba(31,193,150,.15)!important;
+}
+.speed-update-time.speed-shared-time .speed-recent-badge.recent-3h::before {
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:#6afbd2;
+  box-shadow:0 0 0 3px rgba(84,236,196,.19);
+}
+#quickGrid .quick-card.speed-shared-latest,
+#teamList .team-card.speed-shared-latest {
+  border-color:rgba(72,231,182,.63)!important;
+  box-shadow:inset 3px 0 0 rgba(62,225,174,.97),0 0 0 1px rgba(62,225,174,.10)!important;
+}
+#quickGrid .speed-session-progress {
+  font-size:12px!important;
+  font-weight:850!important;
+  color:var(--muted)!important;
+}
+#quickGrid .speed-session-progress strong {
+  color:var(--green)!important;
+  font-weight:950!important;
+}
+html[data-theme="light"] .speed-update-time.speed-shared-time .speed-recent-badge.recent-3h {
+  color:#087b62!important;
+  border-color:#52bb9f!important;
+  background:linear-gradient(135deg,#d5fff0,#eafaf6)!important;
+  box-shadow:0 2px 12px rgba(5,121,90,.10)!important;
+}
+html[data-theme="light"] .speed-update-time.speed-shared-time .speed-recent-badge.recent-3h::before {
+  background:#0b9371;
+}
+@media(max-width:760px){
+  .speed-update-time.speed-shared-time .speed-recent-badge.recent-3h {
+    padding:4px 8px!important;
+    min-height:25px;
+    font-size:11px!important;
+  }
+}
+
+
+/* My character: personal (local to the browser), not part of shared Firebase data. */
+#speedMyProfileBtn{display:inline-flex;align-items:center;gap:8px;min-height:38px;font-size:13px!important;font-weight:900;border:1px solid color-mix(in srgb,var(--purple) 35%,var(--line));background:color-mix(in srgb,var(--purple) 10%,var(--surface2));color:var(--text)}
+#speedMyProfileBtn .speed-my-avatar{display:grid;place-items:center;width:24px;height:24px;flex:0 0 24px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:13px}
+#speedMyProfileBtn.speed-bound{border-color:color-mix(in srgb,var(--purple) 58%,var(--line));background:color-mix(in srgb,var(--purple) 17%,var(--surface2))}
+.speed-my-badge{display:inline-flex;align-items:center;justify-content:center;gap:3px;margin-left:7px;padding:3px 8px;vertical-align:middle;border-radius:999px;border:1px solid color-mix(in srgb,var(--purple) 58%,var(--line));background:color-mix(in srgb,var(--purple) 23%,var(--surface));color:color-mix(in srgb,var(--text) 70%,var(--purple));font-size:11px!important;line-height:1.3;font-weight:900;white-space:nowrap}
+#quickGrid .quick-card.speed-my-team,
+#teamList .team-card.speed-my-team{outline:2px solid color-mix(in srgb,var(--purple) 79%,var(--blue));outline-offset:-2px;box-shadow:0 0 0 3px color-mix(in srgb,var(--purple) 15%,transparent),0 10px 24px rgba(46,27,101,.12)!important}
+#quickGrid .quick-card.speed-my-team{background:linear-gradient(135deg,color-mix(in srgb,var(--purple) 16%,var(--surface)),var(--surface))!important}
+#teamList .team-card.speed-my-team{background:linear-gradient(120deg,color-mix(in srgb,var(--purple) 11%,var(--surface)),var(--surface))!important}
+#teamList .team-card.speed-my-team .team-summary-name .speed-my-badge{font-size:11px!important}
+#playerList .player-row.speed-my-player{background:color-mix(in srgb,var(--purple) 16%,var(--surface2))!important;box-shadow:inset 3px 0 0 var(--purple)}
+#standingsScroll .standings-table tbody tr.speed-my-team td{border-top:1px solid color-mix(in srgb,var(--purple) 54%,var(--line));border-bottom:1px solid color-mix(in srgb,var(--purple) 54%,var(--line))}
+#standingsScroll .standings-table tbody tr.speed-my-team td:first-child{box-shadow:inset 4px 0 0 var(--purple)}
+#standingsScroll .standings-table tbody td.speed-my-cell{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--purple) 60%,transparent);background:color-mix(in srgb,var(--purple) 16%,var(--surface))!important}
+#teamDetailModal.speed-my-detail .team-detail-dialog{box-shadow:0 0 0 2px color-mix(in srgb,var(--purple) 45%,transparent),0 30px 75px rgba(0,0,0,.38)}
+.speed-my-list-status{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0 2px;padding:8px 12px;border:1px solid color-mix(in srgb,var(--purple) 24%,var(--line));border-radius:11px;background:color-mix(in srgb,var(--purple) 7%,var(--surface));color:var(--muted);font-size:12px;font-weight:750}
+.speed-my-list-status strong{color:var(--text)}
+#speedMyProfileModal{z-index:9100}
+#speedMyProfileModal>.modal-card{width:min(630px,calc(100vw - 24px))!important;padding:0!important;max-height:min(90dvh,750px)!important;display:flex;flex-direction:column;overflow:hidden!important;border:1px solid color-mix(in srgb,var(--text) 12%,var(--line))!important;border-radius:23px!important;background:linear-gradient(180deg,var(--surface2),var(--surface))!important;box-shadow:0 30px 76px rgba(0,0,0,.36)!important}
+.speed-my-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:23px 24px 18px;border-bottom:1px solid var(--line)}
+.speed-my-modal-head h2{margin:0;font-size:23px;line-height:1.35}
+.speed-my-modal-sub{margin:5px 0 0;color:var(--muted);font-size:12px}
+.speed-my-x{width:38px;height:38px;flex:0 0 38px;border-radius:12px;border:1px solid var(--line);color:var(--text);background:var(--surface3);font-size:22px;display:grid;place-items:center}
+.speed-my-modal-content{padding:20px 24px;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:11px}
+.speed-my-search{width:100%;min-height:48px;border-radius:13px;border:1px solid var(--line2);padding:12px 14px;color:var(--text);background:var(--surface);font-size:15px;outline:none}
+.speed-my-search:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)}
+.speed-my-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;align-content:start;max-height:330px;overflow:auto;padding:3px}
+.speed-my-choice{display:flex;align-items:center;gap:10px;text-align:left;min-height:57px;min-width:0;padding:10px 12px;border-radius:13px;border:1px solid var(--line);color:var(--text);background:var(--surface);transition:background .16s,border-color .16s}
+.speed-my-choice strong{display:block;white-space:normal;overflow-wrap:anywhere;font-size:14px;line-height:1.4}
+.speed-my-choice small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.speed-my-choice .speed-my-circle{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border:1.5px solid var(--line2);border-radius:50%;color:#fff;font-size:12px}
+.speed-my-choice[aria-pressed="true"]{background:color-mix(in srgb,var(--purple) 15%,var(--surface));border-color:color-mix(in srgb,var(--purple) 72%,var(--line))}
+.speed-my-choice[aria-pressed="true"] .speed-my-circle{background:var(--purple);border-color:var(--purple)}
+.speed-my-choice:hover{border-color:var(--blue)}
+.speed-my-current{min-height:42px;border-radius:12px;padding:10px 12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);font-size:13px}
+.speed-my-current strong{color:var(--text)}
+.speed-my-actions{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:16px 24px 21px;border-top:1px solid var(--line);background:var(--surface2)}
+.speed-my-actions .speed-my-right{display:flex;align-items:center;gap:9px}
+.speed-my-actions button{border:1px solid var(--line);border-radius:11px;min-height:41px;padding:10px 16px;font-size:13px;font-weight:850;background:var(--surface3);color:var(--text)}
+.speed-my-actions button.speed-primary{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-color:transparent}
+.speed-my-actions button:disabled{opacity:.45}
+.speed-my-actions .speed-my-unbind{color:var(--muted)}
+@media(max-width:760px){
+  #speedMyProfileBtn{flex:1 1 calc(50% - 8px)}
+  #speedMyProfileModal{padding:8px!important;align-items:stretch}
+  #speedMyProfileModal>.modal-card{width:100%!important;max-height:calc(100dvh - 16px)!important;margin:auto 0;border-radius:18px!important}
+  .speed-my-modal-head{padding:18px 17px 15px}
+  .speed-my-modal-head h2{font-size:21px}
+  .speed-my-modal-content{padding:15px 16px}
+  .speed-my-choices{grid-template-columns:1fr;max-height:48dvh}
+  .speed-my-actions{padding:13px 16px calc(13px + env(safe-area-inset-bottom));gap:6px}
+  .speed-my-actions button{padding:9px 11px;font-size:12px}
+  .speed-my-badge{margin-left:5px;padding:2px 6px;font-size:10px!important}
+}
+
+
+.speed-my-list-status[hidden]{display:none!important}
+#rankPlayerTable tr.speed-my-player td{background:color-mix(in srgb,var(--purple) 12%,var(--surface2));border-top:1px solid color-mix(in srgb,var(--purple) 38%,var(--line));border-bottom:1px solid color-mix(in srgb,var(--purple) 38%,var(--line))}
+#rankPlayerTable tr.speed-my-player td:first-child{box-shadow:inset 4px 0 0 var(--purple)}
+#rankPlayerMobile .rank-mobile-item.speed-my-player{outline:2px solid color-mix(in srgb,var(--purple) 65%,var(--blue));outline-offset:-2px;background:color-mix(in srgb,var(--purple) 12%,var(--surface))}
 </style>
 </head>
 <body>
@@ -4939,7 +5157,21 @@ function fmtTime(ms){
   const totalMinutes=Math.floor(totalSeconds/60);
   return `${String(totalMinutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
 }
-function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)}
+function toast(msg){
+  const t=$("toast");
+  if(!t)return;
+  const message=String(msg??"").trim();
+  const kind=/(最多|不能|不可|已滿|失敗|錯誤|請先|無法)/.test(message)?"warning":
+             /(下載|匯出|正在|同步中)/.test(message)?"info":"success";
+  t.textContent=message;
+  t.dataset.kind=kind;
+  t.setAttribute("role","status");
+  t.setAttribute("aria-live","polite");
+  t.setAttribute("aria-atomic","true");
+  t.classList.add("show");
+  clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>t.classList.remove("show"),3600);
+}
 function setSync(mode,text){const el=$("syncState");el.className=`sync-pill ${mode}`;el.textContent=text}
 function openModal(id){$(id).classList.add("show")}
 function closeModal(id){$(id).classList.remove("show")}
@@ -8394,8 +8626,8 @@ initFirebase();
       mobile.innerHTML=`<div class="rank-empty">${msg}</div>`;
       return;
     }
-    table.innerHTML=`<table class="rank-player-table"><thead><tr><th>玩家 / 職業分類</th><th>上榜次數</th><th>最佳遊戲排名</th><th>最佳總時間</th><th>上榜隊伍</th></tr></thead><tbody>${filtered.map(x=>`<tr><td>${playerCell(x)}</td><td>${x.count}</td><td><span class="rank-player-rank">#${x.bestRank}</span></td><td class="rank-player-time">${x.bestTime<Infinity?fmtTime(x.bestTime):'—'}</td><td class="rank-player-teams">${esc([...new Set(x.teams)].join('、'))}</td></tr>`).join('')}</tbody></table>`;
-    mobile.innerHTML=filtered.map(x=>`<article class="rank-mobile-item"><div class="rank-mobile-head">${playerCell(x)}<span class="rank-player-rank">#${x.bestRank}</span></div><div class="rank-mobile-stats"><div class="rank-mobile-stat"><span>上榜次數</span><strong>${x.count}</strong></div><div class="rank-mobile-stat"><span>最佳排名</span><strong>#${x.bestRank}</strong></div><div class="rank-mobile-stat"><span>最佳總時間</span><strong>${x.bestTime<Infinity?fmtTime(x.bestTime):'—'}</strong></div></div><div class="rank-mobile-team">上榜隊伍：${esc([...new Set(x.teams)].join('、'))}</div></article>`).join('');
+    table.innerHTML=`<table class="rank-player-table"><thead><tr><th>玩家 / 職業分類</th><th>上榜次數</th><th>最佳遊戲排名</th><th>最佳總時間</th><th>上榜隊伍</th></tr></thead><tbody>${filtered.map(x=>`<tr data-my-player="${esc(x.id||'')}"><td>${playerCell(x)}</td><td>${x.count}</td><td><span class="rank-player-rank">#${x.bestRank}</span></td><td class="rank-player-time">${x.bestTime<Infinity?fmtTime(x.bestTime):'—'}</td><td class="rank-player-teams">${esc([...new Set(x.teams)].join('、'))}</td></tr>`).join('')}</tbody></table>`;
+    mobile.innerHTML=filtered.map(x=>`<article class="rank-mobile-item" data-my-player="${esc(x.id||'')}"><div class="rank-mobile-head">${playerCell(x)}<span class="rank-player-rank">#${x.bestRank}</span></div><div class="rank-mobile-stats"><div class="rank-mobile-stat"><span>上榜次數</span><strong>${x.count}</strong></div><div class="rank-mobile-stat"><span>最佳排名</span><strong>#${x.bestRank}</strong></div><div class="rank-mobile-stat"><span>最佳總時間</span><strong>${x.bestTime<Infinity?fmtTime(x.bestTime):'—'}</strong></div></div><div class="rank-mobile-team">上榜隊伍：${esc([...new Set(x.teams)].join('、'))}</div></article>`).join('');
   }
 
   // Old "上榜數據" button should switch tabs, not open the obsolete popup.
@@ -9541,7 +9773,7 @@ initFirebase();
 
 /* ===== Collaboration-aware team update status =====
    Source of truth: team timestamps persisted in Firestore and received via onSnapshot.
-   Never use sessionStorage or an arbitrary 'recent N days' window.
+   3-hour recency is determined by the shared stored timestamp, not browser session.
 */
 (function(){
   function syncedUpdateMs(t){
@@ -9575,13 +9807,23 @@ initFirebase();
   function isTodayUpdate(ms){
     return ms>0 && malaysiaDayFormat.format(new Date(ms))===malaysiaDayFormat.format(new Date());
   }
+  const RECENT_UPDATE_MS=3*60*60*1000;
+  // A rolling three-hour window, including updates shortly before midnight.
+  // Explicitly require a true modification, so newly created / untouched teams
+  // are not shown as recently edited simply because their creation time is new.
+  function isRecentSharedEdit(t,now=Date.now()){
+    if(!hasSharedUpdate(t))return false;
+    const ms=syncedUpdateMs(t);
+    const elapsed=now-ms;
+    return ms>0 && elapsed>=0 && elapsed<=RECENT_UPDATE_MS;
+  }
   function lastUpdatedText(ms){
     if(!(ms>0))return '—';
     const pieces=Object.fromEntries(malaysiaStampFormat.formatToParts(new Date(ms))
       .filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
     return `${pieces.year}/${pieces.month}/${pieces.day} ${pieces.hour}:${pieces.minute}`;
   }
-  function buildLastUpdate(t,today){
+  function buildLastUpdate(t,today,recent){
     const holder=document.createElement('div');
     const modified=hasSharedUpdate(t);
     const ms=syncedUpdateMs(t);
@@ -9597,10 +9839,10 @@ initFirebase();
     }else{
       holder.textContent='更新時間未記錄';
     }
-    if(today){
+    if(recent){
       const badge=document.createElement('span');
-      badge.className='speed-recent-badge today';
-      badge.textContent='今日更新';
+      badge.className='speed-recent-badge recent-3h';
+      badge.textContent='最近更新 · 3小時內';
       holder.append(badge);
     }
     if(pending){
@@ -9612,30 +9854,35 @@ initFirebase();
   function refreshSharedUpdateLabels(){
     const current=visibleTeams();
     const lookup=new Map(current.map(t=>[String(t.id),t]));
+    const now=Date.now();
     const todayTeams=current.filter(t=>hasSharedUpdate(t)&&isTodayUpdate(syncedUpdateMs(t)));
     const todayIds=new Set(todayTeams.map(t=>String(t.id)));
+    const recentTeams=current.filter(t=>isRecentSharedEdit(t,now));
+    const recentIds=new Set(recentTeams.map(t=>String(t.id)));
     document.querySelectorAll('#quickGrid .quick-card[data-jump]').forEach(card=>{
       const t=lookup.get(String(card.dataset.jump));if(!t)return;
       // Always use the same shared timestamp for both leaderboard and team list.
       card.querySelectorAll('.speed-update-time,.speed-session-label').forEach(el=>el.remove());
       const today=todayIds.has(String(t.id));
-      card.append(buildLastUpdate(t,today));
-      card.classList.toggle('speed-shared-latest',today);
+      const recent=recentIds.has(String(t.id));
+      card.append(buildLastUpdate(t,today,recent));
+      card.classList.toggle('speed-shared-latest',recent);
     });
     document.querySelectorAll('#teamList .team-card[id]').forEach(card=>{
       const t=lookup.get(String(card.id).replace(/^team-/,''));if(!t)return;
       const today=todayIds.has(String(t.id));
+      const recent=recentIds.has(String(t.id));
       const target=card.querySelector('.team-updated-at');
-      if(target)target.replaceChildren(buildLastUpdate(t,today));
-      card.classList.toggle('speed-shared-latest',today);
+      if(target)target.replaceChildren(buildLastUpdate(t,today,recent));
+      card.classList.toggle('speed-shared-latest',recent);
       card.classList.remove('speed-recent-team');
     });
     const header=document.querySelector('.quick-head');
     if(header){
       let el=document.getElementById('speedSessionProgress');
       if(!el){el=document.createElement('span');el.id='speedSessionProgress';el.className='speed-session-progress';header.append(el);}
-      el.textContent=`今日更新 ${todayTeams.length} / ${current.length} 隊`;
-      el.title='按馬來西亞當天日期計算，依共用的隊伍最後更新時間顯示';
+      el.textContent=`最近3小時更新 ${recentTeams.length} 隊 · 今日更新 ${todayTeams.length} / ${current.length} 隊`;
+      el.title='最近3小時按實際更新時間計算；今日按馬來西亞日期計算，資料由所有使用者共用';
     }
   }
   // Reuse existing Firebase onSnapshot -> renderAll / renderQuick / renderTeams flow.
@@ -9647,6 +9894,11 @@ initFirebase();
   const originalTeams=renderTeams;
   renderTeams=function(){const r=originalTeams.apply(this,arguments);refreshSharedUpdateLabels();return r};
   refreshSharedUpdateLabels();
+  // The rolling window expires without requiring a page reload or another edit.
+  setInterval(refreshSharedUpdateLabels,60*1000);
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden)refreshSharedUpdateLabels();
+  });
 })();
 
 
@@ -9789,6 +10041,193 @@ initFirebase();
     askExit(active);
   },true);
   // Direct completion or successful save actions keep their normal behavior.
+})();
+
+
+/* My character: one personal selection shared between the 5-person and 10-person pages. */
+(function(){
+  const KEY='wwm_speed_my_player_v1';
+  let boundId='';
+  try{boundId=localStorage.getItem(KEY)||'';}catch(e){}
+  let proposedId='';
+  let searchTerm='';
+  const id=x=>document.getElementById(x);
+  const teamIncludesMe=t=>!!boundId&&phaseMembersOf(t).some(pid=>pid===boundId);
+  const currentCharacter=()=>players.find(p=>p.id===boundId)||playerArchive?.[boundId]||null;
+
+  const btn=document.createElement('button');
+  btn.type='button';btn.id='speedMyProfileBtn';btn.className='btn';
+  btn.innerHTML='<span class="speed-my-avatar" aria-hidden="true">我</span><span id="speedMyProfileLabel">我的資料</span>';
+  const actions=document.querySelector('.hero-actions');
+  if(actions)actions.insertBefore(btn,id('playersBtn')||actions.firstChild);
+
+  const modal=document.createElement('div');
+  modal.className='modal';modal.id='speedMyProfileModal';
+  modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','speedMyProfileHeading');
+  modal.innerHTML=`<div class="modal-card" role="document">
+    <header class="speed-my-modal-head">
+      <div><h2 id="speedMyProfileHeading">我的資料</h2><p class="speed-my-modal-sub">選擇你的角色，隊伍會自動高亮。</p></div>
+      <button type="button" class="speed-my-x" data-close="speedMyProfileModal" aria-label="關閉我的資料視窗">×</button>
+    </header>
+    <div class="speed-my-modal-content">
+      <div class="speed-my-current" id="speedMyCurrent">尚未綁定角色</div>
+      <input class="speed-my-search" id="speedMySearch" placeholder="搜尋自己的角色名稱…" autocomplete="off" aria-label="搜尋玩家">
+      <div class="speed-my-choices" id="speedMyChoices" role="group" aria-label="選擇角色"></div>
+      <div class="speed-my-modal-sub">只記錄在此瀏覽器，不會修改其他人的角色設定。</div>
+    </div>
+    <footer class="speed-my-actions">
+      <button type="button" class="speed-my-unbind" id="speedMyUnbind">解除綁定</button>
+      <div class="speed-my-right"><button type="button" data-close="speedMyProfileModal">取消</button><button type="button" class="speed-primary" id="speedMyConfirm">確認綁定</button></div>
+    </footer>
+  </div>`;
+  document.body.append(modal);
+  // This dialog uses the existing confirmation-on-Esc / backdrop rules.
+  modal.querySelectorAll('[data-close="speedMyProfileModal"]').forEach(node=>node.addEventListener('click',()=>closeModal('speedMyProfileModal')));
+
+  function availablePlayers(){return players.slice().sort((a,b)=>a.name.localeCompare(b.name,'zh-Hant'));}
+  function refreshModal(){
+    const me=currentCharacter();
+    id('speedMyCurrent').innerHTML=boundId?`已綁定：<strong>${esc(me?.name||'此角色已不在共用玩家名單')}</strong>`:'尚未綁定角色';
+    const matches=availablePlayers().filter(p=>!searchTerm||norm(`${p.name} ${playerRolesText(p)}`).includes(searchTerm));
+    id('speedMyChoices').innerHTML=matches.length?matches.map(p=>{
+      const selected=p.id===proposedId;
+      return `<button type="button" class="speed-my-choice" data-my-pick="${esc(p.id)}" aria-pressed="${selected?'true':'false'}">
+        <span class="speed-my-circle" aria-hidden="true">${selected?'✓':''}</span>
+        <span><strong>${esc(p.name)}</strong><small>${esc(playerRolesText(p))}</small></span>
+      </button>`;
+    }).join(''):'<div class="empty">沒有符合條件的玩家。</div>';
+    id('speedMyConfirm').disabled=!proposedId||!players.some(p=>p.id===proposedId);
+    id('speedMyUnbind').disabled=!boundId;
+  }
+  function openProfile(){
+    proposedId=boundId;searchTerm='';id('speedMySearch').value='';
+    refreshModal();openModal('speedMyProfileModal');
+    id('speedMySearch').focus({preventScroll:true});
+  }
+  function persistSelection(next){
+    boundId=next;
+    try{if(next)localStorage.setItem(KEY,next);else localStorage.removeItem(KEY);}catch(e){}
+    closeModal('speedMyProfileModal');
+    decorate();
+  }
+  btn.addEventListener('click',openProfile);
+  id('speedMySearch').addEventListener('input',e=>{searchTerm=norm(e.target.value);refreshModal();});
+  id('speedMyChoices').addEventListener('click',e=>{const pick=e.target.closest('[data-my-pick]');if(!pick)return;proposedId=pick.dataset.myPick;refreshModal();});
+  id('speedMyConfirm').addEventListener('click',()=>{
+    if(!proposedId||!players.some(p=>p.id===proposedId))return;
+    const name=players.find(p=>p.id===proposedId)?.name||'角色';
+    persistSelection(proposedId);
+    toast(`已綁定角色：${name}`);
+  });
+  id('speedMyUnbind').addEventListener('click',()=>{
+    if(!boundId)return;
+    persistSelection('');
+    toast('已解除角色綁定');
+  });
+  window.addEventListener('storage',e=>{if(e.key!==KEY)return;boundId=e.newValue||'';decorate();});
+
+  function addBadge(target){
+    if(!target||target.querySelector('.speed-my-badge'))return;
+    const span=document.createElement('span');span.className='speed-my-badge';span.textContent='我的隊伍';target.append(span);
+  }
+  function removeBadge(target){target?.querySelectorAll('.speed-my-badge').forEach(el=>el.remove());}
+
+  function decorate(){
+    const me=currentCharacter();
+    const label=id('speedMyProfileLabel');
+    if(label)label.textContent=me?`我的資料 · ${me.name}`:'我的資料';
+    btn.classList.toggle('speed-bound',!!me);
+    btn.title=me?`目前綁定：${me.name}。點擊可更換角色。`:'選擇並綁定自己的角色';
+    const lookup=new Map(visibleTeams().map(t=>[String(t.id),t]));
+    let myTeamCount=0;
+    for(const t of lookup.values())if(teamIncludesMe(t))myTeamCount++;
+
+    document.querySelectorAll('#quickGrid .quick-card[data-jump]').forEach(card=>{
+      const yes=teamIncludesMe(lookup.get(card.dataset.jump));
+      card.classList.toggle('speed-my-team',yes);
+      const wrapper=card.closest('.speed-quick-row');wrapper?.classList.toggle('speed-my-team',yes);
+      const name=card.querySelector('.quick-name-wrap')||card.querySelector('.quick-name');
+      removeBadge(name);if(yes)addBadge(name);
+    });
+    document.querySelectorAll('#teamList .team-card[id]').forEach(card=>{
+      const t=lookup.get(card.id.replace(/^team-/,''));
+      const yes=teamIncludesMe(t);card.classList.toggle('speed-my-team',yes);
+      const name=card.querySelector('.team-summary-name');
+      removeBadge(name);if(yes)addBadge(name);
+    });
+    document.querySelectorAll('#playerList .player-row[data-player]').forEach(row=>{
+      const yes=!!boundId&&row.dataset.player===boundId;
+      row.classList.toggle('speed-my-player',yes);
+      const name=row.querySelector('.player-name-line');
+      name?.querySelectorAll('.speed-my-player-mark').forEach(el=>el.remove());
+      if(yes&&name){const badge=document.createElement('span');badge.className='speed-my-badge speed-my-player-mark';badge.textContent='我';name.append(badge);}
+    });
+    // The standings table order mirrors renderStandings(): scored teams, then unscored teams.
+    const exported=buildExportTeams();
+    const exportedIds=new Set(exported.map(x=>x.team.id));
+    const rows=[...exported,...visibleTeams().filter(t=>!exportedIds.has(t.id)).map(team=>({team,roster:rosterSnapshotFromTeam(team)}))];
+    document.querySelectorAll('#standingsScroll .standings-table tbody tr').forEach((row,i)=>{
+      const item=rows[i],t=item?.team;
+      const yes=teamIncludesMe(t);row.classList.toggle('speed-my-team',yes);
+      row.querySelectorAll('td.player-cell').forEach((cell,j)=>{
+        const roster=item?.roster||[];
+        cell.classList.toggle('speed-my-cell',yes&&roster[j]?.id===boundId);
+      });
+      const name=row.querySelector('.name-col');
+      removeBadge(name);if(yes)addBadge(name);
+    });
+    // Highlight this player's detailed statistics in both desktop and mobile tabs.
+    document.querySelectorAll('#rankPlayerTable tr[data-my-player],#rankPlayerMobile .rank-mobile-item[data-my-player]').forEach(el=>{
+      const mine=!!boundId&&el.dataset.myPlayer===boundId;
+      el.classList.toggle('speed-my-player',mine);
+      const heading=el.querySelector('.rank-player-name');
+      heading?.querySelectorAll('.speed-my-player-mark').forEach(b=>b.remove());
+      if(mine&&heading){const badge=document.createElement('span');badge.className='speed-my-badge speed-my-player-mark';badge.textContent='我';heading.append(badge);}
+    });
+    const quickHead=document.querySelector('.quick-head');
+    if(quickHead){
+      let summary=id('speedMyTeamCount');
+      if(!summary){summary=document.createElement('span');summary.id='speedMyTeamCount';summary.className='speed-my-list-status';quickHead.after(summary);}
+      if(me){summary.hidden=false;summary.innerHTML=`<span><strong>${esc(me.name)}</strong> · ${PHASE_NAMES[selectedPhase]}</span><strong>我的隊伍 ${myTeamCount} 支</strong>`;}
+      else summary.hidden=true;
+    }
+    if(modal.classList.contains('show'))refreshModal();
+    const detail=id('teamDetailModal');
+    if(detail?.classList.contains('show')){
+      const title=id('teamDetailHeading')?.textContent.trim();
+      const matching=visibleTeams().find(t=>t.name===title&&teamIncludesMe(t));
+      detail.classList.toggle('speed-my-detail',!!matching);
+      const subtitle=id('teamDetailSubtitle');
+      subtitle?.querySelectorAll('.speed-my-badge').forEach(el=>el.remove());
+      if(matching)addBadge(subtitle);
+      const slots=detail.querySelectorAll('#teamDetailRoster .roster .slot');
+      slots.forEach((slot,i)=>slot.classList.toggle('speed-my-cell',!!matching&&phaseMembersOf(matching)[i]===boundId));
+    }
+  }
+
+  function wrapRender(name){
+    const original=({renderAll,renderPlayers,renderQuick,renderTeams,renderStandings})[name];
+    const wrapper=function(){const val=original.apply(this,arguments);decorate();return val;};
+    if(name==='renderAll')renderAll=wrapper;
+    else if(name==='renderPlayers')renderPlayers=wrapper;
+    else if(name==='renderQuick')renderQuick=wrapper;
+    else if(name==='renderTeams')renderTeams=wrapper;
+    else if(name==='renderStandings')renderStandings=wrapper;
+  }
+  ['renderAll','renderPlayers','renderQuick','renderTeams','renderStandings'].forEach(wrapRender);
+  // When a team-detail popup is opened without rerendering the page, decorate it too.
+  const detail=id('teamDetailModal');
+  if(detail){
+    const observer=new MutationObserver(()=>{
+      if(detail.classList.contains('show'))queueMicrotask(decorate);
+    });
+    observer.observe(detail,{attributes:true,attributeFilter:['class']});
+  }
+  ['rankPlayerTable','rankPlayerMobile'].forEach(name=>{
+    const host=id(name);
+    if(host)new MutationObserver(()=>queueMicrotask(decorate)).observe(host,{childList:true});
+  });
+  decorate();
 })();
 
 </script>
