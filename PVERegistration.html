@@ -843,7 +843,7 @@ body {
       border:1px solid rgba(34,197,94,.28);
     }
 
-    .role-fakeheal{
+    .role-flexheal{
       background:rgba(168,85,247,.16);
       color:#c084fc;
       border:1px solid rgba(168,85,247,.28);
@@ -9114,7 +9114,7 @@ body {
     html[data-theme="light"] .role-dps{ color:#3558b8 !important; background:#edf3ff !important; border-color:#cfdbf7 !important; }
     html[data-theme="light"] .role-tank{ color:#9a630a !important; background:#fff7e8 !important; border-color:#ecdcb9 !important; }
     html[data-theme="light"] .role-heal{ color:#147852 !important; background:#ebf9f3 !important; border-color:#c7eadb !important; }
-    html[data-theme="light"] .role-fakeheal{ color:#7250a4 !important; background:#f5efff !important; border-color:#dfd0f4 !important; }
+    html[data-theme="light"] .role-flexheal{ color:#7250a4 !important; background:#f5efff !important; border-color:#dfd0f4 !important; }
     html[data-theme="light"] .member.member-self{ background:#fff8e8 !important; border-color:#ead9ad !important; }
     html[data-theme="light"] .member.member-self .member-name{ color:#805f12 !important; }
     html[data-theme="light"] .protected-flow-note{ color:#6c5b82 !important; }
@@ -9825,7 +9825,7 @@ body {
       background:rgba(139,92,246,.13) !important;
       border-color:rgba(139,92,246,.28) !important;
     }
-    .role-fakeheal{
+    .role-flexheal{
       color:#f4a8ca !important;
       background:rgba(232,121,169,.12) !important;
       border-color:rgba(232,121,169,.26) !important;
@@ -10084,7 +10084,7 @@ body {
       background:#f1ebff !important;
       border-color:#d8c9f0 !important;
     }
-    html[data-theme="light"] .role-fakeheal{
+    html[data-theme="light"] .role-flexheal{
       color:#9d4771 !important;
       background:#fff0f7 !important;
       border-color:#edc9dc !important;
@@ -12436,7 +12436,7 @@ body {
     }
 
 
-    /* 增益角色：獨立於治療與假奶 */
+    /* 增益角色：獨立於治療與輸出/治療 */
     .role-buff{
       background:rgba(45,212,191,.15);
       color:#2dd4bf;
@@ -14082,7 +14082,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       <label class="signup-label" for="playerName">名稱</label>
       <input id="playerName" class="signup-input" type="text" placeholder="請輸入名字" />
 
-      <label class="signup-label">職業</label>
+      <div class="role-help-heading"><label class="signup-label" for="roleSelectTrigger">職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
       <div id="roleSelect" class="custom-select">
         <button type="button" id="roleSelectTrigger" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false">
           <span id="roleSelectLabel">請選擇職業</span>
@@ -14123,7 +14123,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           <div class="batch-limit-note">可先把常用隊伍名單儲存起來，之後批量組隊時一鍵套用，再依需要移除或修改。</div>
         </div>
 
-        <label class="signup-label">報名名單</label>
+        <div class="role-help-heading"><label class="signup-label">報名名單</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
         <div id="batchPlayerList" class="batch-player-list"></div>
         <button id="batchAddRowBtn" type="button" class="batch-add-row-btn" onclick="addBatchSignupRow()">＋ 新的玩家報名</button>
         <div id="batchLimitNote" class="batch-limit-note"></div>
@@ -14160,7 +14160,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         <label class="signup-label" for="presetManageName">新增 / 編輯名稱</label>
         <input id="presetManageName" class="signup-input" type="text" placeholder="例如：固定團 / 天賦常用隊伍" />
 
-        <label class="signup-label">玩家名單</label>
+        <div class="role-help-heading"><label class="signup-label">玩家名單</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
         <div id="presetManagePlayerList" class="batch-player-list"></div>
         <button type="button" class="batch-add-row-btn" onclick="addPresetManageRow()">＋ 新的玩家</button>
 
@@ -14369,12 +14369,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         請選擇新的職業。
       </div>
 
-      <label class="signup-label" for="editRoleSelect">職業</label>
+      <div class="role-help-heading"><label class="signup-label" for="editRoleSelect">職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
       <select id="editRoleSelect" class="signup-select">
         <option value="輸出">輸出</option>
         <option value="承傷">承傷</option>
         <option value="治療">治療</option>
-        <option value="假奶">假奶</option>
+        <option value="輸出/治療">輸出/治療</option>
         <option value="增益">增益</option>
       </select>
 
@@ -14673,12 +14673,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       <label class="signup-label" for="myProfileName">我的名字</label>
       <input id="myProfileName" class="signup-input" type="text" placeholder="用於快速報名（注：每個瀏覽器都需設置一次)" />
 
-      <label class="signup-label" for="myProfileRole">我的常用職業</label>
+      <div class="role-help-heading"><label class="signup-label" for="myProfileRole">我的常用職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
       <select id="myProfileRole" class="signup-select">
         <option value="輸出">輸出</option>
         <option value="承傷">承傷</option>
         <option value="治療">治療</option>
-        <option value="假奶">假奶</option>
+        <option value="輸出/治療">輸出/治療</option>
         <option value="增益">增益</option>
       </select>
 
@@ -14721,15 +14721,35 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       <p class="blackwork-dialog-copy">已領過獎勵、願意協助補位的玩家可在此報名。不限人數、不佔正式隊伍名額，亦不會自動轉為正式隊員。</p>
       <label class="signup-label" for="blackworkName">玩家名稱</label>
       <input id="blackworkName" class="signup-input" type="text" maxlength="80" autocomplete="off" placeholder="請輸入玩家名稱" />
-      <label class="signup-label" for="blackworkRole">職業</label>
+      <div class="role-help-heading"><label class="signup-label" for="blackworkRole">職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
       <select id="blackworkRole" class="signup-select">
-        <option value="輸出">輸出</option><option value="承傷">承傷</option><option value="治療">治療</option><option value="假奶">假奶</option><option value="增益">增益</option>
+        <option value="輸出">輸出</option><option value="承傷">承傷</option><option value="治療">治療</option><option value="輸出/治療">輸出/治療</option><option value="增益">增益</option>
       </select>
       <div class="blackwork-dialog-actions">
         <button class="blackwork-cancel" type="button" id="blackworkCancel">取消</button>
         <button class="blackwork-save" type="button" id="blackworkConfirm">確認報名</button>
       </div>
     </section>
+  </div>
+
+  <!-- 職業說明：單人、批量、黑工、我的資料、編輯職業共用。 -->
+  <div id="roleHelpModal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="roleHelpTitle" aria-hidden="true">
+    <div class="confirm-modal-box role-help-box">
+      <div class="role-help-head">
+        <div><div class="role-help-kicker">職業選擇</div><h2 id="roleHelpTitle" class="confirm-modal-title">職業說明</h2></div>
+        <button type="button" class="role-help-close" data-close-role-help aria-label="關閉職業說明">×</button>
+      </div>
+      <p class="role-help-intro">選擇你能擔任的職位。隊伍會依最低治療人數保留必要的治療名額。</p>
+      <div class="role-help-list">
+        <div class="role-help-entry"><span class="role-help-tag role-dps">輸出</span><p>主要負責造成傷害、擊敗敵人。</p></div>
+        <div class="role-help-entry"><span class="role-help-tag role-tank">承傷</span><p>負責吸引敵人、承受傷害，保護隊友。</p></div>
+        <div class="role-help-entry"><span class="role-help-tag role-heal">治療</span><p>主要負責回復隊友生命，維持隊伍生存。</p></div>
+        <div class="role-help-entry"><span class="role-help-tag role-flexheal">輸出/治療</span><p>兩種職位都能玩。當隊伍治療不足時優先擔任治療，足夠時擔任輸出；實際職位由隊伍協調。</p></div>
+        <div class="role-help-entry"><span class="role-help-tag role-buff">增益</span><p>負責提供增益與輔助效果，提升隊伍整體表現。</p></div>
+      </div>
+      <div class="role-help-note">「輸出/治療」會依隊伍設定的最低治療人數計入配置；玩家仍須能切換這兩種玩法。</div>
+      <button type="button" class="role-help-done" data-close-role-help>了解了</button>
+    </div>
   </div>
 
   <!-- 單一隊伍 PNG 預覽／匯出：純前端繪製，絕不寫入報名資料 -->
@@ -14751,6 +14771,42 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       </div>
     </section>
   </div>
+
+  <script>
+    (() => {
+      const guide = document.getElementById('roleHelpModal');
+      if(!guide) return;
+      let opener = null;
+      // Portal into the root document, so transformed/scrollable cards cannot clip it.
+      document.body.appendChild(guide);
+      const close = () => {
+        if(!guide.classList.contains('show')) return;
+        guide.classList.remove('show');
+        guide.setAttribute('aria-hidden','true');
+        if(opener?.isConnected && opener.getClientRects().length){
+          opener.focus({preventScroll:true});
+        }
+      };
+      document.addEventListener('click', event => {
+        const openButton = event.target.closest('[data-role-help]');
+        if(openButton){
+          opener = openButton;
+          guide.classList.add('show');
+          guide.setAttribute('aria-hidden','false');
+          guide.querySelector('[data-close-role-help]')?.focus();
+        } else if(event.target.closest('[data-close-role-help]') || event.target === guide){
+          close();
+        }
+      });
+      document.addEventListener('keydown', event => {
+        if(event.key === 'Escape' && guide.classList.contains('show')){
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          close();
+        }
+      }, true);
+    })();
+  </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -14801,9 +14857,27 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       maxPeople5: 5,
       minHealer5: 2,
       weekendTimes: ["16:00","21:30"],
-      roles: ["輸出","承傷","治療","假奶","增益"],
+      roles: ["輸出","承傷","治療","輸出/治療","增益"],
       collectionName: "schedule"
     };
+
+    // 舊版 Firestore / 瀏覽器曾使用「假奶」；新介面一律顯示及寫入「輸出/治療」。
+    function canonicalRole(role){
+      const value = String(role ?? "").trim();
+      return value === "假奶" ? "輸出/治療" : value;
+    }
+    function canonicalizeLegacyRoles(day){
+      if(!day || !Array.isArray(day.slots)) return day;
+      for(const slot of day.slots){
+        for(const listName of ["members", "pendingMembers", "blackWorkers"]){
+          if(!Array.isArray(slot?.[listName])) continue;
+          for(const member of slot[listName]){
+            if(member && member.role === "假奶") member.role = "輸出/治療";
+          }
+        }
+      }
+      return day;
+    }
 
     let globalData = {};
 
@@ -14850,7 +14924,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     }
     async function setDoc(ref, proposed){
       const expected = scheduleRevision(proposed);
-      const value = ensureFirestore24HourSlots(structuredClone(proposed));
+      const value = ensureFirestore24HourSlots(canonicalizeLegacyRoles(structuredClone(proposed)));
       const ids = new Set();
       (value.slots || []).forEach(slot => {
         if(!validSlotId(slot.id) || ids.has(slot.id)) slot.id = crypto.randomUUID();
@@ -14914,7 +14988,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     function getMyProfile(){
       return {
         name: (localStorage.getItem("my_profile_name") || "").trim(),
-        role: (localStorage.getItem("my_profile_role") || "").trim()
+        role: canonicalRole(localStorage.getItem("my_profile_role"))
       };
     }
 
@@ -14926,7 +15000,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     function getFormDefaults(){
       return {
         name: (localStorage.getItem("signup_form_name") || "").trim(),
-        role: (localStorage.getItem("signup_form_role") || "").trim()
+        role: canonicalRole(localStorage.getItem("signup_form_role"))
       };
     }
 
@@ -15170,11 +15244,14 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       `;
     }
 
-    function countRole(members, role){
-      if(role === "治療"){
-        return members.filter(m => m.role === "治療" || m.role === "假奶").length;
-      }
-      return members.filter(m => m.role === role).length;
+    function countRole(members, role, slot = {}){
+      const all = (members || []).map(member => canonicalRole(member?.role));
+      const dedicatedHeal = all.filter(value => value === "治療").length;
+      const flexible = all.filter(value => value === "輸出/治療").length;
+      const flexibleHeal = Math.min(flexible, Math.max(0, getSlotMinHealer(slot) - dedicatedHeal));
+      if(role === "治療") return dedicatedHeal + flexibleHeal;
+      if(role === "輸出") return all.filter(value => value === "輸出").length + flexible - flexibleHeal;
+      return all.filter(value => value === role).length;
     }
 
     function normalizeSlot(slot){
@@ -15360,12 +15437,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     }
 
     function getAllowedRoles(members, slot = { teamSize:10 }){
-  const healerCount = countRole(members, "治療");
+  const healerCount = countRole(members, "治療", slot);
   const remaining = getSlotMaxPeople(slot) - members.length;
   const missingHealer = Math.max(getSlotMinHealer(slot) - healerCount, 0);
 
   if(missingHealer > 0 && remaining <= missingHealer){
-    return ["治療","假奶"];
+    return ["治療","輸出/治療"];
   }
 
   return [...CONFIG.roles];
@@ -15375,7 +15452,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(members.length >= getSlotMaxPeople(slot)){
         return { text:"已滿", cls:"status-full" };
       }
-      if(countRole(members, "治療") < getSlotMinHealer(slot)){
+      if(countRole(members, "治療", slot) < getSlotMinHealer(slot)){
         return { text:"招募中", cls:"status-warn" };
       }
       return { text:"達標", cls:"status-ok" };
@@ -15384,7 +15461,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     function roleClass(role){
       if(role === "輸出") return "role-dps";
       if(role === "承傷") return "role-tank";
-      if(role === "假奶") return "role-fakeheal";
+      if(role === "輸出/治療") return "role-flexheal";
       if(role === "增益") return "role-buff";
       return "role-heal";
     }
@@ -15528,7 +15605,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const members = Array.isArray(slot?.members) ? slot.members : [];
       const maxPeople = getSlotMaxPeople(slot);
       const isFull = members.length >= maxPeople;
-      const healCount = countRole(members, "治療");
+      const healCount = countRole(members, "治療", slot);
       const missingHeal = !isFull ? Math.max(getSlotMinHealer(slot) - healCount, 0) : 0;
       return { missingTank: 0, missingHeal, isFull };
     }
@@ -15820,7 +15897,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(!snap.exists()){
         await setDoc(ref, buildDefaultDayData(dateObj));
       } else {
-        const data = snap.data();
+        const data = canonicalizeLegacyRoles(snap.data());
         if(!data.slots || !Array.isArray(data.slots)){
           await setDoc(ref, buildDefaultDayData(dateObj));
         } else {
@@ -15841,7 +15918,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                 ? slot.pendingMembers.map(member => ({
                     ...member,
                     name: normalizeName(member.name || ""),
-                    role: CONFIG.roles.includes(member.role) ? member.role : "輸出",
+                    role: CONFIG.roles.includes(canonicalRole(member.role)) ? canonicalRole(member.role) : "輸出",
                     tag: member.tag || "",
                     note: member.note || "",
                     requestedAt: member.requestedAt || null
@@ -17630,7 +17707,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         option.textContent = roleName;
         roleSelect.appendChild(option);
       });
-      roleSelect.value = CONFIG.roles.includes(role) ? role : "輸出";
+      roleSelect.value = CONFIG.roles.includes(canonicalRole(role)) ? canonicalRole(role) : "輸出";
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
@@ -17779,7 +17856,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         option.textContent = roleName;
         roleSelect.appendChild(option);
       });
-      roleSelect.value = CONFIG.roles.includes(role) ? role : "輸出";
+      roleSelect.value = CONFIG.roles.includes(canonicalRole(role)) ? canonicalRole(role) : "輸出";
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
@@ -18726,7 +18803,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       }
     }
     function posterRoleColor(role){
-      return ({'輸出':'#83b9ff','承傷':'#fac078','治療':'#6fe0b7','假奶':'#c7a5ff','增益':'#ffaac9'})[role]||'#9eabc2';
+      return ({'輸出':'#83b9ff','承傷':'#fac078','治療':'#6fe0b7','輸出/治療':'#c7a5ff','增益':'#ffaac9'})[role]||'#9eabc2';
     }
     function posterBuildText(dateKey,slot){
       const date=parseDateKey(dateKey);
@@ -18783,7 +18860,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       posterText(ctx,`第 ${slot.instance||1} 隊`,800,390,26,'#f0f4ff',800);
       posterText(ctx,status==='取消'?'已取消':status==='時間更改'?`時間更改（原 ${formatDisplayTime(slot.time||'--:--')}）`:count>=max?'隊伍已滿':'招募中',800,440,23,status==='取消'?'#fda5ac':'#aab8d1',700,290);
       // 隊伍條件及職業統計
-      const counts=[['輸出',countRole(members,'輸出'),'#83b9ff'],['承傷',countRole(members,'承傷'),'#fac078'],['治療',countRole(members,'治療'),'#6fe0b7'],['增益',countRole(members,'增益'),'#ffaac9']];
+      const counts=[['輸出',countRole(members,'輸出',slot),'#83b9ff'],['承傷',countRole(members,'承傷',slot),'#fac078'],['治療',countRole(members,'治療',slot),'#6fe0b7'],['增益',countRole(members,'增益',slot),'#ffaac9']];
       const sw=250,sy=515;
       counts.forEach(([label,num,color],i)=>{
         const x=76+i*266;
@@ -19032,7 +19109,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           posterText(ctx,canceled?'報名已取消':full?'隊伍已滿':`還差 ${Math.max(0,max-count)} 人`,x+cardWidth-254,y+253,26,full?'#f7c68c':accent,850,220);
         }
         // Roles and occupancy, kept separate from the strong tower attributes.
-        const roles=[['輸出',countRole(members,'輸出'),'#83b9ff'],['承傷',countRole(members,'承傷'),'#fac078'],['治療',countRole(members,'治療'),'#6fe0b7'],['增益',countRole(members,'增益'),'#ffaac9']];
+        const roles=[['輸出',countRole(members,'輸出',slot),'#83b9ff'],['承傷',countRole(members,'承傷',slot),'#fac078'],['治療',countRole(members,'治療',slot),'#6fe0b7'],['增益',countRole(members,'增益',slot),'#ffaac9']];
         roles.forEach(([label,value,color],j)=>{
           const rx=x+35+j*143;
           posterRoundRect(ctx,rx,y+318,127,35,16,posterRgb(color,.10),posterRgb(color,.17));
@@ -19312,10 +19389,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
             const sortedMembers = getSortedMembersForDisplay(members);
             const blackWorkers = getBlackWorkers(slot);
             const maxPeople = getSlotMaxPeople(slot);
-            const dpsCount = countRole(members, "輸出");
-            const tankCount = countRole(members, "承傷");
-            const healCount = countRole(members, "治療");
-            const buffCount = countRole(members, "增益");
+            const dpsCount = countRole(members, "輸出", slot);
+            const tankCount = countRole(members, "承傷", slot);
+            const healCount = countRole(members, "治療", slot);
+            const buffCount = countRole(members, "增益", slot);
             const missingInfo = getSlotMissingInfo(slot);
             const slotTagItems = getSlotTagSummary(members);
             const slotTagHtml = slotTagItems.length
@@ -19332,7 +19409,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
             const signupTiming = getSignupTimingState(dateKey, slot);
             const isSignupClosed = signupTiming.state === "closed";
             const allowedRoles = getAllowedRoles(members, slot);
-            const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "假奶");
+            const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "輸出/治療");
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0 && pendingMembers.length === 0 && blackWorkers.length === 0;
             // PIN 空隊伍允許團長手動刪除（即使仍有待審核申請）。
             const canForceDeletePinSlot = !!slot.isCustom && isProtectedTeam(slot) && members.length === 0 && blackWorkers.length === 0;
@@ -19876,7 +19953,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
       const nextData = {};
       snapshot.forEach(item => {
-        const data = item.data();
+        const data = canonicalizeLegacyRoles(item.data());
         if(data && Array.isArray(data.slots)){
           sortSlots(data.slots);
           nextData[item.id] = data;
@@ -21875,6 +21952,99 @@ html[data-theme="light"] body #leaderAuthModal.is-destructive .pve-form-header .
     padding-top:24px !important;
   }
 }
+</style>
+<style id="role-help-design">
+  /* A compact, consistent help action beside every role selector. */
+  .role-help-heading{
+    display:flex;align-items:center;gap:10px;
+    margin:11px 0 7px;min-height:32px;
+  }
+  .role-help-heading .signup-label{margin:0 !important;line-height:1.45}
+  .role-help-trigger{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    min-height:30px;min-width:0;padding:3px 9px 3px 5px;
+    border:1px solid rgba(139,176,241,.27);border-radius:10px;
+    color:#bcd6ff;background:rgba(100,151,235,.085);
+    font-family:inherit;font-size:11px;font-weight:750;letter-spacing:.01em;
+    line-height:1;white-space:nowrap;box-shadow:inset 0 1px rgba(255,255,255,.035);
+    transition:background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+    cursor:pointer;flex:0 0 auto;vertical-align:middle;
+  }
+  .role-help-trigger-icon{
+    display:grid;place-items:center;width:21px;height:21px;flex:0 0 21px;
+    border-radius:7px;background:rgba(110,168,255,.15);
+    color:#a9cbff;
+  }
+  .role-help-trigger-icon svg{display:block;width:15px;height:15px}
+  .role-help-trigger-label{display:block}
+  .role-help-trigger:hover{
+    color:#ecf4ff;background:rgba(110,168,255,.19);
+    border-color:rgba(143,184,255,.49);
+    box-shadow:0 4px 13px rgba(53,102,199,.12);
+    transform:translateY(-1px);
+  }
+  .role-help-trigger:active{transform:translateY(0) scale(.975)}
+  .role-help-trigger:focus-visible{
+    outline:2px solid #8ab9ff;outline-offset:3px;
+  }
+  /* The blackwork dialog uses z-index:210100 and other menus can reach 999999.
+     Keep the help dialog in its own viewport layer, above every current overlay. */
+  html body #roleHelpModal,
+  html body #roleHelpModal.show{
+    position:fixed !important;inset:0 !important;
+    z-index:1000200 !important;isolation:isolate;
+    padding:16px !important;
+  }
+  html body #roleHelpModal.show{display:flex !important}
+  #roleHelpModal .role-help-box{
+    width:min(510px,100%) !important;max-height:min(88dvh,790px) !important;
+    overflow-y:auto;padding:23px !important;border-radius:22px !important;
+    box-shadow:0 35px 100px rgba(0,0,0,.44) !important;
+  }
+  .role-help-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .role-help-kicker{font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--pve-modal-muted,var(--muted));margin-bottom:5px}
+  #roleHelpTitle{font-size:23px;margin:0}
+  .role-help-close{
+    display:grid;place-items:center;width:34px;height:34px;min-width:34px;padding:0;
+    font-size:23px;font-weight:500;line-height:1;
+    color:var(--pve-modal-text,var(--text));
+    background:var(--pve-modal-soft,rgba(150,170,210,.12));
+    border:1px solid var(--pve-modal-border,var(--line));border-radius:11px;
+  }
+  .role-help-close:hover{filter:brightness(1.13)}
+  .role-help-intro{font-size:13px;line-height:1.65;color:var(--pve-modal-muted,var(--muted));margin:14px 0 15px}
+  .role-help-list{display:grid;gap:8px}
+  .role-help-entry{display:grid;grid-template-columns:104px minmax(0,1fr);align-items:center;gap:12px;border-radius:13px;padding:11px 12px;background:rgba(120,145,200,.07);border:1px solid var(--pve-modal-border,var(--line))}
+  .role-help-entry p{margin:0;font-size:13px;color:var(--pve-modal-text,var(--text));line-height:1.55}
+  .role-help-tag{display:inline-flex;align-items:center;justify-content:center;min-height:26px;font-size:12px;font-weight:800;padding:4px 8px;border:1px solid transparent;border-radius:999px;white-space:nowrap}
+  .role-help-note{font-size:12px;line-height:1.6;color:var(--pve-modal-muted,var(--muted));margin:14px 0 15px}
+  .role-help-done{width:100%;padding:11px 14px;border-radius:12px;background:linear-gradient(125deg,var(--accent),var(--accent2));color:white;font-weight:800}
+  html[data-theme="light"] .role-help-trigger{
+    color:#4268a1;background:#f0f5ff;border-color:#d5e1f3;
+    box-shadow:inset 0 1px rgba(255,255,255,.8);
+  }
+  html[data-theme="light"] .role-help-trigger-icon{color:#4875bb;background:#e0eaff}
+  html[data-theme="light"] .role-help-trigger:hover{color:#244d8d;background:#e4efff;border-color:#aac6ed;box-shadow:0 4px 13px rgba(54,94,165,.12)}
+  html[data-theme="light"] .role-help-entry{background:#f6f8fc}
+  @media(max-width:768px){
+    html body #roleHelpModal,html body #roleHelpModal.show{
+      align-items:flex-end !important;padding:0 !important;
+    }
+    #roleHelpModal .role-help-box{
+      width:100% !important;max-width:100% !important;
+      max-height:calc(100dvh - max(12px,env(safe-area-inset-top))) !important;
+      margin:0 !important;padding:20px 18px calc(18px + env(safe-area-inset-bottom)) !important;
+      border-radius:23px 23px 0 0 !important;
+    }
+  }
+  @media(max-width:480px){
+    .role-help-heading{gap:8px}
+    .role-help-trigger{min-height:30px;padding:3px 8px 3px 5px}
+    .role-help-entry{grid-template-columns:91px minmax(0,1fr);gap:8px;padding:10px}
+    .role-help-entry p{font-size:12px}
+    .role-help-tag{font-size:11px}
+  }
+  @media(prefers-reduced-motion:reduce){.role-help-trigger{transition:none}}
 </style>
 </body>
 </html>
