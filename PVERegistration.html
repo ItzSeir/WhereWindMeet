@@ -15515,6 +15515,35 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       return "role-heal";
     }
 
+    // 雙職業 Pill 採 70% 主職業 + 30% 第二志願的單一混合色，維持主職業辨識度。
+    // 只影響顯示顏色，不影響角色志願順序、隊伍配置或 Firebase 資料。
+    const ROLE_PILL_COLORS = {
+      "輸出": {base:[96,165,250], dark:[143,192,255], light:[36,91,158]},
+      "治療": {base:[139,92,246], dark:[201,184,255], light:[103,64,166]},
+      "承傷": {base:[245,158,11], dark:[255,195,107], light:[150,89,15]},
+      "增益": {base:[45,212,191], dark:[45,212,191], light:[15,118,110]}
+    };
+    function mixPillRgb(first,second,firstWeight=.70){
+      return first.map((channel,i)=>Math.round(channel*firstWeight+second[i]*(1-firstWeight)));
+    }
+    function hexPillRgb(rgb){return '#'+rgb.map(n=>n.toString(16).padStart(2,'0')).join('');}
+    function rolePillClass(member){
+      const prefs=rolePreferencesOf(member);
+      return roleClass(prefs[0]||member?.role)+(prefs.length===2?' role-blended':'');
+    }
+    function rolePillStyle(member){
+      const prefs=rolePreferencesOf(member);
+      if(prefs.length!==2)return '';
+      const a=ROLE_PILL_COLORS[prefs[0]],b=ROLE_PILL_COLORS[prefs[1]];
+      if(!a||!b)return '';
+      const base=mixPillRgb(a.base,b.base);
+      const dark=mixPillRgb(a.dark,b.dark);
+      const light=mixPillRgb(a.light,b.light);
+      const lightBackground=base.map(v=>Math.round(255*.90+v*.10));
+      const lightBorder=base.map(v=>Math.round(255*.70+v*.30));
+      return `style="--role-mix-text:${hexPillRgb(dark)};--role-mix-bg:rgba(${base.join(',')},.16);--role-mix-border:rgba(${base.join(',')},.36);--role-mix-light-text:${hexPillRgb(light)};--role-mix-light-bg:${hexPillRgb(lightBackground)};--role-mix-light-border:${hexPillRgb(lightBorder)}"`;
+    }
+
     function teamTypeClass(slotOrTeamType){
       const data = typeof slotOrTeamType === "object"
         ? normalizeSlot(slotOrTeamType)
@@ -19648,7 +19677,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                       ${pendingMembers.map(member => `
                         <div class="pending-review-item">
                           <div class="pending-review-person">
-                            <span class="role-badge ${roleClass(member.role)}">${escapeHtml(formattedRoles(member))}</span>
+                            <span class="role-badge ${rolePillClass(member)}" ${rolePillStyle(member)}>${escapeHtml(formattedRoles(member))}</span>
                             <span>${escapeHtml(member.name)}</span>
                           </div>
                           <div class="pending-review-actions">
@@ -19678,7 +19707,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                   <div class="member${isSelf ? " member-self" : ""}${hasTag ? " member-tagged" : ""}">
                     <div class="member-left">
                       <div class="member-inline-row">
-                        <span class="role-badge ${roleClass(member.role)}">${formattedRoles(member)}</span>
+                        <span class="role-badge ${rolePillClass(member)}" ${rolePillStyle(member)}>${escapeHtml(formattedRoles(member))}</span>
                         <span class="member-name" title="${escapeHtml(member.name)}" data-full-name="${escapeHtml(member.name)}">
                           ${escapeHtml(member.name)}${isSelf ? "（你）" : ""}
                         </span>
@@ -19718,7 +19747,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                   </div>
                   ${blackWorkers.length ? `<div class="blackwork-list">${blackWorkers.map((worker,index)=>`
                     <div class="blackwork-person${savedName && normalizeName(worker.name)===normalizeName(savedName) ? ' blackwork-person-self' : ''}">
-                      <span class="role-badge ${roleClass(worker.role)}">${escapeHtml(formattedRoles(worker))}</span>
+                      <span class="role-badge ${rolePillClass(worker)}" ${rolePillStyle(worker)}>${escapeHtml(formattedRoles(worker))}</span>
                       <span class="blackwork-person-name" title="${escapeHtml(worker.name || '')}">${escapeHtml(worker.name || '未命名')}</span>
                       <button type="button" class="blackwork-transfer" data-action="move-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="轉移黑工 ${escapeHtml(worker.name || '')}，或轉為正式隊員" title="移動／轉為正式隊員">轉移</button>
                       <button type="button" class="blackwork-remove" data-action="remove-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="移除黑工 ${escapeHtml(worker.name || '')}" title="取消黑工報名">×</button>
@@ -22148,6 +22177,19 @@ html[data-theme="light"] .role-picker-choice.selected{background:#e8f1ff;border-
 html[data-theme="light"] .role-picker-choice .role-picker-rank{color:#536985;background:#edf1f8}
 html[data-theme="light"] .role-picker-choice.selected .role-picker-rank{color:#fff;background:#537ac5}
 @media(max-width:650px){.role-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.batch-player-row{grid-template-columns:minmax(0,1fr) 38px}.batch-player-row .batch-name-input{grid-column:1/2}.batch-player-row .role-order-picker{grid-column:1/-1;grid-row:2}.batch-player-row .batch-remove-btn{grid-column:2;grid-row:1}}
+</style>
+<style id="role-badge-weighted-blend-v1">
+/* Two roles: one weighted color, 70% first preference + 30% second. */
+.role-badge.role-blended{
+  color:var(--role-mix-text) !important;
+  background:var(--role-mix-bg) !important;
+  border-color:var(--role-mix-border) !important;
+}
+html[data-theme="light"] .role-badge.role-blended{
+  color:var(--role-mix-light-text) !important;
+  background:var(--role-mix-light-bg) !important;
+  border-color:var(--role-mix-light-border) !important;
+}
 </style>
 </body>
 </html>
