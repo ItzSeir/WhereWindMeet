@@ -14082,13 +14082,14 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       <label class="signup-label" for="playerName">名稱</label>
       <input id="playerName" class="signup-input" type="text" placeholder="請輸入名字" />
 
-      <div class="role-help-heading"><label class="signup-label" for="roleSelectTrigger">職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
+      <div class="role-help-heading"><label class="signup-label">職業志願</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
       <div id="roleSelect" class="custom-select">
         <button type="button" id="roleSelectTrigger" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false">
           <span id="roleSelectLabel">請選擇職業</span>
         </button>
         <div id="roleSelectMenu" class="custom-select-menu" role="listbox" aria-label="職業選單"></div>
       </div>
+      <div id="signupRolePicker" class="role-order-picker"></div>
 
       <div class="signup-modal-actions">
         <button type="button" class="signup-confirm-btn" onclick="submitSignup()">確認</button>
@@ -14370,13 +14371,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       </div>
 
       <div class="role-help-heading"><label class="signup-label" for="editRoleSelect">職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
-      <select id="editRoleSelect" class="signup-select">
-        <option value="輸出">輸出</option>
-        <option value="承傷">承傷</option>
-        <option value="治療">治療</option>
-        <option value="輸出/治療">輸出/治療</option>
-        <option value="增益">增益</option>
-      </select>
+      <div id="editRoleSelect" class="role-order-picker"></div>
 
       <div class="confirm-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeEditRoleModal()">取消</button>
@@ -14674,13 +14669,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       <input id="myProfileName" class="signup-input" type="text" placeholder="用於快速報名（注：每個瀏覽器都需設置一次)" />
 
       <div class="role-help-heading"><label class="signup-label" for="myProfileRole">我的常用職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
-      <select id="myProfileRole" class="signup-select">
-        <option value="輸出">輸出</option>
-        <option value="承傷">承傷</option>
-        <option value="治療">治療</option>
-        <option value="輸出/治療">輸出/治療</option>
-        <option value="增益">增益</option>
-      </select>
+      <div id="myProfileRole" class="role-order-picker"></div>
 
       <div class="confirm-modal-actions">
         <button type="button" class="confirm-cancel-btn" onclick="closeMyProfileModal()">取消</button>
@@ -14722,9 +14711,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       <label class="signup-label" for="blackworkName">玩家名稱</label>
       <input id="blackworkName" class="signup-input" type="text" maxlength="80" autocomplete="off" placeholder="請輸入玩家名稱" />
       <div class="role-help-heading"><label class="signup-label" for="blackworkRole">職業</label><button type="button" class="role-help-trigger" data-role-help aria-label="查看職業說明" title="查看職業說明" aria-haspopup="dialog" aria-controls="roleHelpModal"><span class="role-help-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5"/><path d="M12 7.95h.01" stroke-width="2.7"/></svg></span><span class="role-help-trigger-label">說明</span></button></div>
-      <select id="blackworkRole" class="signup-select">
-        <option value="輸出">輸出</option><option value="承傷">承傷</option><option value="治療">治療</option><option value="輸出/治療">輸出/治療</option><option value="增益">增益</option>
-      </select>
+      <div id="blackworkRole" class="role-order-picker"></div>
       <div class="blackwork-dialog-actions">
         <button class="blackwork-cancel" type="button" id="blackworkCancel">取消</button>
         <button class="blackwork-save" type="button" id="blackworkConfirm">確認報名</button>
@@ -14739,15 +14726,15 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         <div><div class="role-help-kicker">職業選擇</div><h2 id="roleHelpTitle" class="confirm-modal-title">職業說明</h2></div>
         <button type="button" class="role-help-close" data-close-role-help aria-label="關閉職業說明">×</button>
       </div>
-      <p class="role-help-intro">選擇你能擔任的職位。隊伍會依最低治療人數保留必要的治療名額。</p>
+      <p class="role-help-intro">依照你願意擔任的順序選擇 1 至 2 個職業。① 為主職業，② 為備選職業；若隊伍需要治療且你選了治療作為備選，系統會優先補足最低治療人數。</p>
       <div class="role-help-list">
         <div class="role-help-entry"><span class="role-help-tag role-dps">輸出</span><p>主要負責造成傷害、擊敗敵人。</p></div>
-        <div class="role-help-entry"><span class="role-help-tag role-tank">承傷</span><p>負責拉怪及承受傷害。</p></div>
         <div class="role-help-entry"><span class="role-help-tag role-heal">治療</span><p>負責回復隊友生命及復活隊友。</p></div>
-        <div class="role-help-entry"><span class="role-help-tag role-flexheal">輸出/治療</span><p>當隊伍治療不足時優先擔任治療，足夠時擔任輸出；實際職位由隊伍協調。</p></div>
+        <div class="role-help-entry"><span class="role-help-tag role-tank">承傷</span><p>負責拉怪及承受傷害。</p></div>
+        
         <div class="role-help-entry"><span class="role-help-tag role-buff">增益</span><p>負責提供增益與輔助效果。</p></div>
       </div>
-      <div class="role-help-note">「輸出/治療」會依隊伍設定的最低治療人數計入配置；玩家仍須能切換這兩種玩法。</div>
+      <div class="role-help-note">例如「① 輸出、② 治療」表示優先輸出，但治療不足時也能補治療。只選一職也可以。角色是否實際切換仍由玩家與團長協調。</div>
       <button type="button" class="role-help-done" data-close-role-help>了解了</button>
     </div>
   </div>
@@ -14857,27 +14844,99 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       maxPeople5: 5,
       minHealer5: 2,
       weekendTimes: ["16:00","21:30"],
-      roles: ["輸出","承傷","治療","輸出/治療","增益"],
+      roles: ["輸出","治療","承傷","增益"],
       collectionName: "schedule"
     };
 
-    // 舊版 Firestore / 瀏覽器曾使用「假奶」；新介面一律顯示及寫入「輸出/治療」。
+    // 優先順序：第一個是主職業；最多兩個，第二個是備選。
+    // 原「假奶 / 輸出/治療」資料保留為「輸出 → 治療」，舊單職玩家維持單職。
     function canonicalRole(role){
-      const value = String(role ?? "").trim();
-      return value === "假奶" ? "輸出/治療" : value;
+      const v=String(role ?? "").trim();
+      return v === "假奶" || v === "輸出/治療" ? "輸出" : v;
     }
+    function normalizeRolePreferences(value, fallback=""){
+      const source=Array.isArray(value)?value:[];
+      let roles=source.map(v=>String(v??"").trim()).filter(v=>CONFIG.roles.includes(v));
+      if(!roles.length){
+        const v=String(fallback??"").trim();
+        if(v==="假奶" || v==="輸出/治療") roles=["輸出","治療"];
+        else if(CONFIG.roles.includes(v)) roles=[v];
+      }
+      return [...new Set(roles)].slice(0,2);
+    }
+    function rolePreferencesOf(member){
+      if(typeof member==='string') return normalizeRolePreferences([],member);
+      if(Array.isArray(member)) return normalizeRolePreferences(member);
+      return normalizeRolePreferences(member?.rolePreferences, member?.role);
+    }
+    function formattedRoles(member){ return rolePreferencesOf(member).join("/") || "未設定"; }
+    function roleData(prefs){ const roles=normalizeRolePreferences(prefs);return {role:roles[0]||"輸出",rolePreferences:roles.length?roles:["輸出"]}; }
     function canonicalizeLegacyRoles(day){
       if(!day || !Array.isArray(day.slots)) return day;
       for(const slot of day.slots){
-        for(const listName of ["members", "pendingMembers", "blackWorkers"]){
-          if(!Array.isArray(slot?.[listName])) continue;
-          for(const member of slot[listName]){
-            if(member && member.role === "假奶") member.role = "輸出/治療";
+        for(const key of ["members","pendingMembers","blackWorkers"]){
+          for(const member of (Array.isArray(slot?.[key]) ? slot[key] : [])){
+            if(!member)continue;
+            if(member.role==="假奶"||member.role==="輸出/治療") Object.assign(member,roleData(rolePreferencesOf(member)));
+            if(Array.isArray(member.rolePreferences)) Object.assign(member,roleData(rolePreferencesOf(member)));
           }
         }
       }
       return day;
     }
+    // 已有主治療固定治療；若不足，依第二職業的治療彈性補足。
+    function assignedRoleCounts(members,slot={}){
+      const counts={輸出:0,治療:0,承傷:0,增益:0};
+      const prefs=(members||[]).map(rolePreferencesOf);
+      let healFirst=prefs.filter(p=>p[0]==="治療").length;
+      let need=Math.max(0,getSlotMinHealer(slot)-healFirst);
+      prefs.forEach(p=>{
+        if(!p.length)return;
+        if(p[0]!=="治療" && p[1]==="治療" && need>0){counts.治療++;need--;}
+        else counts[p[0]]++;
+      });
+      return counts;
+    }
+    function canRoleJoin(members,slot,prefs){
+      const roles=rolePreferencesOf(prefs);
+      if(!roles.length)return false;
+      const remains=getSlotMaxPeople(slot)-(members||[]).length;
+      if(remains<=0)return false;
+      const missing=Math.max(0,getSlotMinHealer(slot)-assignedRoleCounts(members,slot).治療);
+      return !(missing>0 && remains<=missing && !roles.includes("治療"));
+    }
+    // 元素內建立四職可點選的順序選擇器，不使用瀏覽器內建多選框。
+    function mountRolePicker(element,initial=[]){
+      if(!element)return;
+      element.classList.add('role-order-picker');
+      element._rolePreferences=normalizeRolePreferences(initial,Array.isArray(initial)?'':initial);
+      const paint=()=>{
+        const prefs=element._rolePreferences;
+        element.innerHTML=`<div class="role-picker-title"><span>按順序選擇職業</span><small>最多 2 項 · 點選已選職業可取消</small></div><div class="role-picker-grid"></div><div class="role-picker-result"></div>`;
+        const grid=element.querySelector('.role-picker-grid');
+        CONFIG.roles.forEach(role=>{
+          const index=prefs.indexOf(role);
+          const btn=document.createElement('button');
+          btn.type='button';btn.className='role-picker-choice '+(index>=0?'selected ':'')+roleClass(role);
+          btn.disabled=prefs.length>=2&&index<0;
+          btn.setAttribute('aria-pressed',String(index>=0));btn.setAttribute('aria-label',`${role}：${index<0?'加入志願':`第 ${index+1} 志願，點擊取消`}`);
+          btn.innerHTML=`<span class="role-picker-rank">${index>=0?index+1:'+'}</span><span>${role}</span>`;
+          btn.onclick=()=>{
+            if(index>=0) prefs.splice(index,1);
+            else if(prefs.length<2)prefs.push(role);
+            else {prefs[1]=role;}
+            if(typeof element._roleChanged==='function')element._roleChanged(prefs.slice());
+            paint();
+          };
+          grid.appendChild(btn);
+        });
+        element.querySelector('.role-picker-result').textContent=prefs.length===0?'尚未選擇主職業':`① ${prefs[0]}${prefs[1]?`　·　② ${prefs[1]}`:'　 · 可再選一個備選職業'}`;
+      };
+      paint();
+    }
+    function pickerRoles(id){return document.getElementById(id)?._rolePreferences?.slice()||[];}
+    function setPickerRoles(id,roles){mountRolePicker(document.getElementById(id),roles);}
+    function readBatchRolePrefs(row){return row.querySelector('.role-order-picker')?._rolePreferences?.slice()||[];}
 
     let globalData = {};
 
@@ -14985,28 +15044,36 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     localStorage.setItem("registration_size_filter", "all");
     localStorage.removeItem("registration_activity_filter");
 
+    function savedRolePreferences(key){
+      try{return JSON.parse(localStorage.getItem(key)||"null");}
+      catch{return null;}
+    }
     function getMyProfile(){
       return {
         name: (localStorage.getItem("my_profile_name") || "").trim(),
-        role: canonicalRole(localStorage.getItem("my_profile_role"))
+        role: canonicalRole(localStorage.getItem("my_profile_role")),
+        rolePreferences: normalizeRolePreferences(savedRolePreferences("my_profile_role_preferences"),localStorage.getItem("my_profile_role"))
       };
     }
 
     function saveMyProfile(name, role){
       localStorage.setItem("my_profile_name", name || "");
-      localStorage.setItem("my_profile_role", role || "");
+      localStorage.setItem("my_profile_role", roleData(role).role);
+      localStorage.setItem("my_profile_role_preferences",JSON.stringify(normalizeRolePreferences(role)));
     }
 
     function getFormDefaults(){
       return {
         name: (localStorage.getItem("signup_form_name") || "").trim(),
-        role: canonicalRole(localStorage.getItem("signup_form_role"))
+        role: canonicalRole(localStorage.getItem("signup_form_role")),
+        rolePreferences: normalizeRolePreferences(savedRolePreferences("signup_form_role_preferences"),localStorage.getItem("signup_form_role"))
       };
     }
 
     function saveFormDefaults(name, role){
       localStorage.setItem("signup_form_name", name || "");
-      localStorage.setItem("signup_form_role", role || "");
+      localStorage.setItem("signup_form_role", roleData(role).role);
+      localStorage.setItem("signup_form_role_preferences",JSON.stringify(normalizeRolePreferences(role)));
     }
 
     function getTodayStart(){
@@ -15244,15 +15311,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       `;
     }
 
-    function countRole(members, role, slot = {}){
-      const all = (members || []).map(member => canonicalRole(member?.role));
-      const dedicatedHeal = all.filter(value => value === "治療").length;
-      const flexible = all.filter(value => value === "輸出/治療").length;
-      const flexibleHeal = Math.min(flexible, Math.max(0, getSlotMinHealer(slot) - dedicatedHeal));
-      if(role === "治療") return dedicatedHeal + flexibleHeal;
-      if(role === "輸出") return all.filter(value => value === "輸出").length + flexible - flexibleHeal;
-      return all.filter(value => value === role).length;
-    }
+    function countRole(members,role,slot={}){return assignedRoleCounts(members,slot)[role]||0;}
 
     function normalizeSlot(slot){
       const rawType = slot?.teamType || "普通團";
@@ -15436,17 +15495,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       return normalizeMinHealer(slot?.minHealer);
     }
 
-    function getAllowedRoles(members, slot = { teamSize:10 }){
-  const healerCount = countRole(members, "治療", slot);
-  const remaining = getSlotMaxPeople(slot) - members.length;
-  const missingHealer = Math.max(getSlotMinHealer(slot) - healerCount, 0);
-
-  if(missingHealer > 0 && remaining <= missingHealer){
-    return ["治療","輸出/治療"];
-  }
-
-  return [...CONFIG.roles];
-}
+    function getAllowedRoles(members,slot={teamSize:10}){return [...CONFIG.roles];}
 
     function getStatus(members, slot = { teamSize:10 }){
       if(members.length >= getSlotMaxPeople(slot)){
@@ -16216,6 +16265,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const profile = getMyProfile();
 
       renderCustomRoleOptions(allowedRoles);
+      const rolePrefs=normalizeRolePreferences(defaults.rolePreferences?.length?defaults.rolePreferences:profile.rolePreferences,defaults.role||profile.role||"");
+      setPickerRoles("signupRolePicker",rolePrefs);
 
       nameInput.value = defaults.name || profile.name || "";
 
@@ -16247,7 +16298,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     window.submitSignup = async () => {
       const nameInput = document.getElementById("playerName");
       const name = normalizeName(nameInput.value);
-      const role = selectedRoleValue;
+      const rolePreferences=pickerRoles("signupRolePicker");
+      const role=rolePreferences[0];
 
       if(!name){
         alert("名字不可留空。");
@@ -16260,7 +16312,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         return;
       }
 
-      saveFormDefaults(name, role);
+      saveFormDefaults(name, rolePreferences);
 
       if(!guardDialogRevision(currentSignup)) return;
       const { dateKey, slotIndex } = currentSignup;
@@ -16286,7 +16338,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         return;
       }
 
-      if(!getAllowedRoles(slot.members, slot).includes(role)){
+      if(!canRoleJoin(slot.members,slot,rolePreferences)){
         alert("目前不可加入此職業，請重新選擇可用職業。");
         return;
       }
@@ -16296,14 +16348,14 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           alert("此隊伍的 PIN 設定無效，請聯絡團長。");
           return;
         }
-        slot.pendingMembers.push({ name, role, tag:"", note:"", requestedAt:Date.now() });
+        slot.pendingMembers.push({ name, role, rolePreferences, tag:"", note:"", requestedAt:Date.now() });
         await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
         closeModal();
         showSignupSuccess(dateKey,slot,[{name,role}],'普通報名');
         return;
       }
 
-      slot.members.push({ name, role, tag:"", note:"" });
+      slot.members.push({ name, role, rolePreferences, tag:"", note:"" });
 
       if(slot.members.length >= getSlotMaxPeople(slot)){
         // 已停用滿員自動建立下一隊；新隊伍需手動建立。
@@ -16476,7 +16528,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         const size=getSlotMaxPeople(slot),taken=Array.isArray(slot.members)?slot.members.length:0;
         const existingName=!isSelf&&slotHasName(slot,member.name);
         const full=movePickerState.mode==='member'&&taken>=size;
-        const invalidRole=movePickerState.mode==='member'&&!getAllowedRoles(slot.members||[],slot).includes(member.role);
+        const invalidRole=movePickerState.mode==='member'&&!canRoleJoin((slot.members||[]).filter((_,i)=>!isSelf||sourceKind==='blackwork'||i!==currentMoveEdit.memberIndex),slot,rolePreferencesOf(member));
         const disabled=existingName||full||invalidRole;
         const reason=existingName?'已有同名玩家':full?'名額已滿':invalidRole?'職業限制':'可選擇';
         options.push({value:`slot:${index}`,name:`${formatDisplayTime(getSlotDisplayTime(slot))} · 第 ${slot.instance||1} 隊 · ${teamTypeLabel(slot)}`,detail:`${taken}/${size} 人${getBlackWorkers(slot).length?` · ${getBlackWorkers(slot).length} 黑工`:''}${isSelf?' · 原隊伍':disabled?` · ${reason}`:''}`,disabled});
@@ -16558,7 +16610,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       document.querySelector('#moveModal .confirm-modal-title').textContent=sourceKind==='blackwork'?'黑工轉移／轉為正式':'移動隊友';
       // 黑工預設選正式隊員（反向轉換），也可以自行選黑工移到其他隊伍。
       movePickerState={mode:'member',dateKey,target:'',targetRevision:scheduleRevision(globalData[dateKey])};
-      document.getElementById('moveMemberInfo').innerHTML=`<strong>${escapeHtml(member.name)}</strong><span class="move-source-sub">原隊伍：${escapeHtml(moveDateReadable(dateKey))} · ${escapeHtml(formatDisplayTime(getSlotDisplayTime(source)))} · 第 ${source.instance||1} 隊 · ${escapeHtml(member.role||'未指定')} · ${sourceKind==='blackwork'?'黑工／補位':'正式隊員'}</span>`;
+      document.getElementById('moveMemberInfo').innerHTML=`<strong>${escapeHtml(member.name)}</strong><span class="move-source-sub">原隊伍：${escapeHtml(moveDateReadable(dateKey))} · ${escapeHtml(formatDisplayTime(getSlotDisplayTime(source)))} · 第 ${source.instance||1} 隊 · ${escapeHtml(formattedRoles(member))} · ${sourceKind==='blackwork'?'黑工／補位':'正式隊員'}</span>`;
       closeMovePickerMenus();
       renderMovePickers();
       document.getElementById('moveModal').classList.add('show');
@@ -16636,15 +16688,15 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           if(slotHasName(destination,member.name))throw new Error('目標隊伍已有同名的正式、待確認或黑工玩家。');
           if(mode==='blackwork'){
             destination.blackWorkers=[...getBlackWorkers(destination),{
-              name:member.name,role:member.role,tag:member.tag||'',note:member.note||'',
+              name:member.name,role:member.role,rolePreferences:rolePreferencesOf(member),tag:member.tag||'',note:member.note||'',
               joinedAt:member.joinedAt||Date.now()
             }];
           }else{
             destination.members=Array.isArray(destination.members)?destination.members:[];
             if(destination.members.length>=getSlotMaxPeople(destination))throw new Error('目標隊伍已滿。');
-            if(!getAllowedRoles(destination.members,destination).includes(member.role))throw new Error('目標隊伍目前不可加入此職業。');
+            if(!canRoleJoin(destination.members,destination,rolePreferencesOf(member)))throw new Error('目標隊伍目前不可加入此職業。');
             destination.members.push(sourceKind==='blackwork'
-              ?{name:member.name,role:member.role,tag:member.tag||'',note:member.note||''}
+              ?{name:member.name,role:member.role,rolePreferences:rolePreferencesOf(member),tag:member.tag||'',note:member.note||''}
               :member);
           }
           sortSlots(sourceDay.slots);
@@ -16678,7 +16730,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       currentRoleEdit = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
       document.getElementById("editRoleMemberInfo").innerHTML =
         `要編輯的隊員：<strong style="color:var(--text);">${escapeHtml(member.name)}</strong>`;
-      document.getElementById("editRoleSelect").value = member.role || "輸出";
+      setPickerRoles("editRoleSelect",rolePreferencesOf(member));
       document.getElementById("editRoleModal").classList.add("show");
     }
 
@@ -16692,7 +16744,9 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(!guardDialogRevision(currentRoleEdit)) return;
 
       const { dateKey, slotIndex, memberIndex } = currentRoleEdit;
-      const newRole = document.getElementById("editRoleSelect").value;
+      const nextPrefs=pickerRoles("editRoleSelect");
+      if(!nextPrefs.length){alert("請至少選一個職業。");return;}
+      const newRole=nextPrefs[0];
 
       const dayData = structuredClone(globalData[dateKey]);
       if(!dayData || !Array.isArray(dayData.slots)) return;
@@ -16700,7 +16754,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const member = dayData?.slots?.[slotIndex]?.members?.[memberIndex];
       if(!member) return;
 
-      member.role = newRole;
+      Object.assign(member,roleData(nextPrefs));
 
       await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
       closeEditRoleModal();
@@ -16975,11 +17029,11 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           slot.pendingMembers.splice(pendingIndex, 1);
         }else{
           const allowed = getAllowedRoles(slot.members, slot);
-          if(!allowed.includes(member.role)){
-            alert(`目前隊伍配置無法核准「${member.name}」的職業（${member.role}）。`);
+          if(!canRoleJoin(slot.members,slot,rolePreferencesOf(member))){
+            alert(`目前隊伍配置無法核准「${member.name}」的職業（${formattedRoles(member)}）。`);
             return;
           }
-          slot.members.push({ ...member, name:member.name, role:member.role, tag:"", note:"" });
+          slot.members.push({ ...member, name:member.name, role:member.role, rolePreferences:rolePreferencesOf(member), tag:"", note:"" });
           slot.pendingMembers.splice(pendingIndex, 1);
           if(slot.members.length >= getSlotMaxPeople(slot)){
             // 已停用滿員自動建立下一隊；新隊伍需手動建立。
@@ -17207,7 +17261,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     window.openMyProfileModal = () => {
       const profile = getMyProfile();
       document.getElementById("myProfileName").value = profile.name || "";
-      document.getElementById("myProfileRole").value = profile.role || "輸出";
+      setPickerRoles("myProfileRole",profile.rolePreferences);
       document.getElementById("myProfileModal").classList.add("show");
     };
 
@@ -17217,7 +17271,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
     window.saveMyProfileModal = () => {
       const name = document.getElementById("myProfileName").value.trim();
-      const role = document.getElementById("myProfileRole").value;
+      const role = pickerRoles("myProfileRole");
+      if(!role.length){alert("請至少選一個常用職業。");return;}
       saveMyProfile(name, role);
       closeMyProfileModal();
       render();
@@ -17237,7 +17292,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         if(!item.note && note) item.note = note;
         item.players.push({
           name: String(member.name || "").trim(),
-          role: String(member.role || "").trim()
+          role: formattedRoles(member)
         });
       });
       return Array.from(map.values());
@@ -17558,7 +17613,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     async function quickSignup(dateKey, slotIndex){
       const profile = getMyProfile();
       const name = normalizeName(profile.name);
-      const role = String(profile.role || "").trim();
+      const rolePreferences=rolePreferencesOf(profile);
+      const role=rolePreferences[0]||"";
 
       if(!name || !role){
         alert("請先到『我的資料』儲存名字與常用職業。 ");
@@ -17582,7 +17638,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       }
 
       const allowedRoles = getAllowedRoles(slot.members, slot);
-      if(!allowedRoles.includes(role)){
+      if(!canRoleJoin(slot.members,slot,rolePreferences)){
         alert("你的常用職業目前不能加入這個隊伍，請使用『新增報名』手動選擇可用職業。 ");
         return;
       }
@@ -17597,13 +17653,13 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           alert("此隊伍的 PIN 設定無效，請聯絡團長。");
           return;
         }
-        slot.pendingMembers.push({ name, role, tag:"", note:"", requestedAt:Date.now() });
+        slot.pendingMembers.push({ name, role, rolePreferences, tag:"", note:"", requestedAt:Date.now() });
         await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
         showSignupSuccess(dateKey,slot,[{name,role}],'快速報名');
         return;
       }
 
-      slot.members.push({ name, role, tag:"", note:"" });
+      slot.members.push({ name, role, rolePreferences, tag:"", note:"" });
 
       if(slot.members.length >= getSlotMaxPeople(slot)){
         // 已停用滿員自動建立下一隊；新隊伍需手動建立。
@@ -17689,7 +17745,15 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       });
     }
 
-    function createBatchSignupRow(name = "", role = "輸出"){
+    function setPickerRolesForRow(row,roles){
+      const p=row.querySelector('.role-order-picker');
+      if(p){mountRolePicker(p,roles);p._roleChanged=prefs=>{const hidden=row.querySelector('.batch-role-select');if(hidden)hidden.value=prefs[0]||'';};}
+    }
+    function makeBatchPlayerRow(row){
+      const prefs=readBatchRolePrefs(row);
+      return {name:normalizeName(row.querySelector('.batch-name-input')?.value),role:prefs[0]||'',rolePreferences:prefs};
+    }
+    function createBatchSignupRow(name = "", role = ""){
       const row = document.createElement("div");
       row.className = "batch-player-row";
 
@@ -17707,7 +17771,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         option.textContent = roleName;
         roleSelect.appendChild(option);
       });
-      roleSelect.value = CONFIG.roles.includes(canonicalRole(role)) ? canonicalRole(role) : "輸出";
+      const initialRolePrefs=rolePreferencesOf(role);
+      roleSelect.value=initialRolePrefs[0]||"輸出";
+      roleSelect.style.display="none";
+      const rolePicker=document.createElement("div");
+      mountRolePicker(rolePicker,initialRolePrefs);
+      rolePicker._roleChanged=(prefs)=>{roleSelect.value=prefs[0]||"";};
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
@@ -17720,7 +17789,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           row.remove();
         } else {
           nameInput.value = "";
-          roleSelect.value = "輸出";
+          setPickerRolesForRow(row,[]);
           nameInput.focus();
         }
         updateBatchLimitUI();
@@ -17728,11 +17797,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
       row.appendChild(nameInput);
       row.appendChild(roleSelect);
+      row.appendChild(rolePicker);
       row.appendChild(removeBtn);
       return row;
     }
 
-    window.addBatchSignupRow = (name = "", role = "輸出", shouldFocus = true) => {
+    window.addBatchSignupRow = (name = "", role = "", shouldFocus = true) => {
       const list = document.getElementById("batchPlayerList");
       if(!list) return false;
 
@@ -17771,10 +17841,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
       list.innerHTML = "";
       if(players.length === 0){
-        list.appendChild(createBatchSignupRow("", "輸出"));
+        list.appendChild(createBatchSignupRow("", ""));
       } else {
         players.forEach(player => {
-          list.appendChild(createBatchSignupRow(player.name || "", player.role || "輸出"));
+          list.appendChild(createBatchSignupRow(player.name || "", rolePreferencesOf(player)));
         });
       }
 
@@ -17786,8 +17856,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const rows = getCurrentBatchRows();
       const players = rows
         .map(row => ({
-          name: normalizeName(row.querySelector(".batch-name-input")?.value),
-          role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()
+          ...makeBatchPlayerRow(row)
         }))
         .filter(player => player.name);
 
@@ -17838,7 +17907,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
 
 
 
-    function createPresetManageRow(name = "", role = "輸出"){
+    function createPresetManageRow(name = "", role = ""){
       const row = document.createElement("div");
       row.className = "batch-player-row";
 
@@ -17856,7 +17925,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         option.textContent = roleName;
         roleSelect.appendChild(option);
       });
-      roleSelect.value = CONFIG.roles.includes(canonicalRole(role)) ? canonicalRole(role) : "輸出";
+      const initialRolePrefs=rolePreferencesOf(role);
+      roleSelect.value=initialRolePrefs[0]||"輸出";
+      roleSelect.style.display="none";
+      const rolePicker=document.createElement("div");
+      mountRolePicker(rolePicker,initialRolePrefs);
+      rolePicker._roleChanged=(prefs)=>{roleSelect.value=prefs[0]||"";};
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
@@ -17869,13 +17943,14 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           row.remove();
         } else {
           nameInput.value = "";
-          roleSelect.value = "輸出";
+          setPickerRolesForRow(row,[]);
           nameInput.focus();
         }
       };
 
       row.appendChild(nameInput);
       row.appendChild(roleSelect);
+      row.appendChild(rolePicker);
       row.appendChild(removeBtn);
       return row;
     }
@@ -17931,9 +18006,9 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       if(!list) return;
       list.innerHTML = "";
 
-      const rows = players.length ? players : [{ name:"", role:"輸出" }];
+      const rows = players.length ? players : [{ name:"", role:"" }];
       rows.forEach(player => {
-        list.appendChild(createPresetManageRow(player.name || "", player.role || "輸出"));
+        list.appendChild(createPresetManageRow(player.name || "", rolePreferencesOf(player)));
       });
     }
 
@@ -17984,8 +18059,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const rows = Array.from(document.querySelectorAll("#presetManagePlayerList .batch-player-row"));
       const players = rows
         .map(row => ({
-          name: normalizeName(row.querySelector(".batch-name-input")?.value),
-          role: (row.querySelector(".batch-role-select")?.value || "輸出").trim()
+          ...makeBatchPlayerRow(row)
         }))
         .filter(player => player.name);
 
@@ -18043,7 +18117,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         list.innerHTML = "";
         const defaultRows = Math.min(2, remain);
         for(let i = 0; i < defaultRows; i++){
-          list.appendChild(createBatchSignupRow("", "輸出"));
+          list.appendChild(createBatchSignupRow("", ""));
         }
       }
 
@@ -18064,8 +18138,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const rows = Array.from(document.querySelectorAll("#batchPlayerList .batch-player-row"));
       const players = rows
         .map(row => ({
-          name: normalizeName(row.querySelector(".batch-name-input")?.value),
-          role: (row.querySelector(".batch-role-select")?.value || "").trim()
+          ...makeBatchPlayerRow(row)
         }))
         .filter(player => player.name || player.role);
 
@@ -18111,7 +18184,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           continue;
         }
 
-        if(!CONFIG.roles.includes(player.role)){
+        if(!player.role || !CONFIG.roles.includes(player.role)){
           errors.push(`職業錯誤：${player.name}`);
           continue;
         }
@@ -18134,18 +18207,18 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         }
 
         const allowedRoles = getAllowedRoles(slot.members, slot);
-        if(!allowedRoles.includes(player.role)){
+        if(!canRoleJoin(slot.members,slot,rolePreferencesOf(player))){
           errors.push(`目前不可加入此職業：${player.name}（${player.role}）`);
           continue;
         }
 
         if(isProtectedTeam(slot)){
-          slot.pendingMembers.push({ name:player.name, role:player.role, tag:"", note:"", requestedAt:Date.now() });
+          slot.pendingMembers.push({ name:player.name, role:player.role, rolePreferences:rolePreferencesOf(player), tag:"", note:"", requestedAt:Date.now() });
         }else{
-          slot.members.push({ name:player.name, role:player.role, tag:"", note:"" });
+          slot.members.push({ name:player.name, role:player.role, rolePreferences:rolePreferencesOf(player), tag:"", note:"" });
         }
         added.push(player.name);
-        addedPlayers.push({name:player.name,role:player.role});
+        addedPlayers.push({name:player.name,role:player.role,rolePreferences:rolePreferencesOf(player)});
       }
 
       if(added.length === 0){
@@ -18600,7 +18673,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           </div>
           <div class="my-team-meta">
             <span>${count}/${maxPeople} 人</span>
-            <span>${escapeHtml(member?.role || "未設定職業")}</span>
+            <span>${escapeHtml(formattedRoles(member))}</span>
             ${state === "blackwork" ? `<span>不佔名額</span>` : isProtectedTeam(slot) ? `<span>團長確認</span>` : ``}
           </div>
           <div class="my-team-go">查看隊伍 →</div>
@@ -18803,7 +18876,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       }
     }
     function posterRoleColor(role){
-      return ({'輸出':'#83b9ff','承傷':'#fac078','治療':'#6fe0b7','輸出/治療':'#c7a5ff','增益':'#ffaac9'})[role]||'#9eabc2';
+      return ({'輸出':'#83b9ff','承傷':'#fac078','治療':'#6fe0b7','增益':'#ffaac9'})[role]||'#9eabc2';
     }
     function posterBuildText(dateKey,slot){
       const date=parseDateKey(dateKey);
@@ -18819,12 +18892,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         lines.push(`爬塔：${getTowerFloorLabel(slot)} · ${tower.towerDifficulty}`);
       }
       lines.push('── 隊伍名單 ──');
-      members.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${m.role||'未指定'}${m._index===0?'（隊長）':''}${m.tag?' · '+m.tag:''}`));
+      members.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${formattedRoles(m)}${m._index===0?'（隊長）':''}${m.tag?' · '+m.tag:''}`));
       for(let i=members.length;i<max;i++)lines.push(`${i+1}. （空位）`);
       const blackWorkers=getBlackWorkers(slot);
       if(blackWorkers.length){
         lines.push(`── 黑工／補位（${blackWorkers.length} 人，不佔名額）──`);
-        blackWorkers.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${m.role||'未指定'}`));
+        blackWorkers.forEach((m,i)=>lines.push(`${i+1}. ${m.name||'未命名'}｜${formattedRoles(m)}`));
       }
       return lines.join('\n');
     }
@@ -18908,7 +18981,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           const isLeader=member._index===0;
           const maxNameWidth=twoColumns?268:710;
           posterText(ctx,member.name||'未命名',x+95,y+41,29,'#f3f6ff',800,maxNameWidth);
-          posterText(ctx,member.role||'未指定',x+96,y+79,20,roleColor,800);
+          posterText(ctx,formattedRoles(member),x+96,y+79,20,roleColor,800);
           if(isLeader){
             const tagX=x+cardWidth-102;
             posterRoundRect(ctx,tagX,y+17,83,30,15,posterRgb(c.accent,.14),posterRgb(c.accent,.25));
@@ -18932,7 +19005,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           posterRoundRect(ctx,x,y,512,84,15,'rgba(78,191,173,.075)','rgba(110,220,199,.20)');
           posterText(ctx,String(i+1).padStart(2,'0'),x+18,y+44,20,'#6fe0ce',800);
           posterText(ctx,worker.name||'未命名',x+69,y+37,23,'#eef9f7',850,285);
-          posterText(ctx,worker.role||'未指定',x+70,y+65,17,posterRoleColor(worker.role),750,290);
+          posterText(ctx,formattedRoles(worker),x+70,y+65,17,posterRoleColor(worker.role),750,290);
         });
       }
       ctx.beginPath();ctx.strokeStyle='rgba(220,233,255,.11)';ctx.moveTo(76,H-107);ctx.lineTo(1124,H-107);ctx.stroke();
@@ -19021,7 +19094,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         const extra=normalizeSlot(slot).teamType==='爬塔' ? `｜${getTowerFloorLabel(slot)} ${normalizeTowerSlot(slot).towerDifficulty}` : '';
         lines.push(`${formatDisplayTime(getSlotDisplayTime(slot)||slot.time||'--:--')}｜第 ${slot.instance||1} 隊｜${normalizeSlot(slot).teamSize}人${teamTypeLabel(slot)}${extra}`);
         lines.push(`已確認 ${members.length}/${max} 人｜待確認 ${pending}｜黑工/補位 ${black}${missing.missingHeal>0?`｜缺治療 x${missing.missingHeal}`:''}`);
-        if(members.length) lines.push('隊員：'+members.map(m=>`${m.name||'未命名'}(${m.role||'未指定'})`).join('、'));
+        if(members.length) lines.push('隊員：'+members.map(m=>`${m.name||'未命名'}(${formattedRoles(m)})`).join('、'));
         else lines.push('隊員：目前尚未有人報名');
       });
       return lines.join('\n');
@@ -19247,7 +19320,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       blackworkFocusReturn = document.activeElement;
       const profile = getMyProfile(), defaults=getFormDefaults();
       blackworkName.value = defaults.name || profile.name || '';
-      blackworkRole.value = CONFIG.roles.includes(defaults.role || profile.role) ? (defaults.role || profile.role) : '輸出';
+      setPickerRoles('blackworkRole',defaults.rolePreferences?.length?defaults.rolePreferences:profile.rolePreferences);
       blackworkModal.hidden = false;
       blackworkName.focus();
       blackworkName.select();
@@ -19263,7 +19336,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     blackworkConfirm.addEventListener('click',()=>void submitBlackworkSignup());
     async function submitBlackworkSignup(){
       if(!currentBlackworkSignup || blackworkConfirm.disabled) return;
-      const name=normalizeName(blackworkName.value),role=blackworkRole.value;
+      const name=normalizeName(blackworkName.value),rolePreferences=pickerRoles("blackworkRole"),role=rolePreferences[0];
       if(!name){alert('請填寫玩家名稱。');blackworkName.focus();return;}
       if(!CONFIG.roles.includes(role)){alert('請選擇職業。');return;}
       if(!guardDialogRevision(currentBlackworkSignup)) return;
@@ -19272,11 +19345,11 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       const slot=dayData?.slots?.[slotIndex];
       if(!slot || !guardSignupTime(dateKey,slot,{showWarning:false}))return;
       if(slotHasName(slot,name)){alert('這個名字已經在正式、待確認或黑工名單中。');return;}
-      slot.blackWorkers=[...getBlackWorkers(slot),{name,role,joinedAt:Date.now()}];
+      slot.blackWorkers=[...getBlackWorkers(slot),{name,role,rolePreferences,joinedAt:Date.now()}];
       blackworkConfirm.disabled=true;
       try{
         await setDoc(doc(db,CONFIG.collectionName,dateKey),dayData);
-        saveFormDefaults(name,role);
+        saveFormDefaults(name,rolePreferences);
         closeBlackworkModal();
         render();
       }catch(error){
@@ -19409,7 +19482,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
             const signupTiming = getSignupTimingState(dateKey, slot);
             const isSignupClosed = signupTiming.state === "closed";
             const allowedRoles = getAllowedRoles(members, slot);
-            const forceHeal = allowedRoles.length > 0 && allowedRoles.every(role => role === "治療" || role === "輸出/治療");
+            const forceHeal = getSlotMaxPeople(slot)-members.length <= Math.max(0,getSlotMinHealer(slot)-countRole(members,"治療",slot));
             const canDeleteCustomSlot = !!slot.isCustom && members.length === 0 && pendingMembers.length === 0 && blackWorkers.length === 0;
             // PIN 空隊伍允許團長手動刪除（即使仍有待審核申請）。
             const canForceDeletePinSlot = !!slot.isCustom && isProtectedTeam(slot) && members.length === 0 && blackWorkers.length === 0;
@@ -19426,7 +19499,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
               && !!quickRole
               && !isSlotCancelled
               && members.length < maxPeople
-              && allowedRoles.includes(quickRole)
+                             && canRoleJoin(members,slot,rolePreferencesOf(quickProfile))
               && (!isProtectedTeam(slot) || !!slot.leaderPin || (!!slot.leaderPinHash && !!slot.leaderPinSalt))
               && !slotHasName(slot, quickName);
 
@@ -19575,7 +19648,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                       ${pendingMembers.map(member => `
                         <div class="pending-review-item">
                           <div class="pending-review-person">
-                            <span class="role-badge ${roleClass(member.role)}">${escapeHtml(member.role)}</span>
+                            <span class="role-badge ${roleClass(member.role)}">${escapeHtml(formattedRoles(member))}</span>
                             <span>${escapeHtml(member.name)}</span>
                           </div>
                           <div class="pending-review-actions">
@@ -19599,13 +19672,13 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                 const isSelf = !!savedName && normalizeName(member.name) === normalizeName(savedName);
                 const memberTagText = String(member.tag || "").trim();
                 const hasTag = !!memberTagText;
-                const memberTagPayload = hasTag ? encodeURIComponent(JSON.stringify(slotTagSummaryMap.get(memberTagText) || { tag: memberTagText, note: String(member.note || "").trim(), players:[{ name:String(member.name || "").trim(), role:String(member.role || "").trim() }] })) : "";
+                const memberTagPayload = hasTag ? encodeURIComponent(JSON.stringify(slotTagSummaryMap.get(memberTagText) || { tag: memberTagText, note: String(member.note || "").trim(), players:[{ name:String(member.name || "").trim(), role:formattedRoles(member) }] })) : "";
 
                 html += `
                   <div class="member${isSelf ? " member-self" : ""}${hasTag ? " member-tagged" : ""}">
                     <div class="member-left">
                       <div class="member-inline-row">
-                        <span class="role-badge ${roleClass(member.role)}">${member.role}</span>
+                        <span class="role-badge ${roleClass(member.role)}">${formattedRoles(member)}</span>
                         <span class="member-name" title="${escapeHtml(member.name)}" data-full-name="${escapeHtml(member.name)}">
                           ${escapeHtml(member.name)}${isSelf ? "（你）" : ""}
                         </span>
@@ -19645,7 +19718,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
                   </div>
                   ${blackWorkers.length ? `<div class="blackwork-list">${blackWorkers.map((worker,index)=>`
                     <div class="blackwork-person${savedName && normalizeName(worker.name)===normalizeName(savedName) ? ' blackwork-person-self' : ''}">
-                      <span class="role-badge ${roleClass(worker.role)}">${escapeHtml(worker.role || '未指定')}</span>
+                      <span class="role-badge ${roleClass(worker.role)}">${escapeHtml(formattedRoles(worker))}</span>
                       <span class="blackwork-person-name" title="${escapeHtml(worker.name || '')}">${escapeHtml(worker.name || '未命名')}</span>
                       <button type="button" class="blackwork-transfer" data-action="move-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="轉移黑工 ${escapeHtml(worker.name || '')}，或轉為正式隊員" title="移動／轉為正式隊員">轉移</button>
                       <button type="button" class="blackwork-remove" data-action="remove-blackworker" data-date="${dateKey}" data-slot="${slotIndex}" data-worker="${index}" aria-label="移除黑工 ${escapeHtml(worker.name || '')}" title="取消黑工報名">×</button>
@@ -22045,6 +22118,36 @@ html[data-theme="light"] body #leaderAuthModal.is-destructive .pve-form-header .
     .role-help-tag{font-size:11px}
   }
   @media(prefers-reduced-motion:reduce){.role-help-trigger{transition:none}}
+</style>
+<style id="role-order-picker-v2">
+#signupModal #roleSelect {display:none !important}
+.role-order-picker{width:100%;min-width:0;padding:12px;border:1px solid var(--pve-modal-border,var(--line));border-radius:15px;background:rgba(118,139,185,.075);color:var(--pve-modal-text,var(--text))}
+.role-picker-title{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px 10px;margin-bottom:10px;font-size:13px;font-weight:800}
+.role-picker-title small{font-size:11px;font-weight:500;color:var(--pve-modal-muted,var(--muted))}
+.role-picker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.role-picker-choice{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:43px;padding:7px 5px;border:1px solid var(--pve-modal-border,var(--line));border-radius:11px;background:rgba(126,153,204,.08);color:var(--pve-modal-text,var(--text));font-size:12px;font-weight:800;white-space:nowrap;transition:.18s ease}
+.role-picker-choice:hover{background:rgba(120,155,220,.17);border-color:rgba(143,179,244,.48)}
+.role-picker-choice.selected{background:rgba(104,141,226,.20);border-color:rgba(134,172,242,.62);box-shadow:inset 0 0 0 1px rgba(134,172,242,.12)}
+.role-picker-choice:disabled{opacity:.43;cursor:not-allowed;transform:none !important}
+.role-picker-choice .role-picker-rank{width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:50%;font-size:11px;color:#b8c5e6;background:rgba(150,163,198,.16)}
+.role-picker-choice.selected .role-picker-rank{background:var(--accent);color:#fff}
+.role-picker-choice.selected.role-heal{border-color:rgba(52,211,153,.58);background:rgba(52,211,153,.14)}
+.role-picker-choice.selected.role-tank{border-color:rgba(245,158,11,.53);background:rgba(245,158,11,.12)}
+.role-picker-choice.selected.role-buff{border-color:rgba(236,126,173,.54);background:rgba(236,126,173,.12)}
+.role-picker-result{font-size:12px;line-height:1.6;color:var(--pve-modal-muted,var(--muted));margin-top:9px;min-height:18px}
+.batch-player-row{grid-template-columns:minmax(110px,1fr) minmax(220px,1.6fr) 38px;align-items:start}
+.batch-player-row .role-order-picker{padding:7px}
+.batch-player-row .role-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.batch-player-row .role-picker-choice{min-height:32px;padding:4px;font-size:11px}
+.batch-player-row .role-picker-title{font-size:11px;margin-bottom:5px}
+.batch-player-row .role-picker-title small{font-size:10px}
+.batch-player-row .role-picker-result{font-size:10px;margin-top:5px}
+html[data-theme="light"] .role-order-picker{background:#f5f8fe;color:#27364d;border-color:#d3e0f1}
+html[data-theme="light"] .role-picker-choice{background:#fff;color:#34465f;border-color:#d8e2f1}
+html[data-theme="light"] .role-picker-choice.selected{background:#e8f1ff;border-color:#789de2}
+html[data-theme="light"] .role-picker-choice .role-picker-rank{color:#536985;background:#edf1f8}
+html[data-theme="light"] .role-picker-choice.selected .role-picker-rank{color:#fff;background:#537ac5}
+@media(max-width:650px){.role-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.batch-player-row{grid-template-columns:minmax(0,1fr) 38px}.batch-player-row .batch-name-input{grid-column:1/2}.batch-player-row .role-order-picker{grid-column:1/-1;grid-row:2}.batch-player-row .batch-remove-btn{grid-column:2;grid-row:1}}
 </style>
 </body>
 </html>
