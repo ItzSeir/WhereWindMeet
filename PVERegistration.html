@@ -15515,7 +15515,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       return "role-heal";
     }
 
-    // 雙職業 Pill 採 70% 主職業 + 30% 第二志願的單一混合色，維持主職業辨識度。
+    // 雙職業 Pill 採 50% 第一志願 + 50% 第二志願的單一混合色。
     // 只影響顯示顏色，不影響角色志願順序、隊伍配置或 Firebase 資料。
     const ROLE_PILL_COLORS = {
       "輸出": {base:[96,165,250], dark:[143,192,255], light:[36,91,158]},
@@ -15523,7 +15523,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       "承傷": {base:[245,158,11], dark:[255,195,107], light:[150,89,15]},
       "增益": {base:[45,212,191], dark:[45,212,191], light:[15,118,110]}
     };
-    function mixPillRgb(first,second,firstWeight=.70){
+    function mixPillRgb(first,second,firstWeight=.50){
       return first.map((channel,i)=>Math.round(channel*firstWeight+second[i]*(1-firstWeight)));
     }
     function hexPillRgb(rgb){return '#'+rgb.map(n=>n.toString(16).padStart(2,'0')).join('');}
@@ -22179,7 +22179,7 @@ html[data-theme="light"] .role-picker-choice.selected .role-picker-rank{color:#f
 @media(max-width:650px){.role-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.batch-player-row{grid-template-columns:minmax(0,1fr) 38px}.batch-player-row .batch-name-input{grid-column:1/2}.batch-player-row .role-order-picker{grid-column:1/-1;grid-row:2}.batch-player-row .batch-remove-btn{grid-column:2;grid-row:1}}
 </style>
 <style id="role-badge-weighted-blend-v1">
-/* Two roles: one weighted color, 70% first preference + 30% second. */
+/* Two roles: one equal blend, 50% first preference + 50% second. */
 .role-badge.role-blended{
   color:var(--role-mix-text) !important;
   background:var(--role-mix-bg) !important;
