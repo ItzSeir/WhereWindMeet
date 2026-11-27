@@ -14803,6 +14803,9 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       getDoc,
       runTransaction,
       collection,
+      query,
+      documentId,
+      where,
       onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 /* Navbar 滾動效果 */
@@ -15968,9 +15971,9 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       return { slots };
     }
 
-    async function ensureDateDoc(dateKey, dateObj){
+    async function ensureDateDoc(dateKey, dateObj, knownSnapshot){
       const ref = doc(db, CONFIG.collectionName, dateKey);
-      const snap = await getDoc(ref);
+      const snap = knownSnapshot ?? await getDoc(ref);
 
       if(!snap.exists()){
         await setDoc(ref, buildDefaultDayData(dateObj));
@@ -16046,16 +16049,23 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       }
     }
 
-    async function initializeVisibleDates(){
-      const dates = getDatesToInitialize();
-      for(const dateObj of dates){
-        const dateKey = formatDate(dateObj);
-        try { await ensureDateDoc(dateKey, dateObj); }
-        catch(error){
-          if(!(error instanceof ScheduleSyncConflict)) throw error;
-          await ensureDateDoc(dateKey, dateObj);
+    // Reuse the authoritative query snapshot; never re-read all five dates on startup.
+    let initializationInFlight = false;
+    async function initializeVisibleDates(snapshot){
+      if(initializationInFlight || snapshot.metadata.fromCache) return;
+      initializationInFlight = true;
+      try {
+        const docs = new Map(snapshot.docs.map(item => [item.id,item]));
+        for(const dateObj of getDatesToInitialize()){
+          const dateKey = formatDate(dateObj);
+          const known = docs.get(dateKey) || {exists:()=>false};
+          try { await ensureDateDoc(dateKey, dateObj, known); }
+          catch(error){
+            // A concurrent client may have initialized this date already.
+            if(!(error instanceof ScheduleSyncConflict)) throw error;
+          }
         }
-      }
+      } finally { initializationInFlight = false; }
     }
 
     function autoCreateNextSameTimeSlot(dayData, sourceSlot){
@@ -16410,8 +16420,15 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     const removalLocks = new Set();
     async function deleteRegistration(target){
       const lock = JSON.stringify([target.dateKey,target.slotId,target.field,normalizeName(target.name)]);
-      if(removalLocks.has(lock)) return false;
+      if(removalLocks.has(lock)){
+        window.showAppToast?.('這位玩家的刪除仍在處理中，請勿重複操作。','warn');
+        return false;
+      }
       removalLocks.add(lock);
+      window.showAppToast?.(`正在移除「${target.name}」…`,'info');
+      const slowNotice = setTimeout(() => {
+        alert(`「${target.name}」的刪除尚未收到 Firebase 回應。你可以繼續使用網頁；系統會在收到結果後通知你。請勿重複刪除。`);
+      }, 12000);
       try{
         const ref = doc(db, CONFIG.collectionName, target.dateKey);
         const result = await runTransaction(db, async tx => {
@@ -16428,10 +16445,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
             (target.joinedAt === null || member?.joinedAt === target.joinedAt));
           if(indices.length !== 1) return {status:indices.length ? 'ambiguous' : 'missing'};
           slot[target.field] = list.filter((_,index)=>index !== indices[0].index);
-          const next = ensureFirestore24HourSlots(canonicalizeLegacyRoles(day));
-          next._syncProtocol = 3;
-          next._syncVersion = scheduleRevision(day)+1;
-          tx.set(ref,next);
+          // Only change the selected registration and the synchronization revision.
+          // Do not rewrite or validate unrelated teams during a deletion.
+          const next = {...day, slots, _syncProtocol:3, _syncVersion:scheduleRevision(day)+1};
+          tx.update(ref,{slots:next.slots,_syncProtocol:next._syncProtocol,_syncVersion:next._syncVersion});
           return {status:'deleted',data:next};
         });
         if(result.status !== 'deleted'){
@@ -16442,7 +16459,8 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
           sortSlots(result.data.slots);
           globalData[target.dateKey] = result.data;
         }
-        render();
+        window.showAppToast?.(`已移除「${target.name}」的報名。`,'success');
+        try{ render(); }catch(uiError){ console.error('刪除已儲存，畫面更新失敗',uiError); }
         return true;
       }catch(error){
         console.error('取消報名失敗',error);
@@ -16450,7 +16468,7 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
         alert(code.includes('permission-denied') ? '刪除失敗：Firestore 拒絕寫入權限。' :
           '刪除失敗：'+(error?.message || '請稍後再試')+(code ? '（'+code+'）' : ''));
         return false;
-      }finally{ removalLocks.delete(lock); }
+      }finally{ clearTimeout(slowNotice); removalLocks.delete(lock); }
     }
     function openConfirmModal(dateKey, slotIndex, memberIndex){
       const target = captureRemoval(dateKey,slotIndex,memberIndex,'members');
@@ -16466,12 +16484,10 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     window.confirmRemoveMember = async () => {
       const target = pendingDelete;
       if(!target) return;
-      const button = document.querySelector('#confirmModal .confirm-danger-btn');
-      if(button?.disabled) return;
-      if(button) button.disabled = true;
-      try{
-        if(await deleteRegistration(target) && pendingDelete === target) window.closeConfirmModal();
-      }finally{ if(button) button.disabled = false; }
+      // Consume the confirmation synchronously; never leave a disabled dialog
+      // on screen while Firestore is waiting for the network.
+      window.closeConfirmModal();
+      await deleteRegistration(target);
     };
 
     window.openInfoModal = () => {
@@ -20063,47 +20079,54 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
     document.getElementById("batchPresetManageBtn").onclick = () => openBatchPresetManageModal();
     document.getElementById("quickActionBatchBtn")?.addEventListener("click", () => openBatchPresetManageModal());
 
-    document.getElementById("refreshBtn").onclick = async () => {
-      await initializeVisibleDates();
-      alert("日期已整理完成。");
-    };
-
-    // 已停用 60 分鐘自動刪除；PIN 空隊伍改由團長手動確認刪除。
-
-    onSnapshot(collection(db, CONFIG.collectionName), async (snapshot) => {
-      const nextData = {};
-      snapshot.forEach(item => {
-        const data = canonicalizeLegacyRoles(item.data());
-        if(data && Array.isArray(data.slots)){
-          sortSlots(data.slots);
-          nextData[item.id] = data;
+    let scheduleUnsubscribe = null;
+    let scheduleWindowKey = "";
+    let scheduleGeneration = 0;
+    function subscribeSchedule(force=false){
+      const dates = getDatesToShow();
+      const first = formatDate(dates[0]);
+      const last = formatDate(dates[dates.length-1]);
+      if(!force && scheduleWindowKey === first) return;
+      scheduleWindowKey = first;
+      const generation = ++scheduleGeneration;
+      if(scheduleUnsubscribe) scheduleUnsubscribe();
+      const activeQuery = query(collection(db, CONFIG.collectionName),
+        where(documentId(), ">=", first), where(documentId(), "<=", last));
+      scheduleUnsubscribe = onSnapshot(activeQuery, {includeMetadataChanges:true}, async snapshot => {
+        if(generation !== scheduleGeneration) return;
+        const nextData = {};
+        snapshot.forEach(item => {
+          const data = canonicalizeLegacyRoles(item.data());
+          if(data && Array.isArray(data.slots)){
+            sortSlots(data.slots);
+            nextData[item.id] = data;
+          }
+        });
+        globalData = nextData;
+        render();
+        if(!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites){
+          try { await initializeVisibleDates(snapshot); }
+          catch(error){ console.error("日期初始化失敗", error); }
+          if(generation !== scheduleGeneration) return;
+          if(pendingSharedTeamJump && pendingSharedTeamJump.dateKey){
+            const target = pendingSharedTeamJump;
+            pendingSharedTeamJump = null;
+            setTimeout(() => jumpToTeam(target.dateKey, target.slotIndex), 80);
+          }
         }
+      }, error => {
+        console.error("隊伍同步失敗", error);
+        scheduleWindowKey = "";
+        alert(error.code === "resource-exhausted" ? "Firebase 今日讀取額度已用完，請於額度重置後再重新整理。" : "隊伍同步失敗，請重新整理後再試。");
       });
-
-      globalData = nextData;
-
-      const dates = getDatesToInitialize();
-      let needInit = false;
-
-      dates.forEach(dateObj => {
-        const key = formatDate(dateObj);
-        if(!globalData[key]) needInit = true;
-      });
-
-      if(needInit){
-        await initializeVisibleDates();
-        return;
-      }
-
-      render();
-      if(pendingSharedTeamJump && pendingSharedTeamJump.dateKey){
-        const target = pendingSharedTeamJump;
-        pendingSharedTeamJump = null;
-        setTimeout(() => jumpToTeam(target.dateKey, target.slotIndex), 80);
-      }
+    }
+    document.getElementById("refreshBtn").onclick = () => subscribeSchedule(true);
+    subscribeSchedule();
+    // Only change the listener when the date rolls over; no recurring database polling.
+    setInterval(() => { if(scheduleWindowKey) subscribeSchedule(); }, 60000);
+    document.addEventListener("visibilitychange", () => {
+      if(!document.hidden && scheduleWindowKey) subscribeSchedule();
     });
-
-    await initializeVisibleDates();
     bindCustomSelect();
     bindActivityFilterButtons();
     setupScrollFilterDropdown();
@@ -22215,6 +22238,10 @@ html body .app-workspace .slot-card:has(.member-menu.open) .member-list,
 html body .app-workspace .member:has(.member-menu.open){overflow:visible !important;}
 html body .app-workspace .member:has(.member-menu.open){position:relative !important;z-index:10001 !important;}
 html body .app-workspace .member-menu.open{position:relative !important;z-index:10002 !important;}
+</style>
+<style id="pve-delete-feedback-layer">
+html body #pveDialogRoot{z-index:1000300 !important;}
+html body #pveToastStack{z-index:1000400 !important;}
 </style>
 </body>
 </html>
