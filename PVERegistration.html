@@ -16395,46 +16395,83 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       showSignupSuccess(dateKey,slot,[{name,role}],'普通報名');
     };
 
-    function openConfirmModal(dateKey, slotIndex, memberIndex){
-      const dayData = globalData[dateKey];
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-      const slot = dayData.slots[slotIndex];
-      if(!slot) return;
-
-      const members = Array.isArray(slot.members) ? slot.members : [];
-      const member = members[memberIndex];
-      if(!member) return;
-
-      pendingDelete = { dateKey, slotIndex, memberIndex, syncRevision:scheduleRevision(globalData[dateKey]) };
-      document.getElementById("confirmModalText").textContent = `確定要刪除報名玩家「${member.name}」嗎？`;
-      document.getElementById("confirmModal").classList.add("show");
+    // Delete only the selected registration from the latest server document.
+    function captureRemoval(dateKey, slotIndex, memberIndex, field){
+      const slot = globalData?.[dateKey]?.slots?.[slotIndex];
+      const member = slot?.[field]?.[memberIndex];
+      if(!member || !normalizeName(member.name)) return null;
+      if(!validSlotId(slot.id)){
+        alert('隊伍識別碼尚未同步，請重新整理後再試。');
+        return null;
+      }
+      return {dateKey, slotId:slot.id, field, name:member.name,
+        joinedAt:member.joinedAt ?? null};
     }
-
+    const removalLocks = new Set();
+    async function deleteRegistration(target){
+      const lock = JSON.stringify([target.dateKey,target.slotId,target.field,normalizeName(target.name)]);
+      if(removalLocks.has(lock)) return false;
+      removalLocks.add(lock);
+      try{
+        const ref = doc(db, CONFIG.collectionName, target.dateKey);
+        const result = await runTransaction(db, async tx => {
+          const snap = await tx.get(ref);
+          if(!snap.exists()) return {status:'missing'};
+          const day = snap.data();
+          const slots = Array.isArray(day.slots) ? day.slots : [];
+          const matches = slots.filter(slot => slot.id === target.slotId);
+          if(matches.length !== 1) return {status:'missing'};
+          const slot = matches[0];
+          const list = Array.isArray(slot[target.field]) ? slot[target.field] : [];
+          const indices = list.map((member,index)=>({member,index})).filter(({member})=>
+            normalizeName(member?.name) === normalizeName(target.name) &&
+            (target.joinedAt === null || member?.joinedAt === target.joinedAt));
+          if(indices.length !== 1) return {status:indices.length ? 'ambiguous' : 'missing'};
+          slot[target.field] = list.filter((_,index)=>index !== indices[0].index);
+          const next = ensureFirestore24HourSlots(canonicalizeLegacyRoles(day));
+          next._syncProtocol = 3;
+          next._syncVersion = scheduleRevision(day)+1;
+          tx.set(ref,next);
+          return {status:'deleted',data:next};
+        });
+        if(result.status !== 'deleted'){
+          alert(result.status === 'ambiguous' ? '存在重複姓名，為避免誤刪，請先確認名單。' : '原報名已不存在或已轉移，請查看最新名單。');
+          return false;
+        }
+        if(scheduleRevision(globalData[target.dateKey]) <= scheduleRevision(result.data)){
+          sortSlots(result.data.slots);
+          globalData[target.dateKey] = result.data;
+        }
+        render();
+        return true;
+      }catch(error){
+        console.error('取消報名失敗',error);
+        const code = String(error?.code || '');
+        alert(code.includes('permission-denied') ? '刪除失敗：Firestore 拒絕寫入權限。' :
+          '刪除失敗：'+(error?.message || '請稍後再試')+(code ? '（'+code+'）' : ''));
+        return false;
+      }finally{ removalLocks.delete(lock); }
+    }
+    function openConfirmModal(dateKey, slotIndex, memberIndex){
+      const target = captureRemoval(dateKey,slotIndex,memberIndex,'members');
+      if(!target) return;
+      pendingDelete = target;
+      document.getElementById('confirmModalText').textContent = `確定要刪除報名玩家「${target.name}」嗎？`;
+      document.getElementById('confirmModal').classList.add('show');
+    }
     window.closeConfirmModal = () => {
       pendingDelete = null;
-      document.getElementById("confirmModal").classList.remove("show");
+      document.getElementById('confirmModal').classList.remove('show');
     };
-
     window.confirmRemoveMember = async () => {
-      if(!pendingDelete) return;
-      if(!guardDialogRevision(pendingDelete)) return;
-
-      const { dateKey, slotIndex, memberIndex } = pendingDelete;
-      const dayData = structuredClone(globalData[dateKey]);
-      if(!dayData || !Array.isArray(dayData.slots)) return;
-      if(!dayData.slots[slotIndex]) return;
-
-      const members = Array.isArray(dayData.slots[slotIndex].members)
-        ? dayData.slots[slotIndex].members
-        : [];
-
-      if(!members[memberIndex]) return;
-
-      members.splice(memberIndex, 1);
-      dayData.slots[slotIndex].members = members;
-
-      await setDoc(doc(db, CONFIG.collectionName, dateKey), dayData);
-      closeConfirmModal();
+      const target = pendingDelete;
+      if(!target) return;
+      const button = document.querySelector('#confirmModal .confirm-danger-btn');
+      if(button?.disabled) return;
+      if(button) button.disabled = true;
+      try{
+        if(await deleteRegistration(target) && pendingDelete === target) window.closeConfirmModal();
+      }finally{ if(button) button.disabled = false; }
     };
 
     window.openInfoModal = () => {
@@ -19387,31 +19424,12 @@ html[data-theme="light"] .pve-signup-method-icon{color:#3268b7;background:#e7eff
       }finally{blackworkConfirm.disabled=false;}
     }
     async function removeBlackworker(dateKey,slotIndex,workerIndex){
-      const slot=globalData?.[dateKey]?.slots?.[slotIndex];
-      const worker=getBlackWorkers(slot)[workerIndex];
-      if(!worker)return;
-      const expectedRevision=scheduleRevision(globalData[dateKey]);
-      const confirmed=await (typeof window.showAppConfirm==='function'
-        ? window.showAppConfirm(`確定移除黑工「${worker.name}」的報名？`,{title:'取消黑工報名',confirmText:'確認移除',tone:'danger'})
-        : Promise.resolve(window.confirm(`確定移除黑工「${worker.name}」的報名？`)));
-      if(!confirmed)return;
-      if(expectedRevision!==scheduleRevision(globalData[dateKey])){
-        alert('隊伍名單剛剛已更新，請重新確認黑工名單再操作。');return;
-      }
-      const dayData=structuredClone(globalData[dateKey]);
-      const latestSlot=dayData?.slots?.[slotIndex];
-      const list=getBlackWorkers(latestSlot);
-      if(!list[workerIndex] || normalizeName(list[workerIndex].name)!==normalizeName(worker.name)){
-        alert('此黑工報名已更新，請重新查看名單。');return;
-      }
-      latestSlot.blackWorkers=list.filter((_,index)=>index!==workerIndex);
-      try{
-        await setDoc(doc(db,CONFIG.collectionName,dateKey),dayData);
-        render();
-      }catch(error){
-        console.error('移除黑工失敗',error);
-        if(!(error instanceof ScheduleSyncConflict))alert('移除黑工失敗：'+(error?.message||'請重試'));
-      }
+      const target = captureRemoval(dateKey,slotIndex,workerIndex,'blackWorkers');
+      if(!target) return;
+      const confirmed = await (typeof window.showAppConfirm === 'function'
+        ? window.showAppConfirm(`確定移除黑工「${target.name}」的報名？`,{title:'取消黑工報名',confirmText:'確認移除',tone:'danger'})
+        : Promise.resolve(window.confirm(`確定移除黑工「${target.name}」的報名？`)));
+      if(confirmed) await deleteRegistration(target);
     }
 
     function render(){
@@ -22190,6 +22208,13 @@ html[data-theme="light"] .role-badge.role-blended{
   background:var(--role-mix-light-bg) !important;
   border-color:var(--role-mix-light-border) !important;
 }
+</style>
+<style id="pve-member-delete-menu-fix">
+html body .app-workspace .slot-card:has(.member-menu.open),
+html body .app-workspace .slot-card:has(.member-menu.open) .member-list,
+html body .app-workspace .member:has(.member-menu.open){overflow:visible !important;}
+html body .app-workspace .member:has(.member-menu.open){position:relative !important;z-index:10001 !important;}
+html body .app-workspace .member-menu.open{position:relative !important;z-index:10002 !important;}
 </style>
 </body>
 </html>
